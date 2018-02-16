@@ -1,5 +1,7 @@
 = Enterprise Clojure Training
 
+Clojure is serious business!
+
 This is a Clojure training course for Developers and Senior Developers working on Enterprise software.
 See manual.adoc and manual.html for the course material and exercises.
 
