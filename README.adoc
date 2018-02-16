@@ -1,0 +1,18 @@
+= Enterprise Clojure Training
+
+This is a Clojure training course for Developers and Senior Developers working on Enterprise software.
+See manual.adoc and manual.html for the course material and exercises.
+
+Trainers see slides.adoc and slides.html for the presentation material.
+
+
+== Contributing
+
+Pull requests welcome!
+
+
+== Building
+
+    ./build.sh
+
+Produces manual.html and slides.html
