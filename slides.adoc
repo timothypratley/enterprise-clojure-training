@@ -1289,6 +1289,8 @@ Prefer newlines
             (>= score 70) "C"
             (>= score 60) "D"
             :else "F"))
+    (deftest grade-test
+      (is (= "B" (grade 85))))
 
     (defn factorial [n]
       (loop [acc 1
@@ -1300,7 +1302,7 @@ Prefer newlines
       (is (= 120 (factorial 5))))
 
     (defn factorial2
-      ([n] (factorial 1 n))
+      ([n] (factorial2 1 n))
       ([acc n]
        (if (<= n 1)
          acc
@@ -3039,7 +3041,7 @@ To selectively delete some data:
 And now there is only one row remaining.
 
     (jdbc/query db ["select * from messages"])
-    => ({:message "Hello World"})
+    => ({:message "How now?"})
 
 Let’s add some more data...
 
