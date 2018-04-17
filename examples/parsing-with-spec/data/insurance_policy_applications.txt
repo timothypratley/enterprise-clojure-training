@@ -1,0 +1,7 @@
+name,state,corgi-count,existing-policy-count,poodle-count
+Chloe,IL,1,0,1
+Ethan,IL,4,2,2
+Annabelle,WY,19,0,0
+Logan,WA,2,1,0
+Tiffany,TAS,2,1,0
+Wendy,WY,0,1,4
