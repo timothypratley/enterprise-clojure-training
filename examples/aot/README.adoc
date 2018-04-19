@@ -1,0 +1,5 @@
+WAR files for web applications and JAR files for command-line or custom server or background processes.
+The default behaviour of Leingingen is to compile the entry points and all related code.
+This can cause inconsistent and undesirable Clojure behavior,
+and is also somewhat slow and often unnecessary otherwise.
+There are ways to avoid AOT.
