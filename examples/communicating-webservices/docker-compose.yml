@@ -1,0 +1,33 @@
+version: '3'
+services:
+  customer-data-service:
+    image: clojure:alpine
+    working_dir: /app
+    volumes:
+      - ./customer-data-service:/app
+      - ~/.m2:/root/.m2
+      - ~/.lein:/root/.lein
+    command: lein ring server-headless
+    ports:
+      - "3031:3000"
+  insurance-policy-service:
+    image: clojure:alpine
+    working_dir: /app
+    volumes:
+      - ./insurance-policy-service:/app
+      - ~/.m2:/root/.m2
+      - ~/.lein:/root/.lein
+    command: lein ring server-headless
+    ports:
+      - "3032:3000"
+  insurance-policy-application-processor:
+    image: clojure:alpine
+    working_dir: /app
+    volumes:
+      - ./insurance-policy-application-processor:/app
+      - ~/.m2:/root/.m2
+      - ~/.lein:/root/.lein
+    command: lein run
+    links:
+     - customer-data-service
+     - insurance-policy-service

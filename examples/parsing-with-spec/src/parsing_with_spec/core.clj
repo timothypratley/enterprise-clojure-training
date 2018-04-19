@@ -91,7 +91,10 @@
   ;; write to discard log
   (println "INVALID:" application)
   ;;(s/explain ::policy-application application)
-  (e/expound ::policy-application application))
+  (e/expound :mega-corp/insurance-policy application))
 
-(defn etl []
-  (process-applications-file valid invalid "data/insurance_policy_applications.txt"))
+(defn -main [& args]
+  (println "Starting file processing...")
+  (let [filename (or (first args) "data/insurance_policy_applications.txt")]
+    (process-applications-file valid invalid filename))
+  (println "Done."))

@@ -1,0 +1,15 @@
+version: '3'
+services:
+  customer-data-service:
+    image: customer-data-service
+    ports:
+      - "3031:3000"
+  insurance-policy-service:
+    image: insurance-policy-service
+    ports:
+      - "3032:3000"
+  insurance-policy-application-processor:
+    image: insurance-policy-application-processor
+    links:
+     - customer-data-service
+     - insurance-policy-service

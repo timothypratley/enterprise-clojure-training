@@ -1,0 +1,118 @@
+= Clojure web seminar
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+:backend: slidy
+:max-width: 45em
+
+
+== 1) Parsing data with Spec
+
+Define mass data structure using spec and to get the data from that using `conform`.
+
+`lein new parsing-with-spec`
+
+
+== a. Need sample use case and accustomed project with that.
+
+
+== b. Require more details on why we need this spec and what is the business advantage?
+
+
+== 2) Mock test data
+
+Resources on validating the specs as a whole data structure.
+(A sample project or reference available on internet is also required)
+
+
+== 3) Continuous Integration
+
+How to get the project built using Jenkins or any hosting tools.
+We would have a demo to do that with pipeline or docker plugin.
+
+
+== 4) Calling web services from Clojure
+
+To hop around the different environments?
+How are we going to handle/pass the security configuration in between the layers?
+
+== a. Creating a webservice
+
+`lein new compojure customer-data-service`
+
+
+== 5) :gen-class
+
+Is this mandatory for running the application as uber jar?
+
+* No. Clojure compiles all code you load on-the-fly into JVM bytecode.
+
+What is the purpose of `:gen-class`?
+
+* `gen-class` is one way to cause ahead-of-time (AOT) compilation
+* You can specify AOT namespaces in the project.clj file
+* creates a Java class
+* `lein compile` to build the class
+* Prefer using `reify`, `deftype`, `defrecord` to implement Java classes.
+* Avoid `gen-class` and AOT if you can.
+
+== AOT is about when compilation happens
+
+    (ns my.app)
+    (def password (System/getenv "PASSWORD"))
+
+Behaves differently if evaluated during AOT than during Runtime.
+
+* In AOT it is captured during the build prior to deployment.
+* At Runtime it is whatever is in the environment when the namespace is loaded.
+
+
+== When would it help to AOT?
+
+* Shipping an application binary without the original source code
+
+* Marginally speeding up start time
+
+* Generating classes loadable directly from Java for interop purposes (Hadoop)
+
+* Platforms such as Android do not support custom class loaders for running new bytecode at runtime.
+
+
+
+
+== 6) More on Macros
+
+Examples (different usage scenarios) and elaboration required for Macros.
+
+
+== 7) Data enrichment
+
+Require to know Clojure with Hadoop interaction for data enrichment with clojure specs.
+
+
+== 8) Sending emails
+
+Does Clojure provide any utility to attach a file and send an email?
+Configuring logs on masking the sensitive data.
+
+
+== 9) Dependencies
+
+How to manage real time dependency management between projects
+
+
+== 10) Industry design patterns for Clojure
+
+
+== 11) Profile.clj
+
+What is Profile.clj capable of doing?
+Is it like getting the jar from repo, defining plugins, is that all?
+Or do we have more to explore. (need more clarity and reference links)
+
+
+== 12) Project.clj
+
+What is Project.clj capable of doing to the project?
+Where does this scope live?
+Unlike the above one, require reference materials.
+

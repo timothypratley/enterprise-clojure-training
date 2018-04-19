@@ -1,0 +1,204 @@
+= Jenkins build server
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+:backend: slidy
+:max-width: 45em
+
+This guide assumes you have already created a project to build and deploy.
+We will start with the `parsing-with-spec` example project provided in this repository.
+Jenkins is presented because it is free and well documented.
+The steps in this guide can be adapted to other build tools and services.
+
+
+== Overview
+
+* How Clojure projects are built and executed locally
+* How to set up a build server to automate test/build/deploy
+
+
+== Building and Executing Clojure projects
+
+    lein run
+
+    lein uberjar
+
+    java -jar myapp.jar
+
+    lein ring uberjar
+
+    lein install
+
+    lein deploy
+
+
+== lein run
+
+* Easy to execute
+* May need to pull dependencies
+
+
+== lein uberjar
+
+* Your application and all dependencies in a single JAR file
+* Easy to deploy
+* Easy to execute
+* Versioned
+* Preservable
+
+
+== java -jar myapp.jar
+
+* Executes an uberjar
+* Define a main entrypoint in project.clj
+
+    :main myapp.core
+
+src/myapp/core.clj
+
+    (ns myapp.core)
+    (defn -main [& args] ...)
+
+* Alternatively, specify an entrypoint from the commandline
+
+    java -jar myapp.jar -m myapp.core/-main
+
+== lein ring uberjar
+
+Sets up a main entry point to start the webservice
+
+Equivalent to
+
+    (ns myapp.core)
+    (defn -main [& args]
+      (run-jetty handler {:port 3000}))
+
+
+== lein install
+
+* Builds an uberjar and puts it in your local Maven repository `~/.m2`
+* Useful for testing library snapshots and building from source
+* Does not publish your artifact
+
+
+== lein deploy
+
+* Publishes your artifact to a repository
+* Repositories can be
+  - public (Clojars, Maven Central)
+  - private (Hosted/S3/Self managed)
+* https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md
+* Easy... if you have a repository...
+* Not the same as deploying your application!
+
+
+== Where to publish artifacts to?
+
+* Amazon S3 is a low-maintenance choice:
+  - https://github.com/s3-wagon-private/s3-wagon-private
+* Artifactory/Nexus/Archiva
+* Deps: https://www.deps.co/
+* Remeber to include a `repositories` section in your project.clj
+  - To publish to a private repository
+  - To pull dependencies from a private repository
+
+    :repositories [["private" {:url "s3p://mybucket/releases/" :no-auth true}]]
+
+
+== Deploying a Clojure application
+
+* Build an uberjar (or Docker container)
+* Get the artifact to the host server
+* Run it
+
+
+== Implementation details are driven by architecture
+
+* Tomcat? Drop a WAR in a folder
+* AWS Elastic Beanstalk? Roll out a new docker container
+* AWS Lambda? Upload a new JAR
+* Kubernetes? Roll out a new docker container
+* Heroku? Deploy from git
+
+
+== Creating a build server overview
+
+* Install Jenkins
+* Install Leiningen
+* Add a build
+
+
+== What is Docker?
+
+* Virtualization
+* Dockerfile specifies a parent and setup tasks
+* Building starts with an image and runs the setup tasks, creates a container
+* Run a container and it behaves like a stand alone computer
+
+
+== Handy Docker commands
+
+* `docker build -t <image-name> .` to create a container from a Dockerfile
+* `docker run <image-name>` to run it
+* `docker ps` to see running containers
+* `docker exec -ti <container-id> bash` to get a shell in a running container
+* `docker stop <container-id>` to stop it
+
+
+== Creating a Jenkins server inside a Docker container
+
+* Install docker
+* Create a Dockerfile to extend the base Jenkins image
+  - see examples/jenkins-build-server/Dockerfile
+  - https://github.com/jenkinsci/docker/blob/master/README.md
+  - add steps to install Leiningen
+* Create a Makefile or similar to automate tasks
+  - see examples/jenkins-build-server/Makefile
+  - `make run` to start the server
+* Open the UI: http://localhost:8080/
+* Enter password from console log
+* Install suggested plugins
+* Create admin user
+
+
+== What to build?
+
+* An uberjar
+* Docker image
+
+
+== Set up Job
+
+* Choose Freestyle project
+* Configure source code management
+  - parsing-with-spec is a subdirectory of the enterprise-clojure repository
+  - `sparse checkout path` only gets a subdirectory
+* Under "Build", add build steps, shell command
+  - `cd examples/parsing-with-spec && lein test`
+  - `cd examples/parsing-with-spec && lein install`
+  - or docker build
+  - don't need to change directory if project is in root
+* Save
+* Build now
+* Check the console logs
+  - tests passed
+  - jar created
+
+
+== Versioning
+
+
+== Running the built artifacts
+
+* `java -jar myapp.jar`
+* Use environment variables to behave differently
+* Can extend a prebuilt docker image (or roll your own)
+
+
+== Building multiple services
+
+* Set up jobs for each project
+
+
+== Set up another triggered Job to deploy to CI
+
+* If the build succeeds, deploy
