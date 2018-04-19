@@ -1,6 +1,6 @@
 (ns insurance-policy-application-processor.core
-  (:gen-class)
-  (:require [clj-http.client :as client]))
+  (:require [clj-http.client :as client])
+  (:gen-class))
 
 (defn fetch-customer [id]
   (client/get (str "http://customer-data-service:3000/customer/" id)))

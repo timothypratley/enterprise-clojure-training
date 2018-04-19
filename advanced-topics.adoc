@@ -12,48 +12,206 @@ Define mass data structure using spec and to get the data from that using `confo
 `lein new parsing-with-spec`
 
 
-== a. Need sample use case and accustomed project with that.
+== a. Sample use case
+
+Imagine you work at an insurance company.
+They offer three insurance policies:
+
+* Corgi Cover
+* Poodle Protection
+* Poodle Protection Platinum
+
+Can spec help us process applications for these policies?
+
+* See examples/parsing-with-spec
 
 
-== b. Require more details on why we need this spec and what is the business advantage?
+== b. Why avoid spec?
+
+* It is new
+  - nothing wrong with being cautious
+
+* Specs are code
+  - however code is data and you can create specs on the fly
+
+* You can do without it
+  - but it becomes more difficult as complexity rises
+
+
+== c. Why use spec?
+
+* Specifying the shape of inputs is hard
+  - good error messages are hard for complex requirements
+  - coming up with test data can be tedious
+  - testing often involves reimplementation
+
+* Additional tooling
+  - Expound (nice error messages)
+  - Data generators
+  - test.check
+
+
+== d. What is the business advantage of spec?
+
+* Implement validation faster
+* Implement parsing faster
+* Deliver correct, well tested solutions
+* Use the same technology in code and data interfaces
+  - learn once, apply in many contexts
 
 
 == 2) Mock test data
 
+***
 Resources on validating the specs as a whole data structure.
 (A sample project or reference available on internet is also required)
 
 
 == 3) Continuous Integration
 
-How to get the project built using Jenkins or any hosting tools.
-We would have a demo to do that with pipeline or docker plugin.
+* Building projects with Jenkins
+  - See examples/jenkins-build-server
 
 
-== 4) Calling web services from Clojure
+== 4) Clojure services
 
-To hop around the different environments?
-How are we going to handle/pass the security configuration in between the layers?
+See examples/communicating-services
 
-== a. Creating a webservice
+=== a. Creating a webservice
 
 `lein new compojure customer-data-service`
 
+* See routes
+* Start: `lein ring server-headless`
+* Test: `curl http://localhost:3000/`
+* Change code
+* curl again
 
-== 5) :gen-class
 
-Is this mandatory for running the application as uber jar?
+== What is Ring?
 
-* No. Clojure compiles all code you load on-the-fly into JVM bytecode.
+* Ring is a library that abstracts the details of HTTP into a unified API
+  - modular components
+
+* Handlers - functions that take requests and return responses
+* Request - map of data about the request (params, body, etc)
+* Response - map containing status, headers, body
+* Middleware - the mechanism for modular components, higher order functions
+
+
+== Middleware pattern
+
+Middleware are functions that return functions:
+
+    (defn wrap-user [handler]
+      (fn [request]
+        (if-let [user-id (-> request :session :user-id)]
+          (let [user (get-user-by-id user-id)]
+            (handler (assoc request :user user)))
+          (handler request))))
+
+* Takes a handler as input
+* The function returned
+  - can modify the request before passing it to the handler
+  - can modify the result from the handler before returning it
+  - is itself a handler
+
+== Middleware
+
+* Takes a handler and creates an augmented handler.
+* Convenient for composing handlers together:
+
+    (def app
+      (-> handler
+          (wrap-user)
+          (wrap-content-type "text/html")
+          (wrap-keyword-params)
+          (wrap-params)))
+
+* Middleware pattern
+  - https://github.com/ring-clojure/ring/wiki/Concepts
+  - https://github.com/ring-clojure/ring/wiki/Middleware-Patterns
+
+
+== What is Compojure?
+
+* A routing library
+  - http://megacorp.com/insurance-policy/corgi-cover
+  - `/insurance-policy/corgi-cover` is a route
+  - `/insurance-policy` is fixed root
+  - `/corgi-cover` is a policy ID
+  - could be `poodle-protection` or `poodle-protection-platinum`
+  - `(GET "/insurance-policy/:id" [id] (fetch-policy id))`
+
+
+== Useful extensions
+
+* Public API creation: https://github.com/metosin/compojure-api
+* Public API creation: https://clojure-liberator.github.io/liberator/
+* GraphQL: https://github.com/walmartlabs/lacinia
+
+
+== Making HTTP requests
+
+* clj-http https://github.com/dakrone/clj-http
+* See examples/communicating-services/insurance-policy-application-processor
+
+    [clj-http "0.6.0"]
+
+    (ns myns (:require [clj-http.client :as client]))
+    (client/get (str "http://customer-data-service:3000/customer/" id))
+
+
+== Managing multiple services with docker-compose
+
+See examples/communicating-services/docker-compose.yml
+
+* Building
+* Deploying
+* Reloading code while developing multiple services
+
+
+== Security configuration between the layers?
+
+* Follow the Twelve-Factor App https://12factor.net/
+  - Store config in the environment
+* Don't expose endpoints publicly
+* Authentication/authorization for public endpoints: https://github.com/cemerick/friend
+
+
+== 5) `:gen-class`
 
 What is the purpose of `:gen-class`?
 
-* `gen-class` is one way to cause ahead-of-time (AOT) compilation
+* `gen-class` creates a Java class
 * You can specify AOT namespaces in the project.clj file
-* creates a Java class
 * `lein compile` to build the class
-* Prefer using `reify`, `deftype`, `defrecord` to implement Java classes.
-* Avoid `gen-class` and AOT if you can.
+* Prefer using `reify`, `deftype`, `defrecord` to implement Java classes
+* Avoid `gen-class` and AOT
+* But why is it used so often?
+
+
+== Executable jars
+
+* An uberjar contains all your project dependencies.
+* If it contains a main class then it will also be executable:
+
+    java -jar myuber.jar
+
+* A common way to make an executable uberjar is:
+
+src/myns/core.clj
+
+    (ns myns.core
+      (:gen-class))
+    (defn -main [& args]
+      (println "Hello World"))
+
+project.clj
+
+    :main myns.core
+    :aot [myns.core]
+
 
 == AOT is about when compilation happens
 
@@ -68,13 +226,23 @@ Behaves differently if evaluated during AOT than during Runtime.
 
 == When would it help to AOT?
 
-* Shipping an application binary without the original source code
-
+* Shipping a binary without the source code
 * Marginally speeding up start time
-
 * Generating classes loadable directly from Java for interop purposes (Hadoop)
-
 * Platforms such as Android do not support custom class loaders for running new bytecode at runtime.
+
+
+== Is `:gen-class` mandatory?
+
+* No
+* See examples/aot/too-much-aot
+  - An example where aot is causing undesirable behavior
+* See examples/aot/no-aot
+  - Clojure provides an entrypoint `java -cp myuber.jar clojure.main -m myns.core`
+  - Clojure compiles all code you load on-the-fly into JVM bytecode
+* See examples/aot/little-aot
+  - Avoid transitive aot by providing a bootstrap
+  - Produces an executable jar
 
 
 
