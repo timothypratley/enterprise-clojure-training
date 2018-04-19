@@ -39,7 +39,7 @@
 (deftest a-test
   (let [valid-names (atom #{})
         invalid-names (atom #{})
-        valid (fn [[policy-type x]]
+        valid (fn [x]
                 (swap! valid-names conj (:name x)))
         invalid (fn [x]
                   ;;(e/expound :mega-corp/insurance-policy x)
@@ -49,3 +49,4 @@
            @invalid-names))
     (is (= #{"Wendy" "Ethan" "Chloe" "Logan"}
            @valid-names))))
+

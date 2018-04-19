@@ -4,41 +4,92 @@
 :backend: slidy
 :max-width: 45em
 
+== Topics to be covered
 
-== 1) Parsing data with Spec
+1. Use case: How to define mass data structure using spec and to get the data from that using “conform”.
+  a. Need sample use case and accustomed project with that.
+  b. Require more details on why we need this spec and what is the business advantage?
 
-Define mass data structure using spec and to get the data from that using `conform`.
+2. Use case: To mock test data for resources on validating the specs as a whole data structure. (A sample project or reference available on internet is also required)
 
-`lein new parsing-with-spec`
+3. How to get the project built using Jenkins or any hosting tools. We would have a demo to do that with pipeline or docker plugin.
+
+4. How to call web services from clojure &amp; to hop around the different environments? How are we going to handle/pass the security configuration in between the layers?
+
+5. We use “:gen-class” for all the namespace definition. Is this mandatory for running the application as uber jar? What is the purpose of including this :gen-class?
+
+6. More examples (different usage scenarios) and elaboration required for Macros.
+
+7. Use case: Require to know Clojure with Hadoop interaction for data enrichment with clojure specs.
+
+8. Does clojure provide any utility to attach a file and send an email? Configuring logs on masking the sensitive data.
+
+9. How to manage real time dependency management between projects
+
+10. Any industry design patterns for clojure?
+
+11. What is Profile.clj capable of doing? Is it like getting the jar from repo, defining plugins, is that all? Or do we have more to explore. (need more clarity and reference links)
+
+12. What is Project.clj capable of doing to the project level and where does this scope live? Unlike the above one, require reference materials.
 
 
-== a. Sample use case
+== 1) Use case: Parsing data with Spec
 
-Imagine you work at an insurance company.
-They offer three insurance policies:
+Insurance company "Megacorp" offers three pet insurance policies:
 
-* Corgi Cover
-* Poodle Protection
-* Poodle Protection Platinum
+* http://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225919/Pembroke-Welsh-Corgi-On-White-01.jpg[Corgi Cover]
+* http://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225538/Poodle-On-White-03.jpg[Poodle Protection]
+* https://i.pinimg.com/originals/a1/7f/22/a17f22f3f0067c6ff9d2023c4f57bd87.jpg[Poodle Protection Platinum]
 
 Can spec help us process applications for these policies?
+
+
+== a. Defining specs for data structures
 
 * See examples/parsing-with-spec
 
 
-== b. Why avoid spec?
+== b. Validating data
+
+(valid?)
+expound
+
+
+== c. Extracting data using `conform`
+
+* When there are multiple options to match against
+
+
+== Spec rationale
+
+* It is a guiding principle of Clojure to represent information as data (not objects)
+* Important properties of Clojure systems are represented and conveyed by the shape of the data
+  - runtime types are maps, vectors, sets
+  - shape is not captured or checked anywhere
+* Manual parsing and error reporting is not good enough
+* Defining specifications is optional
+
+
+== Spec enables automatic
+
+* Validation
+* Error reporting
+* Destructuring
+* Instrumentation
+* Test-data generation
+* Generative test generation
+
+
+== Why not spec?
 
 * It is new
-  - nothing wrong with being cautious
-
 * Specs are code
   - however code is data and you can create specs on the fly
-
 * You can do without it
-  - but it becomes more difficult as complexity rises
+  - however manual approaches become difficult as complexity rises
 
 
-== c. Why use spec?
+== Why spec?
 
 * Specifying the shape of inputs is hard
   - good error messages are hard for complex requirements
@@ -53,8 +104,8 @@ Can spec help us process applications for these policies?
 
 == d. What is the business advantage of spec?
 
-* Implement validation faster
-* Implement parsing faster
+* Implement validation quickly
+* Implement parsing quickly
 * Deliver correct, well tested solutions
 * Use the same technology in code and data interfaces
   - learn once, apply in many contexts
@@ -62,9 +113,11 @@ Can spec help us process applications for these policies?
 
 == 2) Mock test data
 
-***
-Resources on validating the specs as a whole data structure.
-(A sample project or reference available on internet is also required)
+see examples/parsing-with-spec/test/parsing-with-spec/generated-test
+
+    (gen/sample (s/gen :mega-corp/insurance-policy))
+
+    (stest/check `my-function)
 
 
 == 3) Continuous Integration
@@ -72,10 +125,204 @@ Resources on validating the specs as a whole data structure.
 * Building projects with Jenkins
   - See examples/jenkins-build-server
 
+=== Overview
+
+* How Clojure projects are built and executed locally
+* How to set up a build server to automate test/build/deploy
+
+
+== Building and Executing Clojure projects
+
+    lein run
+
+    lein uberjar
+
+    java -jar myapp.jar
+
+    lein ring uberjar
+
+    lein install
+
+    lein deploy
+
+
+== lein run
+
+* Easy to execute
+* May need to pull dependencies
+
+
+== lein uberjar
+
+* Your application and all dependencies in a single JAR file
+* Easy to deploy
+* Easy to execute
+* Versioned
+* Preservable
+
+
+== java -jar myapp.jar
+
+* Executes an uberjar
+* Define a main entrypoint in project.clj
+
+    :main myapp.core
+
+src/myapp/core.clj
+
+    (ns myapp.core)
+    (defn -main [& args] ...)
+
+* Alternatively, specify an entrypoint from the commandline
+
+    java -jar myapp.jar -m myapp.core/-main
+
+== lein ring uberjar
+
+Sets up a main entry point to start the webservice
+
+Equivalent to
+
+    (ns myapp.core)
+    (defn -main [& args]
+      (run-jetty handler {:port 3000}))
+
+
+== lein install
+
+* Builds an uberjar and puts it in your local Maven repository `~/.m2`
+* Useful for testing library snapshots and building from source
+* Does not publish your artifact
+
+
+== lein deploy
+
+* Publishes your artifact to a repository
+* Repositories can be
+  - public (Clojars, Maven Central)
+  - private (Hosted/S3/Self managed)
+* https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md
+* Easy... if you have a repository...
+* Not the same as deploying your application!
+
+
+== Where to publish artifacts to?
+
+* Amazon S3 is a low-maintenance choice:
+  - https://github.com/s3-wagon-private/s3-wagon-private
+* Artifactory/Nexus/Archiva
+* Deps: https://www.deps.co/
+* Remeber to include a `repositories` section in your project.clj
+  - To publish to a private repository
+  - To pull dependencies from a private repository
+
+    :repositories [["private" {:url "s3p://mybucket/releases/" :no-auth true}]]
+
+
+== Deploying a Clojure application
+
+* Build an uberjar (or Docker container)
+* Get the artifact to the host server
+* Run it
+
+
+== Implementation details are driven by architecture
+
+* Tomcat? Drop a WAR in a folder
+* AWS Elastic Beanstalk? Roll out a new docker container
+* AWS Lambda? Upload a new JAR
+* Kubernetes? Roll out a new docker container
+* Heroku? Deploy from git
+
+
+== Creating a build server overview
+
+* Install Jenkins
+* Install Leiningen
+* Add a build
+
+
+== What is Docker?
+
+* Virtualization
+* Dockerfile specifies a parent and setup tasks
+* Building starts with an image and runs the setup tasks, creates a container
+* Run a container and it behaves like a stand alone computer
+
+
+== Handy Docker commands
+
+* `docker build -t <image-name> .` to create a container from a Dockerfile
+* `docker run <image-name>` to run it
+* `docker ps` to see running containers
+* `docker exec -ti <container-id> bash` to get a shell in a running container
+* `docker stop <container-id>` to stop it
+
+
+== Creating a Jenkins server inside a Docker container
+
+* Install docker
+* Create a Dockerfile to extend the base Jenkins image
+  - see examples/jenkins-build-server/Dockerfile
+  - https://github.com/jenkinsci/docker/blob/master/README.md
+  - add steps to install Leiningen
+* Create a Makefile or similar to automate tasks
+  - see examples/jenkins-build-server/Makefile
+  - `make run` to start the server
+* Open the UI: http://localhost:8080/
+* Enter password from console log
+* Install suggested plugins
+* Create admin user
+
+
+== What to build?
+
+* An uberjar
+* Docker image
+
+
+== Set up Job
+
+* Choose Freestyle project
+* Configure source code management
+  - parsing-with-spec is a subdirectory of the enterprise-clojure repository
+  - `sparse checkout path` only gets a subdirectory
+* Under "Build", add build steps, shell command
+  - `cd examples/parsing-with-spec && lein test`
+  - `cd examples/parsing-with-spec && lein install`
+  - or docker build
+  - don't need to change directory if project is in root
+* Save
+* Build now
+* Check the console logs
+  - tests passed
+  - jar created
+
+
+== Versioning
+
+
+== Running the built artifacts
+
+* `java -jar myapp.jar`
+* Use environment variables to behave differently
+* Can extend a prebuilt docker image (or roll your own)
+
+
+== Building multiple services
+
+* Set up jobs for each project
+
+
+== Set up another triggered Job to deploy to CI
+
+* If the build succeeds, deploy
+
+
+
+
 
 == 4) Clojure services
-
-See examples/communicating-services
 
 === a. Creating a webservice
 
@@ -115,6 +362,7 @@ Middleware are functions that return functions:
   - can modify the request before passing it to the handler
   - can modify the result from the handler before returning it
   - is itself a handler
+
 
 == Middleware
 
@@ -162,6 +410,11 @@ Middleware are functions that return functions:
     (client/get (str "http://customer-data-service:3000/customer/" id))
 
 
+== Multiple services
+
+See examples/communicating-services
+
+
 == Managing multiple services with docker-compose
 
 See examples/communicating-services/docker-compose.yml
@@ -171,10 +424,11 @@ See examples/communicating-services/docker-compose.yml
 * Reloading code while developing multiple services
 
 
-== Security configuration between the layers?
+== Security and configuration
 
 * Follow the Twelve-Factor App https://12factor.net/
-  - Store config in the environment
+  - Store configuration in the environment
+* Don't store configuration in source control
 * Don't expose endpoints publicly
 * Authentication/authorization for public endpoints: https://github.com/cemerick/friend
 

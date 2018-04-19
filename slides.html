@@ -5,7 +5,7 @@
 <title>Clojure in a nutshell</title>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 <meta name="copyright" content="Copyright &#169; Timothy Pratley" />
-<meta name="generator" content="AsciiDoc 8.6.10" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
@@ -6352,7 +6352,9 @@ Write a loop for the Fibonacci sequence (1 1 2 3 5 8 13) that finds the maximum 
         (&gt;= score 80) "B"
         (&gt;= score 70) "C"
         (&gt;= score 60) "D"
-        :else "F"))</code></pre>
+        :else "F"))
+(deftest grade-test
+  (is (= "B" (grade 85))))</code></pre>
 </div></div>
 <div class="listingblock">
 <div class="content">
@@ -6368,7 +6370,7 @@ Write a loop for the Fibonacci sequence (1 1 2 3 5 8 13) that finds the maximum 
 <div class="listingblock">
 <div class="content">
 <pre><code>(defn factorial2
-  ([n] (factorial 1 n))
+  ([n] (factorial2 1 n))
   ([acc n]
    (if (&lt;= n 1)
      acc
@@ -9736,7 +9738,7 @@ Check all spec’ed functions
 <div class="listingblock">
 <div class="content">
 <pre><code>(jdbc/query db ["select * from messages"])
-=&gt; ({:message "Hello World"})</code></pre>
+=&gt; ({:message "How now?"})</code></pre>
 </div></div>
 <div class="paragraph"><p>Let’s add some more data&#8230;</p></div>
 <div class="listingblock">

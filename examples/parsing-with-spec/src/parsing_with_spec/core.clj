@@ -56,7 +56,7 @@
 (defn process-applications [valid invalid policy-applications]
   (doseq [a policy-applications]
     (if (s/valid? :mega-corp/insurance-policy a)
-      (valid (s/conform :mega-corp/insurance-policy a))
+      (valid a)
       (invalid a))))
 
 
@@ -83,9 +83,19 @@
          (mapize)
          (process-applications valid invalid))))
 
-(defn valid [[policy-type application]]
-  ;; write to accepted log
-  (println "VALID:" policy-type application))
+(defn valid [application]
+  (let [[policy-type {:keys [poodle-protection/poodle-count
+                             policy-count]}]
+        (s/conform :mega-corp/insurance-policy application)]
+    ;; this passes unit tests, but what if the the policy-count was 0?
+    ;; see generative tests
+    (when (= policy-type :mega-corp/poodle-protection)
+      (println "Poodle to policy ratio:" (/ poodle-count policy-count)))
+
+    ;; write to accepted log
+    (println "VALID:" policy-type application)))
+
+(s/fdef valid :args (s/cat :application :mega-corp/insurance-policy))
 
 (defn invalid [application]
   ;; write to discard log
