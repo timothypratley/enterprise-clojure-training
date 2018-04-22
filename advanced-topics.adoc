@@ -177,6 +177,7 @@ src/myapp/core.clj
 
     java -jar myapp.jar -m myapp.core/-main
 
+
 == lein ring uberjar
 
 Sets up a main entry point to start the webservice
@@ -317,9 +318,6 @@ Equivalent to
 == Set up another triggered Job to deploy to CI
 
 * If the build succeeds, deploy
-
-
-
 
 
 == 4) Clojure services
@@ -499,37 +497,107 @@ Behaves differently if evaluated during AOT than during Runtime.
   - Produces an executable jar
 
 
-
-
 == 6) More on Macros
 
 Examples (different usage scenarios) and elaboration required for Macros.
+
+* Many Clojure primitives such as `defn` are macros
+* Macros provide syntax but are not values
+* https://lispcast.com/when-to-use-a-macro/
+  - rarely
+  - compile time
+  - unevaluated arguments
+  - inline code
+* core.async
+  - macros over state machines to implement
+    Communicating Sequential Processes (CSP)
+  - provides a new syntax (go blocks)
+  - available as a library
 
 
 == 7) Data enrichment
 
 Require to know Clojure with Hadoop interaction for data enrichment with clojure specs.
 
+https://github.com/clojure-cookbook/clojure-cookbook/tree/master/09_distributed-computation
+
 
 == 8) Sending emails
 
-Does Clojure provide any utility to attach a file and send an email?
-Configuring logs on masking the sensitive data.
+https://github.com/drewr/postal
+
+    (send-message
+      {:host "mail.isp.net"}
+      {:from "me@draines.com"
+       :to "foo@example.com"
+       :subject "Hi!"
+       :body [{:type "text/html"
+               :content "<b>Test!</b>"}
+              {:type :attachment
+               :content (java.io.File. "/tmp/foo.txt")}
+              {:type :inline
+               :content (java.io.File. "/tmp/a.pdf")
+               :content-type "application/pdf"}]})
+
+You need a mail server.
+(AWS Simple Email Service works well https://aws.amazon.com/ses/)
+
+
+== Configuring logs on masking the sensitive data.
+
+* https://github.com/clojure/tools.logging
+* https://github.com/ptaoussanis/timbre
+
+* log4j
+* logback
+
+* Standard Java style configuration
 
 
 == 9) Dependencies
 
 How to manage real time dependency management between projects
 
+* lein checkouts
+* lein install
+* https://github.com/amperity/lein-monolith
+* https://github.com/ladderlife/loonie
+
 
 == 10) Industry design patterns for Clojure
+
+* https://github.com/clojure-cookbook/clojure-cookbook
+* http://mishadoff.com/blog/clojure-design-patterns/
 
 
 == 11) Profile.clj
 
 What is Profile.clj capable of doing?
+
+* `profile.clj` is merged with any `project.clj`.
+* Having a `profile.clj` allows you to have common dependencies or tasks.
+* Example: `lein-test-refresh` plugin
+
 Is it like getting the jar from repo, defining plugins, is that all?
+
+* Pretty much...
+* Capable of anything `project.clj` can do, but usually just for tools.
+
 Or do we have more to explore. (need more clarity and reference links)
+
+* https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md
+
+
+== Common plugins for profiles.clj
+
+* lein-test-refresh
+* Ancient
+* Ultra
+* humane-test-output
+* Eastwood
+* Kibit
+* Bikeshed
+* Alembic
 
 
 == 12) Project.clj
@@ -538,3 +606,5 @@ What is Project.clj capable of doing to the project?
 Where does this scope live?
 Unlike the above one, require reference materials.
 
+https://github.com/technomancy/leiningen/blob/master/sample.project.clj
+https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md
