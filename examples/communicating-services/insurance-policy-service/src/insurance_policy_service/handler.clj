@@ -7,9 +7,10 @@
 
 (defroutes app-routes
   (GET "/status" []
-    (response/response "Insurance policy service is running"))
+    (response/response "Insurance policy service is running!!!!"))
   (GET "/policies" []
-    (response/response (db/find-all)))
+    (response/response
+      (str (db/find-all))))
   (route/not-found "Not Found"))
 
 (def app

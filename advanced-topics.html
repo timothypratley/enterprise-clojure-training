@@ -5324,38 +5324,285 @@ Produces an executable jar
 <h1 id="_6_more_on_macros">6) More on Macros</h1>
 <div class="sectionbody" style="max-width:45em">
 <div class="paragraph"><p>Examples (different usage scenarios) and elaboration required for Macros.</p></div>
+<ul class="">
+<li>
+<span>
+Many Clojure primitives such as <code>defn</code> are macros
+</span>
+</li>
+<li>
+<span>
+Macros provide syntax but are not values
+</span>
+</li>
+<li>
+<span>
+<a href="https://lispcast.com/when-to-use-a-macro/">https://lispcast.com/when-to-use-a-macro/</a>
+</span>
+<ul class="">
+<li>
+<span>
+rarely
+</span>
+</li>
+<li>
+<span>
+compile time
+</span>
+</li>
+<li>
+<span>
+unevaluated arguments
+</span>
+</li>
+<li>
+<span>
+inline code
+</span>
+</li>
+</ul>
+</li>
+<li>
+<span>
+core.async
+</span>
+<ul class="">
+<li>
+<span>
+macros over state machines to implement
+    Communicating Sequential Processes (CSP)
+</span>
+</li>
+<li>
+<span>
+provides a new syntax (go blocks)
+</span>
+</li>
+<li>
+<span>
+available as a library
+</span>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect1 slide">
 <h1 id="_7_data_enrichment">7) Data enrichment</h1>
 <div class="sectionbody" style="max-width:45em">
 <div class="paragraph"><p>Require to know Clojure with Hadoop interaction for data enrichment with clojure specs.</p></div>
+<div class="paragraph"><p><a href="https://github.com/clojure-cookbook/clojure-cookbook/tree/master/09_distributed-computation">https://github.com/clojure-cookbook/clojure-cookbook/tree/master/09_distributed-computation</a></p></div>
 </div>
 </div>
 <div class="sect1 slide">
 <h1 id="_8_sending_emails">8) Sending emails</h1>
 <div class="sectionbody" style="max-width:45em">
-<div class="paragraph"><p>Does Clojure provide any utility to attach a file and send an email?
-Configuring logs on masking the sensitive data.</p></div>
+<div class="paragraph"><p><a href="https://github.com/drewr/postal">https://github.com/drewr/postal</a></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>(send-message
+  {:host "mail.isp.net"}
+  {:from "me@draines.com"
+   :to "foo@example.com"
+   :subject "Hi!"
+   :body [{:type "text/html"
+           :content "&lt;b&gt;Test!&lt;/b&gt;"}
+          {:type :attachment
+           :content (java.io.File. "/tmp/foo.txt")}
+          {:type :inline
+           :content (java.io.File. "/tmp/a.pdf")
+           :content-type "application/pdf"}]})</code></pre>
+</div></div>
+<div class="paragraph"><p>You need a mail server.
+(AWS Simple Email Service works well <a href="https://aws.amazon.com/ses/">https://aws.amazon.com/ses/</a>)</p></div>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_configuring_logs_on_masking_the_sensitive_data">Configuring logs on masking the sensitive data.</h1>
+<div class="sectionbody" style="max-width:45em">
+<ul class="">
+<li>
+<span>
+Clojure.tools.logging
+  <a href="https://github.com/clojure/tools.logging">https://github.com/clojure/tools.logging</a>
+</span>
+</li>
+<li>
+<span>
+Timbre
+  <a href="https://github.com/ptaoussanis/timbre">https://github.com/ptaoussanis/timbre</a>
+</span>
+</li>
+<li>
+<span>
+log4j
+</span>
+</li>
+<li>
+<span>
+logback
+</span>
+</li>
+<li>
+<span>
+commons logging
+</span>
+</li>
+<li>
+<span>
+slf4j
+</span>
+</li>
+<li>
+<span>
+Standard Java style configuration
+</span>
+</li>
+<li>
+<span>
+"Bear Traps: the Logging Edition"
+  <a href="https://www.youtube.com/watch?v=jjuj-D4-hCE">https://www.youtube.com/watch?v=jjuj-D4-hCE</a>
+  <a href="https://github.com/AlexanderMann/unclogging">https://github.com/AlexanderMann/unclogging</a>
+</span>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect1 slide">
 <h1 id="_9_dependencies">9) Dependencies</h1>
 <div class="sectionbody" style="max-width:45em">
 <div class="paragraph"><p>How to manage real time dependency management between projects</p></div>
+<ul class="">
+<li>
+<span>
+lein checkouts
+</span>
+</li>
+<li>
+<span>
+lein install
+</span>
+</li>
+<li>
+<span>
+<a href="https://github.com/amperity/lein-monolith">https://github.com/amperity/lein-monolith</a>
+</span>
+</li>
+<li>
+<span>
+<a href="https://github.com/ladderlife/loonie">https://github.com/ladderlife/loonie</a>
+</span>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect1 slide">
 <h1 id="_10_industry_design_patterns_for_clojure">10) Industry design patterns for Clojure</h1>
 <div class="sectionbody" style="max-width:45em">
+<ul class="">
+<li>
+<span>
+<a href="https://github.com/clojure-cookbook/clojure-cookbook">https://github.com/clojure-cookbook/clojure-cookbook</a>
+</span>
+</li>
+<li>
+<span>
+<a href="http://mishadoff.com/blog/clojure-design-patterns/">http://mishadoff.com/blog/clojure-design-patterns/</a>
+</span>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect1 slide">
 <h1 id="_11_profile_clj">11) Profile.clj</h1>
 <div class="sectionbody" style="max-width:45em">
-<div class="paragraph"><p>What is Profile.clj capable of doing?
-Is it like getting the jar from repo, defining plugins, is that all?
-Or do we have more to explore. (need more clarity and reference links)</p></div>
+<div class="paragraph"><p>What is Profile.clj capable of doing?</p></div>
+<ul class="">
+<li>
+<span>
+<code>profile.clj</code> is merged with any <code>project.clj</code>.
+</span>
+</li>
+<li>
+<span>
+Having a <code>profile.clj</code> allows you to have common dependencies or tasks.
+</span>
+</li>
+<li>
+<span>
+Example: <code>lein-test-refresh</code> plugin
+</span>
+</li>
+</ul>
+<div class="paragraph"><p>Is it like getting the jar from repo, defining plugins, is that all?</p></div>
+<ul class="">
+<li>
+<span>
+Pretty much&#8230;
+</span>
+</li>
+<li>
+<span>
+Capable of anything <code>project.clj</code> can do, but usually just for tools.
+</span>
+</li>
+</ul>
+<div class="paragraph"><p>Or do we have more to explore. (need more clarity and reference links)</p></div>
+<ul class="">
+<li>
+<span>
+<a href="https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md">https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md</a>
+</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect1 slide">
+<h1 id="_common_plugins_for_profiles_clj">Common plugins for profiles.clj</h1>
+<div class="sectionbody" style="max-width:45em">
+<ul class="">
+<li>
+<span>
+lein-test-refresh
+</span>
+</li>
+<li>
+<span>
+Ancient
+</span>
+</li>
+<li>
+<span>
+Ultra
+</span>
+</li>
+<li>
+<span>
+humane-test-output
+</span>
+</li>
+<li>
+<span>
+Eastwood
+</span>
+</li>
+<li>
+<span>
+Kibit
+</span>
+</li>
+<li>
+<span>
+Bikeshed
+</span>
+</li>
+<li>
+<span>
+Alembic
+</span>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect1 slide">
@@ -5364,6 +5611,8 @@ Or do we have more to explore. (need more clarity and reference links)</p></div>
 <div class="paragraph"><p>What is Project.clj capable of doing to the project?
 Where does this scope live?
 Unlike the above one, require reference materials.</p></div>
+<div class="paragraph"><p><a href="https://github.com/technomancy/leiningen/blob/master/sample.project.clj">https://github.com/technomancy/leiningen/blob/master/sample.project.clj</a>
+<a href="https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md">https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md</a></p></div>
 </div>
 </div>
 </body>

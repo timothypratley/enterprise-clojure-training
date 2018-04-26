@@ -545,14 +545,21 @@ You need a mail server.
 
 == Configuring logs on masking the sensitive data.
 
-* https://github.com/clojure/tools.logging
-* https://github.com/ptaoussanis/timbre
+* Clojure.tools.logging
+  https://github.com/clojure/tools.logging
+* Timbre
+  https://github.com/ptaoussanis/timbre
 
 * log4j
 * logback
+* commons logging
+* slf4j
 
 * Standard Java style configuration
 
+* "Bear Traps: the Logging Edition"
+  https://www.youtube.com/watch?v=jjuj-D4-hCE
+  https://github.com/AlexanderMann/unclogging
 
 == 9) Dependencies
 
