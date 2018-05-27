@@ -1,7 +1,6 @@
-= Clojure in a nutshell
+= Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-:backend: slidy
 :max-width: 45em
 
 

@@ -1,20 +1,31 @@
 = Enterprise Clojure Training
 
-Clojure is serious business!
+"Clojure is serious business!"
 
 This is a Clojure training course for Developers and Senior Developers working on Enterprise software.
-See manual.adoc and manual.html for the course material and exercises.
 
-Trainers see slides.adoc and slides.html for the presentation material.
+See https://timothypratley.github.com/enterprise-clojure-training/manual.html[manual.html] for the course material and exercises.
+Example code is https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[here].
+
+Trainers see https://timothypratley.github.com/enterprise-clojure-training/slides.html[slides.html] for the presentation material.
 
 
 == Contributing
 
-Pull requests welcome!
+Issues welcome. Pull requests welcome.
 
 
 == Building
 
+The material is written in asciidoc format in the examples and slides directories.
+
     ./build.sh
 
 Produces manual.html and slides.html
+
+
+== Deploying
+
+    ./deploy.sh
+
+Pushes the built html to GitHub Pages

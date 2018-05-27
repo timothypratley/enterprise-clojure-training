@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e 
+set -e
 
-asciidoctor -a toc manual.adoc
-asciidoc --backend slidy slides.adoc
-asciidoc --backend slidy advanced-topics.adoc
+asciidoctor --attribute=toc --destination-dir=site manual/*.adoc slides/*.adoc

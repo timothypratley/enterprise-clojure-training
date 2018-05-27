@@ -1,7 +1,6 @@
 = Clojure web seminar
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-:backend: slidy
 :max-width: 45em
 
 == Topics to be covered
