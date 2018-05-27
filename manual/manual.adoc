@@ -1,9 +1,9 @@
 = Enterprise Clojure Training
-
 :author: Timothy Pratley
 :email: <timothypratley@gmail.com>
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+:toc: left
 
 
 == About

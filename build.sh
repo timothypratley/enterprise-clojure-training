@@ -2,4 +2,4 @@
 
 set -e
 
-asciidoctor --attribute=toc --destination-dir=site manual/*.adoc slides/*.adoc
+asciidoctor --destination-dir=site index.adoc manual/*.adoc slides/*.adoc

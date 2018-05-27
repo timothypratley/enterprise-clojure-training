@@ -5,6 +5,8 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
+<meta name="author" content="Timothy Pratley">
+<meta name="copyright" content="Timothy Pratley">
 <title>Enterprise Clojure Training</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -418,9 +420,181 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .show-for-print{display:inherit!important}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
 <h1>Enterprise Clojure Training</h1>
+<div class="details">
+<span id="author" class="author">Timothy Pratley</span><br>
+<span id="email" class="email">&lt;<a href="mailto:timothypratley@gmail.com">timothypratley@gmail.com</a>&gt;</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_about">About</a>
+<ul class="sectlevel2">
+<li><a href="#_overview">Overview</a></li>
+<li><a href="#_duration">Duration</a></li>
+<li><a href="#_prerequisites">Prerequisites</a></li>
+<li><a href="#_target_audience">Target Audience</a></li>
+<li><a href="#_required_setup">Required setup</a></li>
+<li><a href="#_pre_assessment">Pre-assessment</a></li>
+<li><a href="#_required_preparation">Required preparation</a></li>
+<li><a href="#_optional_reading">Optional reading</a></li>
+<li><a href="#_introductions">Introductions</a></li>
+</ul>
+</li>
+<li><a href="#_1_the_clojure_ecosystem">1. The Clojure Ecosystem</a>
+<ul class="sectlevel2">
+<li><a href="#_a_leiningen">a. Leiningen</a></li>
+<li><a href="#_b_the_read_eval_print_loop_repl">b. The Read Eval Print Loop (REPL)</a></li>
+<li><a href="#_c_editor_setup">c. Editor setup</a></li>
+<li><a href="#_d_exercises">d. Exercises</a></li>
+<li><a href="#_e_answers">e. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_2_clojure_syntax">2. Clojure Syntax</a>
+<ul class="sectlevel2">
+<li><a href="#_a_primitive_data_types">a. Primitive data types</a></li>
+<li><a href="#_b_collections_lists_vectors_maps_and_sets">b. Collections: lists, vectors, maps, and sets</a></li>
+<li><a href="#_c_invoking_functions">c. Invoking functions</a></li>
+<li><a href="#_d_defining_vars">d. Defining vars</a></li>
+<li><a href="#_e_binding_names_with_let">e. Binding names with let</a></li>
+<li><a href="#_f_destructuring_also_known_as_binding_forms">f. Destructuring (also known as binding forms)</a></li>
+<li><a href="#_g_namespaces">g. Namespaces</a></li>
+<li><a href="#_h_regex">h. Regex</a></li>
+<li><a href="#_i_exercises">i. Exercises</a></li>
+<li><a href="#_j_answers">j. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_3_functions">3. Functions</a>
+<ul class="sectlevel2">
+<li><a href="#_a_defining_functions">a. Defining functions</a></li>
+<li><a href="#_b_pre_and_post_conditions">b. Pre- and post-conditions</a></li>
+<li><a href="#_c_anonymous_functions">c. Anonymous functions</a></li>
+<li><a href="#_d_function_literals">d. Function literals</a></li>
+<li><a href="#_e_keyword_and_variadic_arguments">e. Keyword and variadic arguments</a></li>
+<li><a href="#_f_exercises">f. Exercises</a></li>
+<li><a href="#_g_answers">g. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_challenge_1_corgi_cover_eligibility">Challenge 1: Corgi Cover eligibility</a>
+<ul class="sectlevel2">
+<li><a href="#_part_1">Part 1:</a></li>
+<li><a href="#_part_2">Part 2:</a></li>
+<li><a href="#_part_3">Part 3:</a></li>
+<li><a href="#_part_4">Part 4:</a></li>
+</ul>
+</li>
+<li><a href="#_4_testing_with_clojure_test">4. Testing with clojure.test</a>
+<ul class="sectlevel2">
+<li><a href="#_a_defining_tests_with_deftest">a. Defining tests with deftest</a></li>
+<li><a href="#_b_lein_test_refresh">b. lein-test-refresh</a></li>
+<li><a href="#_c_assertions_with_is_and_are">c. Assertions with is and are</a></li>
+<li><a href="#_d_test_fixtures">d. Test fixtures</a></li>
+<li><a href="#_e_using_with_redefs_for_mocking_behavior">e. Using with-redefs for mocking behavior</a></li>
+<li><a href="#_f_debugging">f. Debugging</a></li>
+<li><a href="#_g_exercises">g. Exercises</a></li>
+<li><a href="#_h_answers">h. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_5_control_flow">5. Control Flow</a>
+<ul class="sectlevel2">
+<li><a href="#_a_conditionals_if_when_cond">a. Conditionals: if, when, cond</a></li>
+<li><a href="#_b_recursion">b. Recursion</a></li>
+<li><a href="#_c_loops">c. Loops</a></li>
+<li><a href="#_d_exception_handling">d. Exception handling</a></li>
+<li><a href="#_e_comments">e. Comments</a></li>
+<li><a href="#_f_exercises_2">f. Exercises</a></li>
+<li><a href="#_g_answers_2">g. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_6_functional_programming">6. Functional Programming</a>
+<ul class="sectlevel2">
+<li><a href="#_a_pure_functions_and_side_effects">a. Pure functions and side effects</a></li>
+<li><a href="#_b_apply_partial_and_comp">b. Apply, partial, and comp</a></li>
+<li><a href="#_c_functions_on_sequences_map_reduce_and_friends">c. Functions on sequences: map, reduce, and friends</a></li>
+<li><a href="#_d_threading_operators">d. Threading operators</a></li>
+<li><a href="#_e_data_structures_are_functions">e. Data structures are functions!</a></li>
+<li><a href="#_f_exercises_3">f. Exercises</a></li>
+<li><a href="#_g_answers_3">g. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_challenge_2_processing_files">Challenge 2: Processing files</a>
+<ul class="sectlevel2">
+<li><a href="#_part_1_2">Part 1:</a></li>
+<li><a href="#_part_2_2">Part 2:</a></li>
+<li><a href="#_part_3_2">Part 3:</a></li>
+<li><a href="#_part_4_2">Part 4:</a></li>
+</ul>
+</li>
+<li><a href="#_7_macros">7. Macros</a>
+<ul class="sectlevel2">
+<li><a href="#_a_expanding_macros">a. Expanding macros</a></li>
+<li><a href="#_b_defining_macros">b. Defining macros</a></li>
+<li><a href="#_c_syntax_quoting">c. Syntax quoting</a></li>
+<li><a href="#_d_code_as_data">d. Code as data</a></li>
+<li><a href="#_e_exercises">e. Exercises</a></li>
+<li><a href="#_f_answers">f. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_8_parallel_programming_and_concurrency">8. Parallel Programming and Concurrency</a>
+<ul class="sectlevel2">
+<li><a href="#_a_vars_and_dynamic_scope">a. Vars and dynamic scope</a></li>
+<li><a href="#_b_delays_futures_and_promises">b. Delays, Futures, and Promises</a></li>
+<li><a href="#_c_atoms_refs_and_agents">c. Atoms, Refs, and Agents</a></li>
+</ul>
+</li>
+<li><a href="#_9_java_interop">9. Java Interop</a>
+<ul class="sectlevel2">
+<li><a href="#_a_clojure_syntax_for_java_constructors">a. Clojure syntax for Java constructors</a></li>
+<li><a href="#_b_calling_methods">b. Calling methods</a></li>
+<li><a href="#_c_reify">c. reify</a></li>
+<li><a href="#_d_gen_class_and_proxy">d. gen-class and proxy</a></li>
+<li><a href="#_e_including_java_classes_in_clojure_projects">e. Including Java classes in Clojure projects</a></li>
+</ul>
+</li>
+<li><a href="#_challenge_3_mocking_parallel_web_requests">Challenge 3: Mocking parallel web requests</a>
+<ul class="sectlevel2">
+<li><a href="#_part_1_mock_a_web_request">Part 1: Mock a web request</a></li>
+<li><a href="#_part_2_report_the_how_long_it_takes">Part 2: Report the how long it takes</a></li>
+<li><a href="#_part_3_make_parallel_requests">Part 3: Make parallel requests</a></li>
+<li><a href="#_part_4_error_handling">Part 4: Error handling</a></li>
+</ul>
+</li>
+<li><a href="#_10_polymorphism_and_types">10. Polymorphism and Types</a>
+<ul class="sectlevel2">
+<li><a href="#_a_multimethods">a. Multimethods</a></li>
+<li><a href="#_b_protocols">b. Protocols</a></li>
+<li><a href="#_c_creating_types_with_defrecord_and_deftype">c. Creating types with defrecord and deftype</a></li>
+<li><a href="#_11_specifications_with_clojure_spec">11. Specifications with clojure.spec</a></li>
+<li><a href="#_a_validation">a. Validation</a></li>
+<li><a href="#_b_conforming">b. Conforming</a></li>
+<li><a href="#_c_maps">c. Maps</a></li>
+<li><a href="#_d_a_game_of_cards">d. A game of cards</a></li>
+<li><a href="#_e_generators">e. Generators</a></li>
+<li><a href="#_f_instrumentation_and_testing">f. Instrumentation and Testing</a></li>
+</ul>
+</li>
+<li><a href="#_12_interacting_with_a_database">12. Interacting with a Database</a>
+<ul class="sectlevel2">
+<li><a href="#_a_intro_to_clojure_java_jdbc">a. Intro to clojure.java.jdbc</a></li>
+<li><a href="#_b_inserting_updating_and_retrieving_data">b. Inserting, updating and retrieving data</a></li>
+<li><a href="#_c_solutions_for_sql_management">c. Solutions for SQL management</a></li>
+<li><a href="#_d_exercises_2">d. Exercises</a></li>
+<li><a href="#_e_answers_2">e. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_challenge_4_corgi_cover_database">Challenge 4: Corgi Cover Database</a>
+<ul class="sectlevel2">
+<li><a href="#_part_1_set_up_the_schema">Part 1: Set up the schema</a></li>
+<li><a href="#_part_2_populate_the_data">Part 2: Populate the data</a></li>
+<li><a href="#_part_3_write_a_spec">Part 3: Write a spec</a></li>
+<li><a href="#_part_4_extending_to_poodle_protection">Part 4: Extending to Poodle Protection</a></li>
+</ul>
+</li>
+<li><a href="#_further_reading">Further reading</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -5112,7 +5286,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-26 10:40:18 PDT
+Last updated 2018-05-26 22:37:36 PDT
 </div>
 </div>
 </body>
