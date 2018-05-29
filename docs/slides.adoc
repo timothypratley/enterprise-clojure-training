@@ -7,6 +7,8 @@
 :revealjs_center: false
 :revealjs_controls: false
 :revealjs_transition: none
+:docinfo: shared
+
 
 == Introductions
 

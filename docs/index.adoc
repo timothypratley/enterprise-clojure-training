@@ -1,10 +1,10 @@
 = Enterprise Clojure Training
+:docinfo: shared
 
 "Clojure is serious business!"
 -- Timothy Pratley
 
 This is a Clojure training course for Developers and Senior Developers working on Enterprise software.
-
 
 * https://timothypratley.github.io/enterprise-clojure-training/manual.html[Manual HTML]
 * https://timothypratley.github.io/enterprise-clojure-training/manual.pdf[Manual PDF]

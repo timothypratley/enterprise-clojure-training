@@ -10,6 +10,7 @@
 :toclevels: 3
 :uri-home: https://timothypratley.github.io/enterprise-clojure-training
 :uri-repo: https://github.com/timothypratley/enterprise-clojure-training
+:docinfo: shared
 
 [preface]
 == About

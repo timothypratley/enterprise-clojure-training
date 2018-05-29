@@ -1,4 +1,4 @@
-= Clojure web seminar
+= Advanced Topics
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
 :customcss: slides.css
@@ -7,6 +7,8 @@
 :revealjs_center: false
 :revealjs_controls: false
 :revealjs_transition: none
+:docinfo: shared
+
 
 == Topics to be covered
 
