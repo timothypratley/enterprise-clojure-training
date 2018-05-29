@@ -1,7 +1,12 @@
 = Clojure web seminar
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-:max-width: 45em
+:customcss: slides.css
+:revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0
+:revealjs_theme: simple
+:revealjs_center: false
+:revealjs_controls: false
+:revealjs_transition: none
 
 == Topics to be covered
 

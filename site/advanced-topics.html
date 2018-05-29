@@ -1,8 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Clojure web seminar</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Clojure web seminar</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/simple.css" id="theme"><link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
 link.rel = 'stylesheet';
 link.type = 'text/css';
-link.href = window.location.search.match( /print-pdf/gi ) ? "reveal.js/css/print/pdf.css" : "reveal.js/css/print/paper.css";
-document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="reveal.js/lib/js/html5shiv.js"></script><![endif]--></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title"><h1>Clojure web seminar</h1></section><section id="topics_to_be_covered"><h2>Topics to be covered</h2><div class="olist arabic"><ol class="arabic"><li><p>Use case: How to define mass data structure using spec and to get the data from that using “conform”.</p><div class="olist loweralpha"><ol class="loweralpha" type="a"><li><p>Need sample use case and accustomed project with that.</p></li><li><p>Require more details on why we need this spec and what is the business advantage?</p></li></ol></div></li><li><p>Use case: To mock test data for resources on validating the specs as a whole data structure. (A sample project or reference available on internet is also required)</p></li><li><p>How to get the project built using Jenkins or any hosting tools. We would have a demo to do that with pipeline or docker plugin.</p></li><li><p>How to call web services from clojure &amp; to hop around the different environments? How are we going to handle/pass the security configuration in between the layers?</p></li><li><p>We use “:gen-class” for all the namespace definition. Is this mandatory for running the application as uber jar? What is the purpose of including this :gen-class?</p></li><li><p>More examples (different usage scenarios) and elaboration required for Macros.</p></li><li><p>Use case: Require to know Clojure with Hadoop interaction for data enrichment with clojure specs.</p></li><li><p>Does clojure provide any utility to attach a file and send an email? Configuring logs on masking the sensitive data.</p></li><li><p>How to manage real time dependency management between projects</p></li><li><p>Any industry design patterns for clojure?</p></li><li><p>What is Profile.clj capable of doing? Is it like getting the jar from repo, defining plugins, is that all? Or do we have more to explore. (need more clarity and reference links)</p></li><li><p>What is Project.clj capable of doing to the project level and where does this scope live? Unlike the above one, require reference materials.</p></li></ol></div></section>
+link.href = window.location.search.match( /print-pdf/gi ) ? "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/print/pdf.css" : "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/lib/js/html5shiv.js"></script><![endif]--><link rel="stylesheet" href="slides.css"></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title"><h1>Clojure web seminar</h1></section><section id="topics_to_be_covered"><h2>Topics to be covered</h2><div class="olist arabic"><ol class="arabic"><li><p>Use case: How to define mass data structure using spec and to get the data from that using “conform”.</p><div class="olist loweralpha"><ol class="loweralpha" type="a"><li><p>Need sample use case and accustomed project with that.</p></li><li><p>Require more details on why we need this spec and what is the business advantage?</p></li></ol></div></li><li><p>Use case: To mock test data for resources on validating the specs as a whole data structure. (A sample project or reference available on internet is also required)</p></li><li><p>How to get the project built using Jenkins or any hosting tools. We would have a demo to do that with pipeline or docker plugin.</p></li><li><p>How to call web services from clojure &amp; to hop around the different environments? How are we going to handle/pass the security configuration in between the layers?</p></li><li><p>We use “:gen-class” for all the namespace definition. Is this mandatory for running the application as uber jar? What is the purpose of including this :gen-class?</p></li><li><p>More examples (different usage scenarios) and elaboration required for Macros.</p></li><li><p>Use case: Require to know Clojure with Hadoop interaction for data enrichment with clojure specs.</p></li><li><p>Does clojure provide any utility to attach a file and send an email? Configuring logs on masking the sensitive data.</p></li><li><p>How to manage real time dependency management between projects</p></li><li><p>Any industry design patterns for clojure?</p></li><li><p>What is Profile.clj capable of doing? Is it like getting the jar from repo, defining plugins, is that all? Or do we have more to explore. (need more clarity and reference links)</p></li><li><p>What is Project.clj capable of doing to the project level and where does this scope live? Unlike the above one, require reference materials.</p></li></ol></div></section>
 <section id="use_case_parsing_data_with_spec"><h2>1) Use case: Parsing data with Spec</h2><div class="paragraph"><p>Insurance company "Megacorp" offers three pet insurance policies:</p></div>
 <div class="ulist"><ul><li><p><a href="http://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225919/Pembroke-Welsh-Corgi-On-White-01.jpg">Corgi Cover</a></p></li><li><p><a href="http://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225538/Poodle-On-White-03.jpg">Poodle Protection</a></p></li><li><p><a href="https://i.pinimg.com/originals/a1/7f/22/a17f22f3f0067c6ff9d2023c4f57bd87.jpg">Poodle Protection Platinum</a></p></li></ul></div>
 <div class="paragraph"><p>Can spec help us process applications for these policies?</p></div></section>
@@ -134,10 +134,10 @@ Communicating Sequential Processes (CSP)</p></li><li><p>provides a new syntax (g
 Where does this scope live?
 Unlike the above one, require reference materials.</p></div>
 <div class="paragraph"><p><a href="https://github.com/technomancy/leiningen/blob/master/sample.project.clj" class="bare">https://github.com/technomancy/leiningen/blob/master/sample.project.clj</a>
-<a href="https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md" class="bare">https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md</a></p></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+<a href="https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md" class="bare">https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md</a></p></div></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/lib/js/head.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
 Reveal.initialize({
   // Display controls in the bottom right corner
-  controls: true,
+  controls: false,
   // Display a presentation progress bar
   progress: true,
   // Set a per-slide timing for speaker notes, null means none
@@ -151,7 +151,7 @@ Reveal.initialize({
   // Enable the slide overview mode
   overview: true,
   // Vertical centering of slides
-  center: true,
+  center: false,
   // Enables touch navigation on devices with touch input
   touch: true,
   // Loop the presentation
@@ -189,9 +189,9 @@ Reveal.initialize({
   previewLinks: false,
   // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
   // NOTE setting the theme in the config no longer works in reveal.js 3.x
-  //theme: Reveal.getQueryHash().theme || 'black',
+  //theme: Reveal.getQueryHash().theme || 'simple',
   // Transition style (e.g., none, fade, slide, convex, concave, zoom)
-  transition: Reveal.getQueryHash().transition || 'slide',
+  transition: Reveal.getQueryHash().transition || 'none',
   // Transition speed (e.g., default, fast, slow)
   transitionSpeed: 'default',
   // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
@@ -218,11 +218,11 @@ Reveal.initialize({
 
   // Optional libraries used to extend on reveal.js
   dependencies: [
-      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
       
-      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
-      { src: 'reveal.js/plugin/notes/notes.js', async: true }
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/zoom-js/zoom.js', async: true },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/notes/notes.js', async: true }
   ]
 });</script></body></html>
