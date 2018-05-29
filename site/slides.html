@@ -12,7 +12,7 @@ else
   z)</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>x * y * z;</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>(* x y z)</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>foo(x, y, z);</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>(foo x y z)</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>foo.bar(x);</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>(.bar foo x)</pre></div></td></tr></table>
 <aside class="notes"><div class="paragraph"><p>Syntax Summary:</p></div>
 <div class="ulist"><ul><li><p>Everything is expressed as a list</p></li><li><p>Operation at the front</p></li></ul></div></aside></section>
-<section id="the_clojure_ecosystem"><h2>1. The Clojure Ecosystem</h2><div class="ulist"><ul><li><p>Libraries are plain old jars</p></li><li><p>Clojure is itself a jar</p></li><li><p>Clojure can make direct use of other jars</p></li><li><p>Easy to deploy</p></li></ul></div></section>
+<section id="the_clojure_ecosystem"><h2>1. The Clojure Ecosystem</h2><div class="ulist"><ul><li><p>Libraries are plain old jars</p></li><li><p>Clojure is itself a jar</p></li><li><p>Clojure can make direct use of other jars</p></li><li><p>Easy to deploy</p></li><li><p>Leiningen</p></li></ul></div></section>
 <section id="leiningen"><h2>Leiningen</h2><div class="literalblock"><div class="content"><pre>lein new training
 cd training
 tree
@@ -49,14 +49,17 @@ cat src/training/core.clj</pre></div></div></section>
 <div class="literalblock"><div class="content"><pre>(+ 1 2)</pre></div></div>
 <div class="paragraph"><p>Clojure evaluates it immediately and returns a result:</p></div>
 <div class="literalblock"><div class="content"><pre>=&gt; 3</pre></div></div></section>
-<section id="editor_setup"><h2>Editor setup</h2><div class="paragraph"><p>IntelliJ+CursiveIDE</p></div>
-<div class="paragraph"><p>Lighttable</p></div>
-<div class="paragraph"><p>Browser</p></div>
+<section id="editor_setup"><h2>Editor setup</h2><div class="ulist"><ul><li><p>IntelliJ+CursiveIDE</p></li><li><p>Lighttable</p></li><li><p>Browser</p></li></ul></div>
 <aside class="notes"><div class="ulist"><ul><li><p><a href="https://www.jetbrains.com/idea" class="bare">https://www.jetbrains.com/idea</a></p></li><li><p><a href="https://cursive-ide.com" class="bare">https://cursive-ide.com</a></p></li><li><p><a href="http://lighttable.com" class="bare">http://lighttable.com</a></p></li><li><p><a href="https://repl.it/languages/clojure" class="bare">https://repl.it/languages/clojure</a></p></li></ul></div></aside></section>
-<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>Evaluate some math expressions in the REPL:</p></div>
-<div class="ulist"><ul><li><p>Find the sum of 2 and 3</p></li><li><p>What is 31 times 79?</p></li><li><p>Divide 10 by 2</p></li><li><p>Divide 2 by 10</p></li></ul></div>
-<div class="paragraph"><p>Create a new project called <code>training</code>. Open <code>src/training/core.clj</code> with your editor, write some expressions and send them to the REPL:</p></div>
-<div class="ulist"><ul><li><p>Find the sum of 1, 2, and 3</p></li><li><p>Send (println "hello world")</p></li></ul></div></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>Start a REPL</p></div>
+<div class="paragraph"><p>Find the sum of 2 and 3;
+What is 31 times 79?
+Divide 10 by 2;
+Divide 2 by 10</p></div>
+<div class="paragraph"><p>Create a new project called <code>training</code> and open <code>src/training/core.clj</code> with your editor</p></div>
+<div class="paragraph"><p>Write some expressions and send them to the REPL</p></div>
+<div class="paragraph"><p>Find the sum of 1, 2, and 3</p></div>
+<div class="paragraph"><p>Send <code>(println "hello world")</code></p></div></section>
 <section id="answers"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(+ 2 3)
 =&gt; 5</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(* 31 79)
@@ -74,8 +77,8 @@ cat src/training/core.clj</pre></div></div></section>
 <div class="literalblock"><div class="content"><pre>"This is a string."</pre></div></div>
 <div class="paragraph"><p>Character literals are preceded by a backslash</p></div>
 <div class="literalblock"><div class="content"><pre>\a \b \c \newline \tab</pre></div></div></section>
-<section id="numbers"><h2>Numbers</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Long</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Double</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.14</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">BigInteger</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000000000000N</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">BigDecimal</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000000000000.1M</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Exponents</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1e3</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Ratio</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>2/5</code></p></td></tr></table>
-<div class="paragraph"><p>Automatically promoted on overflow.</p></div></section>
+<section><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Long</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Double</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.14</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">BigInteger</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000000000000N</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">BigDecimal</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000000000000.1M</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Exponents</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1e3</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Ratio</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>2/5</code></p></td></tr></table>
+<aside class="notes"><div class="ulist"><ul><li><p>Representing Numbers</p></li><li><p>Automatically promoted on overflow</p></li></ul></div></aside></section>
 <section id="truthiness"><h2>Truthiness</h2><div class="paragraph"><p>Booleans: <code>true</code> and <code>false</code>.</p></div>
 <div class="paragraph"><p><code>nil</code> means nothing and is considered false in logical tests.</p></div>
 <div class="paragraph"><p>Anything else is truthy.</p></div></section>
@@ -185,36 +188,38 @@ x
   (:import [java.util Date]))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(string/upper-case "shout")</pre></div></div>
 <div class="ulist"><ul><li><p>First thing in a file</p></li><li><p>Must match path and filename</p></li><li><p><code>training.core</code> in <code>src/training/core.clj</code></p></li><li><p><code>-</code> replaced with <code>_</code> and <code>.</code> replaced with <code>/</code></p></li><li><p>Other forms exist, but prefer this one</p></li></ul></div></section>
-<section id="programs"><h2>Programs</h2><div class="ulist"><ul><li><p>Expressions which are evaluated to results.</p></li><li><p>If an expression needs to be compiled, it will be.</p></li><li><p>Can be loaded from files or evaluated dynamically.</p></li><li><p>Unit of compilation is a form</p></li></ul></div></section>
+<section id="programs"><h2>Programs</h2><div class="ulist"><ul><li><p>Expressions which are evaluated to results</p></li><li><p>If an expression needs to be compiled, it will be</p></li><li><p>Can be loaded from files or evaluated dynamically</p></li><li><p>Unit of compilation is a form</p></li></ul></div></section>
 <section id="regex"><h2>Regex</h2><div class="literalblock"><div class="content"><pre>#"pattern"</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(re-seq #"\w+" "the quick brown fox")
 =&gt; ("the" "quick" "brown" "fox")</pre></div></div></section>
-<section id="exercises_2"><h2>Exercises</h2><div class="paragraph"><p>Write code into a new file called <code>src/training/syntax.clj</code>, and send the lines to the REPL as you enter them.</p></div>
-<div class="ulist"><ul><li><p>Set up the new namespace called <code>training.syntax</code></p></li><li><p>Define a var called <code>message</code> bound to the string <code>"greetings"</code>.</p></li><li><p>Print out the value of the var <code>message</code>.</p></li><li><p>Create a <code>let</code> binding that binds the symbol <code>message</code> to <code>"well hello there"</code>, and prints out <code>message</code> inside the <code>let</code> block.</p></li><li><p>Print out message again, outside of the <code>let</code> block.</p></li><li><p>Create a let binding that destructures the map
-<code>{:greeting "good morning", :tone "happy"}</code>
-and prints the greeting and tone inside the let block.</p></li><li><p>Destructure a single map input containing
-<code>{:greeting "good morning", :tone "happy"}</code>
-and return a string combining greeting and tone.
-Use the <code>str</code> function.</p></li></ul></div></section>
-<section id="answers_2"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(ns training.syntax)
+<section id="exercises_2"><h2>Exercises</h2><div class="paragraph"><p>Write code into a new file called <code>src/training/syntax.clj</code>, and send the lines to the REPL as you enter them</p></div>
+<div class="paragraph"><p>See manual for exercises</p></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="paragraph"><p>Set up the new namespace called <code>training.syntax</code></p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.syntax)
 =&gt; nil</pre></div></div>
+<div class="paragraph"><p>Define a var called <code>message</code> bound to the string <code>"greetings"</code></p></div>
 <div class="literalblock"><div class="content"><pre>(def message "greetings")
-=&gt; #’hello-clojure/message</pre></div></div>
+=&gt; #’hello-clojure/message</pre></div></div></section>
+<section id="answers_3"><h2>Answers</h2><div class="paragraph"><p>Print out the value of the var <code>message</code></p></div>
 <div class="literalblock"><div class="content"><pre>(prn message)
 =&gt; "greetings"
    nil</pre></div></div>
-<div class="paragraph"><p>Note <code>prn</code> and <code>println</code> behave slightly differently; <code>prn</code> keeps the quotes around strings. This is often useful when experimenting, because you can visually see the type of the values more clearly.</p></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><div class="title">Note</div></td><td class="content"><code>prn</code> keeps the quotes around strings; <code>println</code> does not.</td></tr></table></div></section>
+<section id="answers_4"><h2>Answers</h2><div class="paragraph"><p>Create a <code>let</code> binding that binds the symbol <code>message</code> to <code>"well hello there"</code>, and prints out <code>message</code> inside the <code>let</code> block:</p></div>
 <div class="literalblock"><div class="content"><pre>(let [message "well hello there"]
   (prn message))
 =&gt; "well hello there"
    nil</pre></div></div>
+<div class="paragraph"><p>Print out message again, outside of the <code>let</code> block:</p></div>
 <div class="literalblock"><div class="content"><pre>(prn message)
 =&gt; "greetings"</pre></div></div>
-<div class="paragraph"><p>Note that the <code>message</code> global var is still the original value.</p></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><div class="title">Note</div></td><td class="content"><code>message</code> global var is still the original value.</td></tr></table></div></section>
+<section id="answers_5"><h2>Answers</h2><div class="paragraph"><p>Create a let binding that destructures the map <code>{:greeting "good morning", :tone "happy"}</code> and prints the greeting and tone inside the let block:</p></div>
 <div class="literalblock"><div class="content"><pre>(def m {:greeting "good morning", :tone "happy"})</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(let [{:keys [greeting tone]} m]
   (prn greeting tone))
-=&gt; "good morning" "happy"</pre></div></div>
+=&gt; "good morning" "happy"</pre></div></div></section>
+<section id="answers_6"><h2>Answers</h2><div class="paragraph"><p>Destructure a single map input containing <code>{:greeting "good morning", :tone "happy"}</code> and return a string combining greeting and tone:</p></div>
 <div class="literalblock"><div class="content"><pre>(defn hi [{:keys [greeting tone]}]
   (str greeting " - " tone))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(hi m)
@@ -325,7 +330,7 @@ Use the <code>str</code> function.</p></li></ul></div></section>
 (f 42 {:option3 "value"})</pre></div></div></li></ul></div></section>
 <section id="exercises_3"><h2>Exercises</h2><div class="paragraph"><p>Create a new namespace called <code>fun-functions</code>. Define the following functions and call them with some test input:</p></div>
 <div class="ulist"><ul><li><p>A function that computes the square of an input number. What is the square of 55?</p></li><li><p>A function that takes a number as input, ensures that the number is less than 100, and returns the square of the square of the input.</p></li><li><p>A function that takes two numbers as input, and returns a vector where the first element is the second input, and the second element is the sum of the first and second input.</p></li></ul></div></section>
-<section id="answers_3"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn square [x]
+<section id="answers_7"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn square [x]
   (* x x))
 (square 55)
 =&gt; 3025</pre></div></div>
@@ -471,7 +476,7 @@ Test more.</p></div></section>
 =&gt; {"a" 1, "b" 2}</pre></div></div>
 <div class="paragraph"><p>We get the constructed object, with side-effects applied.</p></div></section>
 <section id="exercises_4"><h2>Exercises</h2><div class="ulist"><ul><li><p>Start lein-test-refresh running in your existing project directory.</p></li><li><p>Create a new namespace in the “test” directory called <code>training.core-test</code></p></li><li><p>Write a function called <code>pythag</code> that returns the square root of the sum of squares for two inputs.</p></li><li><p>Write a test containing an assertion that exercises your function. Expect <code>5</code> when passing <code>4</code> and <code>3</code> as arguments.</p></li><li><p>Write another test case with different inputs.</p></li><li><p>Introduce a bug into pythag to make sure your tests discover the problem.</p></li><li><p>Fix <code>pythag</code> so that all tests pass.</p></li><li><p>Copy the test <code>test-post</code> from the "with-redefs" section and modify it so that it counts how many times <code>str</code> gets called. Call <code>post</code> several times and make an assertion about how many times <code>str</code> should get called.</p></li></ul></div></section>
-<section id="answers_4"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn pythag [a b]
+<section id="answers_8"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn pythag [a b]
   (Math/sqrt (+ (* a a) (* b b))))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(deftest test-pythag
   (is (= 5 (pythag 4 3)))
@@ -549,7 +554,7 @@ Test more.</p></div></section>
  :b 2
  :c 3}</pre></div></div></section>
 <section id="exercises_5"><h2>Exercises</h2><div class="ulist"><ul><li><p>Create a function that given a test score between 0 and 100 returns a grade A B C D or F for fail.</p></li><li><p>Write a function that takes a number and uses a loop to calculate the factorial of that number. Factorial 5 is 1*2*3*4*5.</p></li><li><p>Write a new version of factorial that does not use a loop but recursively calls itself.</p></li><li><p>Write a loop for the Fibonacci sequence (1 1 2 3 5 8 13) that finds the maximum Fibonacci number less than 100. The sequence is defined by n2 = n1 + n0.</p></li></ul></div></section>
-<section id="answers_5"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(def grade [score]
+<section id="answers_9"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(def grade [score]
   (cond (&gt;= score 90) "A"
         (&gt;= score 80) "B"
         (&gt;= score 70) "C"
@@ -798,7 +803,7 @@ for (i=1; i &lt; v.length; i++)
 <div class="literalblock"><div class="content"><pre>({:a 1, :b 2} :c -1)
 =&gt; -1</pre></div></div></section>
 <section id="exercises_6"><h2>Exercises</h2><div class="ulist"><ul><li><p>Write a function that takes two inputs, and returns the sum of the numbers in a range between two input integers, including the two input numbers.</p></li><li><p>Write a function that produces a sequence of powers of 2: (1 2 4 8 16 …)</p></li><li><p>Write a function that takes a string and produces a sequence of characters with no vowels.</p></li><li><p>Write a function that produces a sequence: (1 ½ ⅓ ¼ …)</p></li><li><p>Write a function that produces a sequence: (1  ½ ¼ ⅛ …)</p></li><li><p>Write a function that produces the Fibonacci sequence (1 1 2 3 5 8 13 21)</p></li></ul></div></section>
-<section id="answers_6"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn sum-between [a b]
+<section id="answers_10"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn sum-between [a b]
   (apply + (range a (inc b))))
 (sum-between 3 5)
 =&gt; 12</pre></div></div>
@@ -913,7 +918,7 @@ Create a new function that writes JSON data to a eligible-corgi-cover-applicatio
   (inc x))</pre></div></div></li><li><p>Write a spy macro. Spy wraps an expression and prints out its value.</p><div class="literalblock"><div class="content"><pre>(* (spy (+ 1 2)) 3)
 =&gt; Expression (+ 1 2) has value 3
    9</pre></div></div></li><li><p>Write your own version of the <code>or</code> macro</p><div class="literalblock"><div class="content"><pre>(or2 (pos? 1) (println "does not execute"))</pre></div></div></li></ul></div></section>
-<section id="answers_7"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defmacro ignore  [expr]  nil)</pre></div></div>
+<section id="answers_11"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defmacro ignore  [expr]  nil)</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(defmacro when2 [test &amp; body]
   (list 'if test (cons ‘do body))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(defmacro spy [expr]
@@ -1348,7 +1353,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(jdbc/execute! db "drop table messages")</pre></div></div></section>
 <section id="solutions_for_sql_management"><h2>Solutions for SQL management</h2><div class="paragraph"><p>HoneySQL <a href="https://github.com/jkk/honeysql" class="bare">https://github.com/jkk/honeysql</a> can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.</p></div></section>
 <section id="exercises_9"><h2>Exercises</h2><div class="ulist"><ul><li><p>Create and populate a table <code>person</code> with two columns; <code>id</code>, <code>name</code>.</p></li><li><p>Create and populate a table <code>policy</code> with two columns; <code>id</code>, <code>name</code></p></li><li><p>Create and populate a table <code>person_policy</code> with two columns; <code>person_id</code>, <code>policy_id</code></p></li><li><p>Write a function that given a person name queries all the policies associated with them.</p></li></ul></div></section>
-<section id="answers_8"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(ns messenger.core
+<section id="answers_12"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(ns messenger.core
   (:require [clojure.java.jdbc :as jdbc]))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(def db "jdbc:hsqldb:mem:testdb")</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(jdbc/execute! db

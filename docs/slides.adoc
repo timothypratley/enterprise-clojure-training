@@ -57,6 +57,7 @@ Syntax Summary:
 * Clojure is itself a jar
 * Clojure can make direct use of other jars
 * Easy to deploy
+* Leiningen
 
 
 == Leiningen
@@ -123,11 +124,9 @@ Clojure evaluates it immediately and returns a result:
 
 == Editor setup
 
-IntelliJ+CursiveIDE
-
-Lighttable
-
-Browser
+* IntelliJ+CursiveIDE
+* Lighttable
+* Browser
 
 [NOTE.speaker]
 --
@@ -137,20 +136,22 @@ Browser
 * https://repl.it/languages/clojure
 --
 
-
 == Exercises
 
-Evaluate some math expressions in the REPL:
+Start a REPL
 
-* Find the sum of 2 and 3
-* What is 31 times 79?
-* Divide 10 by 2
-* Divide 2 by 10
+Find the sum of 2 and 3;
+What is 31 times 79?
+Divide 10 by 2;
+Divide 2 by 10
 
-Create a new project called `training`. Open `src/training/core.clj` with your editor, write some expressions and send them to the REPL:
+Create a new project called `training` and open `src/training/core.clj` with your editor
 
-* Find the sum of 1, 2, and 3
-* Send (println "hello world")
+Write some expressions and send them to the REPL
+
+Find the sum of 1, 2, and 3
+
+Send `(println "hello world")`
 
 
 == Answers
@@ -187,7 +188,7 @@ Character literals are preceded by a backslash
     \a \b \c \newline \tab
 
 
-== Numbers
+== !
 
 |===
 |Long |`1`
@@ -198,8 +199,11 @@ Character literals are preceded by a backslash
 |Ratio |`2/5`
 |===
 
-Automatically promoted on overflow.
-
+[NOTE.speaker]
+--
+* Representing Numbers
+* Automatically promoted on overflow
+--
 
 == Truthiness
 
@@ -483,9 +487,9 @@ Destructured using `&`
 
 == Programs
 
-* Expressions which are evaluated to results.
-* If an expression needs to be compiled, it will be.
-* Can be loaded from files or evaluated dynamically.
+* Expressions which are evaluated to results
+* If an expression needs to be compiled, it will be
+* Can be loaded from files or evaluated dynamically
 * Unit of compilation is a form
 
 
@@ -499,51 +503,68 @@ Destructured using `&`
 
 == Exercises
 
-Write code into a new file called `src/training/syntax.clj`, and send the lines to the REPL as you enter them.
+Write code into a new file called `src/training/syntax.clj`, and send the lines to the REPL as you enter them
 
-* Set up the new namespace called `training.syntax`
-* Define a var called `message` bound to the string `"greetings"`.
-* Print out the value of the var `message`.
-* Create a `let` binding that binds the symbol `message` to `"well hello there"`, and prints out `message` inside the `let` block.
-* Print out message again, outside of the `let` block.
-* Create a let binding that destructures the map
-  `{:greeting "good morning", :tone "happy"}`
-  and prints the greeting and tone inside the let block.
-* Destructure a single map input containing
-  `{:greeting "good morning", :tone "happy"}`
-  and return a string combining greeting and tone.
-  Use the `str` function.
+See manual for exercises
 
 
 == Answers
 
+Set up the new namespace called `training.syntax`
+
     (ns training.syntax)
     => nil
 
+Define a var called `message` bound to the string `"greetings"`
+
     (def message "greetings")
     => #’hello-clojure/message
+
+
+== Answers
+
+Print out the value of the var `message`
 
     (prn message)
     => "greetings"
        nil
 
-Note `prn` and `println` behave slightly differently; `prn` keeps the quotes around strings. This is often useful when experimenting, because you can visually see the type of the values more clearly.
+[NOTE]
+`prn` keeps the quotes around strings; `println` does not.
+
+
+== Answers
+
+Create a `let` binding that binds the symbol `message` to `"well hello there"`, and prints out `message` inside the `let` block:
 
     (let [message "well hello there"]
       (prn message))
     => "well hello there"
        nil
 
+Print out message again, outside of the `let` block:
+
     (prn message)
     => "greetings"
 
-Note that the `message` global var is still the original value.
+[NOTE]
+`message` global var is still the original value.
+
+
+== Answers
+
+Create a let binding that destructures a map and prints the greeting and tone:
 
     (def m {:greeting "good morning", :tone "happy"})
 
     (let [{:keys [greeting tone]} m]
       (prn greeting tone))
     => "good morning" "happy"
+
+
+== Answers
+
+Destructure a single map input and return a string combining greeting and tone:
 
     (defn hi [{:keys [greeting tone]}]
       (str greeting " - " tone))
