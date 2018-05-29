@@ -1,13 +1,17 @@
 = Enterprise Clojure Training
 
 "Clojure is serious business!"
+-- Timothy Pratley
 
 This is a Clojure training course for Developers and Senior Developers working on Enterprise software.
 
-See https://timothypratley.github.io/enterprise-clojure-training/manual.html[manual.html] for the course material and exercises.
-Example code is https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[here].
+See https://timothypratley.github.io/enterprise-clojure-training/manual.html[manual.html]
+or https://timothypratley.github.io/enterprise-clojure-training/manual.pdf[manual.pdf]
+for the course material, and https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[example code].
 
-Trainers see https://timothypratley.github.io/enterprise-clojure-training/slides.html[slides.html] for the presentation material.
+Trainers see https://timothypratley.github.io/enterprise-clojure-training/slides.html[slides.html]
+and https://timothypratley.github.io/enterprise-clojure-training/advanced-topics.html[advanced-topics.html]
+for the presentation material.
 
 
 == Contributing
@@ -17,15 +21,20 @@ Issues welcome. Pull requests welcome.
 
 == Building
 
-The material is written in asciidoc format in the examples and slides directories.
+Requires Ruby and Bundler to be installed.
+
+Pull the dependencies:
+
+    bundle --path=.bundle/gems --binstubs=.bundle/.bin
+
+The manual and slides are under the `docs` directory.
+They are built to HTML and PDF using https://asciidoctor.org[Asciidoctor], and output to the `site` directory.
 
     ./build.sh
-
-Produces manual.html and slides.html
 
 
 == Deploying
 
     ./deploy.sh
 
-Pushes the built html to GitHub Pages
+The built HTML and PDF are hosted on https://timothypratley.github.io/enterprise-clojure-training[GitHub Pages].

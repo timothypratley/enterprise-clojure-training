@@ -1,7 +1,0 @@
-= Enterprise Clojure Training
-:description: Index page listing training resources
-
-* https://timothypratley.github.io/enterprise-clojure-training/manual.html[Manual]
-* https://timothypratley.github.io/enterprise-clojure-training/manual.html[Slides]
-* https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[Examples]
-

@@ -4,19 +4,20 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.5">
+<meta name="generator" content="Asciidoctor 1.5.7.1">
+<meta name="description" content="A training course for Clojure.">
+<meta name="keywords" content="enterprise Clojure training">
 <meta name="author" content="Timothy Pratley">
 <meta name="copyright" content="Timothy Pratley">
 <title>Enterprise Clojure Training</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
-/* Remove comment around @import statement below when using as a custom stylesheet */
+/* Uncomment @import statement below to use as custom stylesheet */
 /*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}
 audio,canvas,video{display:inline-block}
 audio:not([controls]){display:none;height:0}
-[hidden],template{display:none}
 script{display:none!important}
 html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
 a{background:transparent}
@@ -46,12 +47,10 @@ button,select{text-transform:none}
 button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
 button[disabled],html input[disabled]{cursor:default}
 input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
-input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}
-input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}
 button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
 textarea{overflow:auto;vertical-align:top}
 table{border-collapse:collapse;border-spacing:0}
-*,*:before,*:after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 html,body{font-size:100%}
 body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
 a:hover{cursor:pointer}
@@ -69,8 +68,7 @@ img,object,svg{display:inline-block;vertical-align:middle}
 textarea{height:auto;min-height:50px}
 select{width:100%}
 .center{margin-left:auto;margin-right:auto}
-.spread{width:100%}
-p.lead,.paragraph.lead>p,#preamble>.sectionbody>.paragraph:first-of-type p{font-size:1.21875em;line-height:1.6}
+.stretch{width:100%}
 .subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
 a{color:#2156a5;text-decoration:underline;line-height:inherit}
@@ -91,13 +89,12 @@ strong,b{font-weight:bold;line-height:inherit}
 small{font-size:60%;line-height:inherit}
 code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
 ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
-ul,ol,ul.no-bullet,ol.no-bullet{margin-left:1.5em}
+ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
 ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
 ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
-ul.no-bullet{list-style:none}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -105,24 +102,24 @@ abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-
 abbr{text-transform:none}
 blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
 blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
-blockquote cite:before{content:"\2014 \0020"}
+blockquote cite::before{content:"\2014 \0020"}
 blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
 blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
-@media only screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
 h1{font-size:2.75em}
 h2{font-size:2.3125em}
 h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
 h4{font-size:1.4375em}}
 table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
-table thead,table tfoot{background:#f7f8f7;font-weight:bold}
+table thead,table tfoot{background:#f7f8f7}
 table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
 table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
 table tr.even,table tr.alt,table tr:nth-of-type(even){background:#f8f8f7}
 table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
 h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
 h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
-.clearfix:before,.clearfix:after,.float-group:before,.float-group:after{content:" ";display:table}
-.clearfix:after,.float-group:after{clear:both}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
 *:not(pre)>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background-color:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
 *:not(pre)>code.nobreak{word-wrap:normal}
 *:not(pre)>code.nowrap{white-space:nowrap}
@@ -133,16 +130,20 @@ strong strong{font-weight:400}
 kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background-color:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
 .keyseq kbd:first-child{margin-left:0}
 .keyseq kbd:last-child{margin-right:0}
-.menuseq,.menu{color:rgba(0,0,0,.8)}
-b.button:before,b.button:after{position:relative;top:-1px;font-weight:400}
-b.button:before{content:"[";padding:0 3px 0 2px}
-b.button:after{content:"]";padding:0 2px 0 3px}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
 p a>code:hover{color:rgba(0,0,0,.9)}
 #header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
-#header:before,#header:after,#content:before,#content:after,#footnotes:before,#footnotes:after,#footer:before,#footer:after{content:" ";display:table}
-#header:after,#content:after,#footnotes:after,#footer:after{clear:both}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
 #content{margin-top:1.25em}
-#content:before{content:none}
+#content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #ddddd8}
 #header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #ddddd8;padding-bottom:8px}
@@ -150,11 +151,11 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
 #header .details br{display:none}
-#header .details br+span:before{content:"\00a0\2013\00a0"}
-#header .details br+span.author:before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
-#header .details br+span#revremark:before{content:"\00a0|\00a0"}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
 #header #revnumber{text-transform:capitalize}
-#header #revnumber:after{content:"\00a0"}
+#header #revnumber::after{content:"\00a0"}
 #content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #ddddd8;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
 #toc{border-bottom:1px solid #efefed;padding-bottom:.5em}
 #toc>ul{margin-left:.125em}
@@ -165,7 +166,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toc a{text-decoration:none}
 #toc a:active{text-decoration:underline}
 #toctitle{color:#7a2518;font-size:1.2em}
-@media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
 #toc.toc2{margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
@@ -174,7 +175,7 @@ body.toc2{padding-left:15em;padding-right:0}
 #toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
 body.toc2.toc-right{padding-left:0;padding-right:15em}
 body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #efefed;left:auto;right:0}}
-@media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
 #toc.toc2{width:20em}
 #toc.toc2 #toctitle{font-size:1.375em}
 #toc.toc2>ul{font-size:.95em}
@@ -185,19 +186,22 @@ body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content #toc>:last-child{margin-bottom:0}
 #footer{max-width:100%;background-color:rgba(0,0,0,.8);padding:1.25em}
 #footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#content{margin-bottom:.625em}
 .sect1{padding-bottom:.625em}
-@media only screen and (min-width:768px){.sect1{padding-bottom:1.25em}}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
 .sect1+.sect1{border-top:1px solid #efefed}
 #content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
-#content h1>a.anchor:before,h2>a.anchor:before,h3>a.anchor:before,#toctitle>a.anchor:before,.sidebarblock>.content>.title>a.anchor:before,h4>a.anchor:before,h5>a.anchor:before,h6>a.anchor:before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
 #content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
 #content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
 #content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
 .audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
 .admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
-table.tableblock>caption.title{white-space:nowrap;overflow:visible;max-width:0}
-.paragraph.lead>p,#preamble>.sectionbody>.paragraph:first-of-type p{color:rgba(0,0,0,.85)}
-table.tableblock #preamble>.sectionbody>.paragraph:first-of-type p{font-size:inherit}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
 .admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
 .admonitionblock>table td.icon{text-align:center;width:80px}
 .admonitionblock>table td.icon img{max-width:none}
@@ -216,17 +220,17 @@ table.tableblock #preamble>.sectionbody>.paragraph:first-of-type p{font-size:inh
 .sidebarblock .literalblock pre,.sidebarblock .listingblock pre:not(.highlight),.sidebarblock .listingblock pre[class="highlight"],.sidebarblock .listingblock pre[class^="highlight "],.sidebarblock .listingblock pre.CodeRay,.sidebarblock .listingblock pre.prettyprint{background:#f2f1f1}
 .literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;padding:1em;font-size:.8125em}
 .literalblock pre.nowrap,.literalblock pre[class].nowrap,.listingblock pre.nowrap,.listingblock pre[class].nowrap{overflow-x:auto;white-space:pre;word-wrap:normal}
-@media only screen and (min-width:768px){.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:.90625em}}
-@media only screen and (min-width:1280px){.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:1em}}
+@media screen and (min-width:768px){.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:1em}}
 .literalblock.output pre{color:#f7f7f8;background-color:rgba(0,0,0,.9)}
 .listingblock pre.highlightjs{padding:0}
 .listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
 .listingblock pre.prettyprint{border-width:0}
 .listingblock>.content{position:relative}
-.listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:#999}
-.listingblock:hover code[data-lang]:before{display:block}
-.listingblock.terminal pre .command:before{content:attr(data-prompt);padding-right:.5em;color:#999}
-.listingblock.terminal pre .command:not([data-prompt]):before{content:"$"}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:#999}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:#999}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
 table.pyhltable{border-collapse:separate;border:0;margin-bottom:0;background:none}
 table.pyhltable td{vertical-align:top;padding-top:0;padding-bottom:0;line-height:1.45}
 table.pyhltable td.code{padding-left:.75em;padding-right:0}
@@ -237,35 +241,39 @@ table.pyhltable .linenodiv{background:none!important;padding-right:0!important}
 .quoteblock>.title{margin-left:-1.5em;margin-bottom:.75em}
 .quoteblock blockquote,.quoteblock blockquote p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
 .quoteblock blockquote{margin:0;padding:0;border:0}
-.quoteblock blockquote:before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
 .quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
 .quoteblock .attribution{margin-top:.5em;margin-right:.5ex;text-align:right}
 .quoteblock .quoteblock{margin-left:0;margin-right:0;padding:.5em 0;border-left:3px solid rgba(0,0,0,.6)}
 .quoteblock .quoteblock blockquote{padding:0 0 0 .75em}
-.quoteblock .quoteblock blockquote:before{display:none}
-.verseblock{margin:0 1em 1.25em 1em}
+.quoteblock .quoteblock blockquote::before{display:none}
+.verseblock{margin:0 1em 1.25em}
 .verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
 .verseblock pre strong{font-weight:400}
 .verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
 .quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
 .quoteblock .attribution br,.verseblock .attribution br{display:none}
 .quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
-.quoteblock.abstract{margin:0 0 1.25em 0;display:block}
-.quoteblock.abstract blockquote,.quoteblock.abstract blockquote p{text-align:left;word-spacing:0}
-.quoteblock.abstract blockquote:before,.quoteblock.abstract blockquote p:first-of-type:before{display:none}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.abstract blockquote,.quoteblock.abstract blockquote p{word-spacing:0;line-height:1.6}
+.quoteblock.abstract blockquote::before,.quoteblock.abstract p::before{display:none}
 table.tableblock{max-width:100%;border-collapse:separate}
-table.tableblock td>.paragraph:last-child p>p:last-child,table.tableblock th>p:last-child,table.tableblock td>p:last-child{margin-bottom:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:-1.25em}
 table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
-table.grid-all th.tableblock,table.grid-all td.tableblock{border-width:0 1px 1px 0}
-table.grid-all tfoot>tr>th.tableblock,table.grid-all tfoot>tr>td.tableblock{border-width:1px 1px 0 0}
-table.grid-cols th.tableblock,table.grid-cols td.tableblock{border-width:0 1px 0 0}
-table.grid-all *>tr>.tableblock:last-child,table.grid-cols *>tr>.tableblock:last-child{border-right-width:0}
-table.grid-rows th.tableblock,table.grid-rows td.tableblock{border-width:0 0 1px 0}
-table.grid-all tbody>tr:last-child>th.tableblock,table.grid-all tbody>tr:last-child>td.tableblock,table.grid-all thead:last-child>tr>th.tableblock,table.grid-rows tbody>tr:last-child>th.tableblock,table.grid-rows tbody>tr:last-child>td.tableblock,table.grid-rows thead:last-child>tr>th.tableblock{border-bottom-width:0}
-table.grid-rows tfoot>tr>th.tableblock,table.grid-rows tfoot>tr>td.tableblock{border-width:1px 0 0 0}
+table.grid-all>thead>tr>.tableblock,table.grid-all>tbody>tr>.tableblock{border-width:0 1px 1px 0}
+table.grid-all>tfoot>tr>.tableblock{border-width:1px 1px 0 0}
+table.grid-cols>*>tr>.tableblock{border-width:0 1px 0 0}
+table.grid-rows>thead>tr>.tableblock,table.grid-rows>tbody>tr>.tableblock{border-width:0 0 1px}
+table.grid-rows>tfoot>tr>.tableblock{border-width:1px 0 0}
+table.grid-all>*>tr>.tableblock:last-child,table.grid-cols>*>tr>.tableblock:last-child{border-right-width:0}
+table.grid-all>tbody>tr:last-child>.tableblock,table.grid-all>thead:last-child>tr>.tableblock,table.grid-rows>tbody>tr:last-child>.tableblock,table.grid-rows>thead:last-child>tr>.tableblock{border-bottom-width:0}
 table.frame-all{border-width:1px}
 table.frame-sides{border-width:0 1px}
-table.frame-topbot{border-width:1px 0}
+table.frame-topbot,table.frame-ends{border-width:1px 0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd){background:#f8f8f7}
+table.stripes-none tr,table.stripes-odd tr:nth-of-type(even){background:none}
 th.halign-left,td.halign-left{text-align:left}
 th.halign-right,td.halign-right{text-align:right}
 th.halign-center,td.halign-center{text-align:center}
@@ -283,13 +291,14 @@ ul li ol{margin-left:1.5em}
 dl dd{margin-left:1.125em}
 dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
 ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
-ul.unstyled,ol.unnumbered,ul.checklist,ul.none{list-style-type:none}
-ul.unstyled,ol.unnumbered,ul.checklist{margin-left:.625em}
-ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1em;font-size:.85em}
-ul.checklist li>p:first-child>input[type="checkbox"]:first-child{width:1em;position:relative;top:1px}
-ul.inline{margin:0 auto .625em auto;margin-left:-1.375em;margin-right:0;padding:0;list-style:none;overflow:hidden}
-ul.inline>li{list-style:none;float:left;margin-left:1.375em;display:block}
-ul.inline>li>*{display:block}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
+ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
 .unstyled dl dt{font-weight:400;font-style:normal}
 ol.arabic{list-style-type:decimal}
 ol.decimal{list-style-type:decimal-leading-zero}
@@ -303,8 +312,9 @@ ol.lowergreek{list-style-type:lower-greek}
 td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
 td.hdlist1{font-weight:bold;padding-bottom:1.25em}
 .literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
-.colist>table tr>td:first-of-type{padding:0 .75em;line-height:1}
-.colist>table tr>td:last-of-type{padding:.25em 0}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
 .thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
 .imageblock.left,.imageblock[style*="float: left"]{margin:.25em .625em 1.25em 0}
 .imageblock.right,.imageblock[style*="float: right"]{margin:.25em 0 1.25em .625em}
@@ -320,9 +330,9 @@ sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:sup
 sup.footnote a,sup.footnoteref a{text-decoration:none}
 sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
-#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em 0;border-width:1px 0 0 0}
-#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;text-indent:-1.05em;margin-bottom:.2em}
-#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
 #footnotes .footnote:last-of-type{margin-bottom:0}
 #content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
 .gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
@@ -366,16 +376,17 @@ div.unbreakable{page-break-inside:avoid}
 .yellow{color:#bfbf00}
 .yellow-background{background-color:#fafa00}
 span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
 .admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
-.admonitionblock td.icon .icon-note:before{content:"\f05a";color:#19407c}
-.admonitionblock td.icon .icon-tip:before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
-.admonitionblock td.icon .icon-warning:before{content:"\f071";color:#bf6900}
-.admonitionblock td.icon .icon-caution:before{content:"\f06d";color:#bf3400}
-.admonitionblock td.icon .icon-important:before{content:"\f06a";color:#bf0000}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
 .conum[data-value]{display:inline-block;color:#fff!important;background-color:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
 .conum[data-value] *{color:#fff!important}
 .conum[data-value]+b{display:none}
-.conum[data-value]:after{content:attr(data-value)}
+.conum[data-value]::after{content:attr(data-value)}
 pre .conum[data-value]{position:relative;top:-.125em}
 b.conum *{color:inherit!important}
 .conum:not([data-value]):empty{display:none}
@@ -387,12 +398,13 @@ p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background-color:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
 .print-only{display:none!important}
-@media print{@page{margin:1.25cm .75cm}
-*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
 a{color:inherit!important;text-decoration:underline!important}
 a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
-a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
-abbr[title]:after{content:" (" attr(title) ")"}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]::after{content:" (" attr(title) ")"}
 pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
 thead{display:table-header-group}
 svg{max-width:100%}
@@ -400,27 +412,29 @@ p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
 h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
 #toc,.sidebarblock,.exampleblock>.content{background:none!important}
 #toc{border-bottom:1px solid #ddddd8!important;padding-bottom:0!important}
-.sect1{padding-bottom:0!important}
-.sect1+.sect1{border:0!important}
-#header>h1:first-child{margin-top:1.25rem}
 body.book #header{text-align:center}
-body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em 0}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
 body.book #header .details{border:0!important;display:block;padding:0!important}
 body.book #header .details span:first-child{margin-left:0!important}
 body.book #header .details br{display:block}
-body.book #header .details br+span:before{content:none!important}
+body.book #header .details br+span::before{content:none!important}
 body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
 body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
-.listingblock code[data-lang]:before{display:block}
-#footer{background:none!important;padding:0 .9375em}
-#footer-text{color:rgba(0,0,0,.6)!important;font-size:.9em}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
 .hide-on-print{display:none!important}
 .print-only{display:block!important}
 .hide-for-print{display:none!important}
 .show-for-print{display:inherit!important}}
+@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article toc2 toc-left">
+<body class="book toc2 toc-left">
 <div id="header">
 <h1>Enterprise Clojure Training</h1>
 <div class="details">
@@ -430,281 +444,355 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_about">1. About</a>
+<li><a href="#_about">About</a>
 <ul class="sectlevel2">
-<li><a href="#_overview">1.1. Overview</a></li>
-<li><a href="#_duration">1.2. Duration</a></li>
-<li><a href="#_prerequisites">1.3. Prerequisites</a></li>
-<li><a href="#_target_audience">1.4. Target Audience</a></li>
-<li><a href="#_required_setup">1.5. Required setup</a></li>
-<li><a href="#_pre_assessment">1.6. Pre-assessment</a></li>
-<li><a href="#_required_preparation">1.7. Required preparation</a></li>
-<li><a href="#_optional_reading">1.8. Optional reading</a></li>
-<li><a href="#_introductions">1.9. Introductions</a></li>
+<li><a href="#_overview">Overview</a></li>
+<li><a href="#_duration">Duration</a></li>
+<li><a href="#_learning_objectives">Learning Objectives</a></li>
+<li><a href="#_prerequisites">Prerequisites</a></li>
+<li><a href="#_target_audience">Target Audience</a></li>
+<li><a href="#_required_setup">Required setup</a></li>
+<li><a href="#_pre_assessment">Pre-assessment</a></li>
+<li><a href="#_required_preparation">Required preparation</a></li>
+<li><a href="#_optional_reading">Optional reading</a></li>
+<li><a href="#_introductions">Introductions</a>
+<ul class="sectlevel3">
+<li><a href="#_the_instructor">The instructor</a></li>
+<li><a href="#_clojure">Clojure</a></li>
+<li><a href="#_syntax_summary">Syntax Summary</a></li>
 </ul>
 </li>
-<li><a href="#_the_clojure_ecosystem">2. The Clojure Ecosystem</a>
-<ul class="sectlevel2">
-<li><a href="#_leiningen">2.1. Leiningen</a></li>
-<li><a href="#_the_read_eval_print_loop_repl">2.2. The Read Eval Print Loop (REPL)</a></li>
-<li><a href="#_editor_setup">2.3. Editor setup</a></li>
-<li><a href="#_exercises">2.4. Exercises</a></li>
-<li><a href="#_answers">2.5. Answers</a></li>
 </ul>
 </li>
-<li><a href="#_clojure_syntax">3. Clojure Syntax</a>
+<li><a href="#_the_clojure_ecosystem">1. The Clojure Ecosystem</a>
 <ul class="sectlevel2">
-<li><a href="#_primitive_data_types">3.1. Primitive data types</a></li>
-<li><a href="#_collections_lists_vectors_maps_and_sets">3.2. Collections: lists, vectors, maps, and sets</a></li>
-<li><a href="#_invoking_functions">3.3. Invoking functions</a></li>
-<li><a href="#_defining_vars">3.4. Defining vars</a></li>
-<li><a href="#_binding_names_with_let">3.5. Binding names with let</a></li>
-<li><a href="#_destructuring_also_known_as_binding_forms">3.6. Destructuring (also known as binding forms)</a></li>
-<li><a href="#_namespaces">3.7. Namespaces</a></li>
-<li><a href="#_regex">3.8. Regex</a></li>
-<li><a href="#_exercises_2">3.9. Exercises</a></li>
-<li><a href="#_answers_2">3.10. Answers</a></li>
+<li><a href="#_leiningen">1.1. Leiningen</a></li>
+<li><a href="#_the_read_eval_print_loop_repl">1.2. The Read Eval Print Loop (REPL)</a></li>
+<li><a href="#_editor_setup">1.3. Editor setup</a></li>
+<li><a href="#_exercises">1.4. Exercises</a></li>
+<li><a href="#_answers">1.5. Answers</a></li>
 </ul>
 </li>
-<li><a href="#_functions_2">4. Functions</a>
+<li><a href="#_clojure_syntax">2. Clojure Syntax</a>
 <ul class="sectlevel2">
-<li><a href="#_defining_functions">4.1. Defining functions</a></li>
-<li><a href="#_pre_and_post_conditions">4.2. Pre- and post-conditions</a></li>
-<li><a href="#_anonymous_functions">4.3. Anonymous functions</a></li>
-<li><a href="#_function_literals">4.4. Function literals</a></li>
-<li><a href="#_keyword_and_variadic_arguments">4.5. Keyword and variadic arguments</a></li>
-<li><a href="#_exercises_3">4.6. Exercises</a></li>
-<li><a href="#_answers_3">4.7. Answers</a></li>
+<li><a href="#_primitive_data_types">2.1. Primitive data types</a></li>
+<li><a href="#_collections_lists_vectors_maps_and_sets">2.2. Collections: lists, vectors, maps, and sets</a></li>
+<li><a href="#_invoking_functions">2.3. Invoking functions</a></li>
+<li><a href="#_defining_vars">2.4. Defining vars</a></li>
+<li><a href="#_binding_names_with_let">2.5. Binding names with let</a></li>
+<li><a href="#_destructuring_also_known_as_binding_forms">2.6. Destructuring (also known as binding forms)</a></li>
+<li><a href="#_namespaces">2.7. Namespaces</a></li>
+<li><a href="#_regex">2.8. Regex</a></li>
+<li><a href="#_exercises_2">2.9. Exercises</a></li>
+<li><a href="#_answers_2">2.10. Answers</a></li>
 </ul>
 </li>
-<li><a href="#_challenge_1_corgi_cover_eligibility">5. Challenge 1: Corgi Cover eligibility</a>
+<li><a href="#_functions_2">3. Functions</a>
 <ul class="sectlevel2">
-<li><a href="#_part_1">5.1. Part 1:</a></li>
-<li><a href="#_part_2">5.2. Part 2:</a></li>
-<li><a href="#_part_3">5.3. Part 3:</a></li>
-<li><a href="#_part_4">5.4. Part 4:</a></li>
+<li><a href="#_defining_functions">3.1. Defining functions</a></li>
+<li><a href="#_pre_and_post_conditions">3.2. Pre- and post-conditions</a></li>
+<li><a href="#_anonymous_functions">3.3. Anonymous functions</a></li>
+<li><a href="#_function_literals">3.4. Function literals</a></li>
+<li><a href="#_keyword_and_variadic_arguments">3.5. Keyword and variadic arguments</a></li>
+<li><a href="#_exercises_3">3.6. Exercises</a></li>
+<li><a href="#_answers_3">3.7. Answers</a></li>
 </ul>
 </li>
-<li><a href="#_testing_with_clojure_test">6. Testing with clojure.test</a>
+<li><a href="#_challenge_1_corgi_cover_eligibility">4. Challenge 1: Corgi Cover eligibility</a>
 <ul class="sectlevel2">
-<li><a href="#_defining_tests_with_deftest">6.1. Defining tests with deftest</a></li>
-<li><a href="#_lein_test_refresh">6.2. lein-test-refresh</a></li>
-<li><a href="#_assertions_with_is_and_are">6.3. Assertions with is and are</a></li>
-<li><a href="#_test_fixtures">6.4. Test fixtures</a></li>
-<li><a href="#_using_with_redefs_for_mocking_behavior">6.5. Using with-redefs for mocking behavior</a></li>
-<li><a href="#_debugging">6.6. Debugging</a></li>
-<li><a href="#_exercises_4">6.7. Exercises</a></li>
-<li><a href="#_answers_4">6.8. Answers</a></li>
+<li><a href="#_part_1">4.1. Part 1:</a>
+<ul class="sectlevel3">
+<li><a href="#_test_data">4.1.1. Test data:</a></li>
 </ul>
 </li>
-<li><a href="#_control_flow">7. Control Flow</a>
-<ul class="sectlevel2">
-<li><a href="#_conditionals_if_when_cond">7.1. Conditionals: if, when, cond</a></li>
-<li><a href="#_recursion">7.2. Recursion</a></li>
-<li><a href="#_loops">7.3. Loops</a></li>
-<li><a href="#_exception_handling">7.4. Exception handling</a></li>
-<li><a href="#_comments">7.5. Comments</a></li>
-<li><a href="#_exercises_5">7.6. Exercises</a></li>
-<li><a href="#_answers_5">7.7. Answers</a></li>
+<li><a href="#_part_2">4.2. Part 2:</a></li>
+<li><a href="#_part_3">4.3. Part 3:</a></li>
+<li><a href="#_part_4">4.4. Part 4:</a></li>
 </ul>
 </li>
-<li><a href="#_functional_programming">8. Functional Programming</a>
+<li><a href="#_testing_with_clojure_test">5. Testing with clojure.test</a>
 <ul class="sectlevel2">
-<li><a href="#_pure_functions_and_side_effects">8.1. Pure functions and side effects</a></li>
-<li><a href="#_apply_partial_and_comp">8.2. Apply, partial, and comp</a></li>
-<li><a href="#_functions_on_sequences_map_reduce_and_friends">8.3. Functions on sequences: map, reduce, and friends</a></li>
-<li><a href="#_threading_operators">8.4. Threading operators</a></li>
-<li><a href="#_data_structures_are_functions">8.5. Data structures are functions!</a></li>
-<li><a href="#_exercises_6">8.6. Exercises</a></li>
-<li><a href="#_answers_6">8.7. Answers</a></li>
+<li><a href="#_defining_tests_with_deftest">5.1. Defining tests with deftest</a></li>
+<li><a href="#_lein_test_refresh">5.2. lein-test-refresh</a></li>
+<li><a href="#_assertions_with_is_and_are">5.3. Assertions with is and are</a></li>
+<li><a href="#_test_fixtures">5.4. Test fixtures</a></li>
+<li><a href="#_using_with_redefs_for_mocking_behavior">5.5. Using with-redefs for mocking behavior</a></li>
+<li><a href="#_debugging">5.6. Debugging</a></li>
+<li><a href="#_exercises_4">5.7. Exercises</a></li>
+<li><a href="#_answers_4">5.8. Answers</a></li>
 </ul>
 </li>
-<li><a href="#_challenge_2_processing_files">9. Challenge 2: Processing files</a>
+<li><a href="#_control_flow">6. Control Flow</a>
 <ul class="sectlevel2">
-<li><a href="#_part_1_2">9.1. Part 1:</a></li>
-<li><a href="#_part_2_2">9.2. Part 2:</a></li>
-<li><a href="#_part_3_2">9.3. Part 3:</a></li>
-<li><a href="#_part_4_2">9.4. Part 4:</a></li>
+<li><a href="#_conditionals_if_when_cond">6.1. Conditionals: if, when, cond</a></li>
+<li><a href="#_recursion">6.2. Recursion</a></li>
+<li><a href="#_loops">6.3. Loops</a></li>
+<li><a href="#_exception_handling">6.4. Exception handling</a></li>
+<li><a href="#_comments">6.5. Comments</a></li>
+<li><a href="#_exercises_5">6.6. Exercises</a></li>
+<li><a href="#_answers_5">6.7. Answers</a></li>
 </ul>
 </li>
-<li><a href="#_macros">10. Macros</a>
+<li><a href="#_functional_programming">7. Functional Programming</a>
 <ul class="sectlevel2">
-<li><a href="#_expanding_macros">10.1. Expanding macros</a></li>
-<li><a href="#_defining_macros">10.2. Defining macros</a></li>
-<li><a href="#_syntax_quoting">10.3. Syntax quoting</a></li>
-<li><a href="#_code_as_data">10.4. Code as data</a></li>
-<li><a href="#_exercises_7">10.5. Exercises</a></li>
-<li><a href="#_answers_7">10.6. Answers</a></li>
+<li><a href="#_pure_functions_and_side_effects">7.1. Pure functions and side effects</a></li>
+<li><a href="#_apply_partial_and_comp">7.2. Apply, partial, and comp</a></li>
+<li><a href="#_functions_on_sequences_map_reduce_and_friends">7.3. Functions on sequences: map, reduce, and friends</a></li>
+<li><a href="#_threading_operators">7.4. Threading operators</a></li>
+<li><a href="#_data_structures_are_functions">7.5. Data structures are functions!</a></li>
+<li><a href="#_exercises_6">7.6. Exercises</a></li>
+<li><a href="#_answers_6">7.7. Answers</a></li>
 </ul>
 </li>
-<li><a href="#_parallel_programming_and_concurrency">11. Parallel Programming and Concurrency</a>
+<li><a href="#_challenge_2_processing_files">8. Challenge 2: Processing files</a>
 <ul class="sectlevel2">
-<li><a href="#_vars_and_dynamic_scope">11.1. Vars and dynamic scope</a></li>
-<li><a href="#_delays_futures_and_promises">11.2. Delays, Futures, and Promises</a></li>
-<li><a href="#_atoms_refs_and_agents">11.3. Atoms, Refs, and Agents</a></li>
+<li><a href="#_part_1_2">8.1. Part 1:</a></li>
+<li><a href="#_part_2_2">8.2. Part 2:</a></li>
+<li><a href="#_part_3_2">8.3. Part 3:</a></li>
+<li><a href="#_part_4_2">8.4. Part 4:</a></li>
 </ul>
 </li>
-<li><a href="#_java_interop">12. Java Interop</a>
+<li><a href="#_macros">9. Macros</a>
 <ul class="sectlevel2">
-<li><a href="#_clojure_syntax_for_java_constructors">12.1. Clojure syntax for Java constructors</a></li>
-<li><a href="#_calling_methods">12.2. Calling methods</a></li>
-<li><a href="#_reify">12.3. reify</a></li>
-<li><a href="#_gen_class_and_proxy">12.4. gen-class and proxy</a></li>
-<li><a href="#_including_java_classes_in_clojure_projects">12.5. Including Java classes in Clojure projects</a></li>
+<li><a href="#_expanding_macros">9.1. Expanding macros</a></li>
+<li><a href="#_defining_macros">9.2. Defining macros</a></li>
+<li><a href="#_syntax_quoting">9.3. Syntax quoting</a></li>
+<li><a href="#_code_as_data">9.4. Code as data</a></li>
+<li><a href="#_exercises_7">9.5. Exercises</a></li>
+<li><a href="#_answers_7">9.6. Answers</a></li>
 </ul>
 </li>
-<li><a href="#_challenge_3_mocking_parallel_web_requests">13. Challenge 3: Mocking parallel web requests</a>
+<li><a href="#_parallel_programming_and_concurrency">10. Parallel Programming and Concurrency</a>
 <ul class="sectlevel2">
-<li><a href="#_part_1_mock_a_web_request">13.1. Part 1: Mock a web request</a></li>
-<li><a href="#_part_2_report_the_how_long_it_takes">13.2. Part 2: Report the how long it takes</a></li>
-<li><a href="#_part_3_make_parallel_requests">13.3. Part 3: Make parallel requests</a></li>
-<li><a href="#_part_4_error_handling">13.4. Part 4: Error handling</a></li>
+<li><a href="#_vars_and_dynamic_scope">10.1. Vars and dynamic scope</a></li>
+<li><a href="#_delays_futures_and_promises">10.2. Delays, Futures, and Promises</a>
+<ul class="sectlevel3">
+<li><a href="#_delays">10.2.1. Delays</a></li>
+<li><a href="#_futures">10.2.2. Futures</a></li>
+<li><a href="#_promises">10.2.3. Promises</a></li>
 </ul>
 </li>
-<li><a href="#_polymorphism_and_types">14. Polymorphism and Types</a>
-<ul class="sectlevel2">
-<li><a href="#_multimethods">14.1. Multimethods</a></li>
-<li><a href="#_protocols">14.2. Protocols</a></li>
-<li><a href="#_creating_types_with_defrecord_and_deftype">14.3. Creating types with defrecord and deftype</a></li>
-<li><a href="#_specifications_with_clojure_spec">14.4. Specifications with clojure.spec</a></li>
-<li><a href="#_validation">14.5. Validation</a></li>
-<li><a href="#_conforming">14.6. Conforming</a></li>
-<li><a href="#_maps">14.7. Maps</a></li>
-<li><a href="#_a_game_of_cards">14.8. A game of cards</a></li>
-<li><a href="#_generators">14.9. Generators</a></li>
-<li><a href="#_instrumentation_and_testing">14.10. Instrumentation and Testing</a></li>
+<li><a href="#_atoms_refs_and_agents">10.3. Atoms, Refs, and Agents</a></li>
 </ul>
 </li>
-<li><a href="#_interacting_with_a_database">15. Interacting with a Database</a>
+<li><a href="#_java_interop">11. Java Interop</a>
 <ul class="sectlevel2">
-<li><a href="#_intro_to_clojure_java_jdbc">15.1. Intro to clojure.java.jdbc</a></li>
-<li><a href="#_inserting_updating_and_retrieving_data">15.2. Inserting, updating and retrieving data</a></li>
-<li><a href="#_solutions_for_sql_management">15.3. Solutions for SQL management</a></li>
-<li><a href="#_exercises_8">15.4. Exercises</a></li>
-<li><a href="#_answers_8">15.5. Answers</a></li>
+<li><a href="#_clojure_syntax_for_java_constructors">11.1. Clojure syntax for Java constructors</a></li>
+<li><a href="#_calling_methods">11.2. Calling methods</a></li>
+<li><a href="#_reify">11.3. reify</a></li>
+<li><a href="#_gen_class_and_proxy">11.4. gen-class and proxy</a></li>
+<li><a href="#_including_java_classes_in_clojure_projects">11.5. Including Java classes in Clojure projects</a></li>
 </ul>
 </li>
-<li><a href="#_challenge_4_corgi_cover_database">16. Challenge 4: Corgi Cover Database</a>
+<li><a href="#_challenge_3_mocking_parallel_web_requests">12. Challenge 3: Mocking parallel web requests</a>
 <ul class="sectlevel2">
-<li><a href="#_part_1_set_up_the_schema">16.1. Part 1: Set up the schema</a></li>
-<li><a href="#_part_2_populate_the_data">16.2. Part 2: Populate the data</a></li>
-<li><a href="#_part_3_write_a_spec">16.3. Part 3: Write a spec</a></li>
-<li><a href="#_part_4_extending_to_poodle_protection">16.4. Part 4: Extending to Poodle Protection</a></li>
+<li><a href="#_part_1_mock_a_web_request">12.1. Part 1: Mock a web request</a></li>
+<li><a href="#_part_2_report_the_how_long_it_takes">12.2. Part 2: Report the how long it takes</a></li>
+<li><a href="#_part_3_make_parallel_requests">12.3. Part 3: Make parallel requests</a></li>
+<li><a href="#_part_4_error_handling">12.4. Part 4: Error handling</a></li>
 </ul>
 </li>
-<li><a href="#_further_reading">17. Further reading</a></li>
+<li><a href="#_polymorphism_and_types">13. Polymorphism and Types</a>
+<ul class="sectlevel2">
+<li><a href="#_multimethods">13.1. Multimethods</a></li>
+<li><a href="#_protocols">13.2. Protocols</a></li>
+<li><a href="#_creating_types_with_defrecord_and_deftype">13.3. Creating types with defrecord and deftype</a>
+<ul class="sectlevel3">
+<li><a href="#_deftype">13.3.1. Deftype</a></li>
+<li><a href="#_defrecord">13.3.2. Defrecord</a></li>
+</ul>
+</li>
+<li><a href="#_specifications_with_clojure_spec">13.4. Specifications with clojure.spec</a></li>
+<li><a href="#_validation">13.5. Validation</a></li>
+<li><a href="#_conforming">13.6. Conforming</a></li>
+<li><a href="#_maps">13.7. Maps</a></li>
+<li><a href="#_a_game_of_cards">13.8. A game of cards</a></li>
+<li><a href="#_generators">13.9. Generators</a></li>
+<li><a href="#_instrumentation_and_testing">13.10. Instrumentation and Testing</a></li>
+</ul>
+</li>
+<li><a href="#_interacting_with_a_database">14. Interacting with a Database</a>
+<ul class="sectlevel2">
+<li><a href="#_intro_to_clojure_java_jdbc">14.1. Intro to clojure.java.jdbc</a></li>
+<li><a href="#_inserting_updating_and_retrieving_data">14.2. Inserting, updating and retrieving data</a></li>
+<li><a href="#_solutions_for_sql_management">14.3. Solutions for SQL management</a></li>
+<li><a href="#_exercises_8">14.4. Exercises</a></li>
+<li><a href="#_answers_8">14.5. Answers</a></li>
+</ul>
+</li>
+<li><a href="#_challenge_4_corgi_cover_database">15. Challenge 4: Corgi Cover Database</a>
+<ul class="sectlevel2">
+<li><a href="#_part_1_set_up_the_schema">15.1. Part 1: Set up the schema</a></li>
+<li><a href="#_part_2_populate_the_data">15.2. Part 2: Populate the data</a></li>
+<li><a href="#_part_3_write_a_spec">15.3. Part 3: Write a spec</a></li>
+<li><a href="#_part_4_extending_to_poodle_protection">15.4. Part 4: Extending to Poodle Protection</a></li>
+</ul>
+</li>
+<li><a href="#_further_reading">16. Further reading</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_about">1. About</h2>
+<h2 id="_about">About</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_overview">1.1. Overview</h3>
 <div class="paragraph">
-<p>Clojure is a general purpose programming language boasting immutable data structures, concurrency primitives, and facilities for interacting with the rest of the Java ecosystem. Since it is a Lisp, it is dynamic, offers a wealth of functional programming facilities, and has a powerful macro system.</p>
+<p>Welcome to Enterprise Clojure Training.
+This course is for developers learning Clojure for the purpose of building enterprise software.</p>
+</div>
+<div class="sect2">
+<h3 id="_overview">Overview</h3>
+<div class="paragraph">
+<p>Clojure is a dynamic, general-purpose programming language, combining interactive development with an efficient and robust infrastructure for multithreaded programming.
+Clojure provides direct access to the Java frameworks.
+Clojure is a dialect of Lisp, and shares with Lisp the code-as-data philosophy and macro system.
+Clojure is predominantly a functional programming language, and features a rich set of immutable, persistent data structures.</p>
 </div>
 <div class="paragraph">
-<p>In this course we will cover how to: install Clojure and related tools; interact with Clojure via the read-eval-print- loop (REPL); create functions, data-structures, macros, and types; use functional programming constructs like map and reduce; and design, implement, and test Clojure programs.</p>
+<p>In this course we will cover how to:
+  install Clojure and related tools;
+  interact with Clojure via the read-eval-print- loop (REPL);
+  create functions, data-structures, macros, and types;
+  use functional programming constructs like map and reduce;
+  and design, implement, and test Clojure programs.</p>
 </div>
 <div class="paragraph">
 <p>Each section will feature interactive exercises, and course material will be reinforced with guided case studies.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_duration">1.2. Duration</h3>
+<h3 id="_duration">Duration</h3>
 <div class="paragraph">
-<p>2days, 10 hr/day + 3 to 4 hour webinar after completion of workshop</p>
-</div>
-<div class="paragraph">
-<p>Learning Objectives (At the end of this course, you will be able to…)</p>
-</div>
-<div class="paragraph">
-<p>Write Clojure code
-Structure Clojure products
-Interact with Java
-Understand Parallel programming and concurrency</p>
+<p>2days, 10 hr/day + 2 hour webinar after completion of workshop.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_prerequisites">1.3. Prerequisites</h3>
+<h3 id="_learning_objectives">Learning Objectives</h3>
 <div class="paragraph">
-<p>Programming Knowledge</p>
+<p>At the end of this course, you will be able to</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Write Clojure code</p>
+</li>
+<li>
+<p>Structure Clojure products</p>
+</li>
+<li>
+<p>Interact with Java</p>
+</li>
+<li>
+<p>Use Clojure&#8217;s parallel programming and concurrency facilities</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_target_audience">1.4. Target Audience</h3>
+<h3 id="_prerequisites">Prerequisites</h3>
 <div class="paragraph">
-<p>Developers / Senior Developers</p>
+<p>General programming knowledge.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_required_setup">1.5. Required setup</h3>
+<h3 id="_target_audience">Target Audience</h3>
+<div class="paragraph">
+<p>Developers and Senior Developers.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_required_setup">Required setup</h3>
 <div class="paragraph">
 <p>The following software must be installed on your laptop prior to the course:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Java <a href="https://java.com" class="bare">https://java.com</a></p>
+<p>Java (<a href="https://java.com" class="bare">https://java.com</a>)</p>
 </li>
 <li>
-<p>Leiningen	<a href="https://leiningen.org/" class="bare">https://leiningen.org/</a></p>
+<p>Leiningen	(<a href="https://leiningen.org" class="bare">https://leiningen.org</a>)</p>
 </li>
 <li>
-<p>IntelliJ <a href="https://www.jetbrains.com/idea" class="bare">https://www.jetbrains.com/idea</a></p>
+<p>IntelliJ (<a href="https://www.jetbrains.com/idea" class="bare">https://www.jetbrains.com/idea</a>)</p>
 </li>
 <li>
-<p>Cursive plugin for IntelliJ <a href="https://cursive-ide.com/" class="bare">https://cursive-ide.com/</a></p>
+<p>Cursive plugin for IntelliJ (<a href="https://cursive-ide.com" class="bare">https://cursive-ide.com</a>)</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_pre_assessment">1.6. Pre-assessment</h3>
-<div class="paragraph">
+<h3 id="_pre_assessment">Pre-assessment</h3>
+<div class="ulist">
+<ul>
+<li>
 <p>What programming languages have you used before?</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>Do you have an interest in Clojure? If so what in particular interests you?</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>What do you plan to do with Clojure?</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>Name a scenario where you would use a HashMap data structure.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>When should you use a Vector instead of a List or an Array?</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_required_preparation">1.7. Required preparation</h3>
+<h3 id="_required_preparation">Required preparation</h3>
 <div class="paragraph">
-<p>Complete the first 10 exercises on the 4Clojure website:	<a href="http://www.4clojure.com" class="bare">http://www.4clojure.com</a></p>
+<p>Complete the first 10 exercises on the 4Clojure website (<a href="http://www.4clojure.com" class="bare">http://www.4clojure.com</a>).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_optional_reading">1.8. Optional reading</h3>
+<h3 id="_optional_reading">Optional reading</h3>
 <div class="paragraph">
-<p>If you would like a head-start, then please read this article:
-<a href="http://clojure-doc.org/articles/tutorials/introduction.html" class="bare">http://clojure-doc.org/articles/tutorials/introduction.html</a>.
-This material will be covered as part of the course. Having read it before hand will allow you to focus on working through the exercises of the course.</p>
+<p>If you would like to get a head-start, please read the official Clojure introduction tutorial (<a href="http://clojure-doc.org/articles/tutorials/introduction.html" class="bare">http://clojure-doc.org/articles/tutorials/introduction.html</a>).
+This material will be covered as part of the course.
+Having read it before hand will allow you to focus on working through the exercises of the course.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_introductions">1.9. Introductions</h3>
+<h3 id="_introductions">Introductions</h3>
+<div class="quoteblock">
+<blockquote>
+Creativity is the ability to introduce order into the randomness of nature.
+</blockquote>
+<div class="attribution">
+&#8212; Eric Hoffer
+</div>
+</div>
 <div class="sect3">
-<h4 id="_the_instructor">1.9.1. The instructor</h4>
+<h4 id="_the_instructor">The instructor</h4>
 <div class="paragraph">
-<p>Timothy Pratley is the author of the book “Professional Clojure”, and a contributor to the Clojure core language. He has 18 years of professional software development experience in banking, robotics, logistics, and advertising. He spent the last 4 years exclusively using Clojure and ClojureScript developing enterprise systems for Fortune 500 companies. He enjoys making YouTube videos about Clojure, going running, and reading books.</p>
+<p>Timothy Pratley is the author of the book “Professional Clojure”, and a contributor to the Clojure core language.
+He has 18 years of professional software development experience in banking, robotics, logistics, and advertising.
+He spent the last 4 years exclusively using Clojure and ClojureScript developing enterprise systems for Fortune 500 companies.
+He enjoys making YouTube videos about Clojure, running, and reading books.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_clojure">1.9.2. Clojure</h4>
+<h4 id="_clojure">Clojure</h4>
 <div class="paragraph">
-<p>During this course we will be examining the Clojure language up close. Sometimes a new language can feel different just for difference sake. Throughout the course there will be time to reflect on what purpose the differences serve and what trade offs are being made. These are the Clojure language themes to watch out for as we move through the course:</p>
+<p>During this course we will be examining the Clojure language up close.
+Sometimes a new language can feel different just for difference sake.
+So why is it worth learning Clojure?</p>
+</div>
+<div class="paragraph">
+<p>Clojure is simple and data-oriented.
+Smart people want to use it.
+Clojure enables teams to build things fast.
+This makes it excellent for delivering value in enterprise development projects.</p>
+</div>
+<div class="paragraph">
+<p>Throughout the course there will be time to reflect on what purpose the differences serve and what trade offs are being made.
+These are the Clojure language themes to watch out for as we move through the course:</p>
 </div>
 <div class="sect4">
 <h5 id="_data">Data</h5>
@@ -766,8 +854,9 @@ This material will be covered as part of the course. Having read it before hand 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_syntax_summary">1.9.3. Syntax Summary</h4>
-<table class="tableblock frame-all grid-all spread">
+<h4 id="_syntax_summary">Syntax Summary</h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Everything is a list with the operation at the front.</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -780,29 +869,29 @@ This material will be covered as part of the course. Having read it before hand 
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int i = 5;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">(def i 5)</p></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>int i = 5;</pre></div></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>(def i 5)</pre></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">if (x == 0)
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>if (x == 0)
   return y;
 else
-  return z;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">(if (zero? x)
+  return z;</pre></div></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>(if (zero? x)
   y
-  z)</p></td>
+  z)</pre></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">x * y * z;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">(* x y z)</p></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>x * y * z;</pre></div></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>(* x y z)</pre></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">foo(x, y, z);</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">(foo x y z)</p></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>foo(x, y, z);</pre></div></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>(foo x y z)</pre></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">foo.bar(x);</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">(.bar foo x)</p></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>foo.bar(x);</pre></div></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>(.bar foo x)</pre></div></td>
 </tr>
 </tbody>
 </table>
@@ -814,7 +903,7 @@ else
 </div>
 </div>
 <div class="sect1">
-<h2 id="_the_clojure_ecosystem">2. The Clojure Ecosystem</h2>
+<h2 id="_the_clojure_ecosystem">1. The Clojure Ecosystem</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>There are many Clojure libraries. Hosted on Maven and Clojars. Just jars, like any other Java artifact.</p>
@@ -834,9 +923,9 @@ ClojureScript can make direct use of JavaScript libraries.</p>
 <p>Please follow along on your laptop and ask questions at any time.</p>
 </div>
 <div class="sect2">
-<h3 id="_leiningen">2.1. Leiningen</h3>
+<h3 id="_leiningen">1.1. Leiningen</h3>
 <div class="paragraph">
-<p>A popular project built tool that provides a convenient way to pull libraries for your project. Follow the installation instructions at <a href="https://leiningen.org" class="bare">https://leiningen.org</a>.</p>
+<p>A popular project built tool that provides a convenient way to pull libraries for your project. Follow the installation instructions at (<a href="https://leiningen.org" class="bare">https://leiningen.org</a>).</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -857,7 +946,7 @@ cat src/training/core.clj</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_the_read_eval_print_loop_repl">2.2. The Read Eval Print Loop (REPL)</h3>
+<h3 id="_the_read_eval_print_loop_repl">1.2. The Read Eval Print Loop (REPL)</h3>
 <div class="paragraph">
 <p>When you type in this code:</p>
 </div>
@@ -882,15 +971,15 @@ cat src/training/core.clj</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_editor_setup">2.3. Editor setup</h3>
+<h3 id="_editor_setup">1.3. Editor setup</h3>
 <div class="paragraph">
-<p>Most popular editors have plugins to send commands from the editor to a REPL, do syntax highlighting and manage parenthesis. These are useful features but I encourage you to prioritize learning Clojure ahead of configuring and learning new editor key combinations. It is difficult to do both at once!</p>
+<p>Most popular editors have plugins to send commands from the editor to a REPL, do syntax highlighting and manage parenthesis.
+These are useful features, but I encourage you to prioritize learning Clojure ahead of configuring and learning new editor key combinations.
+It is difficult to do both at once!</p>
 </div>
 <div class="paragraph">
-<p>IntelliJ <a href="https://www.jetbrains.com/idea" class="bare">https://www.jetbrains.com/idea</a></p>
-</div>
-<div class="paragraph">
-<p>I highly recommend Cursive Clojure, a plugin for IntelliJ. The main feature that sets Cursive apart is that it does error highlighting in the editor itself. <a href="https://cursive-ide.com/userguide/" class="bare">https://cursive-ide.com/userguide/</a></p>
+<p>For this course I recommend using IntelliJ (<a href="https://www.jetbrains.com/idea" class="bare">https://www.jetbrains.com/idea</a>) with the Cursive Clojure plugin (<a href="https://cursive-ide.com" class="bare">https://cursive-ide.com</a>).
+The main feature that sets Cursive apart is that it does error highlighting in the editor itself (<a href="https://cursive-ide.com/userguide" class="bare">https://cursive-ide.com/userguide</a>).</p>
 </div>
 <div class="ulist">
 <ul>
@@ -912,7 +1001,7 @@ cat src/training/core.clj</pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Lighttable <a href="http://lighttable.com" class="bare">http://lighttable.com</a></p>
+<p>Alternative: Lighttable (<a href="http://lighttable.com" class="bare">http://lighttable.com</a>)</p>
 </div>
 <div class="ulist">
 <ul>
@@ -937,14 +1026,14 @@ cat src/training/core.clj</pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>You can also open a REPL in your browser: <a href="https://repl.it/languages/clojure" class="bare">https://repl.it/languages/clojure</a>.</p>
+<p>You can also open a REPL in your browser: (<a href="https://repl.it/languages/clojure" class="bare">https://repl.it/languages/clojure</a>).</p>
 </div>
 <div class="paragraph">
-<p>For other editor options see <a href="https://cb.codes/what-editor-ide-to-use-for-clojure" class="bare">https://cb.codes/what-editor-ide-to-use-for-clojure</a>.</p>
+<p>For other editor options see (<a href="https://cb.codes/what-editor-ide-to-use-for-clojure" class="bare">https://cb.codes/what-editor-ide-to-use-for-clojure</a>).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exercises">2.4. Exercises</h3>
+<h3 id="_exercises">1.4. Exercises</h3>
 <div class="paragraph">
 <p>Evaluate some math expressions in the REPL:</p>
 </div>
@@ -965,7 +1054,8 @@ cat src/training/core.clj</pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Create a new project called <code>training</code>. Open <code>src/training/core.clj</code> with your editor, write some expressions and send them to the REPL:</p>
+<p>Create a new project called <code>training</code>.
+Open <code>src/training/core.clj</code> with your editor, write some expressions, and send them to the REPL:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -979,7 +1069,7 @@ cat src/training/core.clj</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_answers">2.5. Answers</h3>
+<h3 id="_answers">1.5. Answers</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(+ 2 3)
@@ -1020,10 +1110,18 @@ cat src/training/core.clj</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_clojure_syntax">3. Clojure Syntax</h2>
+<h2 id="_clojure_syntax">2. Clojure Syntax</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+The rhythmical unit of the syllable is at the back of all of it - the word, the phrase, the sentence, the syntax, the paragraph, and the way the heart moves when you read it.
+</blockquote>
+<div class="attribution">
+&#8212; Ali Smith
+</div>
+</div>
 <div class="sect2">
-<h3 id="_primitive_data_types">3.1. Primitive data types</h3>
+<h3 id="_primitive_data_types">2.1. Primitive data types</h3>
 <div class="paragraph">
 <p>Strings are enclosed in double quotes</p>
 </div>
@@ -1099,7 +1197,7 @@ cat src/training/core.clj</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_collections_lists_vectors_maps_and_sets">3.2. Collections: lists, vectors, maps, and sets</h3>
+<h3 id="_collections_lists_vectors_maps_and_sets">2.2. Collections: lists, vectors, maps, and sets</h3>
 <div class="paragraph">
 <p>Lists are forms enclosed in parentheses.</p>
 </div>
@@ -1277,7 +1375,7 @@ Keywords begin with a colon.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_invoking_functions">3.3. Invoking functions</h3>
+<h3 id="_invoking_functions">2.3. Invoking functions</h3>
 <div class="paragraph">
 <p>To call a function, wrap it in parenthesis:</p>
 </div>
@@ -1292,7 +1390,7 @@ Keywords begin with a colon.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_defining_vars">3.4. Defining vars</h3>
+<h3 id="_defining_vars">2.4. Defining vars</h3>
 <div class="paragraph">
 <p>A var is used to store a mutable reference to a value. Vars are unbound if no value is supplied.</p>
 </div>
@@ -1344,7 +1442,7 @@ x
 </div>
 </div>
 <div class="sect2">
-<h3 id="_binding_names_with_let">3.5. Binding names with let</h3>
+<h3 id="_binding_names_with_let">2.5. Binding names with let</h3>
 <div class="paragraph">
 <p>Symbols:</p>
 </div>
@@ -1382,7 +1480,7 @@ x
 </div>
 </div>
 <div class="sect2">
-<h3 id="_destructuring_also_known_as_binding_forms">3.6. Destructuring (also known as binding forms)</h3>
+<h3 id="_destructuring_also_known_as_binding_forms">2.6. Destructuring (also known as binding forms)</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(let [[x y] [1 2]]
@@ -1536,7 +1634,7 @@ Most mathematical functions are variadic:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_namespaces">3.7. Namespaces</h3>
+<h3 id="_namespaces">2.7. Namespaces</h3>
 <div class="paragraph">
 <p>Namespace forms occur at the start of files.</p>
 </div>
@@ -1564,7 +1662,7 @@ Must be defined in the <code>src/training/core.clj</code> file. Filename hyphens
 </div>
 </div>
 <div class="sect2">
-<h3 id="_regex">3.8. Regex</h3>
+<h3 id="_regex">2.8. Regex</h3>
 <div class="paragraph">
 <p>Regular expressions are written as <code>#"pattern"</code></p>
 </div>
@@ -1576,7 +1674,7 @@ Must be defined in the <code>src/training/core.clj</code> file. Filename hyphens
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exercises_2">3.9. Exercises</h3>
+<h3 id="_exercises_2">2.9. Exercises</h3>
 <div class="paragraph">
 <p>Write code into a new file called <code>src/training/syntax.clj</code>, and send the lines to the REPL as you enter them.</p>
 </div>
@@ -1612,7 +1710,7 @@ Use the <code>str</code> function.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_answers_2">3.10. Answers</h3>
+<h3 id="_answers_2">2.10. Answers</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(ns training.syntax)
@@ -1680,10 +1778,18 @@ Use the <code>str</code> function.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_functions_2">4. Functions</h2>
+<h2 id="_functions_2">3. Functions</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+The chief function of the body is to carry the brain around.
+</blockquote>
+<div class="attribution">
+&#8212; Thomas A. Edison
+</div>
+</div>
 <div class="sect2">
-<h3 id="_defining_functions">4.1. Defining functions</h3>
+<h3 id="_defining_functions">3.1. Defining functions</h3>
 <div class="paragraph">
 <p>Functions are defined like this:</p>
 </div>
@@ -1792,7 +1898,7 @@ Unnamed closures are useful as arguments to higher order functions.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_pre_and_post_conditions">4.2. Pre- and post-conditions</h3>
+<h3 id="_pre_and_post_conditions">3.2. Pre- and post-conditions</h3>
 <div class="paragraph">
 <p>You can make assertions about inputs and outputs of a function. Place a map after the arguments vector containing :pre and :post, which are a sequence of conditions which must hold true.</p>
 </div>
@@ -1847,7 +1953,7 @@ Less control over error description and handling</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_anonymous_functions">4.3. Anonymous functions</h3>
+<h3 id="_anonymous_functions">3.3. Anonymous functions</h3>
 <div class="paragraph">
 <p>We usually define functions with defn, which creates a global var to hold our function. But sometimes the function need not be globally available. We can specify functions without names like so:</p>
 </div>
@@ -1951,7 +2057,7 @@ Less control over error description and handling</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_function_literals">4.4. Function literals</h3>
+<h3 id="_function_literals">3.4. Function literals</h3>
 <div class="paragraph">
 <p>There is a special syntax for creating anonymous functions concisely:</p>
 </div>
@@ -1986,7 +2092,7 @@ Less control over error description and handling</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_keyword_and_variadic_arguments">4.5. Keyword and variadic arguments</h3>
+<h3 id="_keyword_and_variadic_arguments">3.5. Keyword and variadic arguments</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(defn f [&amp; args]
@@ -2026,7 +2132,7 @@ Bypasses arity checking</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exercises_3">4.6. Exercises</h3>
+<h3 id="_exercises_3">3.6. Exercises</h3>
 <div class="paragraph">
 <p>Create a new namespace called <code>fun-functions</code>. Define the following functions and call them with some test input:</p>
 </div>
@@ -2045,7 +2151,7 @@ Bypasses arity checking</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_answers_3">4.7. Answers</h3>
+<h3 id="_answers_3">3.7. Answers</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(defn square [x]
@@ -2082,19 +2188,22 @@ Bypasses arity checking</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_challenge_1_corgi_cover_eligibility">5. Challenge 1: Corgi Cover eligibility</h2>
+<h2 id="_challenge_1_corgi_cover_eligibility">4. Challenge 1: Corgi Cover eligibility</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy. Only certain people are eligible to register for “corgi cover”. To be eligible they must own a corgi, live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO). You are tasked with building a system to validate applications for the policy.</p>
+<p>Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy.
+Only certain people are eligible to register for “corgi cover”.
+To be eligible they must own a corgi, live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO).
+You are tasked with building a system to validate applications for the policy.</p>
 </div>
 <div class="sect2">
-<h3 id="_part_1">5.1. Part 1:</h3>
+<h3 id="_part_1">4.1. Part 1:</h3>
 <div class="paragraph">
-<p>Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person’s eligibility for the “corgi cover” policy.</p>
+<p>Write a function that takes as input a state and corgi-count, and returns a boolean indicating the person’s eligibility for the “corgi cover” policy.</p>
 </div>
 <div class="sect3">
-<h4 id="_test_data">5.1.1. Test data:</h4>
-<table class="tableblock frame-all grid-all spread">
+<h4 id="_test_data">4.1.1. Test data:</h4>
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2142,18 +2251,25 @@ Bypasses arity checking</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_2">5.2. Part 2:</h3>
+<h3 id="_part_2">4.2. Part 2:</h3>
 <div class="paragraph">
-<p>A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”. Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp. Gold is available when covering at least 3 corgis. Silver is the original “corgi cover” policy. Create a new function that takes an additional argument policy-count and returns a keyword indicating their eligibility.</p>
+<p>A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”.
+Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp.
+Gold is available when covering at least 3 corgis. Silver is the original “corgi cover” policy.
+Create a new function that takes an additional argument policy-count and returns a keyword indicating their eligibility.</p>
 </div>
 <div class="paragraph">
 <p>See <code>cond</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_3">5.3. Part 3:</h3>
+<h3 id="_part_3">4.3. Part 3:</h3>
 <div class="paragraph">
-<p>The “corgi cover” applications Insuricorp collect contain more information than necessary to determine eligibility. Create a new function that takes as input a single map data structure as input instead of multiple inputs. It should pick out the values that it needs from the input map. Create some test data and feed it to your function. The data should look something like:</p>
+<p>The “corgi cover” applications Insuricorp collect contain more information than necessary to determine eligibility.
+Create a new function that takes as input a single map data structure as input instead of multiple inputs.
+It should pick out the values that it needs from the input map.
+Create some test data and feed it to your function.
+The data should look something like:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2162,9 +2278,12 @@ Bypasses arity checking</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_4">5.4. Part 4:</h3>
+<h3 id="_part_4">4.4. Part 4:</h3>
 <div class="paragraph">
-<p>Insuricorp just merged with Megacorp. Platinum level corgi cover is now offered to people with an existing Megacorp policy as well. Because the company is still restructuring, the policy-count input still only contains Insuricorp data. But a new input has been made available to you which is a map of people to policies.</p>
+<p>Insuricorp just merged with Megacorp.
+Platinum level corgi cover is now offered to people with an existing Megacorp policy as well.
+Because the company is still restructuring, the policy-count input still only contains Insuricorp data.
+But a new input has been made available to you which is a map of people to policies.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2173,21 +2292,32 @@ Bypasses arity checking</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Create a new function that takes as inputs two maps: the application, and the existing policies. It should apply the same logic, but make use of the Megacorp data.</p>
+<p>Create a new function that takes as inputs two maps: the application, and the existing policies.
+It should apply the same logic, but make use of the Megacorp data.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_testing_with_clojure_test">6. Testing with clojure.test</h2>
+<h2 id="_testing_with_clojure_test">5. Testing with clojure.test</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+The greatest test of courage on earth is to bear defeat without losing heart.
+</blockquote>
+<div class="attribution">
+&#8212; Robert Green Ingersoll
+</div>
+</div>
 <div class="sect2">
-<h3 id="_defining_tests_with_deftest">6.1. Defining tests with deftest</h3>
+<h3 id="_defining_tests_with_deftest">5.1. Defining tests with deftest</h3>
 <div class="paragraph">
-<p>You can define a test in any file, but it is common to put all test code in a separate “test” directory, and to create namespaces that mirror the “src” directory but have -test appened. So if we have a source file <code>src/my_namespace.clj</code> then we create a test file as <code>test/my_namespace_test.clj</code>.</p>
+<p>You can define a test in any file, but it is common to put all test code in a separate “test” directory, and to create namespaces that mirror the “src” directory but have -test appended.
+So if we have a source file <code>src/my_namespace.clj</code> then we create a test file as <code>test/my_namespace_test.clj</code>.</p>
 </div>
 <div class="paragraph">
-<p>Test namespaces are normal Clojure namespaces. Test related functions come from the <code>clojure.test</code> namespace, so it is common to refer all symbols from <code>clojure.test</code> for convenience:</p>
+<p>Test namespaces are normal Clojure namespaces.
+Test related functions come from the <code>clojure.test</code> namespace, so it is common to refer all symbols from <code>clojure.test</code> for convenience:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2238,7 +2368,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_lein_test_refresh">6.2. lein-test-refresh</h3>
+<h3 id="_lein_test_refresh">5.2. lein-test-refresh</h3>
 <div class="paragraph">
 <p>Lein-test-refresh is a Leiningen plugin that reloads code and re-runs tests when you save a file.
 <a href="https://github.com/jakemcc/lein-test-refresh" class="bare">https://github.com/jakemcc/lein-test-refresh</a>.</p>
@@ -2285,7 +2415,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_assertions_with_is_and_are">6.3. Assertions with is and are</h3>
+<h3 id="_assertions_with_is_and_are">5.3. Assertions with is and are</h3>
 <div class="paragraph">
 <p>Let’s begin with a false assertion:</p>
 </div>
@@ -2318,7 +2448,12 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>We have written a test that makes an assertion about the function <code>inc</code>. Most tests check for equality with the expected value first, and the actual value second. The expected value is a literal expression and the actual is a call to the function under test. However you are not limited to following this for every test case. You can use any truthy assertion. Here is an example that does not do equality checking:</p>
+<p>We have written a test that makes an assertion about the function <code>inc</code>.
+Most tests check for equality with the expected value first, and the actual value second.
+The expected value is a literal expression and the actual is a call to the function under test.
+However you are not limited to following this for every test case.
+You can use any truthy assertion.
+Here is an example that does not do equality checking:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2361,7 +2496,9 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>However I recommend you avoid this form. It is easy to make an error in the syntax, and can be confusing. Furthermore line numbers are not preserved, so a failing test case is harder to identify.</p>
+<p>However I recommend you avoid this form.
+It is easy to make an error in the syntax, and can be confusing.
+Furthermore line numbers are not preserved, so a failing test case is harder to identify.</p>
 </div>
 <div class="paragraph">
 <p>Occasionally we need to assert that an exception is thrown:</p>
@@ -2381,12 +2518,14 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_test_fixtures">6.4. Test fixtures</h3>
+<h3 id="_test_fixtures">5.4. Test fixtures</h3>
 <div class="paragraph">
-<p>Test fixtures are for setting up and tearing down resources required by your tests. We can specify :once fixtures that execute one time for all tests in the namespace, or :each fixtures that run around each test in the namespace.</p>
+<p>Test fixtures are for setting up and tearing down resources required by your tests.
+We can specify <code>:once</code> fixtures that execute one time for all tests in the namespace, or <code>:each</code> fixtures that run around each test in the namespace.</p>
 </div>
 <div class="paragraph">
-<p>A fixture is simply a function that takes a test and executes it. Recall that tests are functions.</p>
+<p>A fixture is simply a function that takes a test and executes it.
+Recall that tests are functions.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2408,16 +2547,21 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>Here we prevent printing within our function from appearing in the console. Usually we want our tests to make assertions, but not produce output. Otherwise the test report can be cluttered.</p>
+<p>Here we prevent printing within our function from appearing in the console.
+Usually we want our tests to make assertions, but not produce output.
+Otherwise the test report can be cluttered.</p>
 </div>
 <div class="paragraph">
-<p>Another common use case is when doing database tests, we can wrap the test execution inside a transaction and rollback after the test completes. This avoids cleaning up data after the tests run, as no data was created.</p>
+<p>Another common use case is when doing database tests, we can wrap the test execution inside a transaction and rollback after the test completes.
+This avoids cleaning up data after the tests run, as no data was created.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_using_with_redefs_for_mocking_behavior">6.5. Using with-redefs for mocking behavior</h3>
+<h3 id="_using_with_redefs_for_mocking_behavior">5.5. Using with-redefs for mocking behavior</h3>
 <div class="paragraph">
-<p>Often when we are writing tests we want to isolate particular behaviors. Some parts of a function might not be appropriate to occur during the test. We can conveniently replace the definition of any var during a test using with-redefs:</p>
+<p>Often when we are writing tests we want to isolate particular behaviors.
+Some parts of a function might not be appropriate to occur during the test.
+We can conveniently replace the definition of any var during a test using with-redefs:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2435,13 +2579,18 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>At first glance this is very similar to let, but notice that a let would not work in this example. We changed the behavior of the str function whose definition is outside the scope of the test. We replaced it with an anonymous function that always returns “Goodbye world” regardless of its inputs. Note that we could have used (constantly "Goodbye world") instead, which produces an anonymous function just like the one we defined.</p>
+<p>At first glance this is very similar to let, but notice that a let would not work in this example.
+We changed the behavior of the str function whose definition is outside the scope of the test.
+We replaced it with an anonymous function that always returns “Goodbye world” regardless of its inputs.
+Note that we could have used (constantly "Goodbye world") instead, which produces an anonymous function just like the one we defined.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_debugging">6.6. Debugging</h3>
+<h3 id="_debugging">5.6. Debugging</h3>
 <div class="paragraph">
-<p>While working on a function, sometimes it is useful to print out an intermediary value. One way to accomplish this is using doto. Say that we were working on a complicated nested function:</p>
+<p>While working on a function, sometimes it is useful to print out an intermediary value.
+One way to accomplish this is using doto.
+Say that we were working on a complicated nested function:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2450,7 +2599,8 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>And we wanted to see what <code>(+ a (* a b))</code> was evaluating to in the context of the function call. We can temporarily wrap the expression in <code>(doto &#8230;&#8203; (prn))</code>.</p>
+<p>And we wanted to see what <code>(+ a (* a b))</code> was evaluating to in the context of the function call.
+We can temporarily wrap the expression in <code>(doto &#8230;&#8203; (prn))</code>.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2466,7 +2616,8 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>The difference from wrapping with just <code>prn</code> is that <code>prn</code> always returns <code>nil</code>, while <code>doto</code> will cause the <code>prn</code> side-effect to occur, but will return the original argument. This is also very useful when interacting with Java, because you can construct an object, call various methods on it, and return the object constructed.</p>
+<p>The difference from wrapping with just <code>prn</code> is that <code>prn</code> always returns <code>nil</code>, while <code>doto</code> will cause the <code>prn</code> side-effect to occur, but will return the original argument.
+This is also very useful when interacting with Java, because you can construct an object, call various methods on it, and return the object constructed.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2478,7 +2629,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exercises_4">6.7. Exercises</h3>
+<h3 id="_exercises_4">5.7. Exercises</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2509,7 +2660,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_answers_4">6.8. Answers</h3>
+<h3 id="_answers_4">5.8. Answers</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(defn pythag [a b]
@@ -2546,13 +2697,24 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_control_flow">7. Control Flow</h2>
+<h2 id="_control_flow">6. Control Flow</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+Goals allow you to control the direction of change in your favor.
+</blockquote>
+<div class="attribution">
+&#8212; Brian Tracy
+</div>
+</div>
 <div class="paragraph">
-<p>Clojure provides special forms for control flow. Special forms are built in primitives that behave differently from functions. We already saw several special forms in action: <code>def</code>, <code>let</code>, <code>quote</code> and <code>fn</code> are all special forms. The main thing that is different about them is that they don’t evaluate all their arguments like a regular function call.</p>
+<p>Clojure provides special forms for control flow.
+Special forms are built in primitives that behave differently from functions.
+We already saw several special forms in action: <code>def</code>, <code>let</code>, <code>quote</code> and <code>fn</code> are all special forms.
+The main thing that is different about them is that they don’t evaluate all their arguments like a regular function call.</p>
 </div>
 <div class="sect2">
-<h3 id="_conditionals_if_when_cond">7.1. Conditionals: if, when, cond</h3>
+<h3 id="_conditionals_if_when_cond">6.1. Conditionals: if, when, cond</h3>
 <div class="paragraph">
 <p>Another special form is if which chooses between two options.</p>
 </div>
@@ -2600,7 +2762,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_recursion">7.2. Recursion</h3>
+<h3 id="_recursion">6.2. Recursion</h3>
 <div class="paragraph">
 <p>Functions that call themselves are called recursive. Here is an example of recursion:</p>
 </div>
@@ -2628,7 +2790,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_loops">7.3. Loops</h3>
+<h3 id="_loops">6.3. Loops</h3>
 <div class="paragraph">
 <p>Loop establishes bindings, and allows you to recur back to the start of the loop with new values.</p>
 </div>
@@ -2644,7 +2806,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exception_handling">7.4. Exception handling</h3>
+<h3 id="_exception_handling">6.4. Exception handling</h3>
 <div class="paragraph">
 <p>You can work with exceptions using try catch finally and throw.</p>
 </div>
@@ -2658,7 +2820,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_comments">7.5. Comments</h3>
+<h3 id="_comments">6.5. Comments</h3>
 <div class="paragraph">
 <p>Anything following a semicolon is a comment</p>
 </div>
@@ -2685,7 +2847,8 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>Which is handy for temporarily removing a form when modifying code. You can use hash-underscore multiple times to comment out multiple forms.</p>
+<p>Which is handy for temporarily removing a form when modifying code.
+You can use hash-underscore multiple times to comment out multiple forms.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2705,7 +2868,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exercises_5">7.6. Exercises</h3>
+<h3 id="_exercises_5">6.6. Exercises</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2724,7 +2887,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_answers_5">7.7. Answers</h3>
+<h3 id="_answers_5">6.7. Answers</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(def grade [score]
@@ -2775,18 +2938,34 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_functional_programming">8. Functional Programming</h2>
+<h2 id="_functional_programming">7. Functional Programming</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+If you don&#8217;t love something, it&#8217;s not functional, in my opinion.
+</blockquote>
+<div class="attribution">
+&#8212; Yves Behar
+</div>
+</div>
 <div class="sect2">
-<h3 id="_pure_functions_and_side_effects">8.1. Pure functions and side effects</h3>
+<h3 id="_pure_functions_and_side_effects">7.1. Pure functions and side effects</h3>
 <div class="paragraph">
-<p>You have probably noticed that Clojure functions always return a value. Moreover they usually return a useful result, not just a nil. There is a distinction to be made between functions which produce useful result values from functions which cause side-effects.</p>
+<p>You have probably noticed that Clojure functions always return a value.
+Moreover they usually return a useful result, not just a nil.
+There is a distinction to be made between functions which produce useful result values from functions which cause side-effects.</p>
 </div>
 <div class="paragraph">
-<p>Functions that produces side effects are often called in a way that discards their result. For example calling <code>(println "hi")</code> is done not because we want a result. <code>println</code> returns <code>nil</code>, which is useless. What we want is to print to System out the string <code>"hi"</code>, which occurs as a side-effect of us calling the function. Contrast that with calling <code>(str "hi" "there")</code>, which returns a new string <code>"hithere"</code>; no side-effects occur.</p>
+<p>Functions that produces side effects are often called in a way that discards their result.
+For example calling <code>(println "hi")</code> is done not because we want a result.
+<code>println</code> returns <code>nil</code>, which is useless.
+What we want is to print to System out the string <code>"hi"</code>, which occurs as a side-effect of us calling the function.
+Contrast that with calling <code>(str "hi" "there")</code>, which returns a new string <code>"hithere"</code>; no side-effects occur.</p>
 </div>
 <div class="paragraph">
-<p>A function with no side-effects is a pure function. Calling pure functions with a given input always results with the same corresponding output. Note that <code>rand</code> is not a pure function even though it returns a useful result, because it produces a different output every time.</p>
+<p>A function with no side-effects is a pure function.
+Calling pure functions with a given input always results with the same corresponding output.
+Note that <code>rand</code> is not a pure function even though it returns a useful result, because it produces a different output every time.</p>
 </div>
 <div class="paragraph">
 <p>Pure functions are desirable because they are:</p>
@@ -2811,7 +2990,8 @@ Ran 0 tests containing 0 assertions.
 </ul>
 </div>
 <div class="paragraph">
-<p>The Clojure api provides many pure functions. For example <code>conj</code> does not add something to a vector, it returns a completely new vector!</p>
+<p>The Clojure api provides many pure functions.
+For example <code>conj</code> does not add something to a vector, it returns a completely new vector!</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2827,14 +3007,20 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>In this example we can see that v remained unchanged. Clojure implements data structures that enable this to happen efficiently. Using a regular Java vector would require duplicating the vector, but Clojure makes use of a technique called shared structure to provide immutable data structures that don’t require the entire object to be duplicated.</p>
+<p>In this example we can see that v remained unchanged.
+Clojure implements data structures that enable this to happen efficiently.
+Using a regular Java vector would require duplicating the vector, but Clojure makes use of a technique called shared structure to provide immutable data structures that don’t require the entire object to be duplicated.</p>
 </div>
 <div class="paragraph">
-<p>Clojure does allow side-effects, indeed they are very useful. It is good style to keep side-effects co-located instead of having them occur throughout various parts of the code. We will see some good examples of this philosophy in action later in the course when we get to atoms. We can use pure function to calculate the next value to be assigned to an atom given the current value. The logic is separate from the side effect.</p>
+<p>Clojure does allow side-effects, indeed they are very useful.
+It is good style to keep side-effects co-located instead of having them occur throughout various parts of the code.
+We will see some good examples of this philosophy in action later in the course when we get to atoms.
+We can use pure function to calculate the next value to be assigned to an atom given the current value.
+The logic is separate from the side effect.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_apply_partial_and_comp">8.2. Apply, partial, and comp</h3>
+<h3 id="_apply_partial_and_comp">7.2. Apply, partial, and comp</h3>
 <div class="paragraph">
 <p>If you have 4 numbers and want the max, you can call</p>
 </div>
@@ -2845,7 +3031,9 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>But what if you have a sequence of many numbers? What if you don’t know how many numbers there will be? Fortunately there is a way to convert a sequence of arguments into a function call:</p>
+<p>But what if you have a sequence of many numbers?
+What if you don’t know how many numbers there will be?
+Fortunately there is a way to convert a sequence of arguments into a function call:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2854,7 +3042,8 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>This is especially useful when calling variadic functions like max. Note that we could have alternatively reduced over the sequence, but apply is much more concise and clear about the intent.</p>
+<p>This is especially useful when calling variadic functions like max.
+Note that we could have alternatively reduced over the sequence, but apply is much more concise and clear about the intent.</p>
 </div>
 <div class="paragraph">
 <p>In Clojure we often pass functions as values, so there is a convenient way to create a function that consumes some arguments that can be used with additional arguments later:</p>
@@ -2865,7 +3054,8 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>Creates a function that adds 1 to any number of arguments supplied. It returns a function that is equivalent to:</p>
+<p>Creates a function that adds 1 to any number of arguments supplied.
+It returns a function that is equivalent to:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2899,7 +3089,7 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_functions_on_sequences_map_reduce_and_friends">8.3. Functions on sequences: map, reduce, and friends</h3>
+<h3 id="_functions_on_sequences_map_reduce_and_friends">7.3. Functions on sequences: map, reduce, and friends</h3>
 <div class="paragraph">
 <p>To really embrace Clojure is to think in terms of sequences and data structures.</p>
 </div>
@@ -2936,7 +3126,9 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>This would attempt to keep producing numbers forever. (Press control-c to cancel the REPL if you did try this). There is a way to limit the amount of values to take:</p>
+<p>This would attempt to keep producing numbers forever.
+(Press control-c to cancel the REPL if you did try this).
+There is a way to limit the amount of values to take:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2951,7 +3143,8 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>Clojure has an excellent sequence abstraction that fits naturally into the language. From a vector <code>[1 2 3 4]</code> we can find the odd numbers by calling the filter function:</p>
+<p>Clojure has an excellent sequence abstraction that fits naturally into the language.
+From a vector <code>[1 2 3 4]</code> we can find the odd numbers by calling the filter function:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2960,7 +3153,11 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>Here we called the filter function with two arguments: the <code>odd?</code> function and a vector of integers. filter is a higher order function, since it takes an input function to use in its computation. The result is a sequence of odd values. Functions like filter that operate on sequences call seq on their arguments to convert collections to sequences. The underlying mechanism is the <code>ISeq</code> interface, which allows many collection data structures to provide access to their elements.</p>
+<p>Here we called the <code>filter</code> function with two arguments: the <code>odd?</code> function and a vector of integers.
+<code>filter</code> is a higher order function, since it takes an input function to use in its computation.
+The result is a sequence of odd values.
+Functions like filter that operate on sequences call seq on their arguments to convert collections to sequences.
+The underlying mechanism is the <code>ISeq</code> interface, which allows many collection data structures to provide access to their elements.</p>
 </div>
 <div class="paragraph">
 <p><code>map</code> is a function that calls another function for every element in a sequence:</p>
@@ -2996,7 +3193,9 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>For each element in the sequence, reduce computes <code>(* aggregate element)</code> and passes the result of that as the aggregate for the next calculation. The first element <code>1</code> is used as the initial value of aggregate. The final result is 1 * 2 * 3 * 4.</p>
+<p>For each element in the sequence, reduce computes <code>(* aggregate element)</code> and passes the result of that as the aggregate for the next calculation.
+The first element <code>1</code> is used as the initial value of aggregate.
+The final result is 1 * 2 * 3 * 4.</p>
 </div>
 <div class="paragraph">
 <p>Clojure provides a built-in function for grouped aggregates:</p>
@@ -3039,7 +3238,9 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>Sequence abstractions are like names for loops that you can add to your vocabulary to talk about and recognize different kinds of loops. Learning the names of the abstractions and patterns that replace loops is an effort, but it adds powerful words to a programmer’s vocabulary. A large vocabulary facilitates reasoning more succinctly, communicating more effectively, and writing less code that does more.</p>
+<p>Sequence abstractions are like names for loops that you can add to your vocabulary to talk about and recognize different kinds of loops.
+Learning the names of the abstractions and patterns that replace loops is an effort, but it adds powerful words to a programmer’s vocabulary.
+A large vocabulary facilitates reasoning more succinctly, communicating more effectively, and writing less code that does more.</p>
 </div>
 <div class="paragraph">
 <p>Clojure provides a special form <code>#()</code> to create an anonymous function:</p>
@@ -3050,7 +3251,9 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>%</code> symbol is an implied input argument. This function takes one argument and returns <code>true</code> if the input argument is less than <code>3</code>, otherwise it is <code>false</code>. Anonymous functions are handy for adding small snippets of logic:</p>
+<p>The <code>%</code> symbol is an implied input argument.
+This function takes one argument and returns <code>true</code> if the input argument is less than <code>3</code>, otherwise it is <code>false</code>.
+Anonymous functions are handy for adding small snippets of logic:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3092,7 +3295,9 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>One situation that appears difficult to use a sequence abstraction in is when we have a vector of numbers and wish to perform a sequence operation that relies upon the previous value visited. For example, think about finding the sum of each pair in <code>[1 2 3 4 5]</code>. Using an imperative style loop we can peek into the vector at the previous value:</p>
+<p>One situation that appears difficult to use a sequence abstraction in is when we have a vector of numbers and wish to perform a sequence operation that relies upon the previous value visited.
+For example, think about finding the sum of each pair in <code>[1 2 3 4 5]</code>.
+Using an imperative style loop we can peek into the vector at the previous value:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3163,10 +3368,17 @@ Ran 0 tests containing 0 assertions.
 </div>
 </div>
 <div class="paragraph">
-<p>Why are sequence abstractions better than loops? When reading a loop you must comprehend the entire block of code to know what it does. As the loop body grows and changes you must mentally keep track of more complexity. Mistakes like “off by one” are hard to spot, and can creep in as the code changes. Testing requires the invasion of the loop with breakpoints. You may find yourself duplicating a loop to customize some similar operation. The loop abstraction is very easy to understand and use, but it does not provide leverage.</p>
+<p>Why are sequence abstractions better than loops?
+When reading a loop you must comprehend the entire block of code to know what it does.
+As the loop body grows and changes you must mentally keep track of more complexity.
+Mistakes like “off by one” are hard to spot, and can creep in as the code changes.
+Testing requires the invasion of the loop with breakpoints.
+You may find yourself duplicating a loop to customize some similar operation.
+The loop abstraction is very easy to understand and use, but it does not provide leverage.</p>
 </div>
 <div class="paragraph">
-<p>Imagine discovering a new requirement where you need to multiply all of those numbers together. The change is invasive to the imperative loop:</p>
+<p>Imagine discovering a new requirement where you need to multiply all of those numbers together.
+The change is invasive to the imperative loop:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3211,16 +3423,28 @@ for (i=1; i &lt; v.length; i++)
 <p>Look out for opportunities to name your steps by identifying long expressions and creating a named function out of them.</p>
 </div>
 <div class="paragraph">
-<p>Clojure exposes a sequence interface over data collections to a rich set of functions that compose well. Three important functional sequence concepts are: filter, which retains each item in a sequence where some function evaluates to be truthy; map, which selects new values by calling a function over input sequence(s) to create a new sequence; and reduce, which aggregates a sequence and returns a single value.</p>
+<p>Clojure exposes a sequence interface over data collections to a rich set of functions that compose well.
+Three important functional sequence concepts are:
+ <code>filter</code>, which retains each item in a sequence where some function evaluates to be truthy;
+ <code>map</code>, which selects new values by calling a function over input sequence(s) to create a new sequence;
+ and <code>reduce</code>, which aggregates a sequence and returns a single value.</p>
 </div>
 <div class="paragraph">
-<p>I invite you to take the “no loops” challenge. The next time you spot a loop stop and think about what sequence operation the loop represents. Think about how to rewrite the loop as sequence operations instead. It will take time and mental effort, but you will be rewarded with a deeper understanding of the problem being solved. Whenever you see a loop, think about how it could be expressed as a sequence. Sequences are loop abstractions that allow you to ignore the implementation details.</p>
+<p>I invite you to take the “no loops” challenge.
+The next time you spot a loop stop and think about what sequence operation the loop represents.
+Think about how to rewrite the loop as sequence operations instead.
+It will take time and mental effort, but you will be rewarded with a deeper understanding of the problem being solved.
+Whenever you see a loop, think about how it could be expressed as a sequence.
+Sequences are loop abstractions that allow you to ignore the implementation details.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_threading_operators">8.4. Threading operators</h3>
+<h3 id="_threading_operators">7.4. Threading operators</h3>
 <div class="paragraph">
-<p>By now, you should be feeling the combinatorial power functions offer. Simple functions compose sequence operations together to build transforms. Clojure has almost one hundred functions related to sequences, so you should also be feeling wary of such dense code. If we keep adding layers of function calls, the code becomes cryptic:</p>
+<p>By now, you should be feeling the combinatorial power functions offer.
+Simple functions compose sequence operations together to build transforms.
+Clojure has almost one hundred functions related to sequences, so you should also be feeling wary of such dense code.
+If we keep adding layers of function calls, the code becomes cryptic:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3229,7 +3453,9 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>With three layers of function calls, things are getting hard to keep in our head all at once. This expression may be easier to mentally process by starting from the innermost map, working out to filter, and then out to reduce last. But that is the opposite of our reading direction and locating the true starting point is difficult.</p>
+<p>With three layers of function calls, things are getting hard to keep in our head all at once.
+This expression may be easier to mentally process by starting from the innermost map, working out to filter, and then out to reduce last.
+But that is the opposite of our reading direction and locating the true starting point is difficult.</p>
 </div>
 <div class="paragraph">
 <p>The presentation of sequence operations is clearer if you name intermediary results:</p>
@@ -3277,9 +3503,11 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_data_structures_are_functions">8.5. Data structures are functions!</h3>
+<h3 id="_data_structures_are_functions">7.5. Data structures are functions!</h3>
 <div class="paragraph">
-<p>Maps sets vectors and keywords are functions. They delegate to get. While it is possible to use get to access collections, calling the collection directly is more common.</p>
+<p>Maps sets vectors and keywords are functions.
+They delegate to get.
+While it is possible to use get to access collections, calling the collection directly is more common.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3357,7 +3585,7 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exercises_6">8.6. Exercises</h3>
+<h3 id="_exercises_6">7.6. Exercises</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -3382,7 +3610,7 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_answers_6">8.7. Answers</h3>
+<h3 id="_answers_6">7.7. Answers</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(defn sum-between [a b]
@@ -3437,42 +3665,62 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect1">
-<h2 id="_challenge_2_processing_files">9. Challenge 2: Processing files</h2>
+<h2 id="_challenge_2_processing_files">8. Challenge 2: Processing files</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file. You have been tasked with processing the files using the validation logic you built earlier.</p>
+<p>Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file.
+You have been tasked with processing the files using the validation logic you built earlier.</p>
 </div>
 <div class="sect2">
-<h3 id="_part_1_2">9.1. Part 1:</h3>
+<h3 id="_part_1_2">8.1. Part 1:</h3>
 <div class="paragraph">
-<p>Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it. Next use that data structure as an input to your validation function and print the result. (see slurp, line-seq, clojure.string/split).</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_part_2_2">9.2. Part 2:</h3>
-<div class="paragraph">
-<p>The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check, but the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible. Create a new function that opens two output files and writes to them based upon your eligibility check. The files should be called eligible-corgi-cover-applications.csv and ineligible-corgi-cover-applications.csv</p>
+<p>Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it.
+Next use that data structure as an input to your validation function and print the result.
+See <code>slurp</code> <code>line-seq</code> <code>clojure.string/split</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_3_2">9.3. Part 3:</h3>
+<h3 id="_part_2_2">8.2. Part 2:</h3>
 <div class="paragraph">
-<p>A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied. That way the sales reps don’t have to spend time figuring out what they need to tell the customer. Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found. Create a new processing function that splits the applications into two files based on the new validator.</p>
+<p>The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check.
+But the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible.
+Create a new function that opens two output files and writes to them based upon your eligibility check.
+The files should be called <code>eligible-corgi-cover-applications.csv</code> and <code>ineligible-corgi-cover-applications.csv</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_4_2">9.4. Part 4:</h3>
+<h3 id="_part_3_2">8.3. Part 3:</h3>
 <div class="paragraph">
-<p>As part of the Megacorp merger, the downstream systems are converting to JSON format. Create a new function that writes JSON data to a eligible-corgi-cover-applications.json file</p>
+<p>A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied.
+That way the sales reps don’t have to spend time figuring out what they need to tell the customer.
+Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found.
+Create a new processing function that splits the applications into two files based on the new validator.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_part_4_2">8.4. Part 4:</h3>
+<div class="paragraph">
+<p>As part of the Megacorp merger, the downstream systems are converting to JSON format.
+Create a new function that writes JSON data to an <code>eligible-corgi-cover-applications.json</code> file.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_macros">10. Macros</h2>
+<h2 id="_macros">9. Macros</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+I never think about myself as an artist working in this time. I think about it in macro.
+</blockquote>
+<div class="attribution">
+&#8212; Frank Ocean
+</div>
+</div>
 <div class="paragraph">
-<p>Macros manipulate the operand forms instead of evaluating them as input arguments. They are not functions, and cannot be used as values or arguments to functions. We already used a macro; defn is a macro for conveniently defining functions.</p>
+<p>Macros manipulate the operand forms instead of evaluating them as input arguments.
+They are not functions, and cannot be used as values or arguments to functions.
+We already used a macro; defn is a macro for conveniently defining functions.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3488,12 +3736,16 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>The difference between macros and functions is that macro arguments are manipulated at compile time instead of evaluated. Macros allow the user to extend the syntax of Clojure, but macros are less useful than functions as they cannot be used as values or arguments to higher order functions.</p>
+<p>The difference between macros and functions is that macro arguments are manipulated at compile time instead of evaluated.
+Macros allow the user to extend the syntax of Clojure, but macros are less useful than functions as they cannot be used as values or arguments to higher order functions.</p>
 </div>
 <div class="sect2">
-<h3 id="_expanding_macros">10.1. Expanding macros</h3>
+<h3 id="_expanding_macros">9.1. Expanding macros</h3>
 <div class="paragraph">
-<p>Macros provide syntactic sugar. Macros first expand to produce new code that then gets compiled. The form is expanded at compile time through manipulation of the form. You can examine the expansion using <code>macroexpand-1</code>:</p>
+<p>Macros provide syntactic sugar.
+Macros first expand to produce new code that then gets compiled.
+The form is expanded at compile time through manipulation of the form.
+You can examine the expansion using <code>macroexpand-1</code>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3506,7 +3758,7 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_defining_macros">10.2. Defining macros</h3>
+<h3 id="_defining_macros">9.2. Defining macros</h3>
 <div class="paragraph">
 <p>Consider two different definitions of zen:</p>
 </div>
@@ -3543,14 +3795,17 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>The final result is the same, but notice that the input to <code>zen1</code> was a list, where as the input to <code>zen2</code> was the result of evaluating the list. That’s the key difference between a macro and a function.</p>
+<p>The final result is the same, but notice that the input to <code>zen1</code> was a list, where as the input to <code>zen2</code> was the result of evaluating the list.
+That’s the key difference between a macro and a function.</p>
 </div>
 <div class="paragraph">
-<p>Macros themselves are really just functions with a <code>:macro</code> flag set in their metadata, which causes them to be passed in the input forms unevaluated, and caused the result to be evaluated. This last part is less obvious&#8230;&#8203; but think back to <code>zen1</code>&#8230;&#8203; <code>x</code> was a list, we returned <code>x</code>, but the final result wasn’t a list&#8230;&#8203; it was <code>3</code>. The list was evaluated as a function call to <code>+</code>, resulting in <code>3</code>.</p>
+<p>Macros themselves are really just functions with a <code>:macro</code> flag set in their metadata, which causes them to be passed in the input forms unevaluated, and caused the result to be evaluated.
+This last part is less obvious&#8230;&#8203; but think back to <code>zen1</code>&#8230;&#8203; <code>x</code> was a list, we returned <code>x</code>, but the final result wasn’t a list&#8230;&#8203; it was <code>3</code>.
+The list was evaluated as a function call to <code>+</code>, resulting in <code>3</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_syntax_quoting">10.3. Syntax quoting</h3>
+<h3 id="_syntax_quoting">9.3. Syntax quoting</h3>
 <div class="paragraph">
 <p>To help write macros there is a special quoting form called syntax-quote.</p>
 </div>
@@ -3588,7 +3843,8 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>Within the <code>let</code> block, the symbol <code>inc</code> has a different meaning than normal. Because <code>m2</code> uses syntax quote, <code>inc</code> gets fully qualified to <code>clojure.core/inc</code> which does not collide with the <code>let</code> binding.</p>
+<p>Within the <code>let</code> block, the symbol <code>inc</code> has a different meaning than normal.
+Because <code>m2</code> uses syntax quote, <code>inc</code> gets fully qualified to <code>clojure.core/inc</code> which does not collide with the <code>let</code> binding.</p>
 </div>
 <div class="paragraph">
 <p>Fully qualified symbols avoids one source of collisions, but there is another:</p>
@@ -3623,7 +3879,8 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>Instead of inc operating on the input parameter, it is operating on an internal let bound value. To avoid this situation Clojure provides a let gensyms form which will produce a randomly named binding:</p>
+<p>Instead of inc operating on the input parameter, it is operating on an internal let bound value.
+To avoid this situation Clojure provides a let gensyms form which will produce a randomly named binding:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3655,9 +3912,13 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_code_as_data">10.4. Code as data</h3>
+<h3 id="_code_as_data">9.4. Code as data</h3>
 <div class="paragraph">
-<p>You may have noticed when we write a macro, we are really writing a function that produces code. The output is code… as data, and we manipulate code… as data. Homoiconic means that the language text has the same structure as its abstract syntax tree (AST). This allows all code in the language to be accessed and transformed as data, using the same representation. Nested code is well represented as a data structure.</p>
+<p>You may have noticed when we write a macro, we are really writing a function that produces code.
+The output is code… as data, and we manipulate code… as data.
+Homoiconic means that the language text has the same structure as its abstract syntax tree (AST).
+This allows all code in the language to be accessed and transformed as data, using the same representation.
+Nested code is well represented as a data structure.</p>
 </div>
 <div class="paragraph">
 <p>When working on a non-trivial macro a good strategy is:</p>
@@ -3677,7 +3938,7 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exercises_7">10.5. Exercises</h3>
+<h3 id="_exercises_7">9.5. Exercises</h3>
 <div class="paragraph">
 <p>Create the following macros and test cases:</p>
 </div>
@@ -3723,7 +3984,7 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_answers_7">10.6. Answers</h3>
+<h3 id="_answers_7">9.6. Answers</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(defmacro ignore  [expr]  nil)</pre>
@@ -3766,12 +4027,21 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect1">
-<h2 id="_parallel_programming_and_concurrency">11. Parallel Programming and Concurrency</h2>
+<h2 id="_parallel_programming_and_concurrency">10. Parallel Programming and Concurrency</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+Our moral traditions developed concurrently with our reason, not as its product.
+</blockquote>
+<div class="attribution">
+&#8212; Friedrich August von Hayek
+</div>
+</div>
 <div class="sect2">
-<h3 id="_vars_and_dynamic_scope">11.1. Vars and dynamic scope</h3>
+<h3 id="_vars_and_dynamic_scope">10.1. Vars and dynamic scope</h3>
 <div class="paragraph">
-<p>Vars are automatically derefed when evaluated, so it can seem like they are just a variable. But you can “see” the var itself using the var function or #' shorthand.</p>
+<p>Vars are automatically derefed when evaluated, so it can seem like they are just a variable.
+But you can “see” the var itself using the var function or #' shorthand.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3809,7 +4079,8 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>You can attach whatever metadata you wish. These are the keys the compiler looks for:</p>
+<p>You can attach whatever metadata you wish.
+These are the keys the compiler looks for:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3820,7 +4091,9 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>By default Vars are static. But Vars can be marked as dynamic to allow per-thread bindings. Within each thread they obey a stack discipline:</p>
+<p>By default Vars are static.
+But Vars can be marked as dynamic to allow per-thread bindings.
+Within each thread they obey a stack discipline:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3844,18 +4117,24 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>Bindings created with binding cannot be seen by any other thread. Likewise, bindings created with binding can be assigned to, which provides a means for a nested context to communicate with code before it on the call stack. This capability is opt-in only by setting a metadata tag: dynamic to true as in the code block above.</p>
+<p>Bindings created with binding cannot be seen by any other thread.
+Likewise, bindings created with binding can be assigned to, which provides a means for a nested context to communicate with code before it on the call stack.
+This capability is opt-in only by setting a metadata tag: dynamic to true as in the code block above.</p>
 </div>
 <div class="paragraph">
-<p>Functions defined with defn are stored in Vars, allowing for the re-definition of functions in a running program. This also enables many of the possibilities of aspect- or context-oriented programming. For instance, you could wrap a function with logging behavior only in certain call contexts or threads.</p>
+<p>Functions defined with defn are stored in Vars, allowing for the re-definition of functions in a running program.
+This also enables many of the possibilities of aspect- or context-oriented programming.
+For instance, you could wrap a function with logging behavior only in certain call contexts or threads.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_delays_futures_and_promises">11.2. Delays, Futures, and Promises</h3>
+<h3 id="_delays_futures_and_promises">10.2. Delays, Futures, and Promises</h3>
 <div class="sect3">
-<h4 id="_delays">11.2.1. Delays</h4>
+<h4 id="_delays">10.2.1. Delays</h4>
 <div class="paragraph">
-<p>Delays wrap an arbitrary body of code for evaluation at a later stage so that the code in question is not run unless the answer is asked for. Delays also cache the result value to prevent another execution. The body code will only run once, even if dereferenced concurrently.</p>
+<p>Delays wrap an arbitrary body of code for evaluation at a later stage so that the code in question is not run unless the answer is asked for.
+Delays also cache the result value to prevent another execution.
+The body code will only run once, even if dereferenced concurrently.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3894,13 +4173,20 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>We assign the delay to a var called <code>d</code>. We see that it starts in a pending state. Dereferencing <code>d</code> with <code>@</code> causes the code to run, printing <code>"Hello world!"</code> and returning <code>42</code>. Notice that the second dereference with <code>@</code> does not print <code>"Hello world!"</code> again, it only returns the already realized value of <code>42</code>.</p>
+<p>We assign the delay to a var called <code>d</code>.
+We see that it starts in a pending state.
+Dereferencing <code>d</code> with <code>@</code> causes the code to run, printing <code>"Hello world!"</code> and returning <code>42</code>.
+Notice that the second dereference with <code>@</code> does not print <code>"Hello world!"</code> again, it only returns the already realized value of <code>42</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_futures">11.2.2. Futures</h4>
+<h4 id="_futures">10.2.2. Futures</h4>
 <div class="paragraph">
-<p>Futures provide an easy way to spin off a new thread to do some computation or I/O that you will need access to in the future. The call style is compatible with delay. The difference is that the work begins immediately on another thread. The flow of control is not blocked. If you dereference a future, it will block until the value is available:</p>
+<p>Futures provide an easy way to spin off a new thread to do some computation or I/O that you will need access to in the future.
+The call style is compatible with delay.
+The difference is that the work begins immediately on another thread.
+The flow of control is not blocked.
+If you dereference a future, it will block until the value is available:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3943,9 +4229,10 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect3">
-<h4 id="_promises">11.2.3. Promises</h4>
+<h4 id="_promises">10.2.3. Promises</h4>
 <div class="paragraph">
-<p>Promises are used in a similar way to delay or future in that you dereference them for a value, can check if they have a value with <code>realized?</code> and they block when you dereference them if they don’t have a value until they do. Where they differ is that you don’t immediately give them a value, but provide them with one by calling deliver:</p>
+<p>Promises are used in a similar way to delay or future in that you dereference them for a value, can check if they have a value with <code>realized?</code> and they block when you dereference them if they don’t have a value until they do.
+Where they differ is that you don’t immediately give them a value, but provide them with one by calling deliver:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3973,61 +4260,99 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_atoms_refs_and_agents">11.3. Atoms, Refs, and Agents</h3>
+<h3 id="_atoms_refs_and_agents">10.3. Atoms, Refs, and Agents</h3>
 <div class="paragraph">
-<p>Atoms provide a way to manage shared, synchronous, independent state. They are a reference type like refs and vars. You create an atom with atom, and can access its state with <code>deref</code>/<code>@</code>. Like refs and agents, atoms support validators. To change the value of an atom, you can use <code>swap!</code>. A lower-level <code>compare-and-set!</code> is also provided. Changes to atoms are always free of race conditions.</p>
+<p>Atoms provide a way to manage shared, synchronous, independent state.
+They are a reference type like refs and vars.
+You create an atom with atom, and can access its state with <code>deref</code>/<code>@</code>.
+Like refs and agents, atoms support validators.
+To change the value of an atom, you can use <code>swap!</code>.
+A lower-level <code>compare-and-set!</code> is also provided.
+Changes to atoms are always free of race conditions.</p>
 </div>
 <div class="paragraph">
-<p>As with all reference types, the intended use of atom is to hold one of Clojure’s immutable data structures. And, similar to ref’s alter and agent’s send, you change the value by applying a function to the old value. This is done in an atomic manner by <code>swap!</code> Internally, <code>swap!</code> reads the current value, applies the function to it, and attempts to <code>compare-and-set!</code> it in. Since another thread may have changed the value in the intervening time, it may have to retry, and does so in a spin loop. The net effect is that the value will always be the result of the application of the supplied function to a current value, atomically. However, because the function might be called multiple times, it must be free of side effects.</p>
+<p>As with all reference types, the intended use of atom is to hold one of Clojure’s immutable data structures.
+And, similar to ref’s alter and agent’s send, you change the value by applying a function to the old value.
+This is done in an atomic manner by <code>swap!</code> Internally, <code>swap!</code> reads the current value, applies the function to it, and attempts to <code>compare-and-set!</code> it in.
+Since another thread may have changed the value in the intervening time, it may have to retry, and does so in a spin loop.
+The net effect is that the value will always be the result of the application of the supplied function to a current value, atomically.
+However, because the function might be called multiple times, it must be free of side effects.</p>
 </div>
 <div class="paragraph">
 <p>Atoms are an efficient way to represent some state that will never need to be coordinated with any other, and for which you wish to make synchronous changes (unlike agents, which are similarly independent but asynchronous).</p>
 </div>
 <div class="paragraph">
-<p>While Vars ensure safe use of mutable storage locations via thread isolation, transactional references (Refs) ensure safe shared use of mutable storage locations via a software transactional memory (STM) system. Refs are bound to a single storage location for their lifetime, and only allow mutation of that location to occur within a transaction. In practise Refs are rarely used.</p>
+<p>While Vars ensure safe use of mutable storage locations via thread isolation, transactional references (Refs) ensure safe shared use of mutable storage locations via a software transactional memory (STM) system.
+Refs are bound to a single storage location for their lifetime, and only allow mutation of that location to occur within a transaction.
+In practise Refs are rarely used.</p>
 </div>
 <div class="paragraph">
-<p>Like Refs, Agents provide shared access to mutable state. Where Refs support coordinated, synchronous change of multiple locations, Agents provide independent, asynchronous change of individual locations. Agents are bound to a single storage location for their lifetime, and only allow mutation of that location (to a new state) to occur as a result of an action. Actions are functions (with, optionally, additional arguments) that are asynchronously applied to an Agent’s state and whose return value becomes the Agent’s new state. Because actions are functions they can also be multimethods and therefore actions are potentially polymorphic. Also, because the set of functions is open, the set of actions supported by an Agent is also open, a sharp contrast to pattern matching message handling loops provided by some other languages.</p>
+<p>Like Refs, Agents provide shared access to mutable state.
+Where Refs support coordinated, synchronous change of multiple locations, Agents provide independent, asynchronous change of individual locations.
+Agents are bound to a single storage location for their lifetime, and only allow mutation of that location (to a new state) to occur as a result of an action.
+Actions are functions (with, optionally, additional arguments) that are asynchronously applied to an Agent’s state and whose return value becomes the Agent’s new state.
+Because actions are functions they can also be multimethods and therefore actions are potentially polymorphic.
+Also, because the set of functions is open, the set of actions supported by an Agent is also open, a sharp contrast to pattern matching message handling loops provided by some other languages.</p>
 </div>
 <div class="paragraph">
-<p>Clojure’s Agents are reactive, not autonomous - there is no imperative message loop and no blocking receive. The state of an Agent should be itself immutable (preferably an instance of one of Clojure’s persistent collections), and the state of an Agent is always immediately available for reading by any thread (using the deref function or reader macro @) without any messages, i.e. observation does not require cooperation or coordination.</p>
+<p>Clojure’s Agents are reactive, not autonomous - there is no imperative message loop and no blocking receive.
+The state of an Agent should be itself immutable (preferably an instance of one of Clojure’s persistent collections), and the state of an Agent is always immediately available for reading by any thread (using the deref function or reader macro @) without any messages, i.e. observation does not require cooperation or coordination.</p>
 </div>
 <div class="paragraph">
-<p>Agent action dispatches take the form (send agent fn args*). send (and send-off) always returns immediately. At some point later, in another thread, the following will happen:</p>
+<p>Agent action dispatches take the form (send agent fn args*).
+send (and send-off) always returns immediately.
+At some point later, in another thread, the following will happen:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The given fn will be applied to the state of the Agent and the args, if any were supplied. The return value of the given fn will become the new state of the Agent.</p>
+<p>The given fn will be applied to the state of the Agent and the args, if any were supplied.
+The return value of the given fn will become the new state of the Agent.</p>
 </li>
 <li>
-<p>If any watchers were added to the Agent, they will be called. See add-watch for details.</p>
+<p>If any watchers were added to the Agent, they will be called.
+See add-watch for details.</p>
 </li>
 <li>
 <p>If during the function execution any other dispatches are made (directly or indirectly), they will be held until after the state of the Agent has been changed.</p>
 </li>
 <li>
-<p>If any exceptions are thrown by an action function, no nested dispatches will occur, and the exception will be cached in the Agent itself. When an Agent has errors cached, any subsequent interactions will immediately throw an exception, until the agent’s errors are cleared. Agent errors can be examined with agent-error and the agent restarted with restart-agent.</p>
+<p>If any exceptions are thrown by an action function, no nested dispatches will occur, and the exception will be cached in the Agent itself.
+When an Agent has errors cached, any subsequent interactions will immediately throw an exception, until the agent’s errors are cleared.
+Agent errors can be examined with agent-error and the agent restarted with restart-agent.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The actions of all Agents get interleaved amongst threads in a thread pool. At any point in time, at most one action for each Agent is being executed. Actions dispatched to an agent from another single agent or thread will occur in the order they were sent, potentially interleaved with actions dispatched to the same agent from other sources. send should be used for actions that are CPU limited, while send-off is appropriate for actions that may block on IO.</p>
+<p>The actions of all Agents get interleaved amongst threads in a thread pool.
+At any point in time, at most one action for each Agent is being executed.
+Actions dispatched to an agent from another single agent or thread will occur in the order they were sent, potentially interleaved with actions dispatched to the same agent from other sources.
+send should be used for actions that are CPU limited, while send-off is appropriate for actions that may block on IO.</p>
 </div>
 <div class="paragraph">
-<p>Agents are integrated with the STM - any dispatches made in a transaction are held until it commits, and are discarded if it is retried or aborted. No user-code locking is involved.</p>
+<p>Agents are integrated with the STM - any dispatches made in a transaction are held until it commits, and are discarded if it is retried or aborted.
+No user-code locking is involved.</p>
 </div>
 <div class="paragraph">
-<p>Note that use of Agents starts a pool of non-daemon background threads that will prevent shutdown of the JVM. Use shutdown-agents to terminate these threads and allow shutdown.</p>
+<p>Note that use of Agents starts a pool of non-daemon background threads that will prevent shutdown of the JVM.
+Use shutdown-agents to terminate these threads and allow shutdown.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_java_interop">12. Java Interop</h2>
+<h2 id="_java_interop">11. Java Interop</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven.
+</blockquote>
+<div class="attribution">
+&#8212; Libba Bray
+</div>
+</div>
 <div class="sect2">
-<h3 id="_clojure_syntax_for_java_constructors">12.1. Clojure syntax for Java constructors</h3>
+<h3 id="_clojure_syntax_for_java_constructors">11.1. Clojure syntax for Java constructors</h3>
 <div class="paragraph">
 <p>Constructing a Java object is done by appending a period to the class identifier:</p>
 </div>
@@ -4054,7 +4379,7 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_calling_methods">12.2. Calling methods</h3>
+<h3 id="_calling_methods">11.2. Calling methods</h3>
 <div class="paragraph">
 <p>Calling a method on a Java object done by prepending a leading period:</p>
 </div>
@@ -4092,7 +4417,7 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect2">
-<h3 id="_reify">12.3. reify</h3>
+<h3 id="_reify">11.3. reify</h3>
 <div class="paragraph">
 <p><code>reify</code> creates an object that conforms to an interface:</p>
 </div>
@@ -4106,22 +4431,25 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that we didn’t define a class? We directly created an object that conforms to the <code>FileFilter</code> interface. <code>reify</code> is a convenient way to provide a concrete implementation of an interface.</p>
+<p>Notice that we didn’t define a class? We directly created an object that conforms to the <code>FileFilter</code> interface.
+<code>reify</code> is a convenient way to provide a concrete implementation of an interface.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_gen_class_and_proxy">12.4. gen-class and proxy</h3>
+<h3 id="_gen_class_and_proxy">11.4. gen-class and proxy</h3>
 <div class="paragraph">
-<p><code>gen-class</code> creates a class. In practise the need to create a class from within Clojure is rare, so we won’t be covering the syntax.
+<p><code>gen-class</code> creates a class.
+In practice the need to create a class from within Clojure is rare, so we won’t be covering the syntax.
 (see <a href="https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html" class="bare">https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html</a> if you want to explore this further)</p>
 </div>
 <div class="paragraph">
-<p><code>proxy</code> can be used to extend a concrete superclass. Again the need for this is rare.
+<p><code>proxy</code> can be used to extend a concrete superclass.
+Again the need for this is rare.
 (see <a href="https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html" class="bare">https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html</a> if you want to explore this further)</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_including_java_classes_in_clojure_projects">12.5. Including Java classes in Clojure projects</h3>
+<h3 id="_including_java_classes_in_clojure_projects">11.5. Including Java classes in Clojure projects</h3>
 <div class="paragraph">
 <p>You can define Java classes in Java in a separate directory and add</p>
 </div>
@@ -4138,19 +4466,25 @@ for (i=1; i &lt; v.length; i++)
 </div>
 </div>
 <div class="sect1">
-<h2 id="_challenge_3_mocking_parallel_web_requests">13. Challenge 3: Mocking parallel web requests</h2>
+<h2 id="_challenge_3_mocking_parallel_web_requests">12. Challenge 3: Mocking parallel web requests</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Insuricorp and Megacorp are integrating their IT systems. As part of this effort you need to modify the “Corgi cover” eligibility logic to call a remote web service. Your task is to set up the code and tests.</p>
+<p>Insuricorp and Megacorp are integrating their IT systems.
+As part of this effort you need to modify the “Corgi cover” eligibility logic to call a remote web service.
+Your task is to set up the code and tests.</p>
 </div>
 <div class="sect2">
-<h3 id="_part_1_mock_a_web_request">13.1. Part 1: Mock a web request</h3>
+<h3 id="_part_1_mock_a_web_request">12.1. Part 1: Mock a web request</h3>
 <div class="paragraph">
-<p>Every Insuricorp “Corgi cover” policy application needs to be cross referenced with Megacorp to see if the customer has a Megacorp policy already via a remote web service. The web service is not available for you to test against yet. Set up a function called fetch-megacorp-policies to do the web request but leave the implementation empty. Create a test that changes the behavior of fetch-megacorp-policies to behave as though it were a web request; make it pause for 100ms before returning the policies that the person has. Set up a test that exercises the eligibility checks using the mocked version of a web request.</p>
+<p>Every Insuricorp “Corgi cover” policy application needs to be cross referenced with Megacorp to see if the customer has a Megacorp policy already via a remote web service.
+The web service is not available for you to test against yet.
+Set up a function called fetch-megacorp-policies to do the web request but leave the implementation empty.
+Create a test that changes the behavior of fetch-megacorp-policies to behave as though it were a web request; make it pause for 100ms before returning the policies that the person has.
+Set up a test that exercises the eligibility checks using the mocked version of a web request.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_2_report_the_how_long_it_takes">13.2. Part 2: Report the how long it takes</h3>
+<h3 id="_part_2_report_the_how_long_it_takes">12.2. Part 2: Report the how long it takes</h3>
 <div class="paragraph">
 <p>In Java you might write something like this:</p>
 </div>
@@ -4166,26 +4500,34 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_3_make_parallel_requests">13.3. Part 3: Make parallel requests</h3>
+<h3 id="_part_3_make_parallel_requests">12.3. Part 3: Make parallel requests</h3>
 <div class="paragraph">
-<p>The web service you are using can handle multiple requests faster than a series of requests. It operates fastest with up to 20 connections. Modify your code such that multiple requests are made simultaneously. Compare the timing results to confirm the operations are happening in parallel.</p>
+<p>The web service you are using can handle multiple requests faster than a series of requests.
+It operates fastest with up to 20 connections.
+Modify your code such that multiple requests are made simultaneously.
+Compare the timing results to confirm the operations are happening in parallel.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_4_error_handling">13.4. Part 4: Error handling</h3>
+<h3 id="_part_4_error_handling">12.4. Part 4: Error handling</h3>
 <div class="paragraph">
-<p>Modify your mock of fetch-megacorp-policies such that it throws an exception randomly about 10% of the time. Make sure your tests report a failure. Now update your logic to handle the errors and retry up to 10 times. The tests should pass. Then create another test where the exception is thrown 100% of the time, and the max tries occurs.</p>
+<p>Modify your mock of fetch-megacorp-policies such that it throws an exception randomly about 10% of the time.
+Make sure your tests report a failure.
+Now update your logic to handle the errors and retry up to 10 times.
+The tests should pass.
+Then create another test where the exception is thrown 100% of the time, and the max tries occurs.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_polymorphism_and_types">14. Polymorphism and Types</h2>
+<h2 id="_polymorphism_and_types">13. Polymorphism and Types</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_multimethods">14.1. Multimethods</h3>
+<h3 id="_multimethods">13.1. Multimethods</h3>
 <div class="paragraph">
-<p>Polymorphic dispatch. First we define the name of the multimethod, and the dispatch function:</p>
+<p>Polymorphic dispatch.
+First we define the name of the multimethod, and the dispatch function:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4195,7 +4537,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In this case the dispatch function returns a vector pair of the species of input <code>x</code> and the species of input <code>y</code>. Now we can provide methods implementing functions to execute for a given dispatch value:</p>
+<p>In this case the dispatch function returns a vector pair of the species of input <code>x</code> and the species of input <code>y</code>.
+Now we can provide methods implementing functions to execute for a given dispatch value:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4206,7 +4549,10 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>These are somewhere between a case statement and a function definition. They give the conditions under which to be called, and a function definition. Given a dispatch result of <code>[:bunny :lion]</code>, the first method will be called on the <code>x</code> and <code>y</code> inputs, and the method here does nothing but return a value <code>:run-away</code>. Let’s set up some test inputs:</p>
+<p>These are somewhere between a case statement and a function definition.
+They give the conditions under which to be called, and a function definition.
+Given a dispatch result of <code>[:bunny :lion]</code>, the first method will be called on the <code>x</code> and <code>y</code> inputs, and the method here does nothing but return a value <code>:run-away</code>.
+Let’s set up some test inputs:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4241,7 +4587,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_protocols">14.2. Protocols</h3>
+<h3 id="_protocols">13.2. Protocols</h3>
 <div class="paragraph">
 <p>A protocol is a named set of named methods and their signatures, defined using defprotocol:</p>
 </div>
@@ -4254,10 +4600,16 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>No implementations are provided. Docs can be specified for the protocol and the functions. The above yields a set of polymorphic functions and a protocol object. All are namespace-qualified by the namespace enclosing the definition.</p>
+<p>No implementations are provided.
+Docs can be specified for the protocol and the functions.
+The above yields a set of polymorphic functions and a protocol object.
+All are namespace-qualified by the namespace enclosing the definition.</p>
 </div>
 <div class="paragraph">
-<p>The resulting functions dispatch on the type of their first argument, and thus must have at least one argument. defprotocol is dynamic, and does not require AOT compilation. defprotocol will automatically generate a corresponding interface, with the same name as the protocol, e.g. given a protocol my.ns/Protocol, an interface my.ns.Protocol. The interface will have methods corresponding to the protocol functions, and the protocol will automatically work with instances of the interface.</p>
+<p>The resulting functions dispatch on the type of their first argument, and thus must have at least one argument.
+defprotocol is dynamic, and does not require AOT compilation.
+defprotocol will automatically generate a corresponding interface, with the same name as the protocol, e.g. given a protocol my.ns/Protocol, an interface my.ns.Protocol.
+The interface will have methods corresponding to the protocol functions, and the protocol will automatically work with instances of the interface.</p>
 </div>
 <div class="paragraph">
 <p>Note that you do not need to use this interface with deftype, defrecord, or reify, as they support protocols directly:</p>
@@ -4296,7 +4648,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A Java client looking to participate in the protocol can do so most efficiently by implementing the protocol-generated interface. External implementations of the protocol (which are needed when you want a class or type not in your control to participate in the protocol) can be provided using the extend construct:</p>
+<p>A Java client looking to participate in the protocol can do so most efficiently by implementing the protocol-generated interface.
+External implementations of the protocol (which are needed when you want a class or type not in your control to participate in the protocol) can be provided using the extend construct:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4311,13 +4664,22 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p><code>extend</code> takes a type/class (or interface, see below), a one or more protocol + function map (evaluated) pairs. Will extend the polymorphism of the protocol’s methods to call the supplied functions when an AType is provided as the first argument. Function maps are maps of the keywordized method names to ordinary fns. This facilitates easy reuse of existing fns and maps, for code reuse/mixins without derivation or composition.</p>
+<p><code>extend</code> takes a type/class (or interface, see below), a one or more protocol + function map (evaluated) pairs.
+Will extend the polymorphism of the protocol’s methods to call the supplied functions when an AType is provided as the first argument.
+Function maps are maps of the keywordized method names to ordinary fns.
+This facilitates easy reuse of existing fns and maps, for code reuse/mixins without derivation or composition.</p>
 </div>
 <div class="paragraph">
-<p>You can implement a protocol on an interface. This is primarily to facilitate interop with the host (e.g. Java) but opens the door to incidental multiple inheritance of implementation since a class can inherit from more than one interface, both of which implement the protocol. If one interface is derived from the other, the more derived is used, else which one is used is unspecified.</p>
+<p>You can implement a protocol on an interface.
+This is primarily to facilitate interop with the host (e.g. Java) but opens the door to incidental multiple inheritance of implementation since a class can inherit from more than one interface, both of which implement the protocol.
+If one interface is derived from the other, the more derived is used, else which one is used is unspecified.</p>
 </div>
 <div class="paragraph">
-<p>The implementing <code>fn</code> can presume first argument is instanceof <code>AType</code>. You can implement a protocol on <code>nil</code>. To define a default implementation of protocol (for other than <code>nil</code>) just use <code>Object</code>. Protocols are fully reified and support reflective capabilities via <code>extends?</code>, <code>extenders</code>, and <code>satisfies?</code>. Note the convenience macros <code>extend-type</code>, and <code>extend-protocol</code>.</p>
+<p>The implementing <code>fn</code> can presume first argument is instanceof <code>AType</code>.
+You can implement a protocol on <code>nil</code>.
+To define a default implementation of protocol (for other than <code>nil</code>) just use <code>Object</code>.
+Protocols are fully reified and support reflective capabilities via <code>extends?</code>, <code>extenders</code>, and <code>satisfies?</code>.
+Note the convenience macros <code>extend-type</code>, and <code>extend-protocol</code>.</p>
 </div>
 <div class="paragraph">
 <p>If you are providing external definitions inline, these will be more convenient than using extend directly</p>
@@ -4347,12 +4709,14 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_creating_types_with_defrecord_and_deftype">14.3. Creating types with defrecord and deftype</h3>
+<h3 id="_creating_types_with_defrecord_and_deftype">13.3. Creating types with defrecord and deftype</h3>
 <div class="paragraph">
-<p><code>deftype</code>, <code>defrecord</code>, and <code>reify</code> provide the mechanism for defining implementations of abstractions, and instances of those implementations. Resist the urge to use them to define ‘structured data’ as you would define classes or structures in other languages. It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.</p>
+<p><code>deftype</code>, <code>defrecord</code>, and <code>reify</code> provide the mechanism for defining implementations of abstractions, and instances of those implementations.
+Resist the urge to use them to define ‘structured data’ as you would define classes or structures in other languages.
+It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.</p>
 </div>
 <div class="sect3">
-<h4 id="_deftype">14.3.1. Deftype</h4>
+<h4 id="_deftype">13.3.1. Deftype</h4>
 <div class="literalblock">
 <div class="content">
 <pre>(deftype Circle [radius])
@@ -4373,7 +4737,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_defrecord">14.3.2. Defrecord</h4>
+<h4 id="_defrecord">13.3.2. Defrecord</h4>
 <div class="paragraph">
 <p>This example shows how to implement a Java interface in defrecord.</p>
 </div>
@@ -4419,9 +4783,10 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_specifications_with_clojure_spec">14.4. Specifications with clojure.spec</h3>
+<h3 id="_specifications_with_clojure_spec">13.4. Specifications with clojure.spec</h3>
 <div class="paragraph">
-<p>The spec library specifies the structure of data, validates or destructures it, and can generate data based on the spec. Spec was introduced into Clojure 1.9.0, so update your <code>project.clj</code> to the right version:</p>
+<p>The spec library specifies the structure of data, validates or destructures it, and can generate data based on the spec.
+Spec was introduced into Clojure 1.9.0, so update your <code>project.clj</code> to the right version:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4439,7 +4804,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_validation">14.5. Validation</h3>
+<h3 id="_validation">13.5. Validation</h3>
 <div class="paragraph">
 <p>Any function that takes a single argument and returns a truthy value is a valid predicate spec.</p>
 </div>
@@ -4482,7 +4847,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The simplest way to compose specs is with <code>and</code> and <code>or</code>. Let’s create a spec that combines several predicates into a composite spec with <code>s/and</code>:</p>
+<p>The simplest way to compose specs is with <code>and</code> and <code>or</code>.
+Let’s create a spec that combines several predicates into a composite spec with <code>s/and</code>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4503,7 +4869,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_conforming">14.6. Conforming</h3>
+<h3 id="_conforming">13.6. Conforming</h3>
 <div class="paragraph">
 <p>We can also use <code>s/or</code> to specify two alternatives:</p>
 </div>
@@ -4513,7 +4879,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This <code>or</code> spec is the first case we’ve seen that involves a choice during validity checking. Each choice is annotated with a tag (here, between <code>:name</code> and <code>:id</code>) and those tags give the branches names that can be used to understand or enrich the data returned from conform and other spec functions.</p>
+<p>This <code>or</code> spec is the first case we’ve seen that involves a choice during validity checking.
+Each choice is annotated with a tag (here, between <code>:name</code> and <code>:id</code>) and those tags give the branches names that can be used to understand or enrich the data returned from conform and other spec functions.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4528,7 +4895,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Many predicates that check an instance’s type do not allow nil as a valid value (<code>string?</code>, <code>number?</code>, <code>keyword?</code>, etc). To include <code>nil</code> as a valid value, use the provided function nilable to make a spec:</p>
+<p>Many predicates that check an instance’s type do not allow nil as a valid value (<code>string?</code>, <code>number?</code>, <code>keyword?</code>, etc).
+To include <code>nil</code> as a valid value, use the provided function nilable to make a spec:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4549,9 +4917,10 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_maps">14.7. Maps</h3>
+<h3 id="_maps">13.7. Maps</h3>
 <div class="paragraph">
-<p>Clojure programs rely heavily on passing around maps of data. Entity maps in spec are defined with keys:</p>
+<p>Clojure programs rely heavily on passing around maps of data.
+Entity maps in spec are defined with keys:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4583,7 +4952,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Much existing Clojure code does not use maps with namespaced keys and so keys can also specify <code>:req-un</code> and <code>:opt-un</code> for required and optional unqualified keys. These variants specify namespaced keys used to find their specification, but the map only checks for the unqualified version of the keys.</p>
+<p>Much existing Clojure code does not use maps with namespaced keys and so keys can also specify <code>:req-un</code> and <code>:opt-un</code> for required and optional unqualified keys.
+These variants specify namespaced keys used to find their specification, but the map only checks for the unqualified version of the keys.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4625,11 +4995,12 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>:ret</code> spec uses fspec to declare that the returning function takes and returns a number. Even more interesting, the <code>:fn</code> spec can state a general property that relates the <code>:args</code> (where we know <code>x</code>) and the result we get from invoking the function returned from adder, namely that adding <code>0</code> to it should return <code>x</code>.</p>
+<p>The <code>:ret</code> spec uses fspec to declare that the returning function takes and returns a number.
+Even more interesting, the <code>:fn</code> spec can state a general property that relates the <code>:args</code> (where we know <code>x</code>) and the result we get from invoking the function returned from adder, namely that adding <code>0</code> to it should return <code>x</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_a_game_of_cards">14.8. A game of cards</h3>
+<h3 id="_a_game_of_cards">13.8. A game of cards</h3>
 <div class="paragraph">
 <p>Here’s a bigger set of specs to model a game of cards:</p>
 </div>
@@ -4687,7 +5058,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If we have a function deal that doles out some cards to the players we can spec that function to verify the arg and return value are both suitable data values. We can also specify a :fn spec to verify that the count of cards in the game before the deal equals the count of cards after the deal.</p>
+<p>If we have a function deal that doles out some cards to the players we can spec that function to verify the arg and return value are both suitable data values.
+We can also specify a :fn spec to verify that the count of cards in the game before the deal equals the count of cards after the deal.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4712,12 +5084,14 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_generators">14.9. Generators</h3>
+<h3 id="_generators">13.9. Generators</h3>
 <div class="paragraph">
 <p>A key design constraint of spec is that all specs are also designed to act as generators of sample data that conforms to the spec (a critical requirement for property-based testing).</p>
 </div>
 <div class="paragraph">
-<p>Spec generators rely on the Clojure property testing library test.check. However, this dependency is dynamically loaded and you can use the parts of spec other than gen, exercise, and testing without declaring test.check as a runtime dependency. When we wish to use these parts of spec (typically during testing), we need to declare a dev dependency on <code>test.check</code> in our <code>project.clj</code>:</p>
+<p>Spec generators rely on the Clojure property testing library test.check.
+However, this dependency is dynamically loaded and you can use the parts of spec other than gen, exercise, and testing without declaring test.check as a runtime dependency.
+When we wish to use these parts of spec (typically during testing), we need to declare a dev dependency on <code>test.check</code> in our <code>project.clj</code>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4740,7 +5114,9 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 <p>The <code>gen</code> function can be used to obtain the generator for any spec.</p>
 </div>
 <div class="paragraph">
-<p>Once you have obtained a generator with <code>gen</code>, there are several ways to use it. You can generate a single sample value with generate or a series of samples with sample. Let’s see some basic examples:</p>
+<p>Once you have obtained a generator with <code>gen</code>, there are several ways to use it.
+You can generate a single sample value with generate or a series of samples with sample.
+Let’s see some basic examples:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4780,7 +5156,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>It’s useful to spec (and generate) values in a range. For example, in the case of a range of integer values, use <code>int-in</code> to spec a range:</p>
+<p>It’s useful to spec (and generate) values in a range.
+For example, in the case of a range of integer values, use <code>int-in</code> to spec a range:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4797,7 +5174,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_instrumentation_and_testing">14.10. Instrumentation and Testing</h3>
+<h3 id="_instrumentation_and_testing">13.10. Instrumentation and Testing</h3>
 <div class="paragraph">
 <p>Spec provides a set of development and testing functionality in the clojure.spec.test.alpha namespace, which we can include with:</p>
 </div>
@@ -4824,7 +5201,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Instrument takes a fully-qualified symbol so we use <code>`</code> here to resolve it in the context of the current namespace. If the function is invoked with args that do not conform with the <code>:args</code> spec you will see an error like this:</p>
+<p>Instrument takes a fully-qualified symbol so we use <code>`</code> here to resolve it in the context of the current namespace.
+If the function is invoked with args that do not conform with the <code>:args</code> spec you will see an error like this:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4833,10 +5211,13 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Instrumentation can be turned off using the complementary function unstrument. Instrumentation is useful at both development time and during testing to discover errors in calling code. It is not recommended to use instrumentation in production due to the overhead involved with checking args specs.</p>
+<p>Instrumentation can be turned off using the complementary function unstrument.
+Instrumentation is useful at both development time and during testing to discover errors in calling code.
+It is not recommended to use instrumentation in production due to the overhead involved with checking args specs.</p>
 </div>
 <div class="paragraph">
-<p>We mentioned earlier that <code>clojure.spec.test.alpha</code> provides tools for automatically testing functions. When functions have specs, we can use check, to automatically generate tests that check the function using the specs.</p>
+<p>We mentioned earlier that <code>clojure.spec.test.alpha</code> provides tools for automatically testing functions.
+When functions have specs, we can use check, to automatically generate tests that check the function using the specs.</p>
 </div>
 <div class="paragraph">
 <p><code>check</code> will generate arguments based on the <code>:args</code> spec for a function, invoke the function, and check that the <code>:ret</code> and <code>:fn</code> specs were satisfied.</p>
@@ -4857,7 +5238,9 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A keen observer will notice that <code>ranged-rand</code> contains a subtle bug. If the difference between start and end is very large (larger than is representable by <code>Long/MAX_VALUE</code>), then <code>ranged-rand</code> will produce an <code>IntegerOverflowException</code>. If you run check several times you will eventually cause this case to occur.</p>
+<p>A keen observer will notice that <code>ranged-rand</code> contains a subtle bug.
+If the difference between start and end is very large (larger than is representable by <code>Long/MAX_VALUE</code>), then <code>ranged-rand</code> will produce an <code>IntegerOverflowException</code>.
+If you run check several times you will eventually cause this case to occur.</p>
 </div>
 <div class="paragraph">
 <p><code>check</code> also takes a number of options that can be passed to <code>test.check</code> to influence the test run, as well as the option to override generators for parts of the spec, by either name or path.</p>
@@ -4877,7 +5260,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </dl>
 </div>
 <div class="paragraph">
-<p>This broken function will still create random integers, just not in the expected range. Our <code>:fn</code> spec will detect the problem when checking the var:</p>
+<p>This broken function will still create random integers, just not in the expected range.
+Our <code>:fn</code> spec will detect the problem when checking the var:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4888,7 +5272,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p><code>check</code> has reported an error in the <code>:fn</code> spec. We can see the arguments passed were <code>-3</code> and <code>0</code> and the return value was <code>-5</code>, which is out of the expected range.</p>
+<p><code>check</code> has reported an error in the <code>:fn</code> spec.
+We can see the arguments passed were <code>-3</code> and <code>0</code> and the return value was <code>-5</code>, which is out of the expected range.</p>
 </div>
 <div class="paragraph">
 <p>To test all of the spec’ed functions in a namespace (or multiple namespaces), use enumerate-namespace to generate the set of symbols naming vars in the namespace:</p>
@@ -4978,7 +5363,9 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The first call here instruments and stubs <code>invoke-service</code>. The second and third calls demonstrate that calls to <code>invoke-service</code> now return generated results (rather than hitting a service). Finally, we can use check on the higher level function to test that it behaves properly based on the generated stub results returned from <code>invoke-service</code>.</p>
+<p>The first call here instruments and stubs <code>invoke-service</code>.
+The second and third calls demonstrate that calls to <code>invoke-service</code> now return generated results (rather than hitting a service).
+Finally, we can use check on the higher level function to test that it behaves properly based on the generated stub results returned from <code>invoke-service</code>.</p>
 </div>
 <div class="paragraph">
 <p>There is even more to spec! Once you are comfortable with the basics you can learn more at <a href="https://clojure.org/guides/spec" class="bare">https://clojure.org/guides/spec</a>.</p>
@@ -4987,12 +5374,21 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_interacting_with_a_database">15. Interacting with a Database</h2>
+<h2 id="_interacting_with_a_database">14. Interacting with a Database</h2>
 <div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+You can have data without information, but you cannot have information without data.
+</blockquote>
+<div class="attribution">
+&#8212; Daniel Keys Moran
+</div>
+</div>
 <div class="sect2">
-<h3 id="_intro_to_clojure_java_jdbc">15.1. Intro to clojure.java.jdbc</h3>
+<h3 id="_intro_to_clojure_java_jdbc">14.1. Intro to clojure.java.jdbc</h3>
 <div class="paragraph">
-<p>Database persistence is important for many applications. We can use clojure.java.jdbc to interact with a database.</p>
+<p>Database persistence is important for many applications.
+We can use clojure.java.jdbc to interact with a database.</p>
 </div>
 <div class="paragraph">
 <p>To start, create a new project</p>
@@ -5012,7 +5408,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Note that we need the driver we plan to use to connect to a database. In this case we are using an in memory HSQL database.</p>
+<p>Note that we need the driver we plan to use to connect to a database.
+In this case we are using an in memory HSQL database.</p>
 </div>
 <div class="paragraph">
 <p>In the Clojure project we require jdbc, and set up a db connection url.</p>
@@ -5033,7 +5430,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_inserting_updating_and_retrieving_data">15.2. Inserting, updating and retrieving data</h3>
+<h3 id="_inserting_updating_and_retrieving_data">14.2. Inserting, updating and retrieving data</h3>
 <div class="paragraph">
 <p>First we will create a table called testing inside the database with a text field named data, and then insert some rows.</p>
 </div>
@@ -5105,7 +5502,8 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>It is important to use parameterized queries instead of string concatenation in this example because it protects us from SQL injection. Parameters are not part of the query, so they cannot perform SQL from malicious input.</p>
+<p>It is important to use parameterized queries instead of string concatenation in this example because it protects us from SQL injection.
+Parameters are not part of the query, so they cannot perform SQL from malicious input.</p>
 </div>
 <div class="paragraph">
 <p>If you want to redo any steps, remember that you can always drop the table and start again.</p>
@@ -5117,13 +5515,17 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_solutions_for_sql_management">15.3. Solutions for SQL management</h3>
+<h3 id="_solutions_for_sql_management">14.3. Solutions for SQL management</h3>
 <div class="paragraph">
-<p>HoneySQL <a href="https://github.com/jkk/honeysql" class="bare">https://github.com/jkk/honeysql</a> can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.</p>
+<p>HoneySQL <a href="https://github.com/jkk/honeysql" class="bare">https://github.com/jkk/honeysql</a> can be used to build SQL statements from data structures.
+This is useful when you have to programmatically combine clauses to produce a final SQL statement.
+For example if the user can check a checkbox to enable an additional clause in a search.
+In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures.
+However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exercises_8">15.4. Exercises</h3>
+<h3 id="_exercises_8">14.4. Exercises</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5142,7 +5544,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_answers_8">15.5. Answers</h3>
+<h3 id="_answers_8">14.5. Answers</h3>
 <div class="literalblock">
 <div class="content">
 <pre>(ns messenger.core
@@ -5202,42 +5604,54 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_challenge_4_corgi_cover_database">16. Challenge 4: Corgi Cover Database</h2>
+<h2 id="_challenge_4_corgi_cover_database">15. Challenge 4: Corgi Cover Database</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Sending files around is proving to be problematic. Sometimes applications are lost or the results of the eligibility check are not communicated back to the customer. You have been tasked with creating a central source of truth that can be queried as to what applications have been submitted and processed.</p>
+<p>Sending files around is proving to be problematic.
+Sometimes applications are lost or the results of the eligibility check are not communicated back to the customer.
+You have been tasked with creating a central source of truth that can be queried as to what applications have been submitted and processed.</p>
 </div>
 <div class="sect2">
-<h3 id="_part_1_set_up_the_schema">16.1. Part 1: Set up the schema</h3>
+<h3 id="_part_1_set_up_the_schema">15.1. Part 1: Set up the schema</h3>
 <div class="paragraph">
-<p>Using the database of your choice, set up an initial database for the Corgi Cover project. In the code, connect to the database and create the initial table required. You can use whatever schema you like, but the first requirement is to store the applications with exactly the same data as was retrieved from the file format in Challenge 2.</p>
+<p>Using the database of your choice, set up an initial database for the Corgi Cover project.
+In the code, connect to the database and create the initial table required.
+You can use whatever schema you like, but the first requirement is to store the applications with exactly the same data as was retrieved from the file format in Challenge 2.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_2_populate_the_data">16.2. Part 2: Populate the data</h3>
+<h3 id="_part_2_populate_the_data">15.2. Part 2: Populate the data</h3>
 <div class="paragraph">
 <p>Modify the code to store the applications as they are processed, and the result of the eligibility check.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_3_write_a_spec">16.3. Part 3: Write a spec</h3>
+<h3 id="_part_3_write_a_spec">15.3. Part 3: Write a spec</h3>
 <div class="paragraph">
-<p>Ensure that all records processed from the files meets your expectations for required fields. Write a spec that explicitly defines what should be in the applications. Validate the spec on the incoming records.</p>
+<p>Ensure that all records processed from the files meets your expectations for required fields.
+Write a spec that explicitly defines what should be in the applications.
+Validate the spec on the incoming records.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_part_4_extending_to_poodle_protection">16.4. Part 4: Extending to Poodle Protection</h3>
+<h3 id="_part_4_extending_to_poodle_protection">15.4. Part 4: Extending to Poodle Protection</h3>
 <div class="paragraph">
-<p>Insuricorp is about to launch a new policy called “Poodle Protection”. Soon they will be processing applications with completely new rules. Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications. For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).</p>
+<p>Insuricorp is about to launch a new policy called “Poodle Protection”.
+Soon they will be processing applications with completely new rules.
+Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications.
+For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_further_reading">17. Further reading</h2>
+<h2 id="_further_reading">16. Further reading</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Writing Clojure code requires more thinking and less typing than other languages. Don’t feel frustrated if the code comes slowly at first. Being a great programmer requires thinking. You will only reach your true potential expressing code in ways that empower you rather than constrain you.</p>
+<p>Writing Clojure code requires more thinking and less typing than other languages.
+Don’t feel frustrated if the code comes slowly at first.
+Being a great programmer requires thinking.
+You will only reach your true potential expressing code in ways that empower you rather than constrain you.</p>
 </div>
 <div class="paragraph">
 <p>Further exercises:	<a href="https://www.4clojure.com/" class="bare">https://www.4clojure.com/</a></p>
@@ -5286,7 +5700,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-26 23:58:31 PDT
+Last updated 2018-05-28 20:11:19 PDT
 </div>
 </div>
 </body>

@@ -1,88 +1,124 @@
 = Enterprise Clojure Training
+:description: A training course for Clojure.
+:keywords: enterprise Clojure training
+:doctype: book
 :author: Timothy Pratley
 :email: <timothypratley@gmail.com>
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
 :toc: left
-:sectnums:
+:toclevels: 3
+:uri-home: https://timothypratley.github.io/enterprise-clojure-training
+:uri-repo: https://github.com/timothypratley/enterprise-clojure-training
 
-
+[preface]
 == About
+
+Welcome to Enterprise Clojure Training.
+This course is for developers learning Clojure for the purpose of building enterprise software.
+
 
 === Overview
 
-Clojure is a general purpose programming language boasting immutable data structures, concurrency primitives, and facilities for interacting with the rest of the Java ecosystem. Since it is a Lisp, it is dynamic, offers a wealth of functional programming facilities, and has a powerful macro system.
+Clojure is a dynamic, general-purpose programming language, combining interactive development with an efficient and robust infrastructure for multithreaded programming.
+Clojure provides direct access to the Java frameworks.
+Clojure is a dialect of Lisp, and shares with Lisp the code-as-data philosophy and macro system.
+Clojure is predominantly a functional programming language, and features a rich set of immutable, persistent data structures.
 
-In this course we will cover how to: install Clojure and related tools; interact with Clojure via the read-eval-print- loop (REPL); create functions, data-structures, macros, and types; use functional programming constructs like map and reduce; and design, implement, and test Clojure programs.
+In this course we will cover how to:
+  install Clojure and related tools;
+  interact with Clojure via the read-eval-print- loop (REPL);
+  create functions, data-structures, macros, and types;
+  use functional programming constructs like map and reduce;
+  and design, implement, and test Clojure programs.
 
 Each section will feature interactive exercises, and course material will be reinforced with guided case studies.
 
 
 === Duration
 
-2days, 10 hr/day + 3 to 4 hour webinar after completion of workshop
+2days, 10 hr/day + 2 hour webinar after completion of workshop.
 
-Learning Objectives (At the end of this course, you will be able to…)
 
-Write Clojure code
-Structure Clojure products
-Interact with Java
-Understand Parallel programming and concurrency
+=== Learning Objectives
+
+At the end of this course, you will be able to
+
+* Write Clojure code
+* Structure Clojure products
+* Interact with Java
+* Use Clojure's parallel programming and concurrency facilities
 
 
 === Prerequisites
 
-Programming Knowledge
+General programming knowledge.
+
 
 === Target Audience
 
-Developers / Senior Developers
+Developers and Senior Developers.
 
 
 === Required setup
 
 The following software must be installed on your laptop prior to the course:
 
-* Java https://java.com
-* Leiningen	https://leiningen.org/
-* IntelliJ https://www.jetbrains.com/idea
-* Cursive plugin for IntelliJ https://cursive-ide.com/
+* Java (https://java.com)
+* Leiningen	(https://leiningen.org)
+* IntelliJ (https://www.jetbrains.com/idea)
+* Cursive plugin for IntelliJ (https://cursive-ide.com)
 
 
 === Pre-assessment
 
-What programming languages have you used before?
-
-Do you have an interest in Clojure? If so what in particular interests you?
-
-What do you plan to do with Clojure?
-
-Name a scenario where you would use a HashMap data structure.
-
-When should you use a Vector instead of a List or an Array?
+* What programming languages have you used before?
+* Do you have an interest in Clojure? If so what in particular interests you?
+* What do you plan to do with Clojure?
+* Name a scenario where you would use a HashMap data structure.
+* When should you use a Vector instead of a List or an Array?
 
 
 === Required preparation
 
-Complete the first 10 exercises on the 4Clojure website:	http://www.4clojure.com
+Complete the first 10 exercises on the 4Clojure website (http://www.4clojure.com).
 
 
 === Optional reading
 
-If you would like a head-start, then please read this article:
-http://clojure-doc.org/articles/tutorials/introduction.html.
-This material will be covered as part of the course. Having read it before hand will allow you to focus on working through the exercises of the course.
+If you would like to get a head-start, please read the official Clojure introduction tutorial (http://clojure-doc.org/articles/tutorials/introduction.html).
+This material will be covered as part of the course.
+Having read it before hand will allow you to focus on working through the exercises of the course.
 
 
 === Introductions
 
+"Creativity is the ability to introduce order into the randomness of nature."
+-- Eric Hoffer
+
+
 ==== The instructor
-Timothy Pratley is the author of the book “Professional Clojure”, and a contributor to the Clojure core language. He has 18 years of professional software development experience in banking, robotics, logistics, and advertising. He spent the last 4 years exclusively using Clojure and ClojureScript developing enterprise systems for Fortune 500 companies. He enjoys making YouTube videos about Clojure, going running, and reading books.
+
+Timothy Pratley is the author of the book “Professional Clojure”, and a contributor to the Clojure core language.
+He has 18 years of professional software development experience in banking, robotics, logistics, and advertising.
+He spent the last 4 years exclusively using Clojure and ClojureScript developing enterprise systems for Fortune 500 companies.
+He enjoys making YouTube videos about Clojure, running, and reading books.
 
 
 ==== Clojure
 
-During this course we will be examining the Clojure language up close. Sometimes a new language can feel different just for difference sake. Throughout the course there will be time to reflect on what purpose the differences serve and what trade offs are being made. These are the Clojure language themes to watch out for as we move through the course:
+During this course we will be examining the Clojure language up close.
+Sometimes a new language can feel different just for difference sake.
+So why is it worth learning Clojure?
+
+Clojure is simple and data-oriented.
+Smart people want to use it.
+Clojure enables teams to build things fast.
+This makes it excellent for delivering value in enterprise development projects.
+
+Throughout the course there will be time to reflect on what purpose the differences serve and what trade offs are being made.
+These are the Clojure language themes to watch out for as we move through the course:
+
 
 ===== Data
 
@@ -90,16 +126,19 @@ During this course we will be examining the Clojure language up close. Sometimes
 * Sequences
 * Transformations
 
+
 ===== Functions
 
 * Act on general purpose data structures
 * Pure
+
 
 ===== A tool for thought
 
 * Concise
 * Unadorned
 * Abstract
+
 
 ===== Getting stuff done
 
@@ -109,31 +148,30 @@ During this course we will be examining the Clojure language up close. Sometimes
 
 ==== Syntax Summary
 
-[cols="2*", style="literal", options="header"]
+.Everything is a list with the operation at the front.
+[options="header"]
 |===
 |Java |Clojure
-
-|int i = 5; |(def i 5)
-
-|if (x == 0)
+l|int i = 5;
+l|(def i 5)
+l|if (x == 0)
   return y;
 else
   return z;
-
-|(if (zero? x)
+l|(if (zero? x)
   y
   z)
-
-|x * y * z; |(* x y z)
-
-|foo(x, y, z); |(foo x y z)
-
-|foo.bar(x); |(.bar foo x)
+l|x * y * z;
+l|(* x y z)
+l|foo(x, y, z);
+l|(foo x y z)
+l|foo.bar(x);
+l|(.bar foo x)
 |===
 
 Things that would be declarations, control structures, function calls, operators, are all just lists with an op at front.
 
-
+:sectnums:
 == The Clojure Ecosystem
 
 There are many Clojure libraries. Hosted on Maven and Clojars. Just jars, like any other Java artifact.
@@ -151,7 +189,7 @@ Please follow along on your laptop and ask questions at any time.
 
 === Leiningen
 
-A popular project built tool that provides a convenient way to pull libraries for your project. Follow the installation instructions at https://leiningen.org.
+A popular project built tool that provides a convenient way to pull libraries for your project. Follow the installation instructions at (https://leiningen.org).
 
     lein new training
     cd training
@@ -162,6 +200,7 @@ A popular project built tool that provides a convenient way to pull libraries fo
 As you can see, Leiningen created a project with one dependency; Clojure itself.
 
 	lein repl
+
 
 === The Read Eval Print Loop (REPL)
 
@@ -177,13 +216,15 @@ Pressing the up arrow moves through your history.
 
 The REPL is convenient for experimenting and doing informal tests. But the default REPL is not ideal for editing code.
 
+
 === Editor setup
 
-Most popular editors have plugins to send commands from the editor to a REPL, do syntax highlighting and manage parenthesis. These are useful features but I encourage you to prioritize learning Clojure ahead of configuring and learning new editor key combinations. It is difficult to do both at once!
+Most popular editors have plugins to send commands from the editor to a REPL, do syntax highlighting and manage parenthesis.
+These are useful features, but I encourage you to prioritize learning Clojure ahead of configuring and learning new editor key combinations.
+It is difficult to do both at once!
 
-IntelliJ https://www.jetbrains.com/idea
-
-I highly recommend Cursive Clojure, a plugin for IntelliJ. The main feature that sets Cursive apart is that it does error highlighting in the editor itself. https://cursive-ide.com/userguide/
+For this course I recommend using IntelliJ (https://www.jetbrains.com/idea) with the Cursive Clojure plugin (https://cursive-ide.com).
+The main feature that sets Cursive apart is that it does error highlighting in the editor itself (https://cursive-ide.com/userguide).
 
 * Open the project we just created and launch a REPL.
 * Click file -> open and browse to the project.clj file in the directory.
@@ -191,7 +232,7 @@ I highly recommend Cursive Clojure, a plugin for IntelliJ. The main feature that
 * Press control+shift+T to send a form to the REPL.
 * Press control+shift+A to see all actions available.
 
-Lighttable http://lighttable.com
+Alternative: Lighttable (http://lighttable.com)
 
 * Click File->open folder.
 * Browse to the “training” project directory that we created with lein.
@@ -200,9 +241,9 @@ Lighttable http://lighttable.com
 * Press control+space for a list of commands available.
 * Note that println will show up in the bottom console, which is hidden to begin.
 
-You can also open a REPL in your browser: https://repl.it/languages/clojure.
+You can also open a REPL in your browser: (https://repl.it/languages/clojure).
 
-For other editor options see https://cb.codes/what-editor-ide-to-use-for-clojure.
+For other editor options see (https://cb.codes/what-editor-ide-to-use-for-clojure).
 
 
 === Exercises
@@ -214,7 +255,8 @@ Evaluate some math expressions in the REPL:
 * Divide 10 by 2
 * Divide 2 by 10
 
-Create a new project called `training`. Open `src/training/core.clj` with your editor, write some expressions and send them to the REPL:
+Create a new project called `training`.
+Open `src/training/core.clj` with your editor, write some expressions, and send them to the REPL:
 
 * Find the sum of 1, 2, and 3
 * Send (println "hello world")
@@ -242,6 +284,10 @@ Create a new project called `training`. Open `src/training/core.clj` with your e
 
 
 == Clojure Syntax
+
+"The rhythmical unit of the syllable is at the back of all of it - the word, the phrase, the sentence, the syntax, the paragraph, and the way the heart moves when you read it."
+-- Ali Smith
+
 
 === Primitive data types
 
@@ -628,6 +674,10 @@ Note that the message global var is still the original value.
 
 == Functions
 
+"The chief function of the body is to carry the brain around."
+-- Thomas A. Edison
+
+
 === Defining functions
 
 Functions are defined like this:
@@ -875,12 +925,16 @@ Create a new namespace called `fun-functions`. Define the following functions an
 
 == Challenge 1: Corgi Cover eligibility
 
-Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy. Only certain people are eligible to register for “corgi cover”. To be eligible they must own a corgi, live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO). You are tasked with building a system to validate applications for the policy.
+Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy.
+Only certain people are eligible to register for “corgi cover”.
+To be eligible they must own a corgi, live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO).
+You are tasked with building a system to validate applications for the policy.
 
 
 === Part 1:
 
-Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person’s eligibility for the “corgi cover” policy.
+Write a function that takes as input a state and corgi-count, and returns a boolean indicating the person’s eligibility for the “corgi cover” policy.
+
 
 ==== Test data:
 
@@ -898,35 +952,52 @@ See `if` `=`.
 
 === Part 2:
 
-A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”. Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp. Gold is available when covering at least 3 corgis. Silver is the original “corgi cover” policy. Create a new function that takes an additional argument policy-count and returns a keyword indicating their eligibility.
+A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”.
+Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp.
+Gold is available when covering at least 3 corgis. Silver is the original “corgi cover” policy.
+Create a new function that takes an additional argument policy-count and returns a keyword indicating their eligibility.
 
 See `cond`.
 
 
 === Part 3:
 
-The “corgi cover” applications Insuricorp collect contain more information than necessary to determine eligibility. Create a new function that takes as input a single map data structure as input instead of multiple inputs. It should pick out the values that it needs from the input map. Create some test data and feed it to your function. The data should look something like:
+The “corgi cover” applications Insuricorp collect contain more information than necessary to determine eligibility.
+Create a new function that takes as input a single map data structure as input instead of multiple inputs.
+It should pick out the values that it needs from the input map.
+Create some test data and feed it to your function.
+The data should look something like:
 
     {:name "Chloe", :state "IL", :corgi-count 1, :policy-count 0}
 
 
 === Part 4:
 
-Insuricorp just merged with Megacorp. Platinum level corgi cover is now offered to people with an existing Megacorp policy as well. Because the company is still restructuring, the policy-count input still only contains Insuricorp data. But a new input has been made available to you which is a map of people to policies.
+Insuricorp just merged with Megacorp.
+Platinum level corgi cover is now offered to people with an existing Megacorp policy as well.
+Because the company is still restructuring, the policy-count input still only contains Insuricorp data.
+But a new input has been made available to you which is a map of people to policies.
 
     {"Chloe" ["secure goldfish"]
      "Ethan" ["cool cats cover" "megasafe"]}
 
-Create a new function that takes as inputs two maps: the application, and the existing policies. It should apply the same logic, but make use of the Megacorp data.
+Create a new function that takes as inputs two maps: the application, and the existing policies.
+It should apply the same logic, but make use of the Megacorp data.
 
 
 == Testing with clojure.test
 
+"The greatest test of courage on earth is to bear defeat without losing heart."
+-- Robert Green Ingersoll
+
+
 === Defining tests with deftest
 
-You can define a test in any file, but it is common to put all test code in a separate “test” directory, and to create namespaces that mirror the “src” directory but have -test appened. So if we have a source file `src/my_namespace.clj` then we create a test file as `test/my_namespace_test.clj`.
+You can define a test in any file, but it is common to put all test code in a separate “test” directory, and to create namespaces that mirror the “src” directory but have -test appended.
+So if we have a source file `src/my_namespace.clj` then we create a test file as `test/my_namespace_test.clj`.
 
-Test namespaces are normal Clojure namespaces. Test related functions come from the `clojure.test` namespace, so it is common to refer all symbols from `clojure.test` for convenience:
+Test namespaces are normal Clojure namespaces.
+Test related functions come from the `clojure.test` namespace, so it is common to refer all symbols from `clojure.test` for convenience:
 
     (ns my-namespace-test
       (:require [clojure.test :refer :all]))
@@ -1003,7 +1074,12 @@ And then convert it to a true assertion:
 	=> Ran 1 tests containing 1 assertions.
     0 failures, 0 errors.
 
-We have written a test that makes an assertion about the function `inc`. Most tests check for equality with the expected value first, and the actual value second. The expected value is a literal expression and the actual is a call to the function under test. However you are not limited to following this for every test case. You can use any truthy assertion. Here is an example that does not do equality checking:
+We have written a test that makes an assertion about the function `inc`.
+Most tests check for equality with the expected value first, and the actual value second.
+The expected value is a literal expression and the actual is a call to the function under test.
+However you are not limited to following this for every test case.
+You can use any truthy assertion.
+Here is an example that does not do equality checking:
 
     (deftest my-test
       (is (odd? 1)))
@@ -1030,7 +1106,9 @@ It is also possible to more concisely express multiple assertions using the are 
          2 (+ 1 1)
          4 (* 2 2))
 
-However I recommend you avoid this form. It is easy to make an error in the syntax, and can be confusing. Furthermore line numbers are not preserved, so a failing test case is harder to identify.
+However I recommend you avoid this form.
+It is easy to make an error in the syntax, and can be confusing.
+Furthermore line numbers are not preserved, so a failing test case is harder to identify.
 
 Occasionally we need to assert that an exception is thrown:
 
@@ -1044,9 +1122,11 @@ Occasionally we need to assert that an exception is thrown:
 
 === Test fixtures
 
-Test fixtures are for setting up and tearing down resources required by your tests. We can specify :once fixtures that execute one time for all tests in the namespace, or :each fixtures that run around each test in the namespace.
+Test fixtures are for setting up and tearing down resources required by your tests.
+We can specify `:once` fixtures that execute one time for all tests in the namespace, or `:each` fixtures that run around each test in the namespace.
 
-A fixture is simply a function that takes a test and executes it. Recall that tests are functions.
+A fixture is simply a function that takes a test and executes it.
+Recall that tests are functions.
 
     (use-fixtures :once
       (fn print-enter-exit [tests]
@@ -1060,14 +1140,19 @@ Now the test runner will print out “before”, execute the tests in the namesp
       (fn capture-prints [f]
         (with-out-str (f))))
 
-Here we prevent printing within our function from appearing in the console. Usually we want our tests to make assertions, but not produce output. Otherwise the test report can be cluttered.
+Here we prevent printing within our function from appearing in the console.
+Usually we want our tests to make assertions, but not produce output.
+Otherwise the test report can be cluttered.
 
-Another common use case is when doing database tests, we can wrap the test execution inside a transaction and rollback after the test completes. This avoids cleaning up data after the tests run, as no data was created.
+Another common use case is when doing database tests, we can wrap the test execution inside a transaction and rollback after the test completes.
+This avoids cleaning up data after the tests run, as no data was created.
 
 
 === Using with-redefs for mocking behavior
 
-Often when we are writing tests we want to isolate particular behaviors. Some parts of a function might not be appropriate to occur during the test. We can conveniently replace the definition of any var during a test using with-redefs:
+Often when we are writing tests we want to isolate particular behaviors.
+Some parts of a function might not be appropriate to occur during the test.
+We can conveniently replace the definition of any var during a test using with-redefs:
 
     (defn post [url]
       {:body (str "Hello world")})
@@ -1078,18 +1163,23 @@ Often when we are writing tests we want to isolate particular behaviors. Some pa
         (is (= {:body "Goodbye world"}
                (post "http://service.com/greet")))))
 
-At first glance this is very similar to let, but notice that a let would not work in this example. We changed the behavior of the str function whose definition is outside the scope of the test. We replaced it with an anonymous function that always returns “Goodbye world” regardless of its inputs. Note that we could have used (constantly "Goodbye world") instead, which produces an anonymous function just like the one we defined.
+At first glance this is very similar to let, but notice that a let would not work in this example.
+We changed the behavior of the str function whose definition is outside the scope of the test.
+We replaced it with an anonymous function that always returns “Goodbye world” regardless of its inputs.
+Note that we could have used (constantly "Goodbye world") instead, which produces an anonymous function just like the one we defined.
 
 
 === Debugging
 
-While working on a function, sometimes it is useful to print out an intermediary value. One way to accomplish this is using doto. Say that we were working on a complicated nested function:
+While working on a function, sometimes it is useful to print out an intermediary value.
+One way to accomplish this is using doto.
+Say that we were working on a complicated nested function:
 
     (defn shazam [a b]
       (/ 1 (+ a b) (+ a (* a b))))
 
-
-And we wanted to see what `(+ a (* a b))` was evaluating to in the context of the function call. We can temporarily wrap the expression in `(doto ... (prn))`.
+And we wanted to see what `(+ a (* a b))` was evaluating to in the context of the function call.
+We can temporarily wrap the expression in `(doto ... (prn))`.
 
     (defn shazam [a b]
       (/ 1 (+ a b) (doto (+ a (* a b)) (prn "***"))))
@@ -1098,7 +1188,8 @@ And we wanted to see what `(+ a (* a b))` was evaluating to in the context of th
     => 3 "***"
        1/9
 
-The difference from wrapping with just `prn` is that `prn` always returns `nil`, while `doto` will cause the `prn` side-effect to occur, but will return the original argument. This is also very useful when interacting with Java, because you can construct an object, call various methods on it, and return the object constructed.
+The difference from wrapping with just `prn` is that `prn` always returns `nil`, while `doto` will cause the `prn` side-effect to occur, but will return the original argument.
+This is also very useful when interacting with Java, because you can construct an object, call various methods on it, and return the object constructed.
 
     (doto (new java.util.HashMap)
       (.put "a" 1)
@@ -1143,7 +1234,13 @@ The difference from wrapping with just `prn` is that `prn` always returns `nil`,
 
 == Control Flow
 
-Clojure provides special forms for control flow. Special forms are built in primitives that behave differently from functions. We already saw several special forms in action: `def`, `let`, `quote` and `fn` are all special forms. The main thing that is different about them is that they don’t evaluate all their arguments like a regular function call.
+"Goals allow you to control the direction of change in your favor."
+-- Brian Tracy
+
+Clojure provides special forms for control flow.
+Special forms are built in primitives that behave differently from functions.
+We already saw several special forms in action: `def`, `let`, `quote` and `fn` are all special forms.
+The main thing that is different about them is that they don’t evaluate all their arguments like a regular function call.
 
 
 === Conditionals: if, when, cond
@@ -1235,7 +1332,8 @@ And a special form for complete removal of any form it is prefixed to
 
     #_(this form is removed)
 
-Which is handy for temporarily removing a form when modifying code. You can use hash-underscore multiple times to comment out multiple forms.
+Which is handy for temporarily removing a form when modifying code.
+You can use hash-underscore multiple times to comment out multiple forms.
 
     #_#_ ignored-1 ignored-2
 
@@ -1294,13 +1392,25 @@ Commas are optional and treated as whitespace.
 
 == Functional Programming
 
+"If you don't love something, it's not functional, in my opinion."
+-- Yves Behar
+
+
 === Pure functions and side effects
 
-You have probably noticed that Clojure functions always return a value. Moreover they usually return a useful result, not just a nil. There is a distinction to be made between functions which produce useful result values from functions which cause side-effects.
+You have probably noticed that Clojure functions always return a value.
+Moreover they usually return a useful result, not just a nil.
+There is a distinction to be made between functions which produce useful result values from functions which cause side-effects.
 
-Functions that produces side effects are often called in a way that discards their result. For example calling `(println "hi")` is done not because we want a result. `println` returns `nil`, which is useless. What we want is to print to System out the string `"hi"`, which occurs as a side-effect of us calling the function. Contrast that with calling `(str "hi" "there")`, which returns a new string `"hithere"`; no side-effects occur.
+Functions that produces side effects are often called in a way that discards their result.
+For example calling `(println "hi")` is done not because we want a result.
+`println` returns `nil`, which is useless.
+What we want is to print to System out the string `"hi"`, which occurs as a side-effect of us calling the function.
+Contrast that with calling `(str "hi" "there")`, which returns a new string `"hithere"`; no side-effects occur.
 
-A function with no side-effects is a pure function. Calling pure functions with a given input always results with the same corresponding output. Note that `rand` is not a pure function even though it returns a useful result, because it produces a different output every time.
+A function with no side-effects is a pure function.
+Calling pure functions with a given input always results with the same corresponding output.
+Note that `rand` is not a pure function even though it returns a useful result, because it produces a different output every time.
 
 Pure functions are desirable because they are:
 
@@ -1310,7 +1420,8 @@ Pure functions are desirable because they are:
 * easier to debug
 * easier to parallelize
 
-The Clojure api provides many pure functions. For example `conj` does not add something to a vector, it returns a completely new vector!
+The Clojure api provides many pure functions.
+For example `conj` does not add something to a vector, it returns a completely new vector!
 
     (def v [1 2])
     (conj v 3)
@@ -1319,9 +1430,15 @@ The Clojure api provides many pure functions. For example `conj` does not add so
     v
     => [1 2]
 
-In this example we can see that v remained unchanged. Clojure implements data structures that enable this to happen efficiently. Using a regular Java vector would require duplicating the vector, but Clojure makes use of a technique called shared structure to provide immutable data structures that don’t require the entire object to be duplicated.
+In this example we can see that v remained unchanged.
+Clojure implements data structures that enable this to happen efficiently.
+Using a regular Java vector would require duplicating the vector, but Clojure makes use of a technique called shared structure to provide immutable data structures that don’t require the entire object to be duplicated.
 
-Clojure does allow side-effects, indeed they are very useful. It is good style to keep side-effects co-located instead of having them occur throughout various parts of the code. We will see some good examples of this philosophy in action later in the course when we get to atoms. We can use pure function to calculate the next value to be assigned to an atom given the current value. The logic is separate from the side effect.
+Clojure does allow side-effects, indeed they are very useful.
+It is good style to keep side-effects co-located instead of having them occur throughout various parts of the code.
+We will see some good examples of this philosophy in action later in the course when we get to atoms.
+We can use pure function to calculate the next value to be assigned to an atom given the current value.
+The logic is separate from the side effect.
 
 
 === Apply, partial, and comp
@@ -1331,18 +1448,22 @@ If you have 4 numbers and want the max, you can call
     (max 1 2 5 3)
     => 5
 
-But what if you have a sequence of many numbers? What if you don’t know how many numbers there will be? Fortunately there is a way to convert a sequence of arguments into a function call:
+But what if you have a sequence of many numbers?
+What if you don’t know how many numbers there will be?
+Fortunately there is a way to convert a sequence of arguments into a function call:
 
     (apply max [1 2 5 3])
     => 5
 
-This is especially useful when calling variadic functions like max. Note that we could have alternatively reduced over the sequence, but apply is much more concise and clear about the intent.
+This is especially useful when calling variadic functions like max.
+Note that we could have alternatively reduced over the sequence, but apply is much more concise and clear about the intent.
 
 In Clojure we often pass functions as values, so there is a convenient way to create a function that consumes some arguments that can be used with additional arguments later:
 
     (partial + 1)
 
-Creates a function that adds 1 to any number of arguments supplied. It returns a function that is equivalent to:
+Creates a function that adds 1 to any number of arguments supplied.
+It returns a function that is equivalent to:
 
     (fn [& args]
       (apply + 1 args))
@@ -1382,7 +1503,9 @@ Be careful though, Clojure can produce infinite sequences (don’t do this in a 
 
     (range)
 
-This would attempt to keep producing numbers forever. (Press control-c to cancel the REPL if you did try this). There is a way to limit the amount of values to take:
+This would attempt to keep producing numbers forever.
+(Press control-c to cancel the REPL if you did try this).
+There is a way to limit the amount of values to take:
 
     (take 5 (range))
     => (0 1 2 3 4)
@@ -1390,12 +1513,17 @@ This would attempt to keep producing numbers forever. (Press control-c to cancel
     (drop 5 (take 5 (range)))
     => (5 6 7 8 9)
 
-Clojure has an excellent sequence abstraction that fits naturally into the language. From a vector `[1 2 3 4]` we can find the odd numbers by calling the filter function:
+Clojure has an excellent sequence abstraction that fits naturally into the language.
+From a vector `[1 2 3 4]` we can find the odd numbers by calling the filter function:
 
     (filter odd? [1 2 3 4])
     => (1 3)
 
-Here we called the filter function with two arguments: the `odd?` function and a vector of integers. filter is a higher order function, since it takes an input function to use in its computation. The result is a sequence of odd values. Functions like filter that operate on sequences call seq on their arguments to convert collections to sequences. The underlying mechanism is the `ISeq` interface, which allows many collection data structures to provide access to their elements.
+Here we called the `filter` function with two arguments: the `odd?` function and a vector of integers.
+`filter` is a higher order function, since it takes an input function to use in its computation.
+The result is a sequence of odd values.
+Functions like filter that operate on sequences call seq on their arguments to convert collections to sequences.
+The underlying mechanism is the `ISeq` interface, which allows many collection data structures to provide access to their elements.
 
 `map` is a function that calls another function for every element in a sequence:
 
@@ -1416,7 +1544,9 @@ To aggregate across a sequence, use `reduce`:
     (reduce * [1 2 3 4])
     => 24
 
-For each element in the sequence, reduce computes `(* aggregate element)` and passes the result of that as the aggregate for the next calculation. The first element `1` is used as the initial value of aggregate. The final result is 1 * 2 * 3 * 4.
+For each element in the sequence, reduce computes `(* aggregate element)` and passes the result of that as the aggregate for the next calculation.
+The first element `1` is used as the initial value of aggregate.
+The final result is 1 * 2 * 3 * 4.
 
 Clojure provides a built-in function for grouped aggregates:
 
@@ -1431,26 +1561,27 @@ Clojure provides a built-in function for grouped aggregates:
 	    if (condition)
 	        result.append(vector[i]);
 
-
 `map` is like a Java loop:
 
     for (i=0; i < vector.length; i++)
         result[i] = func(vector[i]);
-
 
 `reduce` is like a Java loop:
 
     for (i=0; i < vector.length; i++)
         result = func(result, vector[i]);
 
-
-Sequence abstractions are like names for loops that you can add to your vocabulary to talk about and recognize different kinds of loops. Learning the names of the abstractions and patterns that replace loops is an effort, but it adds powerful words to a programmer’s vocabulary. A large vocabulary facilitates reasoning more succinctly, communicating more effectively, and writing less code that does more.
+Sequence abstractions are like names for loops that you can add to your vocabulary to talk about and recognize different kinds of loops.
+Learning the names of the abstractions and patterns that replace loops is an effort, but it adds powerful words to a programmer’s vocabulary.
+A large vocabulary facilitates reasoning more succinctly, communicating more effectively, and writing less code that does more.
 
 Clojure provides a special form `#()` to create an anonymous function:
 
     #(< % 3)
 
-The `%` symbol is an implied input argument. This function takes one argument and returns `true` if the input argument is less than `3`, otherwise it is `false`. Anonymous functions are handy for adding small snippets of logic:
+The `%` symbol is an implied input argument.
+This function takes one argument and returns `true` if the input argument is less than `3`, otherwise it is `false`.
+Anonymous functions are handy for adding small snippets of logic:
 
 	(filter #(< % 3) [1 2 3 4 5]))
 	=> (0 1 2)
@@ -1474,7 +1605,9 @@ Clojure also has useful functions for constructing sequences:
 	(partition 3 (range 9))
 	=> ((0 1 2) (3 4 5) (6 7 8))
 
-One situation that appears difficult to use a sequence abstraction in is when we have a vector of numbers and wish to perform a sequence operation that relies upon the previous value visited. For example, think about finding the sum of each pair in `[1 2 3 4 5]`. Using an imperative style loop we can peek into the vector at the previous value:
+One situation that appears difficult to use a sequence abstraction in is when we have a vector of numbers and wish to perform a sequence operation that relies upon the previous value visited.
+For example, think about finding the sum of each pair in `[1 2 3 4 5]`.
+Using an imperative style loop we can peek into the vector at the previous value:
 
 	for (i=1; i < v.length; i++)
 	    print v[i] + v[i-1];
@@ -1518,9 +1651,16 @@ The input sequences were of different lengths, so map stopped when the smallest 
 	(3 5 7 9)
 
 
-Why are sequence abstractions better than loops? When reading a loop you must comprehend the entire block of code to know what it does. As the loop body grows and changes you must mentally keep track of more complexity. Mistakes like “off by one” are hard to spot, and can creep in as the code changes. Testing requires the invasion of the loop with breakpoints. You may find yourself duplicating a loop to customize some similar operation. The loop abstraction is very easy to understand and use, but it does not provide leverage.
+Why are sequence abstractions better than loops?
+When reading a loop you must comprehend the entire block of code to know what it does.
+As the loop body grows and changes you must mentally keep track of more complexity.
+Mistakes like “off by one” are hard to spot, and can creep in as the code changes.
+Testing requires the invasion of the loop with breakpoints.
+You may find yourself duplicating a loop to customize some similar operation.
+The loop abstraction is very easy to understand and use, but it does not provide leverage.
 
-Imagine discovering a new requirement where you need to multiply all of those numbers together. The change is invasive to the imperative loop:
+Imagine discovering a new requirement where you need to multiply all of those numbers together.
+The change is invasive to the imperative loop:
 
 	result = 1;
 	for (i=1; i < v.length; i++)
@@ -1544,19 +1684,33 @@ With a sequence you can write unit tests for the component sequences and operati
 
 Look out for opportunities to name your steps by identifying long expressions and creating a named function out of them.
 
-Clojure exposes a sequence interface over data collections to a rich set of functions that compose well. Three important functional sequence concepts are: filter, which retains each item in a sequence where some function evaluates to be truthy; map, which selects new values by calling a function over input sequence(s) to create a new sequence; and reduce, which aggregates a sequence and returns a single value.
+Clojure exposes a sequence interface over data collections to a rich set of functions that compose well.
+Three important functional sequence concepts are:
+ `filter`, which retains each item in a sequence where some function evaluates to be truthy;
+ `map`, which selects new values by calling a function over input sequence(s) to create a new sequence;
+ and `reduce`, which aggregates a sequence and returns a single value.
 
-I invite you to take the “no loops” challenge. The next time you spot a loop stop and think about what sequence operation the loop represents. Think about how to rewrite the loop as sequence operations instead. It will take time and mental effort, but you will be rewarded with a deeper understanding of the problem being solved. Whenever you see a loop, think about how it could be expressed as a sequence. Sequences are loop abstractions that allow you to ignore the implementation details.
+I invite you to take the “no loops” challenge.
+The next time you spot a loop stop and think about what sequence operation the loop represents.
+Think about how to rewrite the loop as sequence operations instead.
+It will take time and mental effort, but you will be rewarded with a deeper understanding of the problem being solved.
+Whenever you see a loop, think about how it could be expressed as a sequence.
+Sequences are loop abstractions that allow you to ignore the implementation details.
 
 
 === Threading operators
 
-By now, you should be feeling the combinatorial power functions offer. Simple functions compose sequence operations together to build transforms. Clojure has almost one hundred functions related to sequences, so you should also be feeling wary of such dense code. If we keep adding layers of function calls, the code becomes cryptic:
+By now, you should be feeling the combinatorial power functions offer.
+Simple functions compose sequence operations together to build transforms.
+Clojure has almost one hundred functions related to sequences, so you should also be feeling wary of such dense code.
+If we keep adding layers of function calls, the code becomes cryptic:
 
 	(reduce * (filter odd? (map inc v)))
 	=> 15
 
-With three layers of function calls, things are getting hard to keep in our head all at once. This expression may be easier to mentally process by starting from the innermost map, working out to filter, and then out to reduce last. But that is the opposite of our reading direction and locating the true starting point is difficult.
+With three layers of function calls, things are getting hard to keep in our head all at once.
+This expression may be easier to mentally process by starting from the innermost map, working out to filter, and then out to reduce last.
+But that is the opposite of our reading direction and locating the true starting point is difficult.
 
 The presentation of sequence operations is clearer if you name intermediary results:
 
@@ -1588,7 +1742,9 @@ Note that for empty expressions, the parenthesis are optional.
 
 === Data structures are functions!
 
-Maps sets vectors and keywords are functions. They delegate to get. While it is possible to use get to access collections, calling the collection directly is more common.
+Maps sets vectors and keywords are functions.
+They delegate to get.
+While it is possible to use get to access collections, calling the collection directly is more common.
 
     (get {:a 1 :b 2} :a)
     => 1
@@ -1677,32 +1833,47 @@ And so do vectors:
 
 == Challenge 2: Processing files
 
-Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file. You have been tasked with processing the files using the validation logic you built earlier.
+Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file.
+You have been tasked with processing the files using the validation logic you built earlier.
 
 
 === Part 1:
 
-Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it. Next use that data structure as an input to your validation function and print the result. (see slurp, line-seq, clojure.string/split).
+Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it.
+Next use that data structure as an input to your validation function and print the result.
+See `slurp` `line-seq` `clojure.string/split`.
 
 
 === Part 2:
 
-The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check, but the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible. Create a new function that opens two output files and writes to them based upon your eligibility check. The files should be called eligible-corgi-cover-applications.csv and ineligible-corgi-cover-applications.csv
+The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check.
+But the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible.
+Create a new function that opens two output files and writes to them based upon your eligibility check.
+The files should be called `eligible-corgi-cover-applications.csv` and `ineligible-corgi-cover-applications.csv`.
 
 
 === Part 3:
 
-A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied. That way the sales reps don’t have to spend time figuring out what they need to tell the customer. Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found. Create a new processing function that splits the applications into two files based on the new validator.
+A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied.
+That way the sales reps don’t have to spend time figuring out what they need to tell the customer.
+Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found.
+Create a new processing function that splits the applications into two files based on the new validator.
 
 
 === Part 4:
 
-As part of the Megacorp merger, the downstream systems are converting to JSON format. Create a new function that writes JSON data to a eligible-corgi-cover-applications.json file
+As part of the Megacorp merger, the downstream systems are converting to JSON format.
+Create a new function that writes JSON data to an `eligible-corgi-cover-applications.json` file.
 
 
 == Macros
 
-Macros manipulate the operand forms instead of evaluating them as input arguments. They are not functions, and cannot be used as values or arguments to functions. We already used a macro; defn is a macro for conveniently defining functions.
+"I never think about myself as an artist working in this time. I think about it in macro."
+-- Frank Ocean
+
+Macros manipulate the operand forms instead of evaluating them as input arguments.
+They are not functions, and cannot be used as values or arguments to functions.
+We already used a macro; defn is a macro for conveniently defining functions.
 
     (defn square [x] (* x x))
 
@@ -1710,12 +1881,16 @@ Actually expands to a def and fn form:
 
     (def square (fn [x] (* x x)))
 
-The difference between macros and functions is that macro arguments are manipulated at compile time instead of evaluated. Macros allow the user to extend the syntax of Clojure, but macros are less useful than functions as they cannot be used as values or arguments to higher order functions.
+The difference between macros and functions is that macro arguments are manipulated at compile time instead of evaluated.
+Macros allow the user to extend the syntax of Clojure, but macros are less useful than functions as they cannot be used as values or arguments to higher order functions.
 
 
 === Expanding macros
 
-Macros provide syntactic sugar. Macros first expand to produce new code that then gets compiled. The form is expanded at compile time through manipulation of the form. You can examine the expansion using `macroexpand-1`:
+Macros provide syntactic sugar.
+Macros first expand to produce new code that then gets compiled.
+The form is expanded at compile time through manipulation of the form.
+You can examine the expansion using `macroexpand-1`:
 
     (macroexpand-1 '(defn square [x] (* x x)))
     => (def my-namespace/square
@@ -1746,9 +1921,12 @@ Now call
 	=> x:3
 	3
 
-The final result is the same, but notice that the input to `zen1` was a list, where as the input to `zen2` was the result of evaluating the list. That’s the key difference between a macro and a function.
+The final result is the same, but notice that the input to `zen1` was a list, where as the input to `zen2` was the result of evaluating the list.
+That’s the key difference between a macro and a function.
 
-Macros themselves are really just functions with a `:macro` flag set in their metadata, which causes them to be passed in the input forms unevaluated, and caused the result to be evaluated. This last part is less obvious... but think back to `zen1`... `x` was a list, we returned `x`, but the final result wasn’t a list... it was `3`. The list was evaluated as a function call to `+`, resulting in `3`.
+Macros themselves are really just functions with a `:macro` flag set in their metadata, which causes them to be passed in the input forms unevaluated, and caused the result to be evaluated.
+This last part is less obvious... but think back to `zen1`... `x` was a list, we returned `x`, but the final result wasn’t a list... it was `3`.
+The list was evaluated as a function call to `+`, resulting in `3`.
 
 
 === Syntax quoting
@@ -1776,7 +1954,8 @@ Fully qualified symbols is desirable when creating macros, otherwise symbols may
        :m2 (m2)})
     => {:m1 0, :m2 2}
 
-Within the `let` block, the symbol `inc` has a different meaning than normal. Because `m2` uses syntax quote, `inc` gets fully qualified to `clojure.core/inc` which does not collide with the `let` binding.
+Within the `let` block, the symbol `inc` has a different meaning than normal.
+Because `m2` uses syntax quote, `inc` gets fully qualified to `clojure.core/inc` which does not collide with the `let` binding.
 
 Fully qualified symbols avoids one source of collisions, but there is another:
 
@@ -1797,7 +1976,8 @@ This might seem confusing, unless you notice that:
     (macroexpand-1 '(bad a))
     => (let [a 1] (inc a))
 
-Instead of inc operating on the input parameter, it is operating on an internal let bound value. To avoid this situation Clojure provides a let gensyms form which will produce a randomly named binding:
+Instead of inc operating on the input parameter, it is operating on an internal let bound value.
+To avoid this situation Clojure provides a let gensyms form which will produce a randomly named binding:
 
     (defmacro good [expr]
       `(let [a# 1]
@@ -1817,7 +1997,11 @@ The `let` binding `a#` expands out to a randomly generated symbol unlikely to co
 
 === Code as data
 
-You may have noticed when we write a macro, we are really writing a function that produces code. The output is code… as data, and we manipulate code… as data. Homoiconic means that the language text has the same structure as its abstract syntax tree (AST). This allows all code in the language to be accessed and transformed as data, using the same representation. Nested code is well represented as a data structure.
+You may have noticed when we write a macro, we are really writing a function that produces code.
+The output is code… as data, and we manipulate code… as data.
+Homoiconic means that the language text has the same structure as its abstract syntax tree (AST).
+This allows all code in the language to be accessed and transformed as data, using the same representation.
+Nested code is well represented as a data structure.
 
 When working on a non-trivial macro a good strategy is:
 
@@ -1884,9 +2068,14 @@ Create the following macros and test cases:
 
 == Parallel Programming and Concurrency
 
+"Our moral traditions developed concurrently with our reason, not as its product."
+-- Friedrich August von Hayek
+
+
 === Vars and dynamic scope
 
-Vars are automatically derefed when evaluated, so it can seem like they are just a variable. But you can “see” the var itself using the var function or #' shorthand.
+Vars are automatically derefed when evaluated, so it can seem like they are just a variable.
+But you can “see” the var itself using the var function or #' shorthand.
 
     (def one-hundred 100)
     => #'training.core-test/one-hundred
@@ -1906,14 +2095,17 @@ Metadata may be provided using `^{}`
 
     (def x ^{:private true} 1)
 
-You can attach whatever metadata you wish. These are the keys the compiler looks for:
+You can attach whatever metadata you wish.
+These are the keys the compiler looks for:
 
     :private
     :doc
     :author
     :type
 
-By default Vars are static. But Vars can be marked as dynamic to allow per-thread bindings. Within each thread they obey a stack discipline:
+By default Vars are static.
+But Vars can be marked as dynamic to allow per-thread bindings.
+Within each thread they obey a stack discipline:
 
 	(def ^:dynamic x 1)
 	(def ^:dynamic y 1)
@@ -1927,16 +2119,22 @@ By default Vars are static. But Vars can be marked as dynamic to allow per-threa
 	(+ x y)
 	=> 2
 
-Bindings created with binding cannot be seen by any other thread. Likewise, bindings created with binding can be assigned to, which provides a means for a nested context to communicate with code before it on the call stack. This capability is opt-in only by setting a metadata tag: dynamic to true as in the code block above.
+Bindings created with binding cannot be seen by any other thread.
+Likewise, bindings created with binding can be assigned to, which provides a means for a nested context to communicate with code before it on the call stack.
+This capability is opt-in only by setting a metadata tag: dynamic to true as in the code block above.
 
-Functions defined with defn are stored in Vars, allowing for the re-definition of functions in a running program. This also enables many of the possibilities of aspect- or context-oriented programming. For instance, you could wrap a function with logging behavior only in certain call contexts or threads.
+Functions defined with defn are stored in Vars, allowing for the re-definition of functions in a running program.
+This also enables many of the possibilities of aspect- or context-oriented programming.
+For instance, you could wrap a function with logging behavior only in certain call contexts or threads.
 
 
 === Delays, Futures, and Promises
 
 ==== Delays
 
-Delays wrap an arbitrary body of code for evaluation at a later stage so that the code in question is not run unless the answer is asked for. Delays also cache the result value to prevent another execution. The body code will only run once, even if dereferenced concurrently.
+Delays wrap an arbitrary body of code for evaluation at a later stage so that the code in question is not run unless the answer is asked for.
+Delays also cache the result value to prevent another execution.
+The body code will only run once, even if dereferenced concurrently.
 
     (def d (delay (println "Hello world!") 42))
 
@@ -1956,12 +2154,19 @@ Delays wrap an arbitrary body of code for evaluation at a later stage so that th
     (realized? d)
     => true
 
-We assign the delay to a var called `d`. We see that it starts in a pending state. Dereferencing `d` with `@` causes the code to run, printing `"Hello world!"` and returning `42`. Notice that the second dereference with `@` does not print `"Hello world!"` again, it only returns the already realized value of `42`.
+We assign the delay to a var called `d`.
+We see that it starts in a pending state.
+Dereferencing `d` with `@` causes the code to run, printing `"Hello world!"` and returning `42`.
+Notice that the second dereference with `@` does not print `"Hello world!"` again, it only returns the already realized value of `42`.
 
 
 ==== Futures
 
-Futures provide an easy way to spin off a new thread to do some computation or I/O that you will need access to in the future. The call style is compatible with delay. The difference is that the work begins immediately on another thread. The flow of control is not blocked. If you dereference a future, it will block until the value is available:
+Futures provide an easy way to spin off a new thread to do some computation or I/O that you will need access to in the future.
+The call style is compatible with delay.
+The difference is that the work begins immediately on another thread.
+The flow of control is not blocked.
+If you dereference a future, it will block until the value is available:
 
 
     (def f
@@ -1988,7 +2193,8 @@ Futures provide an easy way to spin off a new thread to do some computation or I
 
 ==== Promises
 
-Promises are used in a similar way to delay or future in that you dereference them for a value, can check if they have a value with `realized?` and they block when you dereference them if they don’t have a value until they do. Where they differ is that you don’t immediately give them a value, but provide them with one by calling deliver:
+Promises are used in a similar way to delay or future in that you dereference them for a value, can check if they have a value with `realized?` and they block when you dereference them if they don’t have a value until they do.
+Where they differ is that you don’t immediately give them a value, but provide them with one by calling deliver:
 
     (def p (promise))
     (realized? p)
@@ -2006,33 +2212,67 @@ Dereferencing works on futures, delays, promises, atoms, agents refs and vars.
 
 === Atoms, Refs, and Agents
 
-Atoms provide a way to manage shared, synchronous, independent state. They are a reference type like refs and vars. You create an atom with atom, and can access its state with `deref`/`@`. Like refs and agents, atoms support validators. To change the value of an atom, you can use `swap!`. A lower-level `compare-and-set!` is also provided. Changes to atoms are always free of race conditions.
+Atoms provide a way to manage shared, synchronous, independent state.
+They are a reference type like refs and vars.
+You create an atom with atom, and can access its state with `deref`/`@`.
+Like refs and agents, atoms support validators.
+To change the value of an atom, you can use `swap!`.
+A lower-level `compare-and-set!` is also provided.
+Changes to atoms are always free of race conditions.
 
-As with all reference types, the intended use of atom is to hold one of Clojure’s immutable data structures. And, similar to ref’s alter and agent’s send, you change the value by applying a function to the old value. This is done in an atomic manner by `swap!` Internally, `swap!` reads the current value, applies the function to it, and attempts to `compare-and-set!` it in. Since another thread may have changed the value in the intervening time, it may have to retry, and does so in a spin loop. The net effect is that the value will always be the result of the application of the supplied function to a current value, atomically. However, because the function might be called multiple times, it must be free of side effects.
+As with all reference types, the intended use of atom is to hold one of Clojure’s immutable data structures.
+And, similar to ref’s alter and agent’s send, you change the value by applying a function to the old value.
+This is done in an atomic manner by `swap!` Internally, `swap!` reads the current value, applies the function to it, and attempts to `compare-and-set!` it in.
+Since another thread may have changed the value in the intervening time, it may have to retry, and does so in a spin loop.
+The net effect is that the value will always be the result of the application of the supplied function to a current value, atomically.
+However, because the function might be called multiple times, it must be free of side effects.
 
 Atoms are an efficient way to represent some state that will never need to be coordinated with any other, and for which you wish to make synchronous changes (unlike agents, which are similarly independent but asynchronous).
 
-While Vars ensure safe use of mutable storage locations via thread isolation, transactional references (Refs) ensure safe shared use of mutable storage locations via a software transactional memory (STM) system. Refs are bound to a single storage location for their lifetime, and only allow mutation of that location to occur within a transaction. In practise Refs are rarely used.
+While Vars ensure safe use of mutable storage locations via thread isolation, transactional references (Refs) ensure safe shared use of mutable storage locations via a software transactional memory (STM) system.
+Refs are bound to a single storage location for their lifetime, and only allow mutation of that location to occur within a transaction.
+In practise Refs are rarely used.
 
-Like Refs, Agents provide shared access to mutable state. Where Refs support coordinated, synchronous change of multiple locations, Agents provide independent, asynchronous change of individual locations. Agents are bound to a single storage location for their lifetime, and only allow mutation of that location (to a new state) to occur as a result of an action. Actions are functions (with, optionally, additional arguments) that are asynchronously applied to an Agent’s state and whose return value becomes the Agent’s new state. Because actions are functions they can also be multimethods and therefore actions are potentially polymorphic. Also, because the set of functions is open, the set of actions supported by an Agent is also open, a sharp contrast to pattern matching message handling loops provided by some other languages.
+Like Refs, Agents provide shared access to mutable state.
+Where Refs support coordinated, synchronous change of multiple locations, Agents provide independent, asynchronous change of individual locations.
+Agents are bound to a single storage location for their lifetime, and only allow mutation of that location (to a new state) to occur as a result of an action.
+Actions are functions (with, optionally, additional arguments) that are asynchronously applied to an Agent’s state and whose return value becomes the Agent’s new state.
+Because actions are functions they can also be multimethods and therefore actions are potentially polymorphic.
+Also, because the set of functions is open, the set of actions supported by an Agent is also open, a sharp contrast to pattern matching message handling loops provided by some other languages.
 
-Clojure’s Agents are reactive, not autonomous - there is no imperative message loop and no blocking receive. The state of an Agent should be itself immutable (preferably an instance of one of Clojure’s persistent collections), and the state of an Agent is always immediately available for reading by any thread (using the deref function or reader macro @) without any messages, i.e. observation does not require cooperation or coordination.
+Clojure’s Agents are reactive, not autonomous - there is no imperative message loop and no blocking receive.
+The state of an Agent should be itself immutable (preferably an instance of one of Clojure’s persistent collections), and the state of an Agent is always immediately available for reading by any thread (using the deref function or reader macro @) without any messages, i.e. observation does not require cooperation or coordination.
 
-Agent action dispatches take the form (send agent fn args*). send (and send-off) always returns immediately. At some point later, in another thread, the following will happen:
+Agent action dispatches take the form (send agent fn args*).
+send (and send-off) always returns immediately.
+At some point later, in another thread, the following will happen:
 
-* The given fn will be applied to the state of the Agent and the args, if any were supplied. The return value of the given fn will become the new state of the Agent.
-* If any watchers were added to the Agent, they will be called. See add-watch for details.
+* The given fn will be applied to the state of the Agent and the args, if any were supplied.
+The return value of the given fn will become the new state of the Agent.
+* If any watchers were added to the Agent, they will be called.
+See add-watch for details.
 * If during the function execution any other dispatches are made (directly or indirectly), they will be held until after the state of the Agent has been changed.
-* If any exceptions are thrown by an action function, no nested dispatches will occur, and the exception will be cached in the Agent itself. When an Agent has errors cached, any subsequent interactions will immediately throw an exception, until the agent’s errors are cleared. Agent errors can be examined with agent-error and the agent restarted with restart-agent.
+* If any exceptions are thrown by an action function, no nested dispatches will occur, and the exception will be cached in the Agent itself.
+When an Agent has errors cached, any subsequent interactions will immediately throw an exception, until the agent’s errors are cleared.
+Agent errors can be examined with agent-error and the agent restarted with restart-agent.
 
-The actions of all Agents get interleaved amongst threads in a thread pool. At any point in time, at most one action for each Agent is being executed. Actions dispatched to an agent from another single agent or thread will occur in the order they were sent, potentially interleaved with actions dispatched to the same agent from other sources. send should be used for actions that are CPU limited, while send-off is appropriate for actions that may block on IO.
+The actions of all Agents get interleaved amongst threads in a thread pool.
+At any point in time, at most one action for each Agent is being executed.
+Actions dispatched to an agent from another single agent or thread will occur in the order they were sent, potentially interleaved with actions dispatched to the same agent from other sources.
+send should be used for actions that are CPU limited, while send-off is appropriate for actions that may block on IO.
 
-Agents are integrated with the STM - any dispatches made in a transaction are held until it commits, and are discarded if it is retried or aborted. No user-code locking is involved.
+Agents are integrated with the STM - any dispatches made in a transaction are held until it commits, and are discarded if it is retried or aborted.
+No user-code locking is involved.
 
-Note that use of Agents starts a pool of non-daemon background threads that will prevent shutdown of the JVM. Use shutdown-agents to terminate these threads and allow shutdown.
+Note that use of Agents starts a pool of non-daemon background threads that will prevent shutdown of the JVM.
+Use shutdown-agents to terminate these threads and allow shutdown.
 
 
 == Java Interop
+
+"Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
+-- Libba Bray
+
 
 === Clojure syntax for Java constructors
 
@@ -2082,15 +2322,18 @@ Inner classes can be accessed using the dollar symbol:
         (accept [this f]
           (.isDirectory f))))
 
-Notice that we didn’t define a class? We directly created an object that conforms to the `FileFilter` interface. `reify` is a convenient way to provide a concrete implementation of an interface.
+Notice that we didn’t define a class? We directly created an object that conforms to the `FileFilter` interface.
+`reify` is a convenient way to provide a concrete implementation of an interface.
 
 
 === gen-class and proxy
 
-`gen-class` creates a class. In practise the need to create a class from within Clojure is rare, so we won’t be covering the syntax.
+`gen-class` creates a class.
+In practice the need to create a class from within Clojure is rare, so we won’t be covering the syntax.
 (see https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html if you want to explore this further)
 
-`proxy` can be used to extend a concrete superclass. Again the need for this is rare.
+`proxy` can be used to extend a concrete superclass.
+Again the need for this is rare.
 (see https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html if you want to explore this further)
 
 
@@ -2106,12 +2349,18 @@ To your `project.clj` file
 
 == Challenge 3: Mocking parallel web requests
 
-Insuricorp and Megacorp are integrating their IT systems. As part of this effort you need to modify the “Corgi cover” eligibility logic to call a remote web service. Your task is to set up the code and tests.
+Insuricorp and Megacorp are integrating their IT systems.
+As part of this effort you need to modify the “Corgi cover” eligibility logic to call a remote web service.
+Your task is to set up the code and tests.
 
 
 === Part 1: Mock a web request
 
-Every Insuricorp “Corgi cover” policy application needs to be cross referenced with Megacorp to see if the customer has a Megacorp policy already via a remote web service. The web service is not available for you to test against yet. Set up a function called fetch-megacorp-policies to do the web request but leave the implementation empty. Create a test that changes the behavior of fetch-megacorp-policies to behave as though it were a web request; make it pause for 100ms before returning the policies that the person has. Set up a test that exercises the eligibility checks using the mocked version of a web request.
+Every Insuricorp “Corgi cover” policy application needs to be cross referenced with Megacorp to see if the customer has a Megacorp policy already via a remote web service.
+The web service is not available for you to test against yet.
+Set up a function called fetch-megacorp-policies to do the web request but leave the implementation empty.
+Create a test that changes the behavior of fetch-megacorp-policies to behave as though it were a web request; make it pause for 100ms before returning the policies that the person has.
+Set up a test that exercises the eligibility checks using the mocked version of a web request.
 
 
 === Part 2: Report the how long it takes
@@ -2127,32 +2376,44 @@ Implement a similar solution in Clojure.
 
 === Part 3: Make parallel requests
 
-The web service you are using can handle multiple requests faster than a series of requests. It operates fastest with up to 20 connections. Modify your code such that multiple requests are made simultaneously. Compare the timing results to confirm the operations are happening in parallel.
+The web service you are using can handle multiple requests faster than a series of requests.
+It operates fastest with up to 20 connections.
+Modify your code such that multiple requests are made simultaneously.
+Compare the timing results to confirm the operations are happening in parallel.
 
 
 === Part 4: Error handling
 
-Modify your mock of fetch-megacorp-policies such that it throws an exception randomly about 10% of the time. Make sure your tests report a failure. Now update your logic to handle the errors and retry up to 10 times. The tests should pass. Then create another test where the exception is thrown 100% of the time, and the max tries occurs.
+Modify your mock of fetch-megacorp-policies such that it throws an exception randomly about 10% of the time.
+Make sure your tests report a failure.
+Now update your logic to handle the errors and retry up to 10 times.
+The tests should pass.
+Then create another test where the exception is thrown 100% of the time, and the max tries occurs.
 
 
 == Polymorphism and Types
 
 === Multimethods
 
-Polymorphic dispatch. First we define the name of the multimethod, and the dispatch function:
+Polymorphic dispatch.
+First we define the name of the multimethod, and the dispatch function:
 
     (defmulti encounter
       (fn dispatch [x y]
         [(:species x) (:species y)]))
 
-In this case the dispatch function returns a vector pair of the species of input `x` and the species of input `y`. Now we can provide methods implementing functions to execute for a given dispatch value:
+In this case the dispatch function returns a vector pair of the species of input `x` and the species of input `y`.
+Now we can provide methods implementing functions to execute for a given dispatch value:
 
     (defmethod encounter [:bunny :lion] [x y] :run-away)
     (defmethod encounter [:lion :bunny] [x y] :eat)
     (defmethod encounter [:lion :lion] [x y] :fight)
     (defmethod encounter [:bunny :bunny] [x y] :mate)
 
-These are somewhere between a case statement and a function definition. They give the conditions under which to be called, and a function definition. Given a dispatch result of `[:bunny :lion]`, the first method will be called on the `x` and `y` inputs, and the method here does nothing but return a value `:run-away`. Let’s set up some test inputs:
+These are somewhere between a case statement and a function definition.
+They give the conditions under which to be called, and a function definition.
+Given a dispatch result of `[:bunny :lion]`, the first method will be called on the `x` and `y` inputs, and the method here does nothing but return a value `:run-away`.
+Let’s set up some test inputs:
 
     (def bunny1 {:species :bunny, :other :stuff})
     (def bunny2 {:species :bunny, :other :stuff})
@@ -2184,9 +2445,15 @@ A protocol is a named set of named methods and their signatures, defined using d
       (bar [a b] "bar docs")
       (baz [a] [a b] [a b c] "baz docs"))
 
-No implementations are provided. Docs can be specified for the protocol and the functions. The above yields a set of polymorphic functions and a protocol object. All are namespace-qualified by the namespace enclosing the definition.
+No implementations are provided.
+Docs can be specified for the protocol and the functions.
+The above yields a set of polymorphic functions and a protocol object.
+All are namespace-qualified by the namespace enclosing the definition.
 
-The resulting functions dispatch on the type of their first argument, and thus must have at least one argument. defprotocol is dynamic, and does not require AOT compilation. defprotocol will automatically generate a corresponding interface, with the same name as the protocol, e.g. given a protocol my.ns/Protocol, an interface my.ns.Protocol. The interface will have methods corresponding to the protocol functions, and the protocol will automatically work with instances of the interface.
+The resulting functions dispatch on the type of their first argument, and thus must have at least one argument.
+defprotocol is dynamic, and does not require AOT compilation.
+defprotocol will automatically generate a corresponding interface, with the same name as the protocol, e.g. given a protocol my.ns/Protocol, an interface my.ns.Protocol.
+The interface will have methods corresponding to the protocol functions, and the protocol will automatically work with instances of the interface.
 
 Note that you do not need to use this interface with deftype, defrecord, or reify, as they support protocols directly:
 
@@ -2211,7 +2478,8 @@ Note that you do not need to use this interface with deftype, defrecord, or reif
          (bar-me [this y] x))))
     => 17
 
-A Java client looking to participate in the protocol can do so most efficiently by implementing the protocol-generated interface. External implementations of the protocol (which are needed when you want a class or type not in your control to participate in the protocol) can be provided using the extend construct:
+A Java client looking to participate in the protocol can do so most efficiently by implementing the protocol-generated interface.
+External implementations of the protocol (which are needed when you want a class or type not in your control to participate in the protocol) can be provided using the extend construct:
 
     (extend AType
       AProtocol
@@ -2222,11 +2490,20 @@ A Java client looking to participate in the protocol can do so most efficiently 
         {...}
     ...)
 
-`extend` takes a type/class (or interface, see below), a one or more protocol + function map (evaluated) pairs. Will extend the polymorphism of the protocol’s methods to call the supplied functions when an AType is provided as the first argument. Function maps are maps of the keywordized method names to ordinary fns. This facilitates easy reuse of existing fns and maps, for code reuse/mixins without derivation or composition.
+`extend` takes a type/class (or interface, see below), a one or more protocol + function map (evaluated) pairs.
+Will extend the polymorphism of the protocol’s methods to call the supplied functions when an AType is provided as the first argument.
+Function maps are maps of the keywordized method names to ordinary fns.
+This facilitates easy reuse of existing fns and maps, for code reuse/mixins without derivation or composition.
 
-You can implement a protocol on an interface. This is primarily to facilitate interop with the host (e.g. Java) but opens the door to incidental multiple inheritance of implementation since a class can inherit from more than one interface, both of which implement the protocol. If one interface is derived from the other, the more derived is used, else which one is used is unspecified.
+You can implement a protocol on an interface.
+This is primarily to facilitate interop with the host (e.g. Java) but opens the door to incidental multiple inheritance of implementation since a class can inherit from more than one interface, both of which implement the protocol.
+If one interface is derived from the other, the more derived is used, else which one is used is unspecified.
 
-The implementing `fn` can presume first argument is instanceof `AType`. You can implement a protocol on `nil`. To define a default implementation of protocol (for other than `nil`) just use `Object`. Protocols are fully reified and support reflective capabilities via `extends?`, `extenders`, and `satisfies?`. Note the convenience macros `extend-type`, and `extend-protocol`.
+The implementing `fn` can presume first argument is instanceof `AType`.
+You can implement a protocol on `nil`.
+To define a default implementation of protocol (for other than `nil`) just use `Object`.
+Protocols are fully reified and support reflective capabilities via `extends?`, `extenders`, and `satisfies?`.
+Note the convenience macros `extend-type`, and `extend-protocol`.
 
 If you are providing external definitions inline, these will be more convenient than using extend directly
 
@@ -2249,7 +2526,9 @@ Expands into:
 
 === Creating types with defrecord and deftype
 
-`deftype`, `defrecord`, and `reify` provide the mechanism for defining implementations of abstractions, and instances of those implementations. Resist the urge to use them to define ‘structured data’ as you would define classes or structures in other languages. It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.
+`deftype`, `defrecord`, and `reify` provide the mechanism for defining implementations of abstractions, and instances of those implementations.
+Resist the urge to use them to define ‘structured data’ as you would define classes or structures in other languages.
+It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.
 
 
 ==== Deftype
@@ -2291,7 +2570,8 @@ Call the method on the `thing` instance and pass `"bar"`:
 
 === Specifications with clojure.spec
 
-The spec library specifies the structure of data, validates or destructures it, and can generate data based on the spec. Spec was introduced into Clojure 1.9.0, so update your `project.clj` to the right version:
+The spec library specifies the structure of data, validates or destructures it, and can generate data based on the spec.
+Spec was introduced into Clojure 1.9.0, so update your `project.clj` to the right version:
 
 	[org.clojure/clojure "1.9.0"]
 
@@ -2325,7 +2605,8 @@ A registered spec identifier can be used in place of a spec definition.
     (s/valid? ::suit :club)
     => true
 
-The simplest way to compose specs is with `and` and `or`. Let’s create a spec that combines several predicates into a composite spec with `s/and`:
+The simplest way to compose specs is with `and` and `or`.
+Let’s create a spec that combines several predicates into a composite spec with `s/and`:
 
     (s/def ::big-even (s/and int? even? #(> % 1000)))
 
@@ -2342,7 +2623,8 @@ We can also use `s/or` to specify two alternatives:
 
     (s/def ::name-or-id (s/or :name string? :id int?))
 
-This `or` spec is the first case we’ve seen that involves a choice during validity checking. Each choice is annotated with a tag (here, between `:name` and `:id`) and those tags give the branches names that can be used to understand or enrich the data returned from conform and other spec functions.
+This `or` spec is the first case we’ve seen that involves a choice during validity checking.
+Each choice is annotated with a tag (here, between `:name` and `:id`) and those tags give the branches names that can be used to understand or enrich the data returned from conform and other spec functions.
 
     (s/conform ::name-or-id "abc")
     => [:name "abc"]
@@ -2350,7 +2632,8 @@ This `or` spec is the first case we’ve seen that involves a choice during vali
     (s/conform ::name-or-id 100)
     => [:id 100]
 
-Many predicates that check an instance’s type do not allow nil as a valid value (`string?`, `number?`, `keyword?`, etc). To include `nil` as a valid value, use the provided function nilable to make a spec:
+Many predicates that check an instance’s type do not allow nil as a valid value (`string?`, `number?`, `keyword?`, etc).
+To include `nil` as a valid value, use the provided function nilable to make a spec:
 
     (s/nilable string?)
 
@@ -2364,7 +2647,8 @@ In addition to `explain`, you can use `explain-str` to receive the error message
 
 === Maps
 
-Clojure programs rely heavily on passing around maps of data. Entity maps in spec are defined with keys:
+Clojure programs rely heavily on passing around maps of data.
+Entity maps in spec are defined with keys:
 
     (def email-regex
       #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$")
@@ -2385,7 +2669,8 @@ Validation checks that the required attributes are included, and that every regi
        ::email "elon@example.com"})
     => true
 
-Much existing Clojure code does not use maps with namespaced keys and so keys can also specify `:req-un` and `:opt-un` for required and optional unqualified keys. These variants specify namespaced keys used to find their specification, but the map only checks for the unqualified version of the keys.
+Much existing Clojure code does not use maps with namespaced keys and so keys can also specify `:req-un` and `:opt-un` for required and optional unqualified keys.
+These variants specify namespaced keys used to find their specification, but the map only checks for the unqualified version of the keys.
 
     (s/def :unq/person
       (s/keys :req-un [::first-name ::last-name ::email]
@@ -2412,7 +2697,8 @@ Spec has explicit support for pre and post conditions using `fdef`.
                     :ret number?)
       :fn #(= (-> % :args :x) ((:ret %) 0)))
 
-The `:ret` spec uses fspec to declare that the returning function takes and returns a number. Even more interesting, the `:fn` spec can state a general property that relates the `:args` (where we know `x`) and the result we get from invoking the function returned from adder, namely that adding `0` to it should return `x`.
+The `:ret` spec uses fspec to declare that the returning function takes and returns a number.
+Even more interesting, the `:fn` spec can state a general property that relates the `:args` (where we know `x`) and the result we get from invoking the function returned from adder, namely that adding `0` to it should return `x`.
 
 
 === A game of cards
@@ -2453,7 +2739,8 @@ Bad data produces errors
        at: [::players ::hand 1]
        predicate: suit?
 
-If we have a function deal that doles out some cards to the players we can spec that function to verify the arg and return value are both suitable data values. We can also specify a :fn spec to verify that the count of cards in the game before the deal equals the count of cards after the deal.
+If we have a function deal that doles out some cards to the players we can spec that function to verify the arg and return value are both suitable data values.
+We can also specify a :fn spec to verify that the count of cards in the game before the deal equals the count of cards after the deal.
 
     (defn total-cards [{:keys [::deck ::players] :as game}]
       (apply + (count deck)
@@ -2472,7 +2759,9 @@ If we have a function deal that doles out some cards to the players we can spec 
 
 A key design constraint of spec is that all specs are also designed to act as generators of sample data that conforms to the spec (a critical requirement for property-based testing).
 
-Spec generators rely on the Clojure property testing library test.check. However, this dependency is dynamically loaded and you can use the parts of spec other than gen, exercise, and testing without declaring test.check as a runtime dependency. When we wish to use these parts of spec (typically during testing), we need to declare a dev dependency on `test.check` in our `project.clj`:
+Spec generators rely on the Clojure property testing library test.check.
+However, this dependency is dynamically loaded and you can use the parts of spec other than gen, exercise, and testing without declaring test.check as a runtime dependency.
+When we wish to use these parts of spec (typically during testing), we need to declare a dev dependency on `test.check` in our `project.clj`:
 
     :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]]}}
 
@@ -2485,7 +2774,9 @@ We require `clojure.spec.gen.alpha` in the `ns` form:
 
 The `gen` function can be used to obtain the generator for any spec.
 
-Once you have obtained a generator with `gen`, there are several ways to use it. You can generate a single sample value with generate or a series of samples with sample. Let’s see some basic examples:
+Once you have obtained a generator with `gen`, there are several ways to use it.
+You can generate a single sample value with generate or a series of samples with sample.
+Let’s see some basic examples:
 
     (gen/generate (s/gen int?))
     => -959
@@ -2508,7 +2799,8 @@ We can even generate an entire game:
 	(gen/generate (s/gen ::game))
 
 
-It’s useful to spec (and generate) values in a range. For example, in the case of a range of integer values, use `int-in` to spec a range:
+It’s useful to spec (and generate) values in a range.
+For example, in the case of a range of integer values, use `int-in` to spec a range:
 
     (s/def ::roll (s/int-in 0 11))
     (gen/sample (s/gen ::roll))
@@ -2535,14 +2827,18 @@ Instrumentation validates that the :args spec is being invoked on instrumented f
 
     (stest/instrument `ranged-rand)
 
-Instrument takes a fully-qualified symbol so we use ``` here to resolve it in the context of the current namespace. If the function is invoked with args that do not conform with the `:args` spec you will see an error like this:
+Instrument takes a fully-qualified symbol so we use ``` here to resolve it in the context of the current namespace.
+If the function is invoked with args that do not conform with the `:args` spec you will see an error like this:
 
     (ranged-rand 8 5)
     => CompilerException clojure.lang.ExceptionInfo: Call to #'spec.examples.guide/ranged-rand did not conform to spec
 
-Instrumentation can be turned off using the complementary function unstrument. Instrumentation is useful at both development time and during testing to discover errors in calling code. It is not recommended to use instrumentation in production due to the overhead involved with checking args specs.
+Instrumentation can be turned off using the complementary function unstrument.
+Instrumentation is useful at both development time and during testing to discover errors in calling code.
+It is not recommended to use instrumentation in production due to the overhead involved with checking args specs.
 
-We mentioned earlier that `clojure.spec.test.alpha` provides tools for automatically testing functions. When functions have specs, we can use check, to automatically generate tests that check the function using the specs.
+We mentioned earlier that `clojure.spec.test.alpha` provides tools for automatically testing functions.
+When functions have specs, we can use check, to automatically generate tests that check the function using the specs.
 
 `check` will generate arguments based on the `:args` spec for a function, invoke the function, and check that the `:ret` and `:fn` specs were satisfied.
 
@@ -2555,7 +2851,9 @@ We mentioned earlier that `clojure.spec.test.alpha` provides tools for automatic
          :sym spec.examples.guide/ranged-rand,
          :result true})
 
-A keen observer will notice that `ranged-rand` contains a subtle bug. If the difference between start and end is very large (larger than is representable by `Long/MAX_VALUE`), then `ranged-rand` will produce an `IntegerOverflowException`. If you run check several times you will eventually cause this case to occur.
+A keen observer will notice that `ranged-rand` contains a subtle bug.
+If the difference between start and end is very large (larger than is representable by `Long/MAX_VALUE`), then `ranged-rand` will produce an `IntegerOverflowException`.
+If you run check several times you will eventually cause this case to occur.
 
 `check` also takes a number of options that can be passed to `test.check` to influence the test run, as well as the option to override generators for parts of the spec, by either name or path.
 
@@ -2566,7 +2864,8 @@ Imagine instead that we made an error in the `ranged-rand` code and swapped star
       [start end]
       (+ start (long (rand (- start end)))))
 
-This broken function will still create random integers, just not in the expected range. Our `:fn` spec will detect the problem when checking the var:
+This broken function will still create random integers, just not in the expected range.
+Our `:fn` spec will detect the problem when checking the var:
 
 
     (stest/abbrev-result (first (stest/check `ranged-rand)))
@@ -2574,7 +2873,8 @@ This broken function will still create random integers, just not in the expected
          :result {...
                   :clojure.spec.alpha/failure :test-failed}}
 
-`check` has reported an error in the `:fn` spec. We can see the arguments passed were `-3` and `0` and the return value was `-5`, which is out of the expected range.
+`check` has reported an error in the `:fn` spec.
+We can see the arguments passed were `-3` and `0` and the return value was `-5`, which is out of the expected range.
 
 To test all of the spec’ed functions in a namespace (or multiple namespaces), use enumerate-namespace to generate the set of symbols naming vars in the namespace:
 
@@ -2626,16 +2926,23 @@ And then we want to test the behavior of run-query while stubbing out invoke-ser
     (stest/summarize-results (stest/check `run-query))
     => {:total 1, :check-passed 1}
 
-The first call here instruments and stubs `invoke-service`. The second and third calls demonstrate that calls to `invoke-service` now return generated results (rather than hitting a service). Finally, we can use check on the higher level function to test that it behaves properly based on the generated stub results returned from `invoke-service`.
+The first call here instruments and stubs `invoke-service`.
+The second and third calls demonstrate that calls to `invoke-service` now return generated results (rather than hitting a service).
+Finally, we can use check on the higher level function to test that it behaves properly based on the generated stub results returned from `invoke-service`.
 
 There is even more to spec! Once you are comfortable with the basics you can learn more at https://clojure.org/guides/spec.
 
 
 == Interacting with a Database
 
+"You can have data without information, but you cannot have information without data."
+-- Daniel Keys Moran
+
+
 === Intro to clojure.java.jdbc
 
-Database persistence is important for many applications. We can use clojure.java.jdbc to interact with a database.
+Database persistence is important for many applications.
+We can use clojure.java.jdbc to interact with a database.
 
 To start, create a new project
 
@@ -2646,7 +2953,8 @@ and add dependencies to your `project.clj` file:
     [org.clojure/java.jdbc "0.7.5"]
     [hsqldb/hsqldb "1.8.0.10"]
 
-Note that we need the driver we plan to use to connect to a database. In this case we are using an in memory HSQL database.
+Note that we need the driver we plan to use to connect to a database.
+In this case we are using an in memory HSQL database.
 
 In the Clojure project we require jdbc, and set up a db connection url.
 
@@ -2700,7 +3008,8 @@ And now we create a function to do a parameterized query.
     (search "%How%")
     => ({:message "How now?"})
 
-It is important to use parameterized queries instead of string concatenation in this example because it protects us from SQL injection. Parameters are not part of the query, so they cannot perform SQL from malicious input.
+It is important to use parameterized queries instead of string concatenation in this example because it protects us from SQL injection.
+Parameters are not part of the query, so they cannot perform SQL from malicious input.
 
 If you want to redo any steps, remember that you can always drop the table and start again.
 
@@ -2709,7 +3018,11 @@ If you want to redo any steps, remember that you can always drop the table and s
 
 === Solutions for SQL management
 
-HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
+HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures.
+This is useful when you have to programmatically combine clauses to produce a final SQL statement.
+For example if the user can check a checkbox to enable an additional clause in a search.
+In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures.
+However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
 
 
 === Exercises
@@ -2765,12 +3078,16 @@ HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements fro
 
 == Challenge 4: Corgi Cover Database
 
-Sending files around is proving to be problematic. Sometimes applications are lost or the results of the eligibility check are not communicated back to the customer. You have been tasked with creating a central source of truth that can be queried as to what applications have been submitted and processed.
+Sending files around is proving to be problematic.
+Sometimes applications are lost or the results of the eligibility check are not communicated back to the customer.
+You have been tasked with creating a central source of truth that can be queried as to what applications have been submitted and processed.
 
 
 === Part 1: Set up the schema
 
-Using the database of your choice, set up an initial database for the Corgi Cover project. In the code, connect to the database and create the initial table required. You can use whatever schema you like, but the first requirement is to store the applications with exactly the same data as was retrieved from the file format in Challenge 2.
+Using the database of your choice, set up an initial database for the Corgi Cover project.
+In the code, connect to the database and create the initial table required.
+You can use whatever schema you like, but the first requirement is to store the applications with exactly the same data as was retrieved from the file format in Challenge 2.
 
 
 === Part 2: Populate the data
@@ -2780,17 +3097,25 @@ Modify the code to store the applications as they are processed, and the result 
 
 === Part 3: Write a spec
 
-Ensure that all records processed from the files meets your expectations for required fields. Write a spec that explicitly defines what should be in the applications. Validate the spec on the incoming records.
+Ensure that all records processed from the files meets your expectations for required fields.
+Write a spec that explicitly defines what should be in the applications.
+Validate the spec on the incoming records.
 
 
 === Part 4: Extending to Poodle Protection
 
-Insuricorp is about to launch a new policy called “Poodle Protection”. Soon they will be processing applications with completely new rules. Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications. For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
+Insuricorp is about to launch a new policy called “Poodle Protection”.
+Soon they will be processing applications with completely new rules.
+Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications.
+For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
 
 
 == Further reading
 
-Writing Clojure code requires more thinking and less typing than other languages. Don’t feel frustrated if the code comes slowly at first. Being a great programmer requires thinking. You will only reach your true potential expressing code in ways that empower you rather than constrain you.
+Writing Clojure code requires more thinking and less typing than other languages.
+Don’t feel frustrated if the code comes slowly at first.
+Being a great programmer requires thinking.
+You will only reach your true potential expressing code in ways that empower you rather than constrain you.
 
 Further exercises:	https://www.4clojure.com/
 
