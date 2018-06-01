@@ -3,14 +3,25 @@
 Clojure is serious business!
 
 This is a Clojure training course for Developers and Senior Developers working on Enterprise software.
-See manual.adoc and manual.html for the course material and exercises.
+The site is hosted https://timothypratley.github.io/enterprise-clojure-training[here].
 
-Trainers see slides.adoc and slides.html for the presentation material.
+See manual.adoc and manual.html for the course material and exercises.
+See slides.adoc and slides.html for the presentation material.
+
+For a list of companies and individuals offering Clojure training, please see https://clojure.org/community/training[this page].
+
+
+== Rationale
+
+Clojure has been in the "adopt" zone of the Thoughtworks tech radar for some time now.
+But companies face the challenge of how to prepare their staff to be productive using Clojure.
+Creating a structured enterprise style course material will enable more people to offer Clojure courses suitable for companies wanting to adopt Clojure.
 
 
 == Contributing
 
-Pull requests welcome!
+If you have suggestions on how to improve this course, I would love to hear them.
+Pull requests welcome. Issues welcome.
 
 
 == Building
