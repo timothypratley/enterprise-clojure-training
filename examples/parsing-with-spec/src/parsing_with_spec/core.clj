@@ -1,4 +1,5 @@
 (ns parsing-with-spec.core
+  (:gen-class)
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
             [clojure.spec.alpha :as s]
@@ -22,11 +23,9 @@
                    :corgi-cover/state
                    :corgi-cover/corgi-count]))
 
-
 ;; The "Poodle Protection" policy is only available in some other set of USA states
 
 (s/def :poodle-protection/state #{"CA" "FL" "WY" "HI"})
-(s/def :poodle-protection/corgi-count pos-int?)
 (s/def :poodle-protection/poodle-count pos-int?)
 
 (s/def :mega-corp/poodle-protection

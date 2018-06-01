@@ -1,8 +1,14 @@
-= Clojure web seminar
+= Advanced Topics
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-:backend: slidy
-:max-width: 45em
+:customcss: slides.css
+:revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0
+:revealjs_theme: simple
+:revealjs_center: false
+:revealjs_controls: false
+:revealjs_transition: none
+:docinfo: shared
+
 
 == Topics to be covered
 
@@ -545,14 +551,21 @@ You need a mail server.
 
 == Configuring logs on masking the sensitive data.
 
-* https://github.com/clojure/tools.logging
-* https://github.com/ptaoussanis/timbre
+* Clojure.tools.logging
+  https://github.com/clojure/tools.logging
+* Timbre
+  https://github.com/ptaoussanis/timbre
 
 * log4j
 * logback
+* commons logging
+* slf4j
 
 * Standard Java style configuration
 
+* "Bear Traps: the Logging Edition"
+  https://www.youtube.com/watch?v=jjuj-D4-hCE
+  https://github.com/AlexanderMann/unclogging
 
 == 9) Dependencies
 

@@ -1,8 +1,13 @@
-= Clojure in a nutshell
+= Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-:backend: slidy
-:max-width: 45em
+:customcss: slides.css
+:revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0
+:revealjs_theme: simple
+:revealjs_center: false
+:revealjs_controls: false
+:revealjs_transition: none
+:docinfo: shared
 
 
 == Introductions
@@ -15,31 +20,35 @@
 * Getting stuff done
 
 
-== Syntax Summary
+== !
 
-Everything is a list with the operation at the front.
-
-[style="literal", options="header"]
+[options="header"]
 |===
 |Java |Clojure
-
-|int i = 5; |(def i 5)
-
-|if (x == 0)
+l|int i = 5;
+l|(def i 5)
+l|if (x == 0)
   return y;
 else
   return z;
-
-|(if (zero? x)
+l|(if (zero? x)
   y
   z)
-
-|x * y * z; |(* x y z)
-
-|foo(x, y, z); |(foo x y z)
-
-|foo.bar(x); |(.bar foo x)
+l|x * y * z;
+l|(* x y z)
+l|foo(x, y, z);
+l|(foo x y z)
+l|foo.bar(x);
+l|(.bar foo x)
 |===
+
+[NOTE.speaker]
+--
+Syntax Summary:
+
+* Everything is expressed as a list
+* Operation at the front
+--
 
 
 == 1. The Clojure Ecosystem
@@ -48,9 +57,10 @@ else
 * Clojure is itself a jar
 * Clojure can make direct use of other jars
 * Easy to deploy
+* Leiningen
 
 
-== a. Leiningen
+== Leiningen
 
     lein new training
     cd training
@@ -86,17 +96,20 @@ else
                 :url "http://www.eclipse.org/legal/epl-v10.html"}
       :dependencies [[org.clojure/clojure "1.8.0"]])
 
+
 == src/training/core.clj
 
-    (ns training.core)
+----
+(ns training.core)
 
-    (defn foo
-      "I don't do a whole lot."
-      [x]
-      (println x "Hello, World!"))
+(defn foo
+  "I don't do a whole lot."
+  [x]
+  (println x "Hello, World!"))
+----
 
 
-== b. The Read Eval Print Loop (REPL)
+== The Read Eval Print Loop (REPL)
 
 	$ lein repl
 
@@ -109,31 +122,39 @@ Clojure evaluates it immediately and returns a result:
 	=> 3
 
 
-== c. Editor setup
+== Editor setup
 
-IntelliJ+CursiveIDE: https://www.jetbrains.com/idea https://cursive-ide.com/userguide/
+* IntelliJ+CursiveIDE
+* Lighttable
+* Browser
 
-Lighttable: http://lighttable.com
+[NOTE.speaker]
+--
+* https://www.jetbrains.com/idea
+* https://cursive-ide.com
+* http://lighttable.com
+* https://repl.it/languages/clojure
+--
 
-Browser: https://repl.it/languages/clojure
+== Exercises
+
+Start a REPL
+
+Find the sum of 2 and 3;
+What is 31 times 79?
+Divide 10 by 2;
+Divide 2 by 10
+
+Create a new project called `training` and open `src/training/core.clj` with your editor
+
+Write some expressions and send them to the REPL
+
+Find the sum of 1, 2, and 3
+
+Send `(println "hello world")`
 
 
-== d. Exercises
-
-Evaluate some math expressions in the REPL:
-
-* Find the sum of 2 and 3
-* What is 31 times 79?
-* Divide 10 by 2
-* Divide 2 by 10
-
-Create a new project called `training`. Open `src/training/core.clj` with your editor, write some expressions and send them to the REPL:
-
-* Find the sum of 1, 2, and 3
-* Send (println "hello world")
-
-
-== e. Answers
+== Answers
 
     (+ 2 3)
     => 5
@@ -154,9 +175,9 @@ Create a new project called `training`. Open `src/training/core.clj` with your e
     => "hello world"
 
 
-== 2. Clojure Syntax
+== 2. The Clojure Language
 
-== a. Primitive data types
+== Primitive data types
 
 Strings are enclosed in double quotes
 
@@ -167,7 +188,7 @@ Character literals are preceded by a backslash
     \a \b \c \newline \tab
 
 
-== Numbers
+== !
 
 |===
 |Long |`1`
@@ -178,8 +199,11 @@ Character literals are preceded by a backslash
 |Ratio |`2/5`
 |===
 
-Automatically promoted on overflow.
-
+[NOTE.speaker]
+--
+* Representing Numbers
+* Automatically promoted on overflow
+--
 
 == Truthiness
 
@@ -190,7 +214,7 @@ Booleans: `true` and `false`.
 Anything else is truthy.
 
 
-== b. Lists
+== Lists
 
     ()
 
@@ -232,6 +256,7 @@ Lazy
 	'foo
 	=> foo
 
+
 == Vectors
 
     [1 2 3 4]
@@ -247,6 +272,7 @@ Identity and by value
     (= [1 2 3] ‘(1 2 3))
     => true
 
+
 == Maps
 
     {"Language" "Clojure"
@@ -260,8 +286,7 @@ Identity and by value
 
 == Keywords
 
-    :language
-
+* `:my-keyword`
 * Shorthand identifiers
 * Begin with a colon
 * Often used as keys in hashmaps
@@ -269,6 +294,7 @@ Identity and by value
     {:language "Clojure"
      :version 1.5
      :author "Rich Hickey"}
+
 
 == Namespaced keywords
 
@@ -295,7 +321,7 @@ Identity and by value
 * A map with vector coordinate keys, and map values
 
 
-== c. Invoking functions
+== Invoking functions
 
     (inc 1)
     => 2
@@ -303,7 +329,7 @@ Identity and by value
 * Prefix
 
 
-== d. Defining vars
+== Defining vars
 
     (def x)
     x
@@ -315,6 +341,7 @@ Identity and by value
 
 * Global mutable reference (use sparingly)
 * Dereferenced when evaluated
+
 
 == Atoms
 
@@ -329,7 +356,7 @@ Change over time
     => 2
 
 
-== e. Let
+== Let
 
     (let [x 1]
       (inc x))
@@ -340,7 +367,7 @@ Change over time
 * Prefer `let` over `def`
 
 
-== f. Destructuring (binding forms)
+== Destructuring (binding forms)
 
     (let [[x y] [1 2]]
       (+ x y))
@@ -443,7 +470,7 @@ Destructured using `&`
     :or {field1 "default"}
 
 
-== g. Namespaces
+== Namespaces
 
     (ns training.core
       (:require [clojure.string :as string])
@@ -460,13 +487,13 @@ Destructured using `&`
 
 == Programs
 
-* Expressions which are evaluated to results.
-* If an expression needs to be compiled, it will be.
-* Can be loaded from files or evaluated dynamically.
+* Expressions which are evaluated to results
+* If an expression needs to be compiled, it will be
+* Can be loaded from files or evaluated dynamically
 * Unit of compilation is a form
 
 
-== h. Regex
+== Regex
 
     #"pattern"
 
@@ -474,53 +501,70 @@ Destructured using `&`
     => ("the" "quick" "brown" "fox")
 
 
-== i. Exercises
+== Exercises
 
-Write code into a new file called `src/training/syntax.clj`, and send the lines to the REPL as you enter them.
+Write code into a new file called `src/training/syntax.clj`, and send the lines to the REPL as you enter them
 
-* Set up the new namespace called `training.syntax`
-* Define a var called `message` bound to the string `"greetings"`.
-* Print out the value of the var `message`.
-* Create a `let` binding that binds the symbol `message` to `"well hello there"`, and prints out `message` inside the `let` block.
-* Print out message again, outside of the `let` block.
-* Create a let binding that destructures the map
-  `{:greeting "good morning", :tone "happy"}`
-  and prints the greeting and tone inside the let block.
-* Destructure a single map input containing
-  `{:greeting "good morning", :tone "happy"}`
-  and return a string combining greeting and tone.
-  Use the `str` function.
+See manual for exercises
 
 
-== j. Answers
+== Answers
+
+Set up the new namespace called `training.syntax`
 
     (ns training.syntax)
     => nil
 
+Define a var called `message` bound to the string `"greetings"`
+
     (def message "greetings")
     => #’hello-clojure/message
+
+
+== Answers
+
+Print out the value of the var `message`
 
     (prn message)
     => "greetings"
        nil
 
-Note `prn` and `println` behave slightly differently; `prn` keeps the quotes around strings. This is often useful when experimenting, because you can visually see the type of the values more clearly.
+[NOTE]
+`prn` keeps the quotes around strings; `println` does not.
+
+
+== Answers
+
+Create a `let` binding that binds the symbol `message` to `"well hello there"`, and prints out `message` inside the `let` block:
 
     (let [message "well hello there"]
       (prn message))
     => "well hello there"
        nil
 
+Print out message again, outside of the `let` block:
+
     (prn message)
     => "greetings"
 
-Note that the `message` global var is still the original value.
+[NOTE]
+`message` global var is still the original value.
+
+
+== Answers
+
+Create a let binding that destructures a map and prints the greeting and tone:
 
     (def m {:greeting "good morning", :tone "happy"})
 
     (let [{:keys [greeting tone]} m]
       (prn greeting tone))
     => "good morning" "happy"
+
+
+== Answers
+
+Destructure a single map input and return a string combining greeting and tone:
 
     (defn hi [{:keys [greeting tone]}]
       (str greeting " - " tone))
@@ -531,7 +575,8 @@ Note that the `message` global var is still the original value.
 
 == 3. Functions
 
-== a. Defining functions
+
+== Defining functions
 
     (defn square [x]
       (* x x))
@@ -540,6 +585,7 @@ Note that the `message` global var is still the original value.
       "Multiplies a number by itself"
       [x]
       (* x x))
+
 
 == Functions continued
 
@@ -614,7 +660,7 @@ Function that captures values from the environment.
     => (6 7 8)
 
 
-== b. Pre- and post-conditions
+== Pre- and post-conditions
 
     (defn f [x]
       {:pre [(pos? x)]
@@ -657,7 +703,7 @@ Function that captures values from the environment.
 * Or use a schema or spec
 
 
-== c. Anonymous functions
+== Anonymous functions
 
     (fn [x]
       (inc x))
@@ -710,7 +756,7 @@ Is shorthand for
         (inc x)))
 
 
-== d. Function literals
+== Function literals
 
     #(inc %)
     #(+ %1 %2)
@@ -730,7 +776,7 @@ Compare with
 Prefer `(fn)` form: name parameters and purpose
 
 
-== e. Variadic arguments
+== Variadic arguments
 
     (defn f [& args]
       args)
@@ -778,7 +824,7 @@ Multiple arities should be explicitly declared in parenthesis.
     (f 42 {:option3 "value"})
 
 
-== f. Exercises
+== Exercises
 
 Create a new namespace called `fun-functions`. Define the following functions and call them with some test input:
 
@@ -787,7 +833,7 @@ Create a new namespace called `fun-functions`. Define the following functions an
 * A function that takes two numbers as input, and returns a vector where the first element is the second input, and the second element is the sum of the first and second input.
 
 
-== g. Answers
+== Answers
 
     (defn square [x]
       (* x x))
@@ -862,7 +908,8 @@ Create a new function that takes as inputs two maps: the application, and the ex
 
 == 4. Testing with clojure.test
 
-== a. Defining tests with deftest
+
+== Defining tests with deftest
 
 * Tests are just functions
 * Can define a test in any file
@@ -908,7 +955,7 @@ To run all tests in a project from the command line:
        {:test 0, :pass 0, :fail 0, :error 0, :type :summary}
 
 
-== b. lein-test-refresh
+== lein-test-refresh
 
 * Leiningen plugin
 * Reloads code and re-runs tests when you save a file.
@@ -942,7 +989,7 @@ Use lein-test-refresh like a REPL.
 Test more.
 
 
-== c. Assertions with is and are
+== Assertions with is and are
 
 True assertion:
 
@@ -970,6 +1017,7 @@ Plugins for showing helpful diffs:
 * humane
 * ultra
 
+
 == Can use any truthy assertion
 
     (deftest odd-test
@@ -986,6 +1034,7 @@ Plugins for showing helpful diffs:
         "The square of the hypotenuse
          is equal to the sum of the squares
          of the other two sides"))
+
 
 == Grouping assertions
 
@@ -1027,7 +1076,7 @@ Test that an exception is thrown:
             (bad 42))))
 
 
-== d. Test fixtures
+== Test fixtures
 
     (use-fixtures :once
       (fn print-enter-exit [tests]
@@ -1060,9 +1109,9 @@ Test that an exception is thrown:
 * Avoids the need to clean up data
 
 
-== e. with-redefs for mocking
+== Mocking
 
-Replace any var using with-redefs:
+Replace any var using `with-redefs`:
 
     (defn post [url]
       {:body (str "Hello world")})
@@ -1079,7 +1128,7 @@ Replace any var using with-redefs:
 * Let does not suffice, `str` is outside of scope
 
 
-== f. Debugging
+== Debugging
 
 Print out an intermediary values.
 
@@ -1098,6 +1147,7 @@ What is `(+ a (* a b))` evaluating to? `(doto ... (prn))`
 * `prn` will not work, always returns `nil`.
 * `doto` causes side-effect to occur, and return the original argument.
 
+
 == doto
 
 Also useful for Java interop
@@ -1110,7 +1160,7 @@ Also useful for Java interop
 We get the constructed object, with side-effects applied.
 
 
-== g. Exercises
+== Exercises
 
 * Start lein-test-refresh running in your existing project directory.
 * Create a new namespace in the “test” directory called `training.core-test`
@@ -1122,7 +1172,7 @@ We get the constructed object, with side-effects applied.
 * Copy the test `test-post` from the "with-redefs" section and modify it so that it counts how many times `str` gets called. Call `post` several times and make an assertion about how many times `str` should get called.
 
 
-== h. Answers
+== Answers
 
     (defn pythag [a b]
       (Math/sqrt (+ (* a a) (* b b))))
@@ -1152,7 +1202,7 @@ We get the constructed object, with side-effects applied.
 * Don’t evaluate their arguments
 
 
-== a. Conditionals: if
+== Conditionals: if
 
 `if` chooses between two options:
 
@@ -1196,7 +1246,7 @@ Multiple branches
 * See also `condp` and `case` (rarely used)
 
 
-== b. Recursion
+== Recursion
 
 Functions that call themselves are called recursive.
 
@@ -1216,7 +1266,7 @@ Tail Call Optimization: Recursion which avoids consuming the stack
 * Stack can be discarded
 
 
-== c. Loops
+== Loops
 
     (loop [a 0
            b 1]
@@ -1229,7 +1279,7 @@ Tail Call Optimization: Recursion which avoids consuming the stack
 * Can be expressed as functions
 
 
-== d. Exception handling
+== Exception handling
 
 Special forms `try` `catch` `finally` and `throw`
 
@@ -1241,7 +1291,7 @@ Special forms `try` `catch` `finally` and `throw`
         (println "always"))
 
 
-== e. Comments
+== Comments
 
 Anything following a semicolon is a comment
 
@@ -1273,7 +1323,7 @@ Prefer newlines
      :c 3}
 
 
-== f. Exercises
+== Exercises
 
 * Create a function that given a test score between 0 and 100 returns a grade A B C D or F for fail.
 * Write a function that takes a number and uses a loop to calculate the factorial of that number. Factorial 5 is 1*2*3*4*5.
@@ -1281,7 +1331,7 @@ Prefer newlines
 * Write a loop for the Fibonacci sequence (1 1 2 3 5 8 13) that finds the maximum Fibonacci number less than 100. The sequence is defined by n2 = n1 + n0.
 
 
-== g. Answers
+== Answers
 
     (def grade [score]
       (cond (>= score 90) "A"
@@ -1323,7 +1373,8 @@ Prefer newlines
 
 == 6. Functional Programming
 
-== a. Pure functions and side effects
+
+== Pure functions and side effects
 
 * Clojure functions always return a value
 * Usually a useful value, not just a nil
@@ -1337,6 +1388,7 @@ Prefer newlines
 * `rand` is not a pure function
 * Returns a useful result, but changes every time
 * Distinction between pure functions and side-effect functions
+
 
 == Pure functions
 
@@ -1387,7 +1439,7 @@ Many pure functions:
   - Logic is separate from the side effect
 
 
-== b. apply
+== apply
 
 Given 4 numbers we can call
 
@@ -1434,7 +1486,7 @@ We could have instead written:
     => (1 1/2 1/3 1/4)
 
 
-== c. Functions on sequences: map, reduce, and friends
+== Functions on sequences: map, reduce, and friends
 
 To embrace Clojure is to think in sequences and data structures.
 
@@ -1744,6 +1796,7 @@ This is dense, but descriptive code... if you know the vocabulary.
 * Reuse sequences
 * Reason about transformations as composable parts
 
+
 == Sequences summary
 
 Sequences are loop abstractions that allow you to ignore the implementation details.
@@ -1759,7 +1812,7 @@ I invite you to take the “no loops” challenge.
 * Rewrite the loop as sequence operations instead
 
 
-== d. Threading operators: why?
+== Threading operators: why?
 
 	(reduce * (filter odd? (map inc v)))
 	=> 15
@@ -1795,6 +1848,7 @@ Or use a thread last:
 * Avoids naming steps
 * Sometimes good, sometimes bad
 
+
 == Thread first
 
 Similar to thread last, passes value in first position:
@@ -1808,7 +1862,7 @@ For empty expressions, the parens are optional:
     => 22
 
 
-== e. Data structures are functions
+== Data structures are functions
 
 * Maps are functions
 * They delegate to `get`
@@ -1858,6 +1912,7 @@ Instead of
     ([1 2 3] 0)
     => 1
 
+
 == Defaults
 
 `get` can be passed a `not-found` value:
@@ -1871,7 +1926,7 @@ Datastructures as functions do too:
     => -1
 
 
-== f. Exercises
+== Exercises
 
 * Write a function that takes two inputs, and returns the sum of the numbers in a range between two input integers, including the two input numbers.
 * Write a function that produces a sequence of powers of 2: (1 2 4 8 16 …)
@@ -1881,7 +1936,7 @@ Datastructures as functions do too:
 * Write a function that produces the Fibonacci sequence (1 1 2 3 5 8 13 21)
 
 
-== g. Answers
+== Answers
 
     (defn sum-between [a b]
       (apply + (range a (inc b))))
@@ -1918,17 +1973,23 @@ Datastructures as functions do too:
 
 == Challenge 2: Processing files
 
-Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file. You have been tasked with processing the files using the validation logic you built earlier.
+Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file.
+You have been tasked with processing the files using the validation logic you built earlier.
 
 
 == Part 1:
 
-Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it. Next use that data structure as an input to your validation function and print the result. (see slurp, line-seq, clojure.string/split).
+Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it.
+Next use that data structure as an input to your validation function and print the result.
+See `slurp` `line-seq` `clojure.string/split`.
 
 
 == Part 2:
 
-The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check, but the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible. Create a new function that opens two output files and writes to them based upon your eligibility check. The files should be called eligible-corgi-cover-applications.csv and ineligible-corgi-cover-applications.csv
+The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check.
+But the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible.
+Create a new function that opens two output files and writes to them based upon your eligibility check.
+The files should be called `eligible-corgi-cover-applications.csv` and `ineligible-corgi-cover-applications.csv`.
 
 
 == Part 3:
@@ -1938,7 +1999,8 @@ A request has come in from several Insuricorp branches that if a person is ineli
 
 == Part 4:
 
-As part of the Megacorp merger, the downstream systems are converting to JSON format. Create a new function that writes JSON data to a eligible-corgi-cover-applications.json file
+As part of the Megacorp merger, the downstream systems are converting to JSON format.
+Create a new function that writes JSON data to a eligible-corgi-cover-applications.json file
 
 
 == 7. Macros
@@ -1947,6 +2009,7 @@ As part of the Megacorp merger, the downstream systems are converting to JSON fo
 * Do not evaluate the input forms
 * Not functions
 * Cannot be passed to other functions
+
 
 == Macros
 
@@ -1966,7 +2029,7 @@ Macros allow us to extend the syntax of Clojure
 * Cannot be passed to higher order functions
 
 
-== a. Expanding macros
+== Expanding macros
 
 * Macros expand to produce new code
 * The form is expanded at compile time
@@ -1979,7 +2042,7 @@ Macros allow us to extend the syntax of Clojure
             (clojure.core/* my-namespace/x my-namespace/x))))
 
 
-== b. Defining macros
+== Defining macros
 
     (defmacro zen1 [x]
       (println "x:" x) x)
@@ -2016,7 +2079,7 @@ Macros are functions with a `:macro` flag set in their metadata
 * resulting in `3`
 
 
-== c. Syntax quoting
+== Syntax quoting
 
 Special form called syntax-quote.
 
@@ -2091,7 +2154,7 @@ Gensyms produce a randomly named binding:
 The `let` binding `a#` expands to a randomly generated symbol
 
 
-== d. Code as data
+== Code as data
 
 * Really writing a function that produces code.
 * The output is code... as data
@@ -2111,7 +2174,7 @@ When working on a non-trivial macro a good strategy is:
 Keep the macro as small. Offload transformations to other functions.
 
 
-== e. Exercises
+== Exercises
 
 Create the following macros and test cases:
 
@@ -2136,7 +2199,7 @@ Create the following macros and test cases:
     (or2 (pos? 1) (println "does not execute"))
 
 
-== f. Answers
+== Answers
 
     (defmacro ignore  [expr]  nil)
 
@@ -2168,7 +2231,7 @@ Create the following macros and test cases:
 
 == 8. Parallel Programming and Concurrency
 
-== a. Vars and dynamic scope
+== Vars and dynamic scope
 
 * Vars are automatically derefed when evaluated
 * seem like just a variable
@@ -2229,7 +2292,7 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 * Bindings can be assigned to
 
 
-== b. Delays, Futures, and Promises
+== Delays, Futures, and Promises
 
 * Wrap an arbitrary body of code for evaluation
 * Executes at a later stage
@@ -2319,7 +2382,7 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
     => "as-promised"
 
 
-== c. Atoms
+== Atoms
 
     (def a (atom 1))
     (swap! a inc)
@@ -2378,14 +2441,14 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 * Agents are integrated with the STM
 
 
-== d. Exercises
+== Exercises
 
 See Challenge 3
 
 
 == 9. Java Interop
 
-== a. Clojure syntax for Java constructors
+== Clojure syntax for Java constructors
 
 Constructing a Java object is done by appending a period to the class identifier:
 
@@ -2401,7 +2464,7 @@ Which is equivalent to the less used variant:
     (new Date 2018 02 17)
 
 
-== b. Calling methods
+== Calling methods
 
 Calling a method on a Java object done by prepending a leading period:
 
@@ -2423,7 +2486,7 @@ Inner classes can be accessed using the dollar symbol:
     java.nio.channels.FileChannel$MapMode/READ_ONLY
 
 
-== c. reify
+== reify
 
 `reify` creates an object that conforms to an interface:
 
@@ -2436,7 +2499,7 @@ Inner classes can be accessed using the dollar symbol:
 Notice that we did not define a class?
 
 
-== d. gen-class and proxy
+== gen-class and proxy
 
 `gen-class` creates a class. In practise the need to create a class from within Clojure is rare, so we won’t be covering the syntax.
 (see https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html if you want to explore this further)
@@ -2445,7 +2508,7 @@ Notice that we did not define a class?
 (see https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html if you want to explore this further)
 
 
-== e. Including Java classes in Clojure projects
+== Including Java classes in Clojure projects
 
 You can define Java classes in Java in a separate directory and add
 
@@ -2488,7 +2551,7 @@ Modify your mock of fetch-megacorp-policies such that it throws an exception ran
 
 == 10. Polymorphism and Types
 
-== a. Multimethods
+== Multimethods
 
 Polymorphic dispatch. Define the name of the multimethod and the dispatch function:
 
@@ -2539,7 +2602,7 @@ It is common to use a keyword as a dispatch function.
     (defmulti draw :shape)
 
 
-== b. Protocols
+== Protocols
 
 A named set of named methods and their signatures:
 
@@ -2623,7 +2686,7 @@ Expands into:
         :bar (fn [x y] ...)})
 
 
-== c. Creating types with defrecord and deftype
+== Creating types with defrecord and deftype
 
 * `deftype`, `defrecord`, and `reify` provide the mechanism for defining implementations of abstractions, and instances of those implementations.
 * Resist the urge to use them to define ‘structured data’ as you would define classes or structures in other languages.
@@ -2684,7 +2747,7 @@ Call the method on the `thing` instance and pass `"bar"`:
       (:require [clojure.spec.alpha :as s]))
 
 
-== a. Validation
+== Validation
 
     (s/valid? even? 10)
     => true
@@ -2726,7 +2789,7 @@ A registered spec identifier can be used in place of a spec definition.
     => true
 
 
-== b. Conforming
+== Conforming
 
     (s/def ::name-or-id (s/or :name string? :id int?))
 
@@ -2760,7 +2823,7 @@ Reports why a value does not conform to a spec.
 See also `explain-str`
 
 
-== c. Maps
+== Maps
 
     (def email-regex
       #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$")
@@ -2827,7 +2890,7 @@ See also `explain-str`
 * `:fn` calling any adder with `0` should return `x`
 
 
-== d. A game of cards
+== A game of cards
 
 Model a game of cards:
 
@@ -2881,7 +2944,7 @@ Bad data produces errors
               (total-cards (-> % :ret))))
 
 
-== e. Generators
+== Generators
 
 * Specs are designed to act as generators
 * Produce sample data that conforms to the spec
@@ -2932,7 +2995,7 @@ See also `inst-in` and `double-in`
 `test.check` tutorial https://clojure.github.io/test.check/intro.html
 
 
-== f. Instrumentation and Testing
+== Instrumentation and Testing
 
     (ns training.spec
       (:require [clojure.spec.test.alpha :as stest]))
@@ -2992,7 +3055,7 @@ See also `inst-in` and `double-in`
 
 == 12. Interacting with a Database
 
-== a. Intro to clojure.java.jdbc
+== Intro to clojure.java.jdbc
 
 Database persistence is important for many applications. We can use clojure.java.jdbc to interact with a database.
 
@@ -3017,7 +3080,7 @@ In the Clojure project we require jdbc, and set up a db connection url.
 Now we are all set to start doing queries.
 
 
-== b. Inserting, updating and retrieving data
+== Inserting, updating and retrieving data
 
 First we will create a table called testing inside the database with a text field named data, and then insert some rows.
 
@@ -3066,12 +3129,12 @@ If you want to redo any steps, remember that you can always drop the table and s
     (jdbc/execute! db "drop table messages")
 
 
-== c. Solutions for SQL management
+== Solutions for SQL management
 
 HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
 
 
-== d. Exercises
+== Exercises
 
 * Create and populate a table `person` with two columns; `id`, `name`.
 * Create and populate a table `policy` with two columns; `id`, `name`
@@ -3079,7 +3142,7 @@ HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements fro
 * Write a function that given a person name queries all the policies associated with them.
 
 
-== e. Answers
+== Answers
 
     (ns messenger.core
       (:require [clojure.java.jdbc :as jdbc]))

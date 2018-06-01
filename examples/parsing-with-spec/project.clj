@@ -7,4 +7,5 @@
                  [org.clojure/data.csv "0.1.4"]
                  [org.clojure/test.check "0.9.0"]
                  [expound "0.5.0"]]
+  :aot [parsing-with-spec.core]
   :main parsing-with-spec.core)

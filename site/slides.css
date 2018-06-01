@@ -1,0 +1,13 @@
+.reveal h2 {
+  font-size: 1.5em;
+  padding-bottom: 0.5em;
+}
+
+.reveal pre {
+  font-size: 0.8em;
+  box-shadow: none;
+  padding: 0.1em;
+  background-color: #F8F8F8;
+}
+
+p { text-align: left; }

@@ -1,7 +1,7 @@
 #!/bin/sh
+set -e
+FLAGS=--destination-dir=site
 
-set -e 
-
-asciidoctor -a toc manual.adoc
-asciidoc --backend slidy slides.adoc
-asciidoc --backend slidy advanced-topics.adoc
+bundle exec asciidoctor ${FLAGS} docs/index.adoc docs/manual.adoc
+bundle exec asciidoctor-pdf ${FLAGS} docs/manual.adoc
+bundle exec asciidoctor-revealjs ${FLAGS} docs/slides.adoc docs/advanced-topics.adoc docs/advanced-topics.adoc
