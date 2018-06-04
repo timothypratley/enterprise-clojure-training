@@ -149,9 +149,9 @@ Create a new project called `training` and open `src/training/core.clj` with you
 
 Write some expressions and send them to the REPL
 
-Find the sum of 1, 2, and 3
+Evaluate `(println "hello world")`
 
-Send `(println "hello world")`
+Find the number of digits in 15 factorial
 
 
 == Answers
@@ -202,7 +202,7 @@ Character literals are preceded by a backslash
 [NOTE.speaker]
 --
 * Representing Numbers
-* Automatically promoted on overflow
+* Automatically promoted on overflow only when using *' now
 --
 
 == Truthiness
@@ -226,23 +226,41 @@ Evaluated as function calls.
     (quote (1 2))
     => (1 2)
 
-    ‘(1 2)
+    '(1 2)
     => (1 2)
 
 
 == Sequences
 
-    (seq ‘(1 2 3))
-    => (1 2 3)
+Fundamental abstraction. Many common functions based on this.
+
+    (seq? '(1 2 3))
+    => true
+
+   (seq? (drop 1 '(1 2 3)))
+    => true
+
+    (seq? 8)
+    => false
 
 Lazy
 
+[NOTE.speaker]
+--
+* Can think of them as an efficient, immutable iterator
+* Collections (not yet introduced, but list, vector, set, map) all implement seq
+--
 
 == Symbols
 
 * Begin with an alphabet character
 * Can contain numbers and punctuation
 * Usually `lowercase-words-hyphenated`
+
+[NOTE.speaker]
+--
+* Can think of them like the (identifiers, reserved keywords, operators) of other mainstream languages.
+--
 
 
 == Resolving symbols
@@ -272,17 +290,32 @@ Identity and by value
     (= [1 2 3] ‘(1 2 3))
     => true
 
+[NOTE.speaker]
+--
+* Note to self: vectors and list can be equal because they are sequential.
+* A map cannot equal a set or a list/vector.  But maps and sets have not yet been introduced.
+--
+
 
 == Maps
 
-    {"Language" "Clojure"
-     "Version" 1.5
-     "Author" "Rich Hickey"}
+    {"name" "Fate of the Furious"
+     "sequence-number" 8
+     "rotten-tomatoes" 0.66
+     "imdb" 0.67}
 
-* Near constant time lookup
+* Order 1 lookup, "add", "delete" by key
 * Tuned to be fast
-* Replacement for object fields
+* Replacement for structs/objects used to hold data in other languages
+* Versatile, used often in Clojure code
 
+[NOTE.speaker]
+--
+* There are fancier "versions" of maps in Clojure (records) to handle cases where you want faster Java interop or a strongly-typed name
+* Records still "behave like a map" (implement the map interface)
+* Maps are used instead of named function/method arguments in other languages
+* Maps are used instead of value classes (immutable classes to hold data, impt for concurrent programming) because they are immutable
+--
 
 == Keywords
 
@@ -291,9 +324,10 @@ Identity and by value
 * Begin with a colon
 * Often used as keys in hashmaps
 
-    {:language "Clojure"
-     :version 1.5
-     :author "Rich Hickey"}
+    {:name "Fate of the Furious"
+     :sequence-number 8
+     :rotten-tomatoes 0.66
+     :imdb 0.67}
 
 
 == Namespaced keywords
@@ -326,7 +360,7 @@ Identity and by value
     (inc 1)
     => 2
 
-* Prefix
+* Prefix order
 
 
 == Defining vars
