@@ -42,9 +42,7 @@ You don't need to install Asciidoctor.
 It is used as a dependency specified in this project's Gemfile.
 However you will need Ruby and Bundler to pull down the Asciidoctor and RevealJS plugin dependencies.
 
-Requires Ruby:
-
-    https://www.ruby-lang.org/en/documentation/installation
+Requires https://www.ruby-lang.org/en/documentation/installation[Ruby].
 
 Requires Bundler:
 
