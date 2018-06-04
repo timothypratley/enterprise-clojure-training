@@ -138,20 +138,16 @@ Clojure evaluates it immediately and returns a result:
 
 == Exercises
 
-Start a REPL
-
-Find the sum of 2 and 3;
+* Start a REPL
+* Find the sum of 2 and 3;
 What is 31 times 79?
 Divide 10 by 2;
 Divide 2 by 10
-
-Create a new project called `training` and open `src/training/core.clj` with your editor
-
-Write some expressions and send them to the REPL
-
-Evaluate `(println "hello world")`
-
-Find the number of digits in 15 factorial
+* Create a new project called `training` and open `src/training/core.clj` with your editor
+* Write some expressions and send them to the REPL
+* Find the sum of 1, 2, and 3
+* Evaluate `(println "hello world")`
+* Find the number of digits in 15 factorial
 
 
 == Answers
@@ -168,11 +164,17 @@ Find the number of digits in 15 factorial
     (/ 2 10)
     => 1/5
 
+
+== Answers
+
     (+ 1 2 3)
     => 6
 
     (println "hello world")
     => "hello world"
+
+    (count (str (* 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1)))
+    => 13
 
 
 == 2. The Clojure Language
@@ -232,12 +234,14 @@ Evaluated as function calls.
 
 == Sequences
 
-Fundamental abstraction. Many common functions based on this.
+Fundamental abstraction.
 
     (seq? '(1 2 3))
     => true
 
-   (seq? (drop 1 '(1 2 3)))
+Many common functions based on this.
+
+    (seq? (drop 1 '(1 2 3)))
     => true
 
     (seq? 8)
@@ -287,7 +291,7 @@ Lazy
 
 Identity and by value
 
-    (= [1 2 3] ‘(1 2 3))
+    (= [1 2 3] '(1 2 3))
     => true
 
 [NOTE.speaker]
@@ -552,7 +556,7 @@ Set up the new namespace called `training.syntax`
 Define a var called `message` bound to the string `"greetings"`
 
     (def message "greetings")
-    => #’hello-clojure/message
+    => #'hello-clojure/message
 
 
 == Answers
@@ -900,7 +904,7 @@ Insuricorp is about to launch a marketing campaign for a new “corgi cover” p
 
 == Part 1:
 
-Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person’s eligibility for the “corgi cover” policy.
+Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person's eligibility for the “corgi cover” policy.
 
 === Test data:
 
@@ -1233,7 +1237,7 @@ We get the constructed object, with side-effects applied.
 
 * Special forms: Built in primitives, not functions
 * `def`, `let`, `quote` and `fn` are special forms
-* Don’t evaluate their arguments
+* Don't evaluate their arguments
 
 
 == Conditionals: if
@@ -1272,9 +1276,9 @@ Multiple branches
 
     (cond (= x 1) "one"
           (= x :cake) "the cake is a lie"
-          (map? x) "it’s a map!"
+          (map? x) "it's a map!"
           :else "not sure what it is")
-    => "it’s a map!"
+    => "it's a map!"
 
 * `:else` is not special, it just a truthy value.
 * See also `condp` and `case` (rarely used)
@@ -2028,7 +2032,7 @@ The files should be called `eligible-corgi-cover-applications.csv` and `ineligib
 
 == Part 3:
 
-A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied. That way the sales reps don’t have to spend time figuring out what they need to tell the customer. Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found. Create a new processing function that splits the applications into two files based on the new validator.
+A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied. That way the sales reps don't have to spend time figuring out what they need to tell the customer. Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found. Create a new processing function that splits the applications into two files based on the new validator.
 
 
 == Part 4:
@@ -2238,7 +2242,7 @@ Create the following macros and test cases:
     (defmacro ignore  [expr]  nil)
 
     (defmacro when2 [test & body]
-      (list 'if test (cons ‘do body))
+      (list 'if test (cons 'do body))
 
 
     (defmacro spy [expr]
@@ -2398,7 +2402,7 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 * Dereference them for a value
 * Check if they have a value with `realized?`
 * Block when you dereference them until they have a value
-* Don’t immediately give them a value
+* Don't immediately give them a value
 * Provide them with one by calling deliver
 
 
@@ -2535,7 +2539,7 @@ Notice that we did not define a class?
 
 == gen-class and proxy
 
-`gen-class` creates a class. In practise the need to create a class from within Clojure is rare, so we won’t be covering the syntax.
+`gen-class` creates a class. In practise the need to create a class from within Clojure is rare, so we won't be covering the syntax.
 (see https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html if you want to explore this further)
 
 `proxy` can be used to extend a concrete superclass. Again the need for this is rare.
@@ -2694,7 +2698,7 @@ deftype, defrecord, or reify support protocols directly:
         {...}
     ...)
 
-* Extends the polymorphism of the protocol’s methods
+* Extends the polymorphism of the protocol's methods
 * Will call the supplied functions when an AType is provided as the first argument
 * The `fn` can presume first argument is instanceof `AType`
 * You can implement a protocol on `nil`.
@@ -2723,7 +2727,7 @@ Expands into:
 == Creating types with defrecord and deftype
 
 * `deftype`, `defrecord`, and `reify` provide the mechanism for defining implementations of abstractions, and instances of those implementations.
-* Resist the urge to use them to define ‘structured data’ as you would define classes or structures in other languages.
+* Resist the urge to use them to define 'structured data' as you would define classes or structures in other languages.
 * It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.
 
 
@@ -3080,11 +3084,11 @@ See also `inst-in` and `double-in`
 
     (stest/check (stest/enumerate-namespace 'testing.spec))
 
-* Test all spec’ed functions in a namespace
+* Test all spec'ed functions in a namespace
 
     (stest/check)
 
-* Check all spec’ed functions
+* Check all spec'ed functions
 
 
 == 12. Interacting with a Database
@@ -3140,7 +3144,7 @@ And now there is only one row remaining.
     (jdbc/query db ["select * from messages"])
     => ({:message "How now?"})
 
-Let’s add some more data...
+Let's add some more data...
 
     (jdbc/insert-multi! db :messages
                     [{:message "Nobody panic!!!"}
@@ -3165,7 +3169,7 @@ If you want to redo any steps, remember that you can always drop the table and s
 
 == Solutions for SQL management
 
-HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
+HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure's capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
 
 
 == Exercises
@@ -3246,7 +3250,7 @@ Insuricorp is about to launch a new policy called “Poodle Protection”. Soon 
 
 == Further reading
 
-Writing Clojure code requires more thinking and less typing than other languages. Don’t feel frustrated if the code comes slowly at first. Being a great programmer requires thinking. You will only reach your true potential expressing code in ways that empower you rather than constrain you.
+Writing Clojure code requires more thinking and less typing than other languages. Don't feel frustrated if the code comes slowly at first. Being a great programmer requires thinking. You will only reach your true potential expressing code in ways that empower you rather than constrain you.
 
 Further exercises:	https://www.4clojure.com/
 

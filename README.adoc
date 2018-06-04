@@ -26,14 +26,26 @@ Issues welcome. Pull requests welcome.
 
 == Building
 
-Requires Ruby and Bundler to be installed.
+The manual and slides source material are under the `docs` directory.
+The material is written in asciidoc (.adoc) format, which gets compiled to HTML and PDF.
+They are built to HTML and PDF using https://asciidoctor.org[Asciidoctor], and output to the `site` directory.
+Asciidoctor provides excellent document producing features and allows slides to be generated as RevealJS slideshows.
+You don't need to install Asciidoctor, instead it is a dependency specified in this project's Gemfile.
+However you will need Ruby and Bundler to pull down the Asciidoctor and RevealJS plugin dependencies.
+
+Requires Ruby:
+
+    https://www.ruby-lang.org/en/documentation/installation
+
+Requires Bundler:
+
+    gem install bundler
 
 Pull the dependencies:
 
     bundle --path=.bundle/gems --binstubs=.bundle/.bin
 
-The manual and slides are under the `docs` directory.
-They are built to HTML and PDF using https://asciidoctor.org[Asciidoctor], and output to the `site` directory.
+Now you can call the build script:
 
     ./build.sh
 

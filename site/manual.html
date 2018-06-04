@@ -1064,7 +1064,10 @@ Open <code>src/training/core.clj</code> with your editor, write some expressions
 <p>Find the sum of 1, 2, and 3</p>
 </li>
 <li>
-<p>Send (println "hello world")</p>
+<p>Evaluate (println "hello world")</p>
+</li>
+<li>
+<p>How many digits are in 5 factorial?</p>
 </li>
 </ul>
 </div>
@@ -1105,6 +1108,12 @@ Open <code>src/training/core.clj</code> with your editor, write some expressions
 <div class="content">
 <pre>(println "hello world")
 =&gt; "hello world"</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>(* 5 4 3 2 1)
+=&gt; 120</pre>
 </div>
 </div>
 </div>
@@ -1234,23 +1243,24 @@ Here we are calling the inc function on 1, which will return 2.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>‘(1 2)
+<pre>'(1 2)
 =&gt; (quote (1 2))
 =&gt; (1 2)</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Clojure prints sequences and lists the same way.</p>
+<p>Clojure has a sequence abstraction.
+Sequences can be lazy.
+Their values are only created as they are consumed.</p>
+</div>
+<div class="paragraph">
+<p>Lists and sequences are printed the same way.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>(seq ‘(1 2 3))
+<pre>(seq '(1 2 3))
 =&gt; (1 2 3)</pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Sequences are lazy.
-Their values are only created as they are consumed.</p>
 </div>
 <div class="paragraph">
 <p>Symbols are resolved.</p>
@@ -1272,7 +1282,7 @@ Their values are only created as they are consumed.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>‘foo
+<pre>'foo
 =&gt; foo</pre>
 </div>
 </div>
@@ -1296,7 +1306,7 @@ A vector with elements matching a sequence is equal to it.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>(= [1 2 3] ‘(1 2 3))
+<pre>(= [1 2 3] '(1 2 3))
 =&gt; true</pre>
 </div>
 </div>
@@ -1427,7 +1437,7 @@ x
 </div>
 </div>
 <div class="paragraph">
-<p>We defined <code>a</code> to be an atom with initial value <code>1</code>, then swapped the atom’s value with the <code>inc</code> function. We retrieved the value of the atom by dereference it with <code>@</code>. The current value of <code>a</code> is now <code>2</code>, the increment of <code>1</code>. <code>@</code> is shorthand for <code>deref</code>.</p>
+<p>We defined <code>a</code> to be an atom with initial value <code>1</code>, then swapped the atom&#8217;s value with the <code>inc</code> function. We retrieved the value of the atom by dereference it with <code>@</code>. The current value of <code>a</code> is now <code>2</code>, the increment of <code>1</code>. <code>@</code> is shorthand for <code>deref</code>.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -1721,7 +1731,7 @@ Use the <code>str</code> function.</p>
 <div class="literalblock">
 <div class="content">
 <pre>(def message "greetings")
-=&gt; #’hello-clojure/message</pre>
+=&gt; #'hello-clojure/message</pre>
 </div>
 </div>
 <div class="literalblock">
@@ -2200,7 +2210,7 @@ You are tasked with building a system to validate applications for the policy.</
 <div class="sect2">
 <h3 id="_part_1">4.1. Part 1:</h3>
 <div class="paragraph">
-<p>Write a function that takes as input a state and corgi-count, and returns a boolean indicating the person’s eligibility for the “corgi cover” policy.</p>
+<p>Write a function that takes as input a state and corgi-count, and returns a boolean indicating the person&#8217;s eligibility for the “corgi cover” policy.</p>
 </div>
 <div class="sect3">
 <h4 id="_test_data">4.1.1. Test data:</h4>
@@ -2418,7 +2428,7 @@ Ran 0 tests containing 0 assertions.
 <div class="sect2">
 <h3 id="_assertions_with_is_and_are">5.3. Assertions with is and are</h3>
 <div class="paragraph">
-<p>Let’s begin with a false assertion:</p>
+<p>Let&#8217;s begin with a false assertion:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2712,7 +2722,7 @@ Goals allow you to control the direction of change in your favor.
 <p>Clojure provides special forms for control flow.
 Special forms are built in primitives that behave differently from functions.
 We already saw several special forms in action: <code>def</code>, <code>let</code>, <code>quote</code> and <code>fn</code> are all special forms.
-The main thing that is different about them is that they don’t evaluate all their arguments like a regular function call.</p>
+The main thing that is different about them is that they don&#8217;t evaluate all their arguments like a regular function call.</p>
 </div>
 <div class="sect2">
 <h3 id="_conditionals_if_when_cond">6.1. Conditionals: if, when, cond</h3>
@@ -2753,9 +2763,9 @@ The main thing that is different about them is that they don’t evaluate all th
 <pre>(def x {:cake 1})
 (cond (= x 1) "one"
       (= x :cake) "the cake is a lie"
-      (map? x) "it’s a map!"
+      (map? x) "it's a map!"
       :else "not sure what it is")
-=&gt; "it’s a map!"</pre>
+=&gt; "it's a map!"</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3010,7 +3020,7 @@ For example <code>conj</code> does not add something to a vector, it returns a c
 <div class="paragraph">
 <p>In this example we can see that v remained unchanged.
 Clojure implements data structures that enable this to happen efficiently.
-Using a regular Java vector would require duplicating the vector, but Clojure makes use of a technique called shared structure to provide immutable data structures that don’t require the entire object to be duplicated.</p>
+Using a regular Java vector would require duplicating the vector, but Clojure makes use of a technique called shared structure to provide immutable data structures that don&#8217;t require the entire object to be duplicated.</p>
 </div>
 <div class="paragraph">
 <p>Clojure does allow side-effects, indeed they are very useful.
@@ -3033,7 +3043,7 @@ The logic is separate from the side effect.</p>
 </div>
 <div class="paragraph">
 <p>But what if you have a sequence of many numbers?
-What if you don’t know how many numbers there will be?
+What if you don&#8217;t know how many numbers there will be?
 Fortunately there is a way to convert a sequence of arguments into a function call:</p>
 </div>
 <div class="literalblock">
@@ -3065,7 +3075,7 @@ It returns a function that is equivalent to:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>So let’s see how we might make use of that:</p>
+<p>So let&#8217;s see how we might make use of that:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3119,7 +3129,7 @@ It returns a function that is equivalent to:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Be careful though, Clojure can produce infinite sequences (don’t do this in a REPL):</p>
+<p>Be careful though, Clojure can produce infinite sequences (don&#8217;t do this in a REPL):</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3240,7 +3250,7 @@ The final result is 1 * 2 * 3 * 4.</p>
 </div>
 <div class="paragraph">
 <p>Sequence abstractions are like names for loops that you can add to your vocabulary to talk about and recognize different kinds of loops.
-Learning the names of the abstractions and patterns that replace loops is an effort, but it adds powerful words to a programmer’s vocabulary.
+Learning the names of the abstractions and patterns that replace loops is an effort, but it adds powerful words to a programmer&#8217;s vocabulary.
 A large vocabulary facilitates reasoning more succinctly, communicating more effectively, and writing less code that does more.</p>
 </div>
 <div class="paragraph">
@@ -3263,7 +3273,7 @@ Anonymous functions are handy for adding small snippets of logic:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This keeps only numbers less than <code>3</code>. Now let’s create a sequence of odd/even labels for each number in the vector:</p>
+<p>This keeps only numbers less than <code>3</code>. Now let&#8217;s create a sequence of odd/even labels for each number in the vector:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3482,7 +3492,7 @@ But that is the opposite of our reading direction and locating the true starting
 </div>
 </div>
 <div class="paragraph">
-<p>Threading is good for unwrapping deeply nested function calls, or avoiding naming intermediary steps that don’t have a natural name.</p>
+<p>Threading is good for unwrapping deeply nested function calls, or avoiding naming intermediary steps that don&#8217;t have a natural name.</p>
 </div>
 <div class="paragraph">
 <p>Thread first is similar, but passes the value in the first position</p>
@@ -3529,7 +3539,7 @@ While it is possible to use get to access collections, calling the collection di
 </div>
 </div>
 <div class="paragraph">
-<p>This is useful because you don’t need to create a function to call get.</p>
+<p>This is useful because you don&#8217;t need to create a function to call get.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3693,7 +3703,7 @@ The files should be called <code>eligible-corgi-cover-applications.csv</code> an
 <h3 id="_part_3_2">8.3. Part 3:</h3>
 <div class="paragraph">
 <p>A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied.
-That way the sales reps don’t have to spend time figuring out what they need to tell the customer.
+That way the sales reps don&#8217;t have to spend time figuring out what they need to tell the customer.
 Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found.
 Create a new processing function that splits the applications into two files based on the new validator.</p>
 </div>
@@ -3797,11 +3807,11 @@ You can examine the expansion using <code>macroexpand-1</code>:</p>
 </div>
 <div class="paragraph">
 <p>The final result is the same, but notice that the input to <code>zen1</code> was a list, where as the input to <code>zen2</code> was the result of evaluating the list.
-That’s the key difference between a macro and a function.</p>
+That&#8217;s the key difference between a macro and a function.</p>
 </div>
 <div class="paragraph">
 <p>Macros themselves are really just functions with a <code>:macro</code> flag set in their metadata, which causes them to be passed in the input forms unevaluated, and caused the result to be evaluated.
-This last part is less obvious&#8230;&#8203; but think back to <code>zen1</code>&#8230;&#8203; <code>x</code> was a list, we returned <code>x</code>, but the final result wasn’t a list&#8230;&#8203; it was <code>3</code>.
+This last part is less obvious&#8230;&#8203; but think back to <code>zen1</code>&#8230;&#8203; <code>x</code> was a list, we returned <code>x</code>, but the final result wasn&#8217;t a list&#8230;&#8203; it was <code>3</code>.
 The list was evaluated as a function call to <code>+</code>, resulting in <code>3</code>.</p>
 </div>
 </div>
@@ -3815,7 +3825,7 @@ The list was evaluated as a function call to <code>+</code>, resulting in <code>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>‘(1 2 ~(+ 1 2) ~@(map inc [3 4 5]))
+<pre>'(1 2 ~(+ 1 2) ~@(map inc [3 4 5]))
 =&gt; (1 2 3 4 5 6)</pre>
 </div>
 </div>
@@ -3994,7 +4004,7 @@ Nested code is well represented as a data structure.</p>
 <div class="literalblock">
 <div class="content">
 <pre>(defmacro when2 [test &amp; body]
-  (list 'if test (cons ‘do body))</pre>
+  (list 'if test (cons 'do body))</pre>
 </div>
 </div>
 <div class="literalblock">
@@ -4232,8 +4242,8 @@ If you dereference a future, it will block until the value is available:</p>
 <div class="sect3">
 <h4 id="_promises">10.2.3. Promises</h4>
 <div class="paragraph">
-<p>Promises are used in a similar way to delay or future in that you dereference them for a value, can check if they have a value with <code>realized?</code> and they block when you dereference them if they don’t have a value until they do.
-Where they differ is that you don’t immediately give them a value, but provide them with one by calling deliver:</p>
+<p>Promises are used in a similar way to delay or future in that you dereference them for a value, can check if they have a value with <code>realized?</code> and they block when you dereference them if they don&#8217;t have a value until they do.
+Where they differ is that you don&#8217;t immediately give them a value, but provide them with one by calling deliver:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4272,8 +4282,8 @@ A lower-level <code>compare-and-set!</code> is also provided.
 Changes to atoms are always free of race conditions.</p>
 </div>
 <div class="paragraph">
-<p>As with all reference types, the intended use of atom is to hold one of Clojure’s immutable data structures.
-And, similar to ref’s alter and agent’s send, you change the value by applying a function to the old value.
+<p>As with all reference types, the intended use of atom is to hold one of Clojure&#8217;s immutable data structures.
+And, similar to ref&#8217;s alter and agent&#8217;s send, you change the value by applying a function to the old value.
 This is done in an atomic manner by <code>swap!</code> Internally, <code>swap!</code> reads the current value, applies the function to it, and attempts to <code>compare-and-set!</code> it in.
 Since another thread may have changed the value in the intervening time, it may have to retry, and does so in a spin loop.
 The net effect is that the value will always be the result of the application of the supplied function to a current value, atomically.
@@ -4291,13 +4301,13 @@ In practise Refs are rarely used.</p>
 <p>Like Refs, Agents provide shared access to mutable state.
 Where Refs support coordinated, synchronous change of multiple locations, Agents provide independent, asynchronous change of individual locations.
 Agents are bound to a single storage location for their lifetime, and only allow mutation of that location (to a new state) to occur as a result of an action.
-Actions are functions (with, optionally, additional arguments) that are asynchronously applied to an Agent’s state and whose return value becomes the Agent’s new state.
+Actions are functions (with, optionally, additional arguments) that are asynchronously applied to an Agent&#8217;s state and whose return value becomes the Agent&#8217;s new state.
 Because actions are functions they can also be multimethods and therefore actions are potentially polymorphic.
 Also, because the set of functions is open, the set of actions supported by an Agent is also open, a sharp contrast to pattern matching message handling loops provided by some other languages.</p>
 </div>
 <div class="paragraph">
-<p>Clojure’s Agents are reactive, not autonomous - there is no imperative message loop and no blocking receive.
-The state of an Agent should be itself immutable (preferably an instance of one of Clojure’s persistent collections), and the state of an Agent is always immediately available for reading by any thread (using the deref function or reader macro @) without any messages, i.e. observation does not require cooperation or coordination.</p>
+<p>Clojure&#8217;s Agents are reactive, not autonomous - there is no imperative message loop and no blocking receive.
+The state of an Agent should be itself immutable (preferably an instance of one of Clojure&#8217;s persistent collections), and the state of an Agent is always immediately available for reading by any thread (using the deref function or reader macro @) without any messages, i.e. observation does not require cooperation or coordination.</p>
 </div>
 <div class="paragraph">
 <p>Agent action dispatches take the form (send agent fn args*).
@@ -4319,7 +4329,7 @@ See add-watch for details.</p>
 </li>
 <li>
 <p>If any exceptions are thrown by an action function, no nested dispatches will occur, and the exception will be cached in the Agent itself.
-When an Agent has errors cached, any subsequent interactions will immediately throw an exception, until the agent’s errors are cleared.
+When an Agent has errors cached, any subsequent interactions will immediately throw an exception, until the agent&#8217;s errors are cleared.
 Agent errors can be examined with agent-error and the agent restarted with restart-agent.</p>
 </li>
 </ul>
@@ -4432,7 +4442,7 @@ Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is 
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that we didn’t define a class? We directly created an object that conforms to the <code>FileFilter</code> interface.
+<p>Notice that we didn&#8217;t define a class? We directly created an object that conforms to the <code>FileFilter</code> interface.
 <code>reify</code> is a convenient way to provide a concrete implementation of an interface.</p>
 </div>
 </div>
@@ -4440,7 +4450,7 @@ Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is 
 <h3 id="_gen_class_and_proxy">11.4. gen-class and proxy</h3>
 <div class="paragraph">
 <p><code>gen-class</code> creates a class.
-In practice the need to create a class from within Clojure is rare, so we won’t be covering the syntax.
+In practice the need to create a class from within Clojure is rare, so we won&#8217;t be covering the syntax.
 (see <a href="https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html" class="bare">https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html</a> if you want to explore this further)</p>
 </div>
 <div class="paragraph">
@@ -4553,7 +4563,7 @@ Now we can provide methods implementing functions to execute for a given dispatc
 <p>These are somewhere between a case statement and a function definition.
 They give the conditions under which to be called, and a function definition.
 Given a dispatch result of <code>[:bunny :lion]</code>, the first method will be called on the <code>x</code> and <code>y</code> inputs, and the method here does nothing but return a value <code>:run-away</code>.
-Let’s set up some test inputs:</p>
+Let&#8217;s set up some test inputs:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4579,7 +4589,7 @@ Let’s set up some test inputs:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Because keywords are functions, it’s quite common to use a keyword as a dispatch function.</p>
+<p>Because keywords are functions, it&#8217;s quite common to use a keyword as a dispatch function.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4666,7 +4676,7 @@ External implementations of the protocol (which are needed when you want a class
 </div>
 <div class="paragraph">
 <p><code>extend</code> takes a type/class (or interface, see below), a one or more protocol + function map (evaluated) pairs.
-Will extend the polymorphism of the protocol’s methods to call the supplied functions when an AType is provided as the first argument.
+Will extend the polymorphism of the protocol&#8217;s methods to call the supplied functions when an AType is provided as the first argument.
 Function maps are maps of the keywordized method names to ordinary fns.
 This facilitates easy reuse of existing fns and maps, for code reuse/mixins without derivation or composition.</p>
 </div>
@@ -4713,7 +4723,7 @@ Note the convenience macros <code>extend-type</code>, and <code>extend-protocol<
 <h3 id="_creating_types_with_defrecord_and_deftype">13.3. Creating types with defrecord and deftype</h3>
 <div class="paragraph">
 <p><code>deftype</code>, <code>defrecord</code>, and <code>reify</code> provide the mechanism for defining implementations of abstractions, and instances of those implementations.
-Resist the urge to use them to define ‘structured data’ as you would define classes or structures in other languages.
+Resist the urge to use them to define 'structured data' as you would define classes or structures in other languages.
 It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.</p>
 </div>
 <div class="sect3">
@@ -4849,7 +4859,7 @@ Spec was introduced into Clojure 1.9.0, so update your <code>project.clj</code> 
 </div>
 <div class="paragraph">
 <p>The simplest way to compose specs is with <code>and</code> and <code>or</code>.
-Let’s create a spec that combines several predicates into a composite spec with <code>s/and</code>:</p>
+Let&#8217;s create a spec that combines several predicates into a composite spec with <code>s/and</code>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -4880,7 +4890,7 @@ Let’s create a spec that combines several predicates into a composite spec wit
 </div>
 </div>
 <div class="paragraph">
-<p>This <code>or</code> spec is the first case we’ve seen that involves a choice during validity checking.
+<p>This <code>or</code> spec is the first case we&#8217;ve seen that involves a choice during validity checking.
 Each choice is annotated with a tag (here, between <code>:name</code> and <code>:id</code>) and those tags give the branches names that can be used to understand or enrich the data returned from conform and other spec functions.</p>
 </div>
 <div class="literalblock">
@@ -4896,7 +4906,7 @@ Each choice is annotated with a tag (here, between <code>:name</code> and <code>
 </div>
 </div>
 <div class="paragraph">
-<p>Many predicates that check an instance’s type do not allow nil as a valid value (<code>string?</code>, <code>number?</code>, <code>keyword?</code>, etc).
+<p>Many predicates that check an instance&#8217;s type do not allow nil as a valid value (<code>string?</code>, <code>number?</code>, <code>keyword?</code>, etc).
 To include <code>nil</code> as a valid value, use the provided function nilable to make a spec:</p>
 </div>
 <div class="literalblock">
@@ -5003,7 +5013,7 @@ Even more interesting, the <code>:fn</code> spec can state a general property th
 <div class="sect2">
 <h3 id="_a_game_of_cards">13.8. A game of cards</h3>
 <div class="paragraph">
-<p>Here’s a bigger set of specs to model a game of cards:</p>
+<p>Here&#8217;s a bigger set of specs to model a game of cards:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -5117,7 +5127,7 @@ When we wish to use these parts of spec (typically during testing), we need to d
 <div class="paragraph">
 <p>Once you have obtained a generator with <code>gen</code>, there are several ways to use it.
 You can generate a single sample value with generate or a series of samples with sample.
-Let’s see some basic examples:</p>
+Let&#8217;s see some basic examples:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -5157,7 +5167,7 @@ Let’s see some basic examples:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>It’s useful to spec (and generate) values in a range.
+<p>It&#8217;s useful to spec (and generate) values in a range.
 For example, in the case of a range of integer values, use <code>int-in</code> to spec a range:</p>
 </div>
 <div class="literalblock">
@@ -5277,7 +5287,7 @@ Our <code>:fn</code> spec will detect the problem when checking the var:</p>
 We can see the arguments passed were <code>-3</code> and <code>0</code> and the return value was <code>-5</code>, which is out of the expected range.</p>
 </div>
 <div class="paragraph">
-<p>To test all of the spec’ed functions in a namespace (or multiple namespaces), use enumerate-namespace to generate the set of symbols naming vars in the namespace:</p>
+<p>To test all of the spec&#8217;ed functions in a namespace (or multiple namespaces), use enumerate-namespace to generate the set of symbols naming vars in the namespace:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -5285,7 +5295,7 @@ We can see the arguments passed were <code>-3</code> and <code>0</code> and the 
 </div>
 </div>
 <div class="paragraph">
-<p>And you can check all of the spec’ed functions by calling <code>stest/check</code> without any arguments.</p>
+<p>And you can check all of the spec&#8217;ed functions by calling <code>stest/check</code> without any arguments.</p>
 </div>
 <div class="paragraph">
 <p>While both instrument (for enabling <code>:args</code> checking) and check (for generating tests of a function) are useful tools, they can be combined to provide even deeper levels of test coverage.</p>
@@ -5476,7 +5486,7 @@ In this case we are using an in memory HSQL database.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Let’s add some more data&#8230;&#8203;</p>
+<p>Let&#8217;s add some more data&#8230;&#8203;</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -5521,7 +5531,7 @@ Parameters are not part of the query, so they cannot perform SQL from malicious 
 <p>HoneySQL <a href="https://github.com/jkk/honeysql" class="bare">https://github.com/jkk/honeysql</a> can be used to build SQL statements from data structures.
 This is useful when you have to programmatically combine clauses to produce a final SQL statement.
 For example if the user can check a checkbox to enable an additional clause in a search.
-In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures.
+In such cases it is more convenient to use Clojure&#8217;s capabilities for manipulating data structures.
 However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.</p>
 </div>
 </div>
@@ -5650,7 +5660,7 @@ For now the only difference with the rules from “Corgi Cover” is that “Poo
 <div class="sectionbody">
 <div class="paragraph">
 <p>Writing Clojure code requires more thinking and less typing than other languages.
-Don’t feel frustrated if the code comes slowly at first.
+Don&#8217;t feel frustrated if the code comes slowly at first.
 Being a great programmer requires thinking.
 You will only reach your true potential expressing code in ways that empower you rather than constrain you.</p>
 </div>
@@ -5701,7 +5711,7 @@ You will only reach your true potential expressing code in ways that empower you
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-28 21:46:16 PDT
+Last updated 2018-06-04 11:04:01 PDT
 </div>
 </div>
 </body>

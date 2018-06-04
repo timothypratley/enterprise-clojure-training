@@ -51,15 +51,10 @@ cat src/training/core.clj</pre></div></div></section>
 <div class="literalblock"><div class="content"><pre>=&gt; 3</pre></div></div></section>
 <section id="editor_setup"><h2>Editor setup</h2><div class="ulist"><ul><li><p>IntelliJ+CursiveIDE</p></li><li><p>Lighttable</p></li><li><p>Browser</p></li></ul></div>
 <aside class="notes"><div class="ulist"><ul><li><p><a href="https://www.jetbrains.com/idea" class="bare">https://www.jetbrains.com/idea</a></p></li><li><p><a href="https://cursive-ide.com" class="bare">https://cursive-ide.com</a></p></li><li><p><a href="http://lighttable.com" class="bare">http://lighttable.com</a></p></li><li><p><a href="https://repl.it/languages/clojure" class="bare">https://repl.it/languages/clojure</a></p></li></ul></div></aside></section>
-<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>Start a REPL</p></div>
-<div class="paragraph"><p>Find the sum of 2 and 3;
+<section id="exercises"><h2>Exercises</h2><div class="ulist"><ul><li><p>Start a REPL</p></li><li><p>Find the sum of 2 and 3;
 What is 31 times 79?
 Divide 10 by 2;
-Divide 2 by 10</p></div>
-<div class="paragraph"><p>Create a new project called <code>training</code> and open <code>src/training/core.clj</code> with your editor</p></div>
-<div class="paragraph"><p>Write some expressions and send them to the REPL</p></div>
-<div class="paragraph"><p>Find the sum of 1, 2, and 3</p></div>
-<div class="paragraph"><p>Send <code>(println "hello world")</code></p></div></section>
+Divide 2 by 10</p></li><li><p>Create a new project called <code>training</code> and open <code>src/training/core.clj</code> with your editor</p></li><li><p>Write some expressions and send them to the REPL</p></li><li><p>Find the sum of 1, 2, and 3</p></li><li><p>Evaluate <code>(println "hello world")</code></p></li><li><p>Find the number of digits in 15 factorial</p></li></ul></div></section>
 <section id="answers"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(+ 2 3)
 =&gt; 5</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(* 31 79)
@@ -67,18 +62,20 @@ Divide 2 by 10</p></div>
 <div class="literalblock"><div class="content"><pre>(/ 10 2)
 =&gt; 5</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(/ 2 10)
-=&gt; 1/5</pre></div></div>
-<div class="literalblock"><div class="content"><pre>(+ 1 2 3)
+=&gt; 1/5</pre></div></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(+ 1 2 3)
 =&gt; 6</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(println "hello world")
-=&gt; "hello world"</pre></div></div></section>
+=&gt; "hello world"</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(count (str (* 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1)))
+=&gt; 13</pre></div></div></section>
 <section id="the_clojure_language"><h2>2. The Clojure Language</h2></section>
 <section id="primitive_data_types"><h2>Primitive data types</h2><div class="paragraph"><p>Strings are enclosed in double quotes</p></div>
 <div class="literalblock"><div class="content"><pre>"This is a string."</pre></div></div>
 <div class="paragraph"><p>Character literals are preceded by a backslash</p></div>
 <div class="literalblock"><div class="content"><pre>\a \b \c \newline \tab</pre></div></div></section>
 <section><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Long</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Double</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.14</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">BigInteger</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000000000000N</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">BigDecimal</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000000000000.1M</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Exponents</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>1e3</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Ratio</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>2/5</code></p></td></tr></table>
-<aside class="notes"><div class="ulist"><ul><li><p>Representing Numbers</p></li><li><p>Automatically promoted on overflow</p></li></ul></div></aside></section>
+<aside class="notes"><div class="ulist"><ul><li><p>Representing Numbers</p></li><li><p>Automatically promoted on overflow only when using *' now</p></li></ul></div></aside></section>
 <section id="truthiness"><h2>Truthiness</h2><div class="paragraph"><p>Booleans: <code>true</code> and <code>false</code>.</p></div>
 <div class="paragraph"><p><code>nil</code> means nothing and is considered false in logical tests.</p></div>
 <div class="paragraph"><p>Anything else is truthy.</p></div></section>
@@ -88,12 +85,20 @@ Divide 2 by 10</p></div>
 =&gt; 2</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(quote (1 2))
 =&gt; (1 2)</pre></div></div>
-<div class="literalblock"><div class="content"><pre>‘(1 2)
+<div class="literalblock"><div class="content"><pre>'(1 2)
 =&gt; (1 2)</pre></div></div></section>
-<section id="sequences"><h2>Sequences</h2><div class="literalblock"><div class="content"><pre>(seq ‘(1 2 3))
-=&gt; (1 2 3)</pre></div></div>
-<div class="paragraph"><p>Lazy</p></div></section>
-<section id="symbols"><h2>Symbols</h2><div class="ulist"><ul><li><p>Begin with an alphabet character</p></li><li><p>Can contain numbers and punctuation</p></li><li><p>Usually <code>lowercase-words-hyphenated</code></p></li></ul></div></section>
+<section id="sequences"><h2>Sequences</h2><div class="paragraph"><p>Fundamental abstraction.</p></div>
+<div class="literalblock"><div class="content"><pre>(seq? '(1 2 3))
+=&gt; true</pre></div></div>
+<div class="paragraph"><p>Many common functions based on this.</p></div>
+<div class="literalblock"><div class="content"><pre>(seq? (drop 1 '(1 2 3)))
+=&gt; true</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(seq? 8)
+=&gt; false</pre></div></div>
+<div class="paragraph"><p>Lazy</p></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Can think of them as an efficient, immutable iterator</p></li><li><p>Collections (not yet introduced, but list, vector, set, map) all implement seq</p></li></ul></div></aside></section>
+<section id="symbols"><h2>Symbols</h2><div class="ulist"><ul><li><p>Begin with an alphabet character</p></li><li><p>Can contain numbers and punctuation</p></li><li><p>Usually <code>lowercase-words-hyphenated</code></p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Can think of them like the (identifiers, reserved keywords, operators) of other mainstream languages.</p></li></ul></div></aside></section>
 <section id="resolving_symbols"><h2>Resolving symbols</h2><div class="literalblock"><div class="content"><pre>inc
 =&gt; #object[clojure.core$inc]</pre></div></div>
 <div class="literalblock"><div class="content"><pre>foo
@@ -103,15 +108,19 @@ Divide 2 by 10</p></div>
 <section id="vectors"><h2>Vectors</h2><div class="literalblock"><div class="content"><pre>[1 2 3 4]</pre></div></div>
 <div class="ulist"><ul><li><p>Order 1 count and lookup by index</p></li><li><p>Preferred over lists</p></li></ul></div></section>
 <section id="equality"><h2>Equality</h2><div class="paragraph"><p>Identity and by value</p></div>
-<div class="literalblock"><div class="content"><pre>(= [1 2 3] ‘(1 2 3))
-=&gt; true</pre></div></div></section>
-<section id="maps"><h2>Maps</h2><div class="literalblock"><div class="content"><pre>{"Language" "Clojure"
- "Version" 1.5
- "Author" "Rich Hickey"}</pre></div></div>
-<div class="ulist"><ul><li><p>Near constant time lookup</p></li><li><p>Tuned to be fast</p></li><li><p>Replacement for object fields</p></li></ul></div></section>
-<section id="keywords"><h2>Keywords</h2><div class="ulist"><ul><li><p><code>:my-keyword</code></p></li><li><p>Shorthand identifiers</p></li><li><p>Begin with a colon</p></li><li><p>Often used as keys in hashmaps</p><div class="literalblock"><div class="content"><pre>{:language "Clojure"
- :version 1.5
- :author "Rich Hickey"}</pre></div></div></li></ul></div></section>
+<div class="literalblock"><div class="content"><pre>(= [1 2 3] '(1 2 3))
+=&gt; true</pre></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Note to self: vectors and list can be equal because they are sequential.</p></li><li><p>A map cannot equal a set or a list/vector.  But maps and sets have not yet been introduced.</p></li></ul></div></aside></section>
+<section id="maps"><h2>Maps</h2><div class="literalblock"><div class="content"><pre>{"name" "Fate of the Furious"
+ "sequence-number" 8
+ "rotten-tomatoes" 0.66
+ "imdb" 0.67}</pre></div></div>
+<div class="ulist"><ul><li><p>Order 1 lookup, "add", "delete" by key</p></li><li><p>Tuned to be fast</p></li><li><p>Replacement for structs/objects used to hold data in other languages</p></li><li><p>Versatile, used often in Clojure code</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>There are fancier "versions" of maps in Clojure (records) to handle cases where you want faster Java interop or a strongly-typed name</p></li><li><p>Records still "behave like a map" (implement the map interface)</p></li><li><p>Maps are used instead of named function/method arguments in other languages</p></li><li><p>Maps are used instead of value classes (immutable classes to hold data, impt for concurrent programming) because they are immutable</p></li></ul></div></aside></section>
+<section id="keywords"><h2>Keywords</h2><div class="ulist"><ul><li><p><code>:my-keyword</code></p></li><li><p>Shorthand identifiers</p></li><li><p>Begin with a colon</p></li><li><p>Often used as keys in hashmaps</p><div class="literalblock"><div class="content"><pre>{:name "Fate of the Furious"
+ :sequence-number 8
+ :rotten-tomatoes 0.66
+ :imdb 0.67}</pre></div></div></li></ul></div></section>
 <section id="namespaced_keywords"><h2>Namespaced keywords</h2><div class="literalblock"><div class="content"><pre>:timothy.example/rect</pre></div></div>
 <div class="literalblock"><div class="content"><pre>::rect
 =&gt; :timothy.example/rect</pre></div></div>
@@ -123,7 +132,7 @@ Divide 2 by 10</p></div>
 <div class="ulist"><ul><li><p>A map with vector coordinate keys, and map values</p></li></ul></div></section>
 <section id="invoking_functions"><h2>Invoking functions</h2><div class="literalblock"><div class="content"><pre>(inc 1)
 =&gt; 2</pre></div></div>
-<div class="ulist"><ul><li><p>Prefix</p></li></ul></div></section>
+<div class="ulist"><ul><li><p>Prefix order</p></li></ul></div></section>
 <section id="defining_vars"><h2>Defining vars</h2><div class="literalblock"><div class="content"><pre>(def x)
 x
 =&gt; #object[clojure.lang.Var$Unbound "Unbound: #'user/x"]</pre></div></div>
@@ -194,18 +203,18 @@ x
 =&gt; ("the" "quick" "brown" "fox")</pre></div></div></section>
 <section id="exercises_2"><h2>Exercises</h2><div class="paragraph"><p>Write code into a new file called <code>src/training/syntax.clj</code>, and send the lines to the REPL as you enter them</p></div>
 <div class="paragraph"><p>See manual for exercises</p></div></section>
-<section id="answers_2"><h2>Answers</h2><div class="paragraph"><p>Set up the new namespace called <code>training.syntax</code></p></div>
+<section id="answers_3"><h2>Answers</h2><div class="paragraph"><p>Set up the new namespace called <code>training.syntax</code></p></div>
 <div class="literalblock"><div class="content"><pre>(ns training.syntax)
 =&gt; nil</pre></div></div>
 <div class="paragraph"><p>Define a var called <code>message</code> bound to the string <code>"greetings"</code></p></div>
 <div class="literalblock"><div class="content"><pre>(def message "greetings")
-=&gt; #’hello-clojure/message</pre></div></div></section>
-<section id="answers_3"><h2>Answers</h2><div class="paragraph"><p>Print out the value of the var <code>message</code></p></div>
+=&gt; #'hello-clojure/message</pre></div></div></section>
+<section id="answers_4"><h2>Answers</h2><div class="paragraph"><p>Print out the value of the var <code>message</code></p></div>
 <div class="literalblock"><div class="content"><pre>(prn message)
 =&gt; "greetings"
    nil</pre></div></div>
 <div class="admonitionblock note"><table><tr><td class="icon"><div class="title">Note</div></td><td class="content"><code>prn</code> keeps the quotes around strings; <code>println</code> does not.</td></tr></table></div></section>
-<section id="answers_4"><h2>Answers</h2><div class="paragraph"><p>Create a <code>let</code> binding that binds the symbol <code>message</code> to <code>"well hello there"</code>, and prints out <code>message</code> inside the <code>let</code> block:</p></div>
+<section id="answers_5"><h2>Answers</h2><div class="paragraph"><p>Create a <code>let</code> binding that binds the symbol <code>message</code> to <code>"well hello there"</code>, and prints out <code>message</code> inside the <code>let</code> block:</p></div>
 <div class="literalblock"><div class="content"><pre>(let [message "well hello there"]
   (prn message))
 =&gt; "well hello there"
@@ -214,12 +223,12 @@ x
 <div class="literalblock"><div class="content"><pre>(prn message)
 =&gt; "greetings"</pre></div></div>
 <div class="admonitionblock note"><table><tr><td class="icon"><div class="title">Note</div></td><td class="content"><code>message</code> global var is still the original value.</td></tr></table></div></section>
-<section id="answers_5"><h2>Answers</h2><div class="paragraph"><p>Create a let binding that destructures the map <code>{:greeting "good morning", :tone "happy"}</code> and prints the greeting and tone inside the let block:</p></div>
+<section id="answers_6"><h2>Answers</h2><div class="paragraph"><p>Create a let binding that destructures a map and prints the greeting and tone:</p></div>
 <div class="literalblock"><div class="content"><pre>(def m {:greeting "good morning", :tone "happy"})</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(let [{:keys [greeting tone]} m]
   (prn greeting tone))
 =&gt; "good morning" "happy"</pre></div></div></section>
-<section id="answers_6"><h2>Answers</h2><div class="paragraph"><p>Destructure a single map input containing <code>{:greeting "good morning", :tone "happy"}</code> and return a string combining greeting and tone:</p></div>
+<section id="answers_7"><h2>Answers</h2><div class="paragraph"><p>Destructure a single map input and return a string combining greeting and tone:</p></div>
 <div class="literalblock"><div class="content"><pre>(defn hi [{:keys [greeting tone]}]
   (str greeting " - " tone))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(hi m)
@@ -330,7 +339,7 @@ x
 (f 42 {:option3 "value"})</pre></div></div></li></ul></div></section>
 <section id="exercises_3"><h2>Exercises</h2><div class="paragraph"><p>Create a new namespace called <code>fun-functions</code>. Define the following functions and call them with some test input:</p></div>
 <div class="ulist"><ul><li><p>A function that computes the square of an input number. What is the square of 55?</p></li><li><p>A function that takes a number as input, ensures that the number is less than 100, and returns the square of the square of the input.</p></li><li><p>A function that takes two numbers as input, and returns a vector where the first element is the second input, and the second element is the sum of the first and second input.</p></li></ul></div></section>
-<section id="answers_7"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn square [x]
+<section id="answers_8"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn square [x]
   (* x x))
 (square 55)
 =&gt; 3025</pre></div></div>
@@ -351,7 +360,7 @@ x
 (fib-step 2 3)
 =&gt; [3 5]</pre></div></div></section>
 <section id="challenge_1_corgi_cover_eligibility"><h2>Challenge 1: Corgi Cover eligibility</h2><div class="paragraph"><p>Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy. Only certain people are eligible to register for “corgi cover”. To be eligible they must own a corgi, live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO). You are tasked with building a system to validate applications for the policy.</p></div></section>
-<section><section id="part_1"><h2>Part 1:</h2><div class="paragraph"><p>Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person’s eligibility for the “corgi cover” policy.</p></div></section><section id="test_data"><h2>Test data:</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:25%"><col style="width:25%"><col style="width:25%"><col style="width:25%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Name</th><th class="tableblock halign-left valign-top">State</th><th class="tableblock halign-left valign-top">Corgi count</th><th class="tableblock halign-left valign-top">Existing policy count</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Chloe</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">IL</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Ethan</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">IL</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Annabelle</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">WY</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Logan</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">WA</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td></tr></table>
+<section><section id="part_1"><h2>Part 1:</h2><div class="paragraph"><p>Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person&#8217;s eligibility for the “corgi cover” policy.</p></div></section><section id="test_data"><h2>Test data:</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:25%"><col style="width:25%"><col style="width:25%"><col style="width:25%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Name</th><th class="tableblock halign-left valign-top">State</th><th class="tableblock halign-left valign-top">Corgi count</th><th class="tableblock halign-left valign-top">Existing policy count</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Chloe</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">IL</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Ethan</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">IL</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Annabelle</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">WY</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Logan</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">WA</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td></tr></table>
 <div class="paragraph"><p>See <code>if</code> <code>=</code></p></div></section></section>
 <section id="part_2"><h2>Part 2:</h2><div class="paragraph"><p>A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”. Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp. Gold is available when covering at least 3 corgis. Silver is the original “corgi cover” policy. Create a new function that takes an additional argument policy-count and returns a keyword indicating their eligibility.</p></div>
 <div class="paragraph"><p>See <code>cond</code></p></div></section>
@@ -476,7 +485,7 @@ Test more.</p></div></section>
 =&gt; {"a" 1, "b" 2}</pre></div></div>
 <div class="paragraph"><p>We get the constructed object, with side-effects applied.</p></div></section>
 <section id="exercises_4"><h2>Exercises</h2><div class="ulist"><ul><li><p>Start lein-test-refresh running in your existing project directory.</p></li><li><p>Create a new namespace in the “test” directory called <code>training.core-test</code></p></li><li><p>Write a function called <code>pythag</code> that returns the square root of the sum of squares for two inputs.</p></li><li><p>Write a test containing an assertion that exercises your function. Expect <code>5</code> when passing <code>4</code> and <code>3</code> as arguments.</p></li><li><p>Write another test case with different inputs.</p></li><li><p>Introduce a bug into pythag to make sure your tests discover the problem.</p></li><li><p>Fix <code>pythag</code> so that all tests pass.</p></li><li><p>Copy the test <code>test-post</code> from the "with-redefs" section and modify it so that it counts how many times <code>str</code> gets called. Call <code>post</code> several times and make an assertion about how many times <code>str</code> should get called.</p></li></ul></div></section>
-<section id="answers_8"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn pythag [a b]
+<section id="answers_9"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn pythag [a b]
   (Math/sqrt (+ (* a a) (* b b))))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(deftest test-pythag
   (is (= 5 (pythag 4 3)))
@@ -492,7 +501,7 @@ Test more.</p></div></section>
       (post "http://service.com/greet")
       (post "http://service.com/greet")
       (is (= 3 @c)))))</pre></div></div></section>
-<section id="control_flow"><h2>5. Control Flow</h2><div class="ulist"><ul><li><p>Special forms: Built in primitives, not functions</p></li><li><p><code>def</code>, <code>let</code>, <code>quote</code> and <code>fn</code> are special forms</p></li><li><p>Don’t evaluate their arguments</p></li></ul></div></section>
+<section id="control_flow"><h2>5. Control Flow</h2><div class="ulist"><ul><li><p>Special forms: Built in primitives, not functions</p></li><li><p><code>def</code>, <code>let</code>, <code>quote</code> and <code>fn</code> are special forms</p></li><li><p>Don&#8217;t evaluate their arguments</p></li></ul></div></section>
 <section id="conditionals_if"><h2>Conditionals: if</h2><div class="paragraph"><p><code>if</code> chooses between two options:</p></div>
 <div class="literalblock"><div class="content"><pre>(if (pos? 1)
   (println "one is positive")
@@ -510,9 +519,9 @@ Test more.</p></div></section>
 <div class="literalblock"><div class="content"><pre>(def x {:cake 1})</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(cond (= x 1) "one"
       (= x :cake) "the cake is a lie"
-      (map? x) "it’s a map!"
+      (map? x) "it's a map!"
       :else "not sure what it is")
-=&gt; "it’s a map!"</pre></div></div>
+=&gt; "it's a map!"</pre></div></div>
 <div class="ulist"><ul><li><p><code>:else</code> is not special, it just a truthy value.</p></li><li><p>See also <code>condp</code> and <code>case</code> (rarely used)</p></li></ul></div></section>
 <section id="recursion"><h2>Recursion</h2><div class="paragraph"><p>Functions that call themselves are called recursive.</p></div>
 <div class="literalblock"><div class="content"><pre>(defn sum-up [coll result]
@@ -554,7 +563,7 @@ Test more.</p></div></section>
  :b 2
  :c 3}</pre></div></div></section>
 <section id="exercises_5"><h2>Exercises</h2><div class="ulist"><ul><li><p>Create a function that given a test score between 0 and 100 returns a grade A B C D or F for fail.</p></li><li><p>Write a function that takes a number and uses a loop to calculate the factorial of that number. Factorial 5 is 1*2*3*4*5.</p></li><li><p>Write a new version of factorial that does not use a loop but recursively calls itself.</p></li><li><p>Write a loop for the Fibonacci sequence (1 1 2 3 5 8 13) that finds the maximum Fibonacci number less than 100. The sequence is defined by n2 = n1 + n0.</p></li></ul></div></section>
-<section id="answers_9"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(def grade [score]
+<section id="answers_10"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(def grade [score]
   (cond (&gt;= score 90) "A"
         (&gt;= score 80) "B"
         (&gt;= score 70) "C"
@@ -803,7 +812,7 @@ for (i=1; i &lt; v.length; i++)
 <div class="literalblock"><div class="content"><pre>({:a 1, :b 2} :c -1)
 =&gt; -1</pre></div></div></section>
 <section id="exercises_6"><h2>Exercises</h2><div class="ulist"><ul><li><p>Write a function that takes two inputs, and returns the sum of the numbers in a range between two input integers, including the two input numbers.</p></li><li><p>Write a function that produces a sequence of powers of 2: (1 2 4 8 16 …)</p></li><li><p>Write a function that takes a string and produces a sequence of characters with no vowels.</p></li><li><p>Write a function that produces a sequence: (1 ½ ⅓ ¼ …)</p></li><li><p>Write a function that produces a sequence: (1  ½ ¼ ⅛ …)</p></li><li><p>Write a function that produces the Fibonacci sequence (1 1 2 3 5 8 13 21)</p></li></ul></div></section>
-<section id="answers_10"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn sum-between [a b]
+<section id="answers_11"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn sum-between [a b]
   (apply + (range a (inc b))))
 (sum-between 3 5)
 =&gt; 12</pre></div></div>
@@ -838,7 +847,7 @@ See <code>slurp</code> <code>line-seq</code> <code>clojure.string/split</code>.<
 But the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible.
 Create a new function that opens two output files and writes to them based upon your eligibility check.
 The files should be called <code>eligible-corgi-cover-applications.csv</code> and <code>ineligible-corgi-cover-applications.csv</code>.</p></div></section>
-<section id="part_3_2"><h2>Part 3:</h2><div class="paragraph"><p>A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied. That way the sales reps don’t have to spend time figuring out what they need to tell the customer. Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found. Create a new processing function that splits the applications into two files based on the new validator.</p></div></section>
+<section id="part_3_2"><h2>Part 3:</h2><div class="paragraph"><p>A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied. That way the sales reps don&#8217;t have to spend time figuring out what they need to tell the customer. Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found. Create a new processing function that splits the applications into two files based on the new validator.</p></div></section>
 <section id="part_4_2"><h2>Part 4:</h2><div class="paragraph"><p>As part of the Megacorp merger, the downstream systems are converting to JSON format.
 Create a new function that writes JSON data to a eligible-corgi-cover-applications.json file</p></div></section>
 <section id="macros"><h2>7. Macros</h2><div class="ulist"><ul><li><p>Manipulate the operand forms</p></li><li><p>Do not evaluate the input forms</p></li><li><p>Not functions</p></li><li><p>Cannot be passed to other functions</p></li></ul></div></section>
@@ -918,9 +927,9 @@ Create a new function that writes JSON data to a eligible-corgi-cover-applicatio
   (inc x))</pre></div></div></li><li><p>Write a spy macro. Spy wraps an expression and prints out its value.</p><div class="literalblock"><div class="content"><pre>(* (spy (+ 1 2)) 3)
 =&gt; Expression (+ 1 2) has value 3
    9</pre></div></div></li><li><p>Write your own version of the <code>or</code> macro</p><div class="literalblock"><div class="content"><pre>(or2 (pos? 1) (println "does not execute"))</pre></div></div></li></ul></div></section>
-<section id="answers_11"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defmacro ignore  [expr]  nil)</pre></div></div>
+<section id="answers_12"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defmacro ignore  [expr]  nil)</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(defmacro when2 [test &amp; body]
-  (list 'if test (cons ‘do body))</pre></div></div>
+  (list 'if test (cons 'do body))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(defmacro spy [expr]
   `(let [result# ~expr]
      (println "Expression" '~expr "has value" result#)
@@ -993,7 +1002,7 @@ Create a new function that writes JSON data to a eligible-corgi-cover-applicatio
 =&gt; 42</pre></div></div>
 <div class="literalblock"><div class="content"><pre>f
 #object[clojure.core$future_call {:status :ready, :val 42}]</pre></div></div></section>
-<section id="promises"><h2>Promises</h2><div class="ulist"><ul><li><p>Used in a similar way to delay or future</p></li><li><p>Dereference them for a value</p></li><li><p>Check if they have a value with <code>realized?</code></p></li><li><p>Block when you dereference them until they have a value</p></li><li><p>Don’t immediately give them a value</p></li><li><p>Provide them with one by calling deliver</p></li></ul></div></section>
+<section id="promises"><h2>Promises</h2><div class="ulist"><ul><li><p>Used in a similar way to delay or future</p></li><li><p>Dereference them for a value</p></li><li><p>Check if they have a value with <code>realized?</code></p></li><li><p>Block when you dereference them until they have a value</p></li><li><p>Don&#8217;t immediately give them a value</p></li><li><p>Provide them with one by calling deliver</p></li></ul></div></section>
 <section id="promises_2"><h2>Promises</h2><div class="literalblock"><div class="content"><pre>(def p (promise))
 (realized? p)
 =&gt; false</pre></div></div>
@@ -1048,7 +1057,7 @@ Create a new function that writes JSON data to a eligible-corgi-cover-applicatio
     (accept [this f]
       (.isDirectory f))))</pre></div></div>
 <div class="paragraph"><p>Notice that we did not define a class?</p></div></section>
-<section id="gen_class_and_proxy"><h2>gen-class and proxy</h2><div class="paragraph"><p><code>gen-class</code> creates a class. In practise the need to create a class from within Clojure is rare, so we won’t be covering the syntax.
+<section id="gen_class_and_proxy"><h2>gen-class and proxy</h2><div class="paragraph"><p><code>gen-class</code> creates a class. In practise the need to create a class from within Clojure is rare, so we won&#8217;t be covering the syntax.
 (see <a href="https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html" class="bare">https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html</a> if you want to explore this further)</p></div>
 <div class="paragraph"><p><code>proxy</code> can be used to extend a concrete superclass. Again the need for this is rare.
 (see <a href="https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html" class="bare">https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html</a> if you want to explore this further)</p></div></section>
@@ -1126,7 +1135,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre></div></div>
   BProtocol
     {...}
 ...)</pre></div></div>
-<div class="ulist"><ul><li><p>Extends the polymorphism of the protocol’s methods</p></li><li><p>Will call the supplied functions when an AType is provided as the first argument</p></li><li><p>The <code>fn</code> can presume first argument is instanceof <code>AType</code></p></li><li><p>You can implement a protocol on <code>nil</code>.</p></li><li><p>Default implementation of protocol with <code>Object</code>.</p></li></ul></div></section>
+<div class="ulist"><ul><li><p>Extends the polymorphism of the protocol&#8217;s methods</p></li><li><p>Will call the supplied functions when an AType is provided as the first argument</p></li><li><p>The <code>fn</code> can presume first argument is instanceof <code>AType</code></p></li><li><p>You can implement a protocol on <code>nil</code>.</p></li><li><p>Default implementation of protocol with <code>Object</code>.</p></li></ul></div></section>
 <section id="extend_type"><h2>extend-type</h2><div class="literalblock"><div class="content"><pre>(extend-type MyType
   Countable
     (cnt [c] ...)
@@ -1140,7 +1149,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre></div></div>
   Foo
    {:baz (fn ([x] ...) ([x y zs] ...))
     :bar (fn [x y] ...)})</pre></div></div></section>
-<section id="creating_types_with_defrecord_and_deftype"><h2>Creating types with defrecord and deftype</h2><div class="ulist"><ul><li><p><code>deftype</code>, <code>defrecord</code>, and <code>reify</code> provide the mechanism for defining implementations of abstractions, and instances of those implementations.</p></li><li><p>Resist the urge to use them to define ‘structured data’ as you would define classes or structures in other languages.</p></li><li><p>It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.</p></li></ul></div></section>
+<section id="creating_types_with_defrecord_and_deftype"><h2>Creating types with defrecord and deftype</h2><div class="ulist"><ul><li><p><code>deftype</code>, <code>defrecord</code>, and <code>reify</code> provide the mechanism for defining implementations of abstractions, and instances of those implementations.</p></li><li><p>Resist the urge to use them to define 'structured data' as you would define classes or structures in other languages.</p></li><li><p>It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.</p></li></ul></div></section>
 <section id="deftype"><h2>deftype</h2><div class="literalblock"><div class="content"><pre>(deftype Circle [radius])
 (deftype Square [length width])</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(Circle. 10)
@@ -1308,7 +1317,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre></div></div>
      :sym spec.examples.guide/ranged-rand,
      :result true})</pre></div></div></li><li><p><code>ranged-rand</code> contains a bug</p></li><li><p>Run check several times to find it</p></li></ul></div></section>
 <section id="enumerate_namespace"><h2>enumerate-namespace</h2><div class="literalblock"><div class="content"><pre>(stest/check (stest/enumerate-namespace 'testing.spec))</pre></div></div>
-<div class="ulist"><ul><li><p>Test all spec’ed functions in a namespace</p><div class="literalblock"><div class="content"><pre>(stest/check)</pre></div></div></li><li><p>Check all spec’ed functions</p></li></ul></div></section>
+<div class="ulist"><ul><li><p>Test all spec&#8217;ed functions in a namespace</p><div class="literalblock"><div class="content"><pre>(stest/check)</pre></div></div></li><li><p>Check all spec&#8217;ed functions</p></li></ul></div></section>
 <section id="interacting_with_a_database"><h2>12. Interacting with a Database</h2></section>
 <section id="intro_to_clojure_java_jdbc"><h2>Intro to clojure.java.jdbc</h2><div class="paragraph"><p>Database persistence is important for many applications. We can use clojure.java.jdbc to interact with a database.</p></div>
 <div class="paragraph"><p>To start, create a new project</p></div>
@@ -1337,7 +1346,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre></div></div>
 <div class="paragraph"><p>And now there is only one row remaining.</p></div>
 <div class="literalblock"><div class="content"><pre>(jdbc/query db ["select * from messages"])
 =&gt; ({:message "How now?"})</pre></div></div>
-<div class="paragraph"><p>Let’s add some more data&#8230;&#8203;</p></div>
+<div class="paragraph"><p>Let&#8217;s add some more data&#8230;&#8203;</p></div>
 <div class="literalblock"><div class="content"><pre>(jdbc/insert-multi! db :messages
                 [{:message "Nobody panic!!!"}
                  {:message "What in the world?"}
@@ -1351,9 +1360,9 @@ long estimatedTime = System.nanoTime() - startTime;</pre></div></div>
 <div class="paragraph"><p>It is important to use parameterized queries instead of string concatenation in this example because it protects us from SQL injection. Parameters are not part of the query, so they cannot perform SQL from malicious input.</p></div>
 <div class="paragraph"><p>If you want to redo any steps, remember that you can always drop the table and start again.</p></div>
 <div class="literalblock"><div class="content"><pre>(jdbc/execute! db "drop table messages")</pre></div></div></section>
-<section id="solutions_for_sql_management"><h2>Solutions for SQL management</h2><div class="paragraph"><p>HoneySQL <a href="https://github.com/jkk/honeysql" class="bare">https://github.com/jkk/honeysql</a> can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure’s capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.</p></div></section>
+<section id="solutions_for_sql_management"><h2>Solutions for SQL management</h2><div class="paragraph"><p>HoneySQL <a href="https://github.com/jkk/honeysql" class="bare">https://github.com/jkk/honeysql</a> can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure&#8217;s capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.</p></div></section>
 <section id="exercises_9"><h2>Exercises</h2><div class="ulist"><ul><li><p>Create and populate a table <code>person</code> with two columns; <code>id</code>, <code>name</code>.</p></li><li><p>Create and populate a table <code>policy</code> with two columns; <code>id</code>, <code>name</code></p></li><li><p>Create and populate a table <code>person_policy</code> with two columns; <code>person_id</code>, <code>policy_id</code></p></li><li><p>Write a function that given a person name queries all the policies associated with them.</p></li></ul></div></section>
-<section id="answers_12"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(ns messenger.core
+<section id="answers_13"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(ns messenger.core
   (:require [clojure.java.jdbc :as jdbc]))</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(def db "jdbc:hsqldb:mem:testdb")</pre></div></div>
 <div class="literalblock"><div class="content"><pre>(jdbc/execute! db
@@ -1393,7 +1402,7 @@ long estimatedTime = System.nanoTime() - startTime;</pre></div></div>
 <section id="part_2_populate_the_data"><h2>Part 2: Populate the data</h2><div class="paragraph"><p>Modify the code to store the applications as they are processed, and the result of the eligibility check.</p></div></section>
 <section id="part_3_write_a_spec"><h2>Part 3: Write a spec</h2><div class="paragraph"><p>Ensure that all records processed from the files meets your expectations for required fields. Write a spec that explicitly defines what should be in the applications. Validate the spec on the incoming records.</p></div></section>
 <section id="part_4_extending_to_poodle_protection"><h2>Part 4: Extending to Poodle Protection</h2><div class="paragraph"><p>Insuricorp is about to launch a new policy called “Poodle Protection”. Soon they will be processing applications with completely new rules. Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications. For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).</p></div></section>
-<section id="further_reading"><h2>Further reading</h2><div class="paragraph"><p>Writing Clojure code requires more thinking and less typing than other languages. Don’t feel frustrated if the code comes slowly at first. Being a great programmer requires thinking. You will only reach your true potential expressing code in ways that empower you rather than constrain you.</p></div>
+<section id="further_reading"><h2>Further reading</h2><div class="paragraph"><p>Writing Clojure code requires more thinking and less typing than other languages. Don&#8217;t feel frustrated if the code comes slowly at first. Being a great programmer requires thinking. You will only reach your true potential expressing code in ways that empower you rather than constrain you.</p></div>
 <div class="paragraph"><p>Further exercises:	<a href="https://www.4clojure.com/" class="bare">https://www.4clojure.com/</a></p></div>
 <div class="paragraph"><p>Clojure for Java Programmers - Rich Hickey</p></div>
 <div class="ulist"><ul><li><p>Part 1:		<a href="https://www.youtube.com/watch?v=P76Vbsk_3J0" class="bare">https://www.youtube.com/watch?v=P76Vbsk_3J0</a></p></li><li><p>Part 2:		<a href="https://www.youtube.com/watch?v=hb3rurFxrZ8" class="bare">https://www.youtube.com/watch?v=hb3rurFxrZ8</a></p></li></ul></div>
