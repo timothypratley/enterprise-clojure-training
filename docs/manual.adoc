@@ -931,6 +931,7 @@ Create a new namespace called `fun-functions`. Define the following functions an
     => [3 5]
 
 
+:sectnums!:
 == Challenge 1: Corgi Cover eligibility
 
 Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy.
@@ -993,6 +994,7 @@ Create a new function that takes as inputs two maps: the application, and the ex
 It should apply the same logic, but make use of the Megacorp data.
 
 
+:sectnums:
 == Testing with clojure.test
 
 "The greatest test of courage on earth is to bear defeat without losing heart."
@@ -1839,6 +1841,7 @@ And so do vectors:
     => (1 1 2 3 5 8 13 21 34 55)
 
 
+:sectnums!:
 == Challenge 2: Processing files
 
 Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file.
@@ -1874,6 +1877,7 @@ As part of the Megacorp merger, the downstream systems are converting to JSON fo
 Create a new function that writes JSON data to an `eligible-corgi-cover-applications.json` file.
 
 
+:sectnums:
 == Macros
 
 "I never think about myself as an artist working in this time. I think about it in macro."
@@ -3084,6 +3088,7 @@ However if you do not need to do such manipulation, I recommend using plain old 
     => ({:name "Corgi Cover"})
 
 
+:sectnums!:
 == Challenge 4: Corgi Cover Database
 
 Sending files around is proving to be problematic.
@@ -3118,6 +3123,7 @@ Set up a multimethod to handle “Poodle Protection” applications differently 
 For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
 
 
+:sectnums:
 == Further reading
 
 Writing Clojure code requires more thinking and less typing than other languages.
@@ -3125,19 +3131,9 @@ Don't feel frustrated if the code comes slowly at first.
 Being a great programmer requires thinking.
 You will only reach your true potential expressing code in ways that empower you rather than constrain you.
 
-Further exercises:	https://www.4clojure.com/
+Further exercises:	https://www.4clojure.com
 
 Clojure for Java Programmers - Rich Hickey
 
 * Part 1:		https://www.youtube.com/watch?v=P76Vbsk_3J0
 * Part 2:		https://www.youtube.com/watch?v=hb3rurFxrZ8
-
-Hadoop libraries
-
-* https://github.com/nathanmarz/cascalog
-* https://github.com/damballa/parkour
-* https://github.com/r0man/hdfs-clj
-
-Spark libraries
-
-* https://github.com/yieldbot/flambo
