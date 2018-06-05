@@ -38,11 +38,20 @@ I use the IntelliJ plugin as it is simple to install and works well.
 
 == Building
 
-You don't need to install Asciidoctor.
-It is used as a dependency specified in this project's Gemfile.
-However you will need Ruby and Bundler to pull down the Asciidoctor and RevealJS plugin dependencies.
+You can install asciidoctor, asciidoctor-pdf, and ascidoctor-revealjs locally and run
+
+    ./build.sh
+
+But installing these tools is a bit of a pain... so two ways to get the dependencies are provided:
+
+
+=== The Ruby way
 
 Requires https://www.ruby-lang.org/en/documentation/installation[Ruby].
+
+You don't need to install Asciidoctor.
+Asciidoctor is a dependency specified in the Gemfile.
+However you will need Ruby and Bundler to pull down the Asciidoctor and RevealJS plugin dependencies.
 
 Requires Bundler:
 
@@ -54,11 +63,21 @@ Pull the dependencies:
 
 Now you can call the build script:
 
-    ./build.sh
+    bundle exec ./build.sh
+
+
+=== The Docker way
+
+Alternatively, if you prefer pulling a Docker image over installing dependencies:
+
+    docker run -v $(pwd):/documents/ asciidoctor/docker-asciidoctor /documents/build.sh
 
 
 == Deploying
 
-    ./deploy.sh
+TravisCI automatically deploys the latest version to https://timothypratley.github.io/enterprise-clojure-training[GitHub Pages].
+image:https://travis-ci.org/timothypratley/enterprise-clojure-training.svg?branch=master[Build Status, link=https://travis-ci.org/timothypratley/enterprise-clojure-training]
 
-The built HTML and PDF are hosted on https://timothypratley.github.io/enterprise-clojure-training[GitHub Pages].
+Manual deployment:
+
+    ./deploy.sh
