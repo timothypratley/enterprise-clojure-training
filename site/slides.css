@@ -1,6 +1,7 @@
-.reveal h2 {
+.reveal h2, th {
   font-size: 1.5em;
   padding-bottom: 0.5em;
+  color: #66AF40;
 }
 
 .reveal pre {
@@ -10,4 +11,24 @@
   background-color: #F8F8F8;
 }
 
-p { text-align: left; }
+.reveal section {
+  font-size: 1.0em;
+  color: #5B80D4;
+}
+
+.reveal section img {
+  margin: 0;
+  border: 10px solid #66AF40;
+}
+
+.reveal p {
+ text-align: left;
+}
+
+html.title body {
+  background: linear-gradient(to bottom right, #92DA55, #91B3FB);
+}
+
+html.title2 body {
+  background-color: #91B3FB;
+}

@@ -8,9 +8,17 @@
 :revealjs_controls: false
 :revealjs_transition: none
 :docinfo: shared
+:notitle:
+
+[state=title]
+== Enterprise Clojure Training
+
+image::img/corgi.jpg[size=contain, position=center]
 
 
+[state=title2]
 == Introductions
+
 
 == Clojure
 
@@ -50,8 +58,16 @@ Syntax Summary:
 * Operation at the front
 --
 
-
+[state=title2]
 == 1. The Clojure Ecosystem
+
+[NOTE.speaker]
+--
+Benefits of embracing the JVM as a host
+--
+
+
+== !
 
 * Libraries are plain old jars
 * Clojure is itself a jar
@@ -177,6 +193,7 @@ Divide 2 by 10
     => 13
 
 
+[state=title2]
 == 2. The Clojure Language
 
 == Primitive data types
@@ -611,6 +628,7 @@ Destructure a single map input and return a string combining greeting and tone:
     => "good morning - happy"
 
 
+[state=title2]
 == 3. Functions
 
 
@@ -782,7 +800,7 @@ Function that captures values from the environment.
 * The function can call itself with the name
 
 
-== Note that
+== !
 
     (defn f [x]
       (inc x))
@@ -944,6 +962,7 @@ Insuricorp just merged with Megacorp. Platinum level corgi cover is now offered 
 Create a new function that takes as inputs two maps: the application, and the existing policies. It should apply the same logic, but make use of the Megacorp data.
 
 
+[state=title2]
 == 4. Testing with clojure.test
 
 
@@ -1233,6 +1252,7 @@ We get the constructed object, with side-effects applied.
           (is (= 3 @c)))))
 
 
+[state=title2]
 == 5. Control Flow
 
 * Special forms: Built in primitives, not functions
@@ -1409,6 +1429,7 @@ Prefer newlines
       (is (= 89 (fib 100))))
 
 
+[state=title2]
 == 6. Functional Programming
 
 
@@ -2041,6 +2062,7 @@ As part of the Megacorp merger, the downstream systems are converting to JSON fo
 Create a new function that writes JSON data to a eligible-corgi-cover-applications.json file
 
 
+[state=title2]
 == 7. Macros
 
 * Manipulate the operand forms
@@ -2267,6 +2289,7 @@ Create the following macros and test cases:
              (if or# or# (or ~@next)))))
 
 
+[state=title2]
 == 8. Parallel Programming and Concurrency
 
 == Vars and dynamic scope
@@ -2484,6 +2507,7 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 See Challenge 3
 
 
+[state=title2]
 == 9. Java Interop
 
 == Clojure syntax for Java constructors
@@ -2587,6 +2611,7 @@ The web service you are using can handle multiple requests faster than a series 
 Modify your mock of fetch-megacorp-policies such that it throws an exception randomly about 10% of the time. Make sure your tests report a failure. Now update your logic to handle the errors and retry up to 10 times. The tests should pass. Then create another test where the exception is thrown 100% of the time, and the max tries occurs.
 
 
+[state=title2]
 == 10. Polymorphism and Types
 
 == Multimethods
@@ -2771,6 +2796,7 @@ Call the method on the `thing` instance and pass `"bar"`:
     => "foo-bar"
 
 
+[state=title2]
 == 11. Specifications with clojure.spec
 
 * Specifies the structure of data
@@ -3091,6 +3117,7 @@ See also `inst-in` and `double-in`
 * Check all spec'ed functions
 
 
+[state=title2]
 == 12. Interacting with a Database
 
 == Intro to clojure.java.jdbc
