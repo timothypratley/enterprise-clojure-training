@@ -1536,7 +1536,7 @@ The result is a sequence of odd values.
 Functions like filter that operate on sequences call seq on their arguments to convert collections to sequences.
 The underlying mechanism is the `ISeq` interface, which allows many collection data structures to provide access to their elements.
 
-`map` is a function that calls another function for every element in a sequence:
+`map` is a function that applies another function for every element in a sequence:
 
 	(map inc [1 2 3 4])
 	=> (2 3 4 5)
