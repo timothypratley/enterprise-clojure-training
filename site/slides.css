@@ -14,6 +14,9 @@
 .reveal section {
   font-size: 1.0em;
   color: #5B80D4;
+  /* allow vertical scrolling in slides */
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .reveal section img {
@@ -25,10 +28,12 @@
   text-align: left;
 }
 
-//// For screencasting
-//.slides {
-//  left: -25% !important;
-//}
+/* For screencasting */
+/*
+.slides {
+  left: -25% !important;
+}
+*/
 
 html.title body {
   background: linear-gradient(to bottom right, #92DA55, #91B3FB);

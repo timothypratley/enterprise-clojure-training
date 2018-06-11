@@ -17,6 +17,11 @@
 
 image::img/corgi.jpg[size=contain, position=center]
 
+* ha
+* ho
+* he
+* he
+* he
 
 [state=title2]
 == Contents
