@@ -9,11 +9,23 @@
 :revealjs_transition: none
 :docinfo: shared
 :notitle:
+:icons: font
+
 
 [state=title]
 == Enterprise Clojure Training
 
 image::img/corgi.jpg[size=contain, position=center]
+
+
+[state=title2]
+== Contents
+
+|===
+|Ecosystem|Syntax|Functions|Testing
+|Control Flow|Functional Programming|Macros|Concurrency
+|Java Interop|Polymorphism|Databases|Further reading
+|===
 
 
 [state=title2]
@@ -57,6 +69,7 @@ Syntax Summary:
 * Everything is expressed as a list
 * Operation at the front
 --
+
 
 [state=title2]
 == 1. The Clojure Ecosystem
@@ -584,8 +597,7 @@ Print out the value of the var `message`
     => "greetings"
        nil
 
-[NOTE]
-`prn` keeps the quotes around strings; `println` does not.
+NOTE: `prn` keeps the quotes around strings; `println` does not.
 
 
 == Answers
@@ -602,8 +614,7 @@ Print out message again, outside of the `let` block:
     (prn message)
     => "greetings"
 
-[NOTE]
-`message` global var is still the original value.
+NOTE: `message` global var is still the original value.
 
 
 == Answers
@@ -700,65 +711,6 @@ Function that captures values from the environment.
     => "Hello world"
 
 
-== Map
-
-* Not to be confused with the `hash-map` data structure
-* Function that calls a function on every element in a sequence
-
-    (map #(inc %) [1 2 3])
-    => (2 3 4)
-
-* Higher order function, first argument is a function.
-* Unnamed closures are useful as arguments to higher order functions.
-
-    (let [x 5]
-      (map #(+ x %) [1 2 3]))
-    => (6 7 8)
-
-
-== Pre- and post-conditions
-
-    (defn f [x]
-      {:pre [(pos? x)]
-       :post [(neg? %) (int? %)]}
-      (- x))
-
-    (f 1)
-    => -1
-
-    (f -1)
-    => AssertionError Assert failed: (pos? x)
-
-    (f 1.5)
-    => AssertionError Assert failed: (int? %)
-
-* Assertions about inputs and outputs of a function.
-* Sequence of conditions
-* Rarely used.
-
-
-== Pre/Post drawbacks:
-
-* Syntax is easy to get wrong, no assertion made
-* Assertions can be disabled
-* Less control over error reporting and handling
-
-
-== More common
-
-* Check for a condition and throw an exception
-
-    (defn f [x]
-      (when-not (pos? x)
-        (throw (ex-info "bad input" {:x x}))
-      (let [result (- x)]
-        (if (and (neg? result) (int? result))
-          result
-          (throw (ex-info "bad result" {:x x})))
-
-* Or use a schema or spec
-
-
 == Anonymous functions
 
     (fn [x]
@@ -777,6 +729,10 @@ Function that captures values from the environment.
 
 == Passing a function to another function
 
+WARNING: `map` the function, not `hash-map` the data structure
+
+* Function that applies a function to every element in a sequence
+
     (map inc [1 2 3])
     => (2 3 4)
 
@@ -784,6 +740,16 @@ Function that captures values from the environment.
     => (1 4 9 16)
 
 * Don't need to create global definitions
+
+
+== Map
+
+    (let [x 5]
+      (map #(+ x %) [1 2 3]))
+    => (6 7 8)
+
+* Higher order function
+* Unnamed closures are useful as arguments to higher order functions.
 
 
 == Inlined named functions
@@ -816,20 +782,22 @@ Is shorthand for
 
     #(inc %)
     #(+ %1 %2)
+    #(apply + %&)
 
-Terse but powerful expressions
+* Terse, powerful expressions
+
+
+== Compare
 
     (map #(* % %) [1 2 3 4])
-    => (1 4 9 16)
-
-Compare with
 
     (map (fn square [x]
            (* x x))
          [1 2 3 4])
-    => (1 4 9 16)
 
-Prefer `(fn)` form: name parameters and purpose
+Named parameters; named purpose; stack traces
+
+NOTE: Prefer `(fn)` form
 
 
 == Variadic arguments
@@ -878,6 +846,50 @@ Multiple arities should be explicitly declared in parenthesis.
 
     (defn f [x {:keys [option1 option2]}] ...)
     (f 42 {:option3 "value"})
+
+
+== Pre and post conditions
+
+    (defn f [x]
+      {:pre [(pos? x)]
+       :post [(neg? %) (int? %)]}
+      (- x))
+
+    (f 1)
+    => -1
+    (f -1)
+    => AssertionError Assert failed: (pos? x)
+    (f 1.5)
+    => AssertionError Assert failed: (int? %)
+
+[NOTE.speaker]
+--
+* Assertions about inputs and outputs of a function.
+* Sequence of conditions
+--
+
+
+== Pre/Post drawbacks:
+
+* Syntax is easy to get wrong, no assertion made
+* Assertions can be disabled
+* Less control over error reporting and handling
+* Rarely used.
+
+
+== More common
+
+* Check for a condition and throw an exception
+
+    (defn f [x]
+      (when-not (pos? x)
+        (throw (ex-info "bad input" {:x x}))
+      (let [result (- x)]
+        (if (and (neg? result) (int? result))
+          result
+          (throw (ex-info "bad result" {:x x})))
+
+* Or use spec (or schema)
 
 
 == Exercises
@@ -1397,8 +1409,12 @@ Prefer newlines
             (>= score 70) "C"
             (>= score 60) "D"
             :else "F"))
+
     (deftest grade-test
       (is (= "B" (grade 85))))
+
+
+== Answers
 
     (defn factorial [n]
       (loop [acc 1
@@ -1406,8 +1422,12 @@ Prefer newlines
         (if (<= x 1)
           acc
           (recur (* acc x) (dec x)))))
+
     (deftest factorial-test
       (is (= 120 (factorial 5))))
+
+
+== Answers
 
     (defn factorial2
       ([n] (factorial2 1 n))
@@ -1415,9 +1435,12 @@ Prefer newlines
        (if (<= n 1)
          acc
          (recur (* acc n) (dec n)))))
+
     (deftest factorial2-test
       (is (= 120 (factorial2 5))))
 
+
+== Answers
 
     (defn fib [limit]
       (loop [a 1
@@ -1425,6 +1448,7 @@ Prefer newlines
         (if (>= b limit)
           a
           (recur b (+ a b)))))
+
     (deftest fib-test
       (is (= 89 (fib 100))))
 
@@ -1433,35 +1457,40 @@ Prefer newlines
 == 6. Functional Programming
 
 
-== Pure functions and side effects
-
-* Clojure functions always return a value
-* Usually a useful value, not just a nil
-* Functions for side effects -> discard result
-* `(println "hi")` -> nil
-* Print to System out `"hi"` occurs as a side-effect
-* Contrast with calling `(str "hi" "there")` -> `"hithere"`
-* No side-effects occur
-* A function with no side-effects is a pure function
-* Same input same output
-* `rand` is not a pure function
-* Returns a useful result, but changes every time
-* Distinction between pure functions and side-effect functions
-
-
 == Pure functions
 
-Desirable because they are:
+* Functions always return a value
+** Usually not `nil`
+** `(inc 1)` -> `2`
+** `(println "hi")` -> `nil` causes a side-effect
+** All Input/Output is considered a side-effect
+* `(str "hi" "there")` -> `"hithere"` is pure
+** No side-effects occur
+** An input always produces the same output
 
-* easier to reason about
-* easier to combine
-* easier to test
-* easier to debug
-* easier to parallelize
 
-== Clojure api
+== Side effects
 
-Many pure functions:
+* `rand` is not a pure function
+** returns a useful result, but changes every time
+** is modifying an underlying state
+* `(def x 1)` returns a var, and produces a side-effect
+* Causing side effects is useful
+  - databases
+  - files
+  - user interfaces
+
+
+== Many Clojure functions are pure
+
+    (conj [1 2] 3)
+    => [1 2 3]
+
+* `conj` does not add something to a vector
+* `conj` returns a new vector value
+
+
+== How can you change a variable?
 
     (def v [1 2])
     (conj v 3)
@@ -1470,9 +1499,7 @@ Many pure functions:
     v
     => [1 2]
 
-* `conj` does not add something to a vector
-* `conj` returns a new vector value
-* v remained unchanged
+* `v` remained unchanged
 * Manage change explicitly
 
 
@@ -1484,13 +1511,17 @@ Many pure functions:
 * Clojure uses shared structure
 
 
-== Side effects
+== Pure functions are desirable
 
-* Clojure does allow side-effects
-* Side effects are useful
-  - databases
-  - files
-  - user interfaces
+* easier to reason about
+* easier to combine
+* easier to test
+* easier to debug
+* easier to parallelize
+
+
+== Separate side effects out
+
 * Keep side-effects co-located
 * See atoms:
   - Pure function to calculate the next state
@@ -1512,15 +1543,16 @@ What if you have a sequence of many numbers?
     (apply max numbers)
     => 7
 
+
+== apply
+
 * Useful when calling variadic functions like max
-* Could have reduced over the sequence
-* `apply` is more concise and clear about the intent.
+* The term apply means call or invoke
 
 
 == partial
 
 In Clojure we often pass functions as values.
-`partial` creates a function that consumes some arguments:
 
     (partial + 1)
 
@@ -1529,7 +1561,11 @@ Returns a function that is equivalent to:
     (fn [& args]
       (apply + 1 args))
 
-== partial
+* captures an argument
+* partial application
+
+
+== partial returns a new function
 
 Produces a function:
 
@@ -1539,7 +1575,7 @@ Produces a function:
     (map (partial / 1) (range 1 5))
     => (1 1/2 1/3 1/4)
 
-We could have instead written:
+Alternatively:
 
     (map #(/ 1 %) (range 1 5))
     => (1 1/2 1/3 1/4)
@@ -3120,65 +3156,67 @@ See also `inst-in` and `double-in`
 [state=title2]
 == 12. Interacting with a Database
 
-== Intro to clojure.java.jdbc
-
-Database persistence is important for many applications. We can use clojure.java.jdbc to interact with a database.
-
-To start, create a new project
+== clojure.java.jdbc
 
     $ lein new messenger
 
-and add dependencies to your `project.clj` file:
+`project.clj` dependencies:
 
     [org.clojure/java.jdbc "0.7.5"]
     [hsqldb/hsqldb "1.8.0.10"]
 
-Note that we need the driver we plan to use to connect to a database. In this case we are using an in memory HSQL database.
+NOTE: we need the driver we plan to use to connect to a database.
 
-In the Clojure project we require jdbc, and set up a db connection url.
+== Connecting
+
+Require `jdbc` and configure a db connection url
 
     (ns messenger.core
       (:require [clojure.java.jdbc :as jdbc]))
 
     (def db "jdbc:hsqldb:mem:testdb")
 
-Now we are all set to start doing queries.
 
+== Inserting
 
-== Inserting, updating and retrieving data
-
-First we will create a table called testing inside the database with a text field named data, and then insert some rows.
+Create a table called testing
 
     (jdbc/execute! db
       "create table messages (message varchar(1024))")
+
+Insert some rows
 
     (jdbc/insert-multi! db :messages
                         [{:message "Hello World"}
                          {:message "How now?"}])
 
-And we can query the data back:
+
+== Querying
 
     (jdbc/query db ["select * from messages"])
     => ({:message "Hello World"}
         {:message "How now?"})
 
+
+== Deleting
+
 To selectively delete some data:
 
     (jdbc/delete! db :messages ["message like '%World%'"])
-
-And now there is only one row remaining.
-
     (jdbc/query db ["select * from messages"])
     => ({:message "How now?"})
 
-Let's add some more data...
+Now there is only one row remaining.
+
+== insert-multi!
 
     (jdbc/insert-multi! db :messages
                     [{:message "Nobody panic!!!"}
                      {:message "What in the world?"}
                      {:message "All is well."}])
 
-And now we create a function to do a parameterized query.
+
+== Parameterized query
 
     (defn search [s]
       (jdbc/query db
@@ -3187,7 +3225,11 @@ And now we create a function to do a parameterized query.
     (search "%How%")
     => ({:message "How now?"})
 
-It is important to use parameterized queries instead of string concatenation in this example because it protects us from SQL injection. Parameters are not part of the query, so they cannot perform SQL from malicious input.
+* String concatenation is susceptible to SQL injection.
+* Parameters are not part of the query; cannot perform SQL from malicious input.
+
+
+== Starting fresh
 
 If you want to redo any steps, remember that you can always drop the table and start again.
 
@@ -3196,7 +3238,11 @@ If you want to redo any steps, remember that you can always drop the table and s
 
 == Solutions for SQL management
 
-HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures. This is useful when you have to programmatically combine clauses to produce a final SQL statement. For example if the user can check a checkbox to enable an additional clause in a search. In such cases it is more convenient to use Clojure's capabilities for manipulating data structures. However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
+HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures.
+This is useful when you have to programmatically combine clauses to produce a final SQL statement.
+For example if the user can check a checkbox to enable an additional clause in a search.
+In such cases it is more convenient to use Clojure's capabilities for manipulating data structures.
+However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
 
 
 == Exercises
@@ -3221,6 +3267,10 @@ HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements fro
     (jdbc/execute! db
       "create table person_policy
       (person_id bigint, policy_id bigint)")
+
+
+== Answers
+
     (jdbc/insert-multi! db :person
                         [{:id 1 :name "Sally"}
                          {:id 2 :name "Billy"}])
@@ -3231,6 +3281,8 @@ HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements fro
                         [{:person_id 1 :policy_id 1}
                          {:person_id 1 :policy_id 2}
                          {:person_id 2 :policy_id 1}])
+
+== Answers
 
     (defn find-policies [person-name]
       (jdbc/query db ["select a.name
@@ -3277,8 +3329,6 @@ Insuricorp is about to launch a new policy called “Poodle Protection”. Soon 
 
 == Further reading
 
-Writing Clojure code requires more thinking and less typing than other languages. Don't feel frustrated if the code comes slowly at first. Being a great programmer requires thinking. You will only reach your true potential expressing code in ways that empower you rather than constrain you.
-
 Further exercises:	https://www.4clojure.com/
 
 Clojure for Java Programmers - Rich Hickey
@@ -3286,15 +3336,13 @@ Clojure for Java Programmers - Rich Hickey
 * Part 1:		https://www.youtube.com/watch?v=P76Vbsk_3J0
 * Part 2:		https://www.youtube.com/watch?v=hb3rurFxrZ8
 
-Hadoop libraries
-
-* https://github.com/nathanmarz/cascalog
-* https://github.com/damballa/parkour
-* https://github.com/r0man/hdfs-clj
-
-Spark libraries
-
-* https://github.com/yieldbot/flambo
+[NOTE.speaker]
+--
+* Writing Clojure code requires more thinking and less typing than other languages.
+* Don't feel frustrated if the code comes slowly at first.
+* Being a great programmer requires thinking.
+* You will only reach your true potential expressing code in ways that empower you rather than constrain you.
+--
 
 
 == Best practices
@@ -3305,6 +3353,10 @@ Spark libraries
 * Keep functions short and focused
   - Extract sub functions
   - Compose functions
+
+
+== Best practices
+
 * Keep namespaces short and focused
   - Extract related functions into new namespaces
   - Write doc-strings for namespaces
@@ -3320,6 +3372,10 @@ Spark libraries
 * Create functions to operated on that data
 * Eastwood can give hints on better expressions
 * Read source code (Clojure, libraries, open source projects)
+
+
+== Tips
+
 * Most problems can be solved with a function
 * Scientific method:
   - Think of things that could possibly be wrong
@@ -3381,12 +3437,9 @@ Produces suggestions on how to write idiomatic Clojure
 
 == Get help
 
-* Starweaver:
-  - paul.siegel@starweaver.com
-  - dipika.sinha@starweaver.com
 * REPL can answer most questions
-* Minimal example
 * StackOverflow.com #clojure
+* Create minimal examples
 * Clojure mailing list https://groups.google.com/forum/#!forum/clojure
 * ClojureVerse https://clojureverse.org
 * Clojurians Slack http://clojurians.net

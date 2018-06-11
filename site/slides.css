@@ -22,8 +22,13 @@
 }
 
 .reveal p {
- text-align: left;
+  text-align: left;
 }
+
+//// For screencasting
+//.slides {
+//  left: -25% !important;
+//}
 
 html.title body {
   background: linear-gradient(to bottom right, #92DA55, #91B3FB);

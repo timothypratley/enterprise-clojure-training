@@ -11,8 +11,11 @@
 :uri-home: https://timothypratley.github.io/enterprise-clojure-training
 :uri-repo: https://github.com/timothypratley/enterprise-clojure-training
 :docinfo: shared
+:icons: font
+:sectnums:
 
-[preface]
+
+[preface, nonumber]
 == About
 
 Welcome to Enterprise Clojure Training.
@@ -172,7 +175,7 @@ l|(.bar foo x)
 
 Things that would be declarations, control structures, function calls, operators, are all just lists with an op at front.
 
-:sectnums:
+
 == The Clojure Ecosystem
 
 There are many Clojure libraries. Hosted on Maven and Clojars. Just jars, like any other Java artifact.
@@ -931,7 +934,7 @@ Create a new namespace called `fun-functions`. Define the following functions an
     => [3 5]
 
 
-:sectnums!:
+[nonumber]
 == Challenge 1: Corgi Cover eligibility
 
 Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy.
@@ -940,13 +943,12 @@ To be eligible they must own a corgi, live in either Illinois (IL), Washington (
 You are tasked with building a system to validate applications for the policy.
 
 
-=== Part 1:
+=== Part 1: eligibility
 
 Write a function that takes as input a state and corgi-count, and returns a boolean indicating the person's eligibility for the “corgi cover” policy.
 
 
-==== Test data:
-
+.Test data
 [style="literal", options="header"]
 |===
 |Name |State |Corgi count | Existing policy count
@@ -959,7 +961,7 @@ Write a function that takes as input a state and corgi-count, and returns a bool
 See `if` `=`.
 
 
-=== Part 2:
+=== Part 2: silver, gold and platinum
 
 A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”.
 Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp.
@@ -969,7 +971,7 @@ Create a new function that takes an additional argument policy-count and returns
 See `cond`.
 
 
-=== Part 3:
+=== Part 3: accept a map as an argument
 
 The “corgi cover” applications Insuricorp collect contain more information than necessary to determine eligibility.
 Create a new function that takes as input a single map data structure as input instead of multiple inputs.
@@ -980,7 +982,7 @@ The data should look something like:
     {:name "Chloe", :state "IL", :corgi-count 1, :policy-count 0}
 
 
-=== Part 4:
+=== Part 4: cross-reference policies
 
 Insuricorp just merged with Megacorp.
 Platinum level corgi cover is now offered to people with an existing Megacorp policy as well.
@@ -994,7 +996,6 @@ Create a new function that takes as inputs two maps: the application, and the ex
 It should apply the same logic, but make use of the Megacorp data.
 
 
-:sectnums:
 == Testing with clojure.test
 
 "The greatest test of courage on earth is to bear defeat without losing heart."
@@ -1065,7 +1066,7 @@ If you change `my-test` now to print a new message, the tests are re-run as soon
 Seeing as saving the file executes code, you can use lein-test-refresh like a REPL.
 
 
-=== Assertions with is and are
+=== Assert with is
 
 Let's begin with a false assertion:
 
@@ -1841,21 +1842,21 @@ And so do vectors:
     => (1 1 2 3 5 8 13 21 34 55)
 
 
-:sectnums!:
+[nonumber]
 == Challenge 2: Processing files
 
 Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file.
 You have been tasked with processing the files using the validation logic you built earlier.
 
 
-=== Part 1:
+=== Part 1: read a file
 
 Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it.
 Next use that data structure as an input to your validation function and print the result.
 See `slurp` `line-seq` `clojure.string/split`.
 
 
-=== Part 2:
+=== Part 2: create files
 
 The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check.
 But the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible.
@@ -1863,7 +1864,7 @@ Create a new function that opens two output files and writes to them based upon 
 The files should be called `eligible-corgi-cover-applications.csv` and `ineligible-corgi-cover-applications.csv`.
 
 
-=== Part 3:
+=== Part 3: validating with reasons
 
 A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied.
 That way the sales reps don't have to spend time figuring out what they need to tell the customer.
@@ -1871,13 +1872,12 @@ Create a new validation function that instead of returning a boolean, returns ni
 Create a new processing function that splits the applications into two files based on the new validator.
 
 
-=== Part 4:
+=== Part 4: working with file formats
 
 As part of the Megacorp merger, the downstream systems are converting to JSON format.
 Create a new function that writes JSON data to an `eligible-corgi-cover-applications.json` file.
 
 
-:sectnums:
 == Macros
 
 "I never think about myself as an artist working in this time. I think about it in macro."
@@ -2359,6 +2359,7 @@ To your `project.clj` file
 (See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
 
 
+[nonumber]
 == Challenge 3: Mocking parallel web requests
 
 Insuricorp and Megacorp are integrating their IT systems.
@@ -3088,7 +3089,7 @@ However if you do not need to do such manipulation, I recommend using plain old 
     => ({:name "Corgi Cover"})
 
 
-:sectnums!:
+[nonumber]
 == Challenge 4: Corgi Cover Database
 
 Sending files around is proving to be problematic.
@@ -3123,7 +3124,6 @@ Set up a multimethod to handle “Poodle Protection” applications differently 
 For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
 
 
-:sectnums:
 == Further reading
 
 Writing Clojure code requires more thinking and less typing than other languages.
