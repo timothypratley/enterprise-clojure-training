@@ -178,6 +178,9 @@ Things that would be declarations, control structures, function calls, operators
 
 == The Clojure Ecosystem
 
+"Integrity is an ecosystem."
+-- Michael Leunig
+
 There are many Clojure libraries. Hosted on Maven and Clojars. Just jars, like any other Java artifact.
 
 Clojure is itself a Java library.

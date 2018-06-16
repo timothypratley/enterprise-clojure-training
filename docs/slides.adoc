@@ -74,6 +74,9 @@ Syntax Summary:
 [state=title2]
 == 1. The Clojure Ecosystem
 
+"Integrity is an ecosystem."
+-- Michael Leunig
+
 [NOTE.speaker]
 --
 Benefits of embracing the JVM as a host
@@ -142,28 +145,38 @@ Benefits of embracing the JVM as a host
 
 	$ lein repl
 
-When you type in this code:
+We type in an expression:
 
     (+ 1 2)
 
-Clojure evaluates it immediately and returns a result:
+Clojure returns a result:
 
 	=> 3
+
+Repeat
+
+[NOTE.speaker]
+--
+* evaluates
+* compiles
+* change program definitions on the fly
+* try things
+* answer questions
+--
 
 
 == Editor setup
 
-* IntelliJ+CursiveIDE
-* Lighttable
-* Browser
+* IntelliJ IDEA + Cursive
+* Wide range of editor support options
 
 [NOTE.speaker]
 --
 * https://www.jetbrains.com/idea
 * https://cursive-ide.com
-* http://lighttable.com
-* https://repl.it/languages/clojure
+* Focus on Clojure first, editors later
 --
+
 
 == Exercises
 
@@ -208,6 +221,9 @@ Divide 2 by 10
 
 [state=title2]
 == 2. The Clojure Language
+
+
+
 
 == Primitive data types
 
@@ -675,28 +691,37 @@ Destructure a single map input and return a string combining greeting and tone:
     (fn [a]
       (inc a))
 
-* "Unnamed" means "anonymous" means "Lambda expression"
+Unnamed, anonymous, Lambda (λ) expression
 
     #(inc %)
 
-* Special syntax
+
+== Special syntax
+
+    #(inc %)
+    #(+ %1 %2 %3)
+    #(apply + %&)
+
+
+== Invoking unnamed functions
 
     (#(inc %) 1)
     => 2
 
-* Invoked like a named function
+Just like a named function; first item in a list
 
 
-== Closures
+== Closure
 
-Function that captures values from the environment.
+Function that captures values from the environment
 
     (let [who "world"]
       (defn greet []
         (str "Hello " who))
-
     (greet)
     => "Hello world"
+
+Often anonymous
 
 
 == Functions are values
@@ -784,7 +809,7 @@ Is shorthand for
     #(+ %1 %2)
     #(apply + %&)
 
-* Terse, powerful expressions
+Terse, powerful expressions
 
 
 == Compare
@@ -811,41 +836,72 @@ NOTE: Prefer `(fn)` form
     (+ 1 2 3 4 5)
     => 15
 
-Disadvantages:
 
-* Causing callers to have to apply
-* Bypasses arity checking
+== Variadic disadvantages
+
+* Not always convenient
+
+  (bake-cakes cake1 cake2 cake3)
+  (let [cakes (db/find-cakes "delicious")]
+    (apply bake-cakes cakes))
+
+  (doseq [cake (db/find-cakes "delicious")]
+    (bake-cake cake))
+
+* Prefer functions that do one thing
+* Combine with sequence operations
 
 
-== Do not
+== Variadic disadvantages
+
+Bypasses arity checking. Common bad pattern:
 
     (defn f [x & [y]]
       (if y
         (+ x y)
         (inc x)))
 
-Prefer instead
+    (f 1 2 3 4 "5")
+    => 3
+
+
+== Prefer explicit argument lists
 
     (defn f
       ([x] (inc x))
       ([x y] (+ x y)))
 
-Multiple arities should be explicitly declared in parenthesis.
+Multiple arities explicitly declared in parenthesis.
+
+    (f 1) => 2
+    (f 1 2) => 3
+    (f 1 2 3) => Exception: Wrong number of args
+
+
+== Keyword arguments
+
+    (defn f [& {:keys [port protocol]}]
+      ...)
+    (f :protocol "https")
+
+NOTE: Destructure defaults with `:or`
+
+    {:keys [port protocol] :or {port 8080, protocol "http"]}
 
 
 == Keyword arguments - do not use
 
-* Clojure supports keyword arguments
+Prevents users from passing a map of options
 
-    (defn f [x & {:keys [option1 option2]}] ...)
-    (f 42 :option2 "value")
+    (def config (slurp "config.edn"))
+    (apply f (apply concat config))
 
-* Prevents users from passing a map of options
-* Cannot apply a map to a keyword argument function
-* Use a map argument instead of keyword arguments
+Pass a map instead
 
-    (defn f [x {:keys [option1 option2]}] ...)
-    (f 42 {:option3 "value"})
+    (defn f [{:keys [option1 option2]}]
+      ...)
+    (f {:option3 "value"})
+    (f config)
 
 
 == Pre and post conditions
@@ -855,12 +911,9 @@ Multiple arities should be explicitly declared in parenthesis.
        :post [(neg? %) (int? %)]}
       (- x))
 
-    (f 1)
-    => -1
-    (f -1)
-    => AssertionError Assert failed: (pos? x)
-    (f 1.5)
-    => AssertionError Assert failed: (int? %)
+    (f 1) => -1
+    (f -1) => AssertionError Assert failed: (pos? x)
+    (f 1.5) => AssertionError Assert failed: (int? %)
 
 [NOTE.speaker]
 --
@@ -874,12 +927,12 @@ Multiple arities should be explicitly declared in parenthesis.
 * Syntax is easy to get wrong, no assertion made
 * Assertions can be disabled
 * Less control over error reporting and handling
-* Rarely used.
+* Rarely used
 
 
 == More common
 
-* Check for a condition and throw an exception
+Check for a condition and throw an exception
 
     (defn f [x]
       (when-not (pos? x)
@@ -889,7 +942,7 @@ Multiple arities should be explicitly declared in parenthesis.
           result
           (throw (ex-info "bad result" {:x x})))
 
-* Or use spec (or schema)
+Or use spec
 
 
 == Exercises
