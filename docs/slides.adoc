@@ -365,6 +365,7 @@ Identity and by value
 * Records still "behave like a map" (implement the map interface)
 * Maps are used instead of named function/method arguments in other languages
 * Maps are used instead of value classes (immutable classes to hold data, impt for concurrent programming) because they are immutable
+* For people from other languages, same as: dictionary (Python), hash (Ruby), object (JS), associative array (Perl)
 --
 
 == Keywords
@@ -399,6 +400,12 @@ Identity and by value
 
 == Nesting
 
+    {:name "Fate of the Furious"
+     :sequence-number 8
+     :ratings {
+       :rotten-tomatoes 0.66
+       :imdb 0.67}}
+
     {[1 2] {:name "diamond" :type :treasure}
      [3 4] {:name "dragon" :type :monster}}
 
@@ -424,6 +431,7 @@ Identity and by value
     => 1
 
 * Global mutable reference (use sparingly)
+* Avoid re-def'ing after creating a binding
 * Dereferenced when evaluated
 
 
@@ -486,6 +494,16 @@ Available in any binding form
 
 == For expressions
 
+    (for [i (range 10)]
+      (* i i))
+    => (0 1 4 9 16 25 36 49 64 81)
+
+    (for [file ["a" "b" "c" "d"
+                "e" "f" "g" "h"]
+          rank (range 1 9)]
+      (str file rank))
+   => ("a1" "a2"..."a8" "b1"..."h8")
+
     (for [i (range 10)
           :when (odd? i)]
       (* i i))
@@ -522,14 +540,18 @@ Destructured using `&`
 
 == Destructuring a map
 
+    (def x {:field1 10 :field2 20})
+
     (:field1 x)
     (:field2 x)
 
     {:keys [field1 field2]} x
 
-    {f1 :field1, f2 :field2}
+    {f1 :field1, f2 :field2} x
 
-    {:strs [label1 label2]} x
+    (def y {"field1" 10 "field2" 20})
+
+    {:strs [label1 label2]} y
 
 
 == Destructuring a sequence:
@@ -542,9 +564,9 @@ Destructured using `&`
 
 == Nested destructuring
 
-    (get-in x [:a :b])
+    (get-in movies [:ratings :imdb])
 
-    {{b :b} :a}
+    {{imdb :imdb} :ratings} movies
 
 
 == More destructuring
@@ -553,6 +575,7 @@ Destructured using `&`
 
     :or {field1 "default"}
 
+* Prefer (merge defaults inputs) instead of :or
 
 == Namespaces
 
