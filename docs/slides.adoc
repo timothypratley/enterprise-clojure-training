@@ -7,6 +7,7 @@
 :revealjs_center: false
 :revealjs_controls: false
 :revealjs_transition: none
+:revealjs_history: true
 :docinfo: shared
 :notitle:
 :icons: font
@@ -973,6 +974,9 @@ See manual section 3.6
     (square 55)
     => 3025
 
+
+== Answers
+
     (defn square-of-square [x]
       (if (< x 100)
         (square (square x))
@@ -981,6 +985,9 @@ See manual section 3.6
     => 16
     (square-of-square 123)
     => ExceptionInfo Input too large
+
+
+== Answers
 
     (defn fib-step [a b]
       [b (+ a b)]))
@@ -1000,9 +1007,9 @@ Insuricorp is about to launch a marketing campaign for a new “corgi cover” p
 == Part 1:
 
 Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person's eligibility for the “corgi cover” policy.
+:
 
-=== Test data:
-
+== Test data
 [style="literal", options="header"]
 |===
 |Name |State |Corgi count | Existing policy count
@@ -1011,8 +1018,6 @@ Write a function that will take as input a state and corgi-count, and will retur
 |Annabelle |WY |19 |0
 |Logan |WA |2 |1
 |===
-
-See `if` `=`
 
 
 == Part 2:
