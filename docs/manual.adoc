@@ -2409,6 +2409,10 @@ Then create another test where the exception is thrown 100% of the time, and the
 
 == Polymorphism and Types
 
+"You need a lot of different types of people to make the world better."
+--Joe Louis
+
+
 === Multimethods
 
 Polymorphic dispatch.

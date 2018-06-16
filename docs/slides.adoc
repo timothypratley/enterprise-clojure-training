@@ -220,9 +220,10 @@ Divide 2 by 10
 
 
 [state=title2]
-== 2. The Clojure Language
+== 2. Clojure Syntax
 
-
+"The rhythmical unit of the syllable is at the back of all of it - the word, the phrase, the sentence, the syntax, the paragraph, and the way the heart moves when you read it."
+-- Ali Smith
 
 
 == Primitive data types
@@ -681,6 +682,9 @@ Destructure a single map input and return a string combining greeting and tone:
 [state=title2]
 == 3. Functions
 
+"The chief function of the body is to carry the brain around."
+-- Thomas A. Edison
+
 
 == Defining functions
 
@@ -1053,6 +1057,9 @@ Create a new function that takes as inputs two maps: the application, and the ex
 [state=title2]
 == 4. Testing with clojure.test
 
+"The greatest test of courage on earth is to bear defeat without losing heart."
+-- Robert Green Ingersoll
+
 
 == Defining tests with deftest
 
@@ -1343,9 +1350,8 @@ We get the constructed object, with side-effects applied.
 [state=title2]
 == 5. Control Flow
 
-* Special forms: Built in primitives, not functions
-* `def`, `let`, `quote` and `fn` are special forms
-* Don't evaluate their arguments
+"Goals allow you to control the direction of change in your favor."
+-- Brian Tracy
 
 
 == Conditionals: if
@@ -1390,6 +1396,13 @@ Multiple branches
 
 * `:else` is not special, it just a truthy value.
 * See also `condp` and `case` (rarely used)
+
+
+== But what are they?
+
+* Special forms: Built in primitives, not functions
+* `def`, `let`, `quote` and `fn` are special forms
+* Don't evaluate their arguments
 
 
 == Recursion
@@ -1455,6 +1468,7 @@ Removal of next form `#_`
 
 * Temporarily remove a form when debuggin code
 * Looks like a bug eyes emoji
+
 
 == Commas
 
@@ -1531,6 +1545,9 @@ Prefer newlines
 
 [state=title2]
 == 6. Functional Programming
+
+"If you don't love something, it's not functional, in my opinion."
+-- Yves Behar
 
 
 == Pure functions
@@ -2177,10 +2194,8 @@ Create a new function that writes JSON data to a eligible-corgi-cover-applicatio
 [state=title2]
 == 7. Macros
 
-* Manipulate the operand forms
-* Do not evaluate the input forms
-* Not functions
-* Cannot be passed to other functions
+"I never think about myself as an artist working in this time. I think about it in macro."
+-- Frank Ocean
 
 
 == Macros
@@ -2193,12 +2208,15 @@ Expands to a `def` and `fn` form:
 
     (def square (fn [x] (* x x)))
 
+
+== Macros
+
 Macros allow us to extend the syntax of Clojure
 
 * Macro arguments are manipulated at compile time
 * Not evaluated
 * Less useful than functions
-* Cannot be passed to higher order functions
+** Cannot be passed to higher order functions
 
 
 == Expanding macros
@@ -2218,37 +2236,45 @@ Macros allow us to extend the syntax of Clojure
 
     (defmacro zen1 [x]
       (println "x:" x) x)
-
-	(zen1 (+ 1 2))
-	=> x:(+ 1 2)
-	3
+    (zen1 (+ 1 2))
+    => x:(+ 1 2)
+    3
 
 vs
 
     (defn zen2 [x]
       (println "x:" x) x)
+    (zen2 (+ 1 2))
+    => x:3
+    3
 
+[NOTE.speaker]
+--
+* The input to `zen1` was a list
+* For `zen1` `x` was a list
+* We returned `x`
+* But the final result was `3`
+* The list was evaluated as a function call to `+`
+* resulting in `3`
 
-	(zen2 (+ 1 2))
-	=> x:3
-	3
+* The input to `zen2` was the result of evaluating the list
+--
+
 
 == Macros
-
-The input to `zen1` was a list.
-
-The input to `zen2` was the result of evaluating the list.
 
 Macros are functions with a `:macro` flag set in their metadata
 
 * Causes macros to be passed in the input forms unevaluated
 * Caused the result to be evaluated
 
-* For `zen1` `x` was a list
-* We returned `x`
-* But the final result was `3`
-* The list was evaluated as a function call to `+`
-* resulting in `3`
+
+== But what are they?
+
+* Manipulate the operand forms
+* Do not evaluate the input forms
+* Not functions
+* Cannot be passed to other functions
 
 
 == Syntax quoting
@@ -2403,6 +2429,10 @@ Create the following macros and test cases:
 
 [state=title2]
 == 8. Parallel Programming and Concurrency
+
+"Our moral traditions developed concurrently with our reason, not as its product."
+-- Friedrich August von Hayek
+
 
 == Vars and dynamic scope
 
@@ -2622,6 +2652,10 @@ See Challenge 3
 [state=title2]
 == 9. Java Interop
 
+"Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
+-- Libba Bray
+
+
 == Clojure syntax for Java constructors
 
 Constructing a Java object is done by appending a period to the class identifier:
@@ -2725,6 +2759,10 @@ Modify your mock of fetch-megacorp-policies such that it throws an exception ran
 
 [state=title2]
 == 10. Polymorphism and Types
+
+"You need a lot of different types of people to make the world better."
+--Joe Louis
+
 
 == Multimethods
 
@@ -2908,8 +2946,7 @@ Call the method on the `thing` instance and pass `"bar"`:
     => "foo-bar"
 
 
-[state=title2]
-== 11. Specifications with clojure.spec
+== Specifications with clojure.spec
 
 * Specifies the structure of data
 * Validates data structures
@@ -3230,7 +3267,11 @@ See also `inst-in` and `double-in`
 
 
 [state=title2]
-== 12. Interacting with a Database
+== 11. Interacting with a Database
+
+"You can have data without information, but you cannot have information without data."
+-- Daniel Keys Moran
+
 
 == clojure.java.jdbc
 
