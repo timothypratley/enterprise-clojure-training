@@ -12,10 +12,10 @@
 :uri-repo: https://github.com/timothypratley/enterprise-clojure-training
 :docinfo: shared
 :icons: font
-:sectnums:
+:!sectnums:
 
 
-[preface, nonumber]
+[preface]
 == About
 
 Welcome to Enterprise Clojure Training.
@@ -176,6 +176,7 @@ l|(.bar foo x)
 Things that would be declarations, control structures, function calls, operators, are all just lists with an op at front.
 
 
+:sectnums:
 == The Clojure Ecosystem
 
 "Integrity is an ecosystem."
@@ -937,7 +938,7 @@ Create a new namespace called `fun-functions`. Define the following functions an
     => [3 5]
 
 
-[nonumber]
+:!sectnums:
 == Challenge 1: Corgi Cover eligibility
 
 Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy.
@@ -999,6 +1000,7 @@ Create a new function that takes as inputs two maps: the application, and the ex
 It should apply the same logic, but make use of the Megacorp data.
 
 
+:sectnums:
 == Testing with clojure.test
 
 "The greatest test of courage on earth is to bear defeat without losing heart."
@@ -1845,7 +1847,7 @@ And so do vectors:
     => (1 1 2 3 5 8 13 21 34 55)
 
 
-[nonumber]
+:!sectnums:
 == Challenge 2: Processing files
 
 Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file.
@@ -1881,6 +1883,7 @@ As part of the Megacorp merger, the downstream systems are converting to JSON fo
 Create a new function that writes JSON data to an `eligible-corgi-cover-applications.json` file.
 
 
+:sectnums:
 == Macros
 
 "I never think about myself as an artist working in this time. I think about it in macro."
@@ -2362,7 +2365,7 @@ To your `project.clj` file
 (See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
 
 
-[nonumber]
+:!sectnums:
 == Challenge 3: Mocking parallel web requests
 
 Insuricorp and Megacorp are integrating their IT systems.
@@ -2407,6 +2410,7 @@ The tests should pass.
 Then create another test where the exception is thrown 100% of the time, and the max tries occurs.
 
 
+:sectnums:
 == Polymorphism and Types
 
 "You need a lot of different types of people to make the world better."
@@ -3096,7 +3100,7 @@ However if you do not need to do such manipulation, I recommend using plain old 
     => ({:name "Corgi Cover"})
 
 
-[nonumber]
+:!sectnums:
 == Challenge 4: Corgi Cover Database
 
 Sending files around is proving to be problematic.
@@ -3131,6 +3135,7 @@ Set up a multimethod to handle “Poodle Protection” applications differently 
 For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
 
 
+:sectnums:
 == Further reading
 
 Writing Clojure code requires more thinking and less typing than other languages.

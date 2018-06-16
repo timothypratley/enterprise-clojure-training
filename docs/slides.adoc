@@ -180,16 +180,7 @@ Repeat
 
 == Exercises
 
-* Start a REPL
-* Find the sum of 2 and 3;
-What is 31 times 79?
-Divide 10 by 2;
-Divide 2 by 10
-* Create a new project called `training` and open `src/training/core.clj` with your editor
-* Write some expressions and send them to the REPL
-* Find the sum of 1, 2, and 3
-* Evaluate `(println "hello world")`
-* Find the number of digits in 15 factorial
+Refer to manual section 1.4
 
 
 == Answers
@@ -611,9 +602,7 @@ Destructured using `&`
 
 == Exercises
 
-Write code into a new file called `src/training/syntax.clj`, and send the lines to the REPL as you enter them
-
-See manual for exercises
+See manual section 2.9
 
 
 == Answers
@@ -974,11 +963,7 @@ Or use spec
 
 == Exercises
 
-Create a new namespace called `fun-functions`. Define the following functions and call them with some test input:
-
-* A function that computes the square of an input number. What is the square of 55?
-* A function that takes a number as input, ensures that the number is less than 100, and returns the square of the square of the input.
-* A function that takes two numbers as input, and returns a vector where the first element is the second input, and the second element is the sum of the first and second input.
+See manual section 3.6
 
 
 == Answers
@@ -1314,14 +1299,7 @@ We get the constructed object, with side-effects applied.
 
 == Exercises
 
-* Start lein-test-refresh running in your existing project directory.
-* Create a new namespace in the “test” directory called `training.core-test`
-* Write a function called `pythag` that returns the square root of the sum of squares for two inputs.
-* Write a test containing an assertion that exercises your function. Expect `5` when passing `4` and `3` as arguments.
-* Write another test case with different inputs.
-* Introduce a bug into pythag to make sure your tests discover the problem.
-* Fix `pythag` so that all tests pass.
-* Copy the test `test-post` from the "with-redefs" section and modify it so that it counts how many times `str` gets called. Call `post` several times and make an assertion about how many times `str` should get called.
+See manual section 4.7
 
 
 == Answers
@@ -1485,10 +1463,7 @@ Prefer newlines
 
 == Exercises
 
-* Create a function that given a test score between 0 and 100 returns a grade A B C D or F for fail.
-* Write a function that takes a number and uses a loop to calculate the factorial of that number. Factorial 5 is 1*2*3*4*5.
-* Write a new version of factorial that does not use a loop but recursively calls itself.
-* Write a loop for the Fibonacci sequence (1 1 2 3 5 8 13) that finds the maximum Fibonacci number less than 100. The sequence is defined by n2 = n1 + n0.
+See manual section 5.6
 
 
 == Answers
@@ -2116,12 +2091,7 @@ Datastructures as functions do too:
 
 == Exercises
 
-* Write a function that takes two inputs, and returns the sum of the numbers in a range between two input integers, including the two input numbers.
-* Write a function that produces a sequence of powers of 2: (1 2 4 8 16 …)
-* Write a function that takes a string and produces a sequence of characters with no vowels.
-* Write a function that produces a sequence: (1 ½ ⅓ ¼ …)
-* Write a function that produces a sequence: (1  ½ ¼ ⅛ …)
-* Write a function that produces the Fibonacci sequence (1 1 2 3 5 8 13 21)
+See manual section 6.6
 
 
 == Answers
@@ -2136,10 +2106,16 @@ Datastructures as functions do too:
     (take 5 (powers-of 2))
     => (1 2 4 8 16)
 
+
+== Answers
+
     (defn shorten [s]
       (remove #{\a \e \i \o \u} s))
     (apply str (shorten "Clojure sets are functions"))
     => "Cljr sts r fnctns"
+
+
+== Answers
 
     (defn fractions []
       (map / (repeat 1) (rest (range))))
@@ -2150,6 +2126,9 @@ Datastructures as functions do too:
       (map / (repeat 1) (powers-of n)))
     (take 5 (fraction-powers 2))
     => (1 1/2 1/4 1/8 1/16)
+
+
+== Answers
 
     (defn fib-step [[a b]]
       [b (+ a b)])
@@ -2374,27 +2353,7 @@ Keep the macro as small. Offload transformations to other functions.
 
 == Exercises
 
-Create the following macros and test cases:
-
-* Create a macro called ignore which accepts any number of expressions, does absolutely nothing, and always returns `nil`.
-
-    (ignore (println "hello???") (inc 42))
-
-* Define your own version of the when macro. When is like if, but only has one branch and allows multiple statements.
-
-    (when2 (pos? x)
-      (println "Positive:" x)
-      (inc x))
-
-* Write a spy macro. Spy wraps an expression and prints out its value.
-
-    (* (spy (+ 1 2)) 3)
-    => Expression (+ 1 2) has value 3
-       9
-
-* Write your own version of the `or` macro
-
-    (or2 (pos? 1) (println "does not execute"))
+See manual section 7.5
 
 
 == Answers
@@ -2405,10 +2364,15 @@ Create the following macros and test cases:
       (list 'if test (cons 'do body))
 
 
+== Answers
+
     (defmacro spy [expr]
       `(let [result# ~expr]
          (println "Expression" '~expr "has value" result#)
          result#))
+    => Expression (* 2 3) has value 6
+       7
+
     (macroexpand-1 '(spy (* 2 3)))
     => (clojure.core/let [result__6418__auto__ (* 2 3)]
          (clojure.core/println
@@ -2416,8 +2380,11 @@ Create the following macros and test cases:
            "has value" result__6418__auto__)
          result__6418__auto__)
     (+ 1 (spy (* 2 3)))
-    => Expression (* 2 3) has value 6
-       7
+
+
+== Answers
+
+See clojure source code
 
     (defmacro or2
       ([] nil)
@@ -2425,6 +2392,11 @@ Create the following macros and test cases:
       ([x & next]
           `(let [or# ~x]
              (if or# or# (or ~@next)))))
+
+[NOTE.speaker]
+--
+Often good to start with an example and customize
+--
 
 
 [state=title2]
@@ -2646,7 +2618,7 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 
 == Exercises
 
-See Challenge 3
+See manual section Challenge 3
 
 
 [state=title2]
@@ -3364,10 +3336,7 @@ However if you do not need to do such manipulation, I recommend using plain old 
 
 == Exercises
 
-* Create and populate a table `person` with two columns; `id`, `name`.
-* Create and populate a table `policy` with two columns; `id`, `name`
-* Create and populate a table `person_policy` with two columns; `person_id`, `policy_id`
-* Write a function that given a person name queries all the policies associated with them.
+See manual section 11.4
 
 
 == Answers
@@ -3402,12 +3371,9 @@ However if you do not need to do such manipulation, I recommend using plain old 
 == Answers
 
     (defn find-policies [person-name]
-      (jdbc/query db ["select a.name
-                      from policy a
-                      inner join person_policy b
-                      on a.id = b.policy_id
-                      inner join person c
-                      on b.person_id = c.id
+      (jdbc/query db ["select a.name from policy a
+                      inner join person_policy b on a.id = b.policy_id
+                      inner join person c on b.person_id = c.id
                       where c.name = ?"
                       person-name]))
 
