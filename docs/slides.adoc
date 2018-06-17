@@ -613,6 +613,41 @@ Destructured using `&`
 * Unit of compilation is a form
 
 
+== Comments
+
+Anything following a semicolon is a comment
+
+    ; this is an inline comment
+    ;; this is a function level comment
+
+Less common is the comment form:
+
+    (comment anything)
+
+== Comments
+
+Removal of next form `#_`
+
+    #_(this form is removed)
+    #_#_ ignored-1 ignored-2
+
+* Temporarily remove a form when debuggin code
+* Looks like a bug eyes emoji
+
+
+== Commas
+
+Commas are optional and treated as whitespace.
+
+    (= {:a 1, :b 2, :c 3} {:a 1 :b 2 :c 3})
+
+Prefer newlines
+
+    {:a 1
+     :b 2
+     :c 3}
+
+
 == Regex
 
     #"pattern"
@@ -1055,31 +1090,41 @@ image:img/testing.jpg[]
 -- Michael Bolton
 
 
-== Defining tests with deftest
-
-* Tests are just functions
-* Can define a test in any file
-* Test namespaces are normal Clojure namespaces
-* Convention: “test” dir mirrors “src” dir, append _test
-* `src/my_namespace.clj` -> `test/my_namespace_test.clj`.
-
-Common to refer all symbols from `clojure.test` for convenience:
-
-    (ns my-namespace-test
-      (:require [clojure.test :refer :all]))
-
-
 == deftest
 
     (deftest my-test
       (prn "My test ran"))
 
-* Defines a function with no arguments
-* To run a single test, just call it
+Defines a function with no arguments
 
     (my-test)
 
-* To run all the tests from the REPL:
+
+== Defining tests with deftest
+
+* Tests are functions
+* Define tests in any namespace
+* Convention:
+** `*test*/my_namespace_test.clj` <- `*src*/my_namespace.clj`
+** `*test*` dir mirrors `*src*` dir, append `*_test*`
+
+
+== Refer all
+
+Common to refer all symbols from `clojure.test` for convenience:
+
+    (ns my-namespace-test
+      (:require [clojure.test :refer :all]))
+    (deftest ...)
+
+vs
+
+    (ns my-namespace-test
+      (:require [clojure.test :as test]))
+    (test/deftest ...)
+
+
+== Running tests from the REPL
 
     (run-tests)
 
@@ -1088,10 +1133,13 @@ Common to refer all symbols from `clojure.test` for convenience:
        0 failures, 0 errors.
        {:test 0, :pass 0, :fail 0, :error 0, :type :summary}
 
+Runs all tests in the current namespace
+
+Or if you want to test specific namespaces:
+
+    (run-tests 'my.namespace 'other.namespace)
 
 == Command line testing
-
-To run all tests in a project from the command line:
 
     $ lein test
 
@@ -1100,15 +1148,22 @@ To run all tests in a project from the command line:
        0 failures, 0 errors.
        {:test 0, :pass 0, :fail 0, :error 0, :type :summary}
 
+Runs all tests in a project
+
 
 == lein-test-refresh
 
+* Reloads code and runs tests when you save a file
 * Leiningen plugin
-* Reloads code and re-runs tests when you save a file.
 
 Add lein-test-refresh to your `~/.lein/profiles.clj`:
 
-    {:user {:plugins [[com.jakemccrary/lein-test-refresh "0.22.0"]]}}
+    {:user
+     {:plugins
+      [[com.jakemccrary/lein-test-refresh "0.22.0"]]}}
+
+
+== lein-test-refresh
 
 Alternatively as a `project.clj` dependency:
 
@@ -1116,23 +1171,26 @@ Alternatively as a `project.clj` dependency:
       :dependencies [[org.clojure/clojure "1.8.0"]]
       :profiles
       {:dev
-       {:plugins [[com.jakemccrary/lein-test-refresh "0.22.0"]]}})
+       {:plugins
+        [[com.jakemccrary/lein-test-refresh "0.22.0"]]}})
 
 
 == Using lein-test-refresh
 
-Watch for changes from the command line:
-
 	$ lein test-refresh
 
-Change `my-test` to print a new message.
-Tests are re-run as soon as you save the file.
+Watches for changes from the command line
+
+Change `my-test` to print a new message
+
+Tests are re-run as soon as you save the file
 
 	(deftest my-test
 	  (prn "My test ran immediately"))
 
-Use lein-test-refresh like a REPL.
-Test more.
+Use lein-test-refresh like a REPL
+
+Test more
 
 
 == Assertions with is and are
@@ -1145,9 +1203,9 @@ True assertion:
 	=> Ran 1 tests containing 1 assertions.
     0 failures, 0 errors.
 
-* Equality: expected value first, actual value second.
-* Expected value literal
-* Actual call to the function under test.
+* `(= expected actual)`
+* Expected: value literal
+* Actual: result of invoking the function under test
 
 
 == False assertion
@@ -1160,8 +1218,14 @@ True assertion:
       actual: (not (= 1 2))
 
 Plugins for showing helpful diffs:
+
 * humane
 * ultra
+
+[NOTE.speaker]
+--
+Insert examples!
+--
 
 
 == Can use any truthy assertion
@@ -1176,10 +1240,11 @@ Plugins for showing helpful diffs:
 == Describing the assertions
 
     (deftest pythag-test
-      (is (= (* 5 5) (+ (* 3 3) (* 4 4)))
-        "The square of the hypotenuse
-         is equal to the sum of the squares
-         of the other two sides"))
+      (is (= (* 5 5)
+             (+ (* 3 3) (* 4 4)))
+          "The square of the hypotenuse
+          is equal to the sum of the squares
+          of the other two sides"))
 
 
 == Grouping assertions
@@ -1189,10 +1254,11 @@ Plugins for showing helpful diffs:
         (is (odd? 1))
         (is (= 2 (inc 1))))
       (testing "Pythagoras"
-        (is (= (* 5 5) (+ (* 3 3) (* 4 4)))
-        "The square of the hypotenuse
-         is equal to the sum of the squares
-         of the other two sides"))
+        (is (= (* 5 5)
+               (+ (* 3 3) (* 4 4)))
+            "The square of the hypotenuse
+            is equal to the sum of the squares
+            of the other two sides"))
 
 
 == are
@@ -1203,7 +1269,7 @@ Concisely expresses multiple assertions
          2 (+ 1 1)
          4 (* 2 2))
 
-Do not use.
+Disadvantages:
 
 * Easy to make an error in the syntax
 * Confusing
@@ -1212,43 +1278,51 @@ Do not use.
 
 == Asserting exceptions
 
-Test that an exception is thrown:
-
     (defn bad [x]
       (throw (ex-info "oh no" {})))
 
     (deftest test-exception
+      (is (thrown? Exception
+            (bad 42)))
       (is (thrown-with-msg? Exception #"oh no"
             (bad 42))))
 
 
 == Test fixtures
 
-    (use-fixtures :once
+    (use-fixtures :each
       (fn print-enter-exit [tests]
         (println "before")
         (tests)
         (println "after")))
 
 * A fixture is just a function
-* Takes a test and calls it
-* Recall that tests are functions
-* Why? Set up and tear down resources (database connections etc)
-* Test runner will call the fixture, effectively
-  - prints “before”
-  - executes the tests in the namespace
-  - prints “after”.
+* Takes a test and calls it (tests are functions)
+* Set up and tear down resources (database connections etc)
+* `:each` means run for every test in the namespace
+
+[NOTE.speaker]
+--
+Test runner will call the fixture
+
+* prints “before”
+* executes the tests in the namespace
+* prints “after”.
+--
 
 
 == Every vs once
 
-    (use-fixtures :every
+    (use-fixtures :once
       (fn capture-prints [f]
         (with-out-str (f))))
 
-* `:once` execute once per namespace
-* `:each` run for every test in the namespace
 * This fixture captures output, prevents clutter
+* `:once` per namespace
+
+
+== Fixtures
+
 * Common use case is when doing database tests
 * Wrap the test execution inside a transaction
 * Rollback after the test completes
@@ -1256,8 +1330,6 @@ Test that an exception is thrown:
 
 
 == Mocking
-
-Replace any var using `with-redefs`:
 
     (defn post [url]
       {:body (str "Hello world")})
@@ -1268,15 +1340,20 @@ Replace any var using `with-redefs`:
         (is (= {:body "Goodbye world"}
                (post "http://service.com/greet")))))
 
+NOTE: `let` does not suffice, `str` is outside of scope
+
+
+== Mocking
+
+* Replace any var using `with-redefs`
 * Disable dependencies during the test
 * Isolate particular behaviors
 * Test response to external failures
-* Let does not suffice, `str` is outside of scope
 
 
 == Debugging
 
-Print out an intermediary values.
+Print out an intermediary values
 
     (defn shazam [a b]
       (/ 1 (+ a b) (+ a (* a b))))
@@ -1290,20 +1367,30 @@ What is `(+ a (* a b))` evaluating to? `(doto ... (prn))`
     => 3 "***"
        1/9
 
+[NOTE.speaker]
+--
 * `prn` will not work, always returns `nil`.
 * `doto` causes side-effect to occur, and return the original argument.
+--
 
 
 == doto
 
-Also useful for Java interop
+Also useful for Java interop:
 
     (doto (new java.util.HashMap)
       (.put "a" 1)
       (.put "b" 2))
     => {"a" 1, "b" 2}
 
-We get the constructed object, with side-effects applied.
+We get the constructed object, with side-effects applied
+
+
+== Debugging
+
+* Ask the REPL questions
+* Build small incremental functions
+* Write tests
 
 
 == Exercises
@@ -1319,6 +1406,9 @@ See manual section 4.7
     (deftest test-pythag
       (is (= 5 (pythag 4 3)))
       (is (= 13 (pythag 12 5))))
+
+
+== Answers
 
     (defn post [url]
       {:body (str "Hello world")})
@@ -1345,13 +1435,12 @@ image:img/control.jpg[]
 
 == Conditionals: if
 
-`if` chooses between two options:
-
     (if (pos? 1)
       (println "one is positive")
       (println "or is it?"))
     => "one is positive"
 
+* Chooses between two options
 * Returns a result
 * Only one branch is evaluated
 * A function call evaluates all arguments
@@ -1359,21 +1448,19 @@ image:img/control.jpg[]
 
 == Conditionals: when
 
-Execute code only when a condition is met:
-
     (when (pos? 1)
       (println "one is positive")
       (println "multiple expressions allowed"))
     => "one is positive"
        "multiple expressions allowed"
 
+* Executes code only when a condition is met
 * When test fails, nothing is evaluated
-* When test passes, the entire body is evaluated.
+* When test passes, the entire body is evaluated
 * Returns a result
 
-== Conditionals: cond
 
-Multiple branches
+== Conditionals: cond
 
     (def x {:cake 1})
 
@@ -1383,8 +1470,9 @@ Multiple branches
           :else "not sure what it is")
     => "it's a map!"
 
-* `:else` is not special, it just a truthy value.
-* See also `condp` and `case` (rarely used)
+* Multiple branches
+* `:else` is not special, keywords are truthy
+* See also `condp` and `case`
 
 
 == But what are they?
@@ -1403,7 +1491,9 @@ Functions that call themselves are called recursive.
         result
         (sum-up (rest coll) (+ result (first coll)))))
 
-Tail Call Optimization: Recursion which avoids consuming the stack
+== Tail Call Optimization
+
+Recursion which avoids consuming the stack
 
     (defn sum-up-with-recur [coll result]
       (if (empty? coll)
@@ -1437,39 +1527,6 @@ Special forms `try` `catch` `finally` and `throw`
         (println "cat cannot be incremented"))
       (finally
         (println "always"))
-
-
-== Comments
-
-Anything following a semicolon is a comment
-
-    ; this is an inline comment
-    ;; this is a function level comment
-
-Less common is the comment form:
-
-    (comment anything)
-
-Removal of next form `#_`
-
-    #_(this form is removed)
-    #_#_ ignored-1 ignored-2
-
-* Temporarily remove a form when debuggin code
-* Looks like a bug eyes emoji
-
-
-== Commas
-
-Commas are optional and treated as whitespace.
-
-    (= {:a 1, :b 2, :c 3} {:a 1 :b 2 :c 3})
-
-Prefer newlines
-
-    {:a 1
-     :b 2
-     :c 3}
 
 
 == Exercises
@@ -1538,28 +1595,46 @@ image:img/functional.jpg[]
 -- Yves Behar
 
 
+== Functions
+
+Functions always return a value
+
+* Usually not `nil`
+* `(inc 1)` -> `2`
+* `(println "hi")` -> `nil` causes a side-effect
+* All Input/Output is considered a side-effect
+
 == Pure functions
 
-* Functions always return a value
-** Usually not `nil`
-** `(inc 1)` -> `2`
-** `(println "hi")` -> `nil` causes a side-effect
-** All Input/Output is considered a side-effect
-* `(str "hi" "there")` -> `"hithere"` is pure
-** No side-effects occur
-** An input always produces the same output
+    (str "hi" "there")
+    => "hithere"
+
+* No side-effects occur
+* Inputs always produce the same corresponding output
 
 
 == Side effects
 
-* `rand` is not a pure function
-** returns a useful result, but changes every time
-** is modifying an underlying state
-* `(def x 1)` returns a var, and produces a side-effect
-* Causing side effects is useful
-  - databases
-  - files
-  - user interfaces
+    (rand-int 100)
+    => 42
+
+* Not a pure function
+* Returns a useful result, but changes every time
+* Modifying a hidden state
+
+== Side effects
+
+    (def x 1)
+
+* Returns a var
+* Side-effect: `x` can now be resolved
+
+
+== Side effects are useful
+
+* Databases
+* Files
+* User interfaces
 
 
 == Many Clojure functions are pure
@@ -1569,19 +1644,6 @@ image:img/functional.jpg[]
 
 * `conj` does not add something to a vector
 * `conj` returns a new vector value
-
-
-== How can you change a variable?
-
-    (def v [1 2])
-    (conj v 3)
-    => [1 2 3]
-
-    v
-    => [1 2]
-
-* `v` remained unchanged
-* Manage change explicitly
 
 
 == Persistent data structures
@@ -1601,6 +1663,19 @@ image:img/functional.jpg[]
 * easier to parallelize
 
 
+== How can you change a variable?
+
+    (def v [1 2])
+    (conj v 3)
+    => [1 2 3]
+
+    v
+    => [1 2]
+
+* `v` remained unchanged
+* Manage change explicitly
+
+
 == Separate side effects out
 
 * Keep side-effects co-located
@@ -1608,6 +1683,7 @@ image:img/functional.jpg[]
   - Pure function to calculate the next state
   - Atom to manage
   - Logic is separate from the side effect
+* Keep logic pure
 
 
 == apply
@@ -1688,6 +1764,9 @@ Clojure can produce infinite sequences
 * Don't do this in the REPL
 * Press control-c to cancel the REPL if you did
 
+
+== take and drop
+
 Limit the number of items to consume:
 
     (take 5 (range))
@@ -1695,6 +1774,7 @@ Limit the number of items to consume:
 
     (drop 5 (take 5 (range)))
     => (5 6 7 8 9)
+
 
 == filter and remove
 
@@ -1707,6 +1787,7 @@ Limit the number of items to consume:
 * filter and remove are higher order functions
 * They take a function and a sequence
 * They return a sequence of values
+
 
 == Most things are seqable
 
@@ -1761,7 +1842,22 @@ Sequences can input for other functions:
     (filter odd? (map inc [1 2 3 4]))
     => (3 5)
 
-* The result of `map` `inc` is filtered with `odd?`
+Keeps odd numbers from the result of `map` `inc`
+
+
+== Compose
+
+    (g (f x))
+
+"compose" really just means "put together"
+
+
+== Composition is aided by
+
+* Idempotence
+* Referential transparency
+* Immutability
+* Purity
 
 
 == Aggregate with reduce
@@ -1781,18 +1877,22 @@ The initial value can be left out, if so it is the first element.
 
 == reduce
 
-Written in long form:
-
     (reduce
-      (fn [acc x]
+      (fn step [acc x]
         (* acc x))
-      (range 1 5))
+      1
+      (range 2 5))
     => 24
 
 * Step function takes 2 arguments; aggregate and item
 * Step function called for every item
 * Aggregate returned
-* Aggregate can be anything... a map is common
+* Aggregate can be anything... commonly a map
+
+[NOTE.speaker]
+--
+add map example
+--
 
 
 == group-by
@@ -1913,6 +2013,7 @@ Put them together:
 	(map + v (rest v))
 	=> (3 5 7 9)
 
+
 == Visually
 
 	v        => (1 2 3 4 5)
@@ -1923,6 +2024,7 @@ Put them together:
 * The result was a new sequence of the pairwise sums:
 
 	(3 5 7 9)
+
 
 == Sequences beat loops
 
@@ -1981,7 +2083,8 @@ Sequences are loop abstractions that allow you to ignore the implementation deta
 * `map` calls a function over input sequence(s)
 * `reduce` aggregates a sequence, returns a single value
 
-I invite you to take the “no loops” challenge.
+
+== The “no loops” challenge
 
 * Spot a loop
 * Stop and think about what the loop represents
@@ -1993,15 +2096,16 @@ I invite you to take the “no loops” challenge.
 	(reduce * (filter odd? (map inc v)))
 	=> 15
 
-Three layers of function calls are hard to keep in our head.
-
 * Functions offer combinatorial power
 * Simple functions + sequence operations
-* But be wary of dense code
-* Layers make the code cryptic!
 * To read this code, work from inside out
 * Finding the inside is a challenge
 
+[NOTE.speaker]
+--
+* But be wary of dense code
+* Layers make the code cryptic!
+--
 
 == Solution: order forms inside first
 
@@ -2012,12 +2116,12 @@ Name intermediary results:
 	  (reduce * odd-incs))
 	=> 15
 
-Or use a thread last:
+== Or use a thread last
 
 	(->> v
-	    (map inc)
-	    (filter odd?)
-	    (reduce *))
+	     (map inc)
+	     (filter odd?)
+	     (reduce *))
 	=> 15
 
 * Unwraps nested function calls
@@ -2029,19 +2133,20 @@ Or use a thread last:
 
 Similar to thread last, passes value in first position:
 
-    (-> 42 (/ 2) (inc))
+    (-> 42
+        (/ 2)
+        (inc))
     => 22
 
 For empty expressions, the parens are optional:
 
-    (-> 42 (/ 2) inc)
+    (-> 42
+        (/ 2)
+        inc)
     => 22
 
 
 == Data structures are functions
-
-* Maps are functions
-* They delegate to `get`
 
     (get {:a 1 :b 2} :a)
     => 1
@@ -2051,6 +2156,9 @@ For empty expressions, the parens are optional:
 
     (map {:a 1, :b 2} [:a :b])
     => (1 2)
+
+* Maps are functions
+* They delegate to `get`
 
 
 == Keywords are functions

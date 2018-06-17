@@ -1167,7 +1167,7 @@ Recall that tests are functions.
 
 Now the test runner will print out “before”, execute the tests in the namespace, and then print out “after”.
 
-    (use-fixtures :every
+    (use-fixtures :each
       (fn capture-prints [f]
         (with-out-str (f))))
 
