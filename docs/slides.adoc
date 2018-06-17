@@ -443,9 +443,15 @@ Identity and by value
     => 1
 
 * Global mutable reference (use sparingly)
-* Avoid re-def'ing after creating a binding
 * Dereferenced when evaluated
 
+WARNING: Avoid re-def'ing after creating a binding
+
+[NOTE.speaker]
+--
+example of def inside defn and why it is bad...
+global mutable state, concurrent access
+--
 
 == Atoms
 
@@ -869,22 +875,25 @@ Is shorthand for
 
 == Variadic disadvantages
 
-* Not always convenient
+WARNING: Not always convenient
 
   (bake-cakes cake1 cake2 cake3)
   (let [cakes (db/find-cakes "delicious")]
     (apply bake-cakes cakes))
 
+Prefer functions that do one thing
+
+Combine with sequence operations
+
   (doseq [cake (db/find-cakes "delicious")]
     (bake-cake cake))
-
-* Prefer functions that do one thing
-* Combine with sequence operations
 
 
 == Variadic disadvantages
 
-Bypasses arity checking. Common bad pattern:
+WARNING: Bypasses arity checking
+
+Common bad pattern:
 
     (defn f [x & [y]]
       (if y
@@ -1044,7 +1053,7 @@ Insuricorp is about to launch a marketing campaign for a new “corgi cover” p
 == Part 1:
 
 Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person's eligibility for the “corgi cover” policy.
-:
+
 
 == Test data
 [style="literal", options="header"]
@@ -1104,9 +1113,11 @@ Defines a function with no arguments
 
 * Tests are functions
 * Define tests in any namespace
-* Convention:
-** `*test*/my_namespace_test.clj` <- `*src*/my_namespace.clj`
-** `*test*` dir mirrors `*src*` dir, append `*_test*`
+
+Convention:
+
+* `*test*/my_namespace_test.clj` <- `*src*/my_namespace.clj`
+* `*test*` dir mirrors `*src*` dir, append `*_test*`
 
 
 == Refer all
@@ -1269,7 +1280,7 @@ Concisely expresses multiple assertions
          2 (+ 1 1)
          4 (* 2 2))
 
-Disadvantages:
+WARNING: Disadvantages
 
 * Easy to make an error in the syntax
 * Confusing
@@ -1851,11 +1862,9 @@ Keeps odd numbers from the result of `map` `inc`
 
 "compose" really just means "put together"
 
-
-== Composition is aided by
+Composition is aided by
 
 * Idempotence
-* Referential transparency
 * Immutability
 * Purity
 
@@ -3627,6 +3636,12 @@ Clojure for Java Programmers - Rich Hickey
 * Parinfer
 * Send file to REPL
 * Send form to REPL
+
+
+== Learn the many Clojure functions
+
+* Set aside some recuring time to bite of bits of the API
+* Clojure word of the day: https://clojure.me
 
 
 == Read Clojure code
