@@ -16,21 +16,21 @@
 [state=title]
 == Enterprise Clojure Training
 
-image::img/corgi.jpg[size=contain, position=center]
+image:img/corgi.jpg[]
 
 
-[state=title2]
-== Contents
-
-|===
-|Ecosystem|Syntax|Functions|Testing
-|Control Flow|Functional Programming|Macros|Concurrency
-|Java Interop|Polymorphism|Databases|Further reading
-|===
-
-
-[state=title2]
+[state=title]
 == Introductions
+
+image:img/art1.jpg[]
+
+[state=title]
+== Clojure
+
+image:img/clojure-logo.png[]
+
+"What language is it that meets all the criteria? What language would I choose if I had to choose today? Probably Clojure!"
+-- Robert Martin
 
 
 == Clojure
@@ -39,6 +39,15 @@ image::img/corgi.jpg[size=contain, position=center]
 * Functions
 * A tool for thought
 * Getting stuff done
+
+
+== Contents
+
+|===
+|Ecosystem|Syntax|Functions|Testing
+|Control Flow|Functional Programming|Macros|Concurrency
+|Java Interop|Polymorphism|Databases|Further reading
+|===
 
 
 == !
@@ -72,8 +81,10 @@ Syntax Summary:
 --
 
 
-[state=title2]
+[state=title]
 == 1. The Clojure Ecosystem
+
+image:img/ecosystem.jpg[]
 
 "Integrity is an ecosystem."
 -- Michael Leunig
@@ -84,7 +95,7 @@ Benefits of embracing the JVM as a host
 --
 
 
-== !
+== Dependencies
 
 * Libraries are plain old jars
 * Clojure is itself a jar
@@ -211,11 +222,13 @@ Refer to manual section 1.4
     => 13
 
 
-[state=title2]
+[state=title]
 == 2. Clojure Syntax
 
-"The rhythmical unit of the syllable is at the back of all of it - the word, the phrase, the sentence, the syntax, the paragraph, and the way the heart moves when you read it."
--- Ali Smith
+image:img/syntax.png[]
+
+"If the syntax is good enough for the information, it should be good enough for the meta-information."
+-- Erik Naggum
 
 
 == Primitive data types
@@ -231,13 +244,21 @@ Character literals are preceded by a backslash
 
 == !
 
+[options="header"]
 |===
-|Long |`1`
-|Double |`3.14`
-|BigInteger |`1000000000000N`
-|BigDecimal |`1000000000000.1M`
-|Exponents |`1e3`
-|Ratio |`2/5`
+|Type|Value
+l|Long
+l|1
+l|Double
+l|3.14
+l|BigInteger
+l|1000000000000N
+l|BigDecimal
+l|1000000000000.1M
+l|Exponents
+l|1e3
+l|Ratio
+l|2/5
 |===
 
 [NOTE.speaker]
@@ -248,11 +269,9 @@ Character literals are preceded by a backslash
 
 == Truthiness
 
-Booleans: `true` and `false`.
-
-`nil` means nothing and is considered false in logical tests.
-
-Anything else is truthy.
+* Booleans: `true` and `false`
+* `nil` means nothing and is considered false in logical tests
+* Anything else is truthy
 
 
 == Lists
@@ -273,12 +292,12 @@ Evaluated as function calls.
 
 == Sequences
 
-Fundamental abstraction.
+Fundamental abstraction
 
     (seq? '(1 2 3))
     => true
 
-Many common functions based on this.
+Many sequence oriented functions
 
     (seq? (drop 1 '(1 2 3)))
     => true
@@ -349,8 +368,8 @@ Identity and by value
 
 * Order 1 lookup, "add", "delete" by key
 * Tuned to be fast
-* Replacement for structs/objects used to hold data in other languages
-* Versatile, used often in Clojure code
+* Replacement for structs/objects
+* Versatile; used often in Clojure code
 
 [NOTE.speaker]
 --
@@ -570,6 +589,7 @@ Destructured using `&`
 
 * Prefer (merge defaults inputs) instead of :or
 
+
 == Namespaces
 
     (ns training.core
@@ -669,8 +689,10 @@ Destructure a single map input and return a string combining greeting and tone:
     => "good morning - happy"
 
 
-[state=title2]
+[state=title]
 == 3. Functions
+
+image:img/functions.jpg[]
 
 "The chief function of the body is to carry the brain around."
 -- Thomas A. Edison
@@ -708,24 +730,20 @@ Destructure a single map input and return a string combining greeting and tone:
     (fn [a]
       (inc a))
 
-Unnamed, anonymous, Lambda (λ) expression
-
     #(inc %)
 
-
-== Special syntax
-
-    #(inc %)
-    #(+ %1 %2 %3)
-    #(apply + %&)
+Unnamed; anonymous; Lambda (λ) expression
 
 
-== Invoking unnamed functions
+== Invoking anonymous functions
+
+    ((fn [a] (inc a)) 1)
+    =>2
 
     (#(inc %) 1)
     => 2
 
-Just like a named function; first item in a list
+Just like a named function; first item in a list is applied
 
 
 == Closure
@@ -738,8 +756,6 @@ Function that captures values from the environment
     (greet)
     => "Hello world"
 
-Often anonymous
-
 
 == Functions are values
 
@@ -751,22 +767,6 @@ Often anonymous
 
     (higher-order-function greet)
     => "Hello world"
-
-
-== Anonymous functions
-
-    (fn [x]
-      (inc x))
-
-    ((fn [x]
-       (inc x)
-     1)
-    => 2
-
-    (let [f (fn [x]
-              (inc x))]
-      (f 2))
-    => 3
 
 
 == Passing a function to another function
@@ -794,7 +794,7 @@ WARNING: `map` the function, not `hash-map` the data structure
 * Unnamed closures are useful as arguments to higher order functions.
 
 
-== Inlined named functions
+== Inline named functions
 
     (fn add-one [x]
       (inc x))
@@ -805,10 +805,10 @@ WARNING: `map` the function, not `hash-map` the data structure
 * Does not create a global var
 * Documents purpose
 * Name appears in stacktraces (searchable clue)
-* The function can call itself with the name
+* The function can call itself
 
 
-== !
+== Named functions
 
     (defn f [x]
       (inc x))
@@ -818,28 +818,6 @@ Is shorthand for
     (def f
       (fn [x]
         (inc x)))
-
-
-== Function literals
-
-    #(inc %)
-    #(+ %1 %2)
-    #(apply + %&)
-
-Terse, powerful expressions
-
-
-== Compare
-
-    (map #(* % %) [1 2 3 4])
-
-    (map (fn square [x]
-           (* x x))
-         [1 2 3 4])
-
-Named parameters; named purpose; stack traces
-
-NOTE: Prefer `(fn)` form
 
 
 == Variadic arguments
@@ -962,6 +940,30 @@ Check for a condition and throw an exception
 Or use spec
 
 
+== Function literals
+
+    #(inc %)
+
+    #(+ %1 %2)
+
+    #(apply + %&)
+
+Terse, powerful expressions
+
+
+== Compare
+
+    (map #(* % %) [1 2 3 4])
+
+    (map (fn square [x]
+           (* x x))
+         [1 2 3 4])
+
+Named parameters; named purpose; stack traces
+
+NOTE: Prefer `(fn)` form
+
+
 == Exercises
 
 See manual section 3.6
@@ -1044,11 +1046,13 @@ Insuricorp just merged with Megacorp. Platinum level corgi cover is now offered 
 Create a new function that takes as inputs two maps: the application, and the existing policies. It should apply the same logic, but make use of the Megacorp data.
 
 
-[state=title2]
+[state=title]
 == 4. Testing with clojure.test
 
-"The greatest test of courage on earth is to bear defeat without losing heart."
--- Robert Green Ingersoll
+image:img/testing.jpg[]
+
+"The problem is not that testing is the bottleneck. The problem is that you don’t know what’s in the bottle."
+-- Michael Bolton
 
 
 == Defining tests with deftest
@@ -1330,11 +1334,13 @@ See manual section 4.7
           (is (= 3 @c)))))
 
 
-[state=title2]
+[state=title]
 == 5. Control Flow
 
-"Goals allow you to control the direction of change in your favor."
--- Brian Tracy
+image:img/control.jpg[]
+
+"Control your own destiny or someone else will."
+-- Jack Welch
 
 
 == Conditionals: if
@@ -1523,8 +1529,10 @@ See manual section 5.6
       (is (= 89 (fib 100))))
 
 
-[state=title2]
+[state=title]
 == 6. Functional Programming
+
+image:img/functional.jpg[]
 
 "If you don't love something, it's not functional, in my opinion."
 -- Yves Behar
@@ -2175,8 +2183,10 @@ As part of the Megacorp merger, the downstream systems are converting to JSON fo
 Create a new function that writes JSON data to a eligible-corgi-cover-applications.json file
 
 
-[state=title2]
+[state=title]
 == 7. Macros
+
+image:img/macros.jpg[]
 
 "I never think about myself as an artist working in this time. I think about it in macro."
 -- Frank Ocean
@@ -2404,8 +2414,10 @@ Often good to start with an example and customize
 --
 
 
-[state=title2]
+[state=title]
 == 8. Parallel Programming and Concurrency
+
+image:img/parallel.jpg[]
 
 "Our moral traditions developed concurrently with our reason, not as its product."
 -- Friedrich August von Hayek
@@ -2626,8 +2638,10 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 See manual section Challenge 3
 
 
-[state=title2]
+[state=title]
 == 9. Java Interop
+
+image:img/interop.jpg[]
 
 "Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
 -- Libba Bray
@@ -2734,11 +2748,13 @@ The web service you are using can handle multiple requests faster than a series 
 Modify your mock of fetch-megacorp-policies such that it throws an exception randomly about 10% of the time. Make sure your tests report a failure. Now update your logic to handle the errors and retry up to 10 times. The tests should pass. Then create another test where the exception is thrown 100% of the time, and the max tries occurs.
 
 
-[state=title2]
+[state=title]
 == 10. Polymorphism and Types
 
+image:img/types.jpg[]
+
 "You need a lot of different types of people to make the world better."
---Joe Louis
+-- Joe Louis
 
 
 == Multimethods
@@ -3243,8 +3259,10 @@ See also `inst-in` and `double-in`
 * Check all spec'ed functions
 
 
-[state=title2]
+[state=title]
 == 11. Interacting with a Database
+
+image:img/database.jpg[]
 
 "You can have data without information, but you cannot have information without data."
 -- Daniel Keys Moran
@@ -3415,6 +3433,15 @@ Ensure that all records processed from the files meets your expectations for req
 Insuricorp is about to launch a new policy called “Poodle Protection”. Soon they will be processing applications with completely new rules. Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications. For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
 
 
+[state=title]
+== Further reading
+
+image:img/further-reading.jpg[]
+
+"You can never get a cup of tea large enough or a book long enough to suit me."
+-- C.S. Lewis
+
+
 == Further reading
 
 Further exercises:	https://www.4clojure.com/
@@ -3474,20 +3501,15 @@ Clojure for Java Programmers - Rich Hickey
 
 == Workflow
 
-Editor + Test refresh + REPL
-
-Reading stacktraces
-  - Try line 1
-  - Scan down for your namespace
-  - Might be project/profile
-
-Small functions
-
-Test as you go
-
-Print things
-
-Test assumptions/hypothesis
+* Editor + Test refresh + REPL
+* Reading stacktraces
+** Try line 1
+** Scan down for your namespace
+** Might be project/profile
+* Small functions
+* Test as you go
+* Print things
+* Test assumptions/hypothesis
 
 
 == Editor customization
@@ -3540,3 +3562,12 @@ Produces suggestions on how to write idiomatic Clojure
 * 4Clojure problems http://www.4clojure.com
 * Project Euler https://projecteuler.net
 * Katas
+
+[state=title]
+== Thank you
+
+timothypratley@gmail.com
+
+https://timothypratley.blogspot.com
+
+@timothypratley

@@ -18,6 +18,8 @@
 [preface]
 == About
 
+image:img/corgi.jpg[width=300]
+
 Welcome to Enterprise Clojure Training.
 This course is for developers learning Clojure for the purpose of building enterprise software.
 
@@ -97,11 +99,10 @@ Having read it before hand will allow you to focus on working through the exerci
 
 === Introductions
 
-"Creativity is the ability to introduce order into the randomness of nature."
--- Eric Hoffer
-
 
 ==== The instructor
+
+image:img/art1.jpg[width=300]
 
 Timothy Pratley is the author of the book “Professional Clojure”, and a contributor to the Clojure core language.
 He has 18 years of professional software development experience in banking, robotics, logistics, and advertising.
@@ -111,6 +112,8 @@ He enjoys making YouTube videos about Clojure, running, and reading books.
 
 ==== Clojure
 
+image:img/clojure-logo.png[width=300]
+
 During this course we will be examining the Clojure language up close.
 Sometimes a new language can feel different just for difference sake.
 So why is it worth learning Clojure?
@@ -119,6 +122,9 @@ Clojure is simple and data-oriented.
 Smart people want to use it.
 Clojure enables teams to build things fast.
 This makes it excellent for delivering value in enterprise development projects.
+
+"What language is it that meets all the criteria? What language would I choose if I had to choose today? Probably Clojure!"
+-- Robert Martin
 
 Throughout the course there will be time to reflect on what purpose the differences serve and what trade offs are being made.
 These are the Clojure language themes to watch out for as we move through the course:
@@ -178,6 +184,8 @@ Things that would be declarations, control structures, function calls, operators
 
 :sectnums:
 == The Clojure Ecosystem
+
+image:img/ecosystem.jpg[width=300]
 
 "Integrity is an ecosystem."
 -- Michael Leunig
@@ -297,8 +305,10 @@ Open `src/training/core.clj` with your editor, write some expressions, and send 
 
 == Clojure Syntax
 
-"The rhythmical unit of the syllable is at the back of all of it - the word, the phrase, the sentence, the syntax, the paragraph, and the way the heart moves when you read it."
--- Ali Smith
+image:img/syntax.png[width=300]
+
+"If the syntax is good enough for the information, it should be good enough for the meta-information."
+-- Erik Naggum
 
 
 === Primitive data types
@@ -689,6 +699,8 @@ Note that the message global var is still the original value.
 
 == Functions
 
+image:img/functions.jpg[width=300]
+
 "The chief function of the body is to carry the brain around."
 -- Thomas A. Edison
 
@@ -860,6 +872,7 @@ There is a special syntax for creating anonymous functions concisely:
 
     #(inc %)
     #(+ %1 %2)
+    #(apply + %&)
 
 This allows the construction of very terse but powerful expressions:
 
@@ -1002,6 +1015,8 @@ It should apply the same logic, but make use of the Megacorp data.
 
 :sectnums:
 == Testing with clojure.test
+
+image:img/testing.jpg[width=300]
 
 "The greatest test of courage on earth is to bear defeat without losing heart."
 -- Robert Green Ingersoll
@@ -1250,8 +1265,10 @@ This is also very useful when interacting with Java, because you can construct a
 
 == Control Flow
 
-"Goals allow you to control the direction of change in your favor."
--- Brian Tracy
+image:img/control.jpg[width=300]
+
+"Control your own destiny or someone else will."
+-- Jack Welch
 
 Clojure provides special forms for control flow.
 Special forms are built in primitives that behave differently from functions.
@@ -1407,6 +1424,8 @@ Commas are optional and treated as whitespace.
 
 
 == Functional Programming
+
+image:img/functional.jpg[width=300]
 
 "If you don't love something, it's not functional, in my opinion."
 -- Yves Behar
@@ -1886,6 +1905,8 @@ Create a new function that writes JSON data to an `eligible-corgi-cover-applicat
 :sectnums:
 == Macros
 
+image:img/macros.jpg[width=300]
+
 "I never think about myself as an artist working in this time. I think about it in macro."
 -- Frank Ocean
 
@@ -2085,6 +2106,8 @@ Create the following macros and test cases:
 
 
 == Parallel Programming and Concurrency
+
+image:img/parallel.jpg[width=300]
 
 "Our moral traditions developed concurrently with our reason, not as its product."
 -- Friedrich August von Hayek
@@ -2288,6 +2311,8 @@ Use shutdown-agents to terminate these threads and allow shutdown.
 
 == Java Interop
 
+image:img/interop.jpg[width=300]
+
 "Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
 -- Libba Bray
 
@@ -2413,8 +2438,10 @@ Then create another test where the exception is thrown 100% of the time, and the
 :sectnums:
 == Polymorphism and Types
 
+image:img/types.jpg[width=300]
+
 "You need a lot of different types of people to make the world better."
---Joe Louis
+-- Joe Louis
 
 
 === Multimethods
@@ -2959,6 +2986,8 @@ There is even more to spec! Once you are comfortable with the basics you can lea
 
 == Interacting with a Database
 
+image:img/database.jpg[width=300]
+
 "You can have data without information, but you cannot have information without data."
 -- Daniel Keys Moran
 
@@ -3137,6 +3166,11 @@ For now the only difference with the rules from “Corgi Cover” is that “Poo
 
 :sectnums:
 == Further reading
+
+image:img/further-reading.jpg[width=300]
+
+"You can never get a cup of tea large enough or a book long enough to suit me."
+-- C.S. Lewis
 
 Writing Clojure code requires more thinking and less typing than other languages.
 Don't feel frustrated if the code comes slowly at first.

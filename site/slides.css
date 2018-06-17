@@ -22,24 +22,21 @@
 .reveal section img {
   margin: 0;
   border: 10px solid #66AF40;
+  height: 300px;
 }
 
-.reveal p {
+.reveal section p, h1, h2, div {
   text-align: left;
 }
 
 .slides {
   width: 90% !important;
-  /* For screencasting */
-  /*
-  left: -25% !important;
-  */
 }
 
 html.title body {
-  background: linear-gradient(to bottom right, #92DA55, #91B3FB);
+  background: linear-gradient(to bottom left, #91B3FB, #92DA55);
 }
 
-html.title2 body {
-  background-color: #91B3FB;
+.small {
+  font-size: 0.8em !important;
 }
