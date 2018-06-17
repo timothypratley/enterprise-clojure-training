@@ -896,9 +896,13 @@ Is longer, but provides a semantic summary of the operation and a hint at the ex
     (f 1 2 3)
     => (1 2 3)
 
-Variadic arguments sometimes introduce two disadvantages:
-Causing callers to have to use apply
-Bypasses arity checking
+[WARNING]
+--
+Variadic arguments can have disadvantages:
+
+* Causing callers to have to use apply
+* Bypasses arity checking
+--
 
 An antipattern is
 
@@ -1137,9 +1141,12 @@ It is also possible to more concisely express multiple assertions using the are 
          2 (+ 1 1)
          4 (* 2 2))
 
-However I recommend you avoid this form.
+[WARNING]
+--
+I recommend you avoid this form.
 It is easy to make an error in the syntax, and can be confusing.
 Furthermore line numbers are not preserved, so a failing test case is harder to identify.
+--
 
 Occasionally we need to assert that an exception is thrown:
 

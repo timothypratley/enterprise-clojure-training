@@ -278,7 +278,7 @@ l|2/5
 
     ()
 
-Evaluated as function calls.
+Evaluated as function calls
 
     (inc 1)
     => 2
@@ -321,7 +321,7 @@ Lazy
 
 [NOTE.speaker]
 --
-* Can think of them like the (identifiers, reserved keywords, operators) of other mainstream languages.
+* Can think of them like the (identifiers, reserved keywords, operators) of other mainstream languages
 --
 
 
@@ -354,8 +354,8 @@ Identity and by value
 
 [NOTE.speaker]
 --
-* Note to self: vectors and list can be equal because they are sequential.
-* A map cannot equal a set or a list/vector.  But maps and sets have not yet been introduced.
+* Note to self: vectors and list can be equal because they are sequential
+* A map cannot equal a set or a list/vector.  But maps and sets have not yet been introduced
 --
 
 
@@ -643,7 +643,7 @@ Removal of next form `#_`
 
 == Commas
 
-Commas are optional and treated as whitespace.
+Commas are optional and treated as whitespace
 
     (= {:a 1, :b 2, :c 3} {:a 1 :b 2 :c 3})
 
@@ -688,7 +688,7 @@ Print out the value of the var `message`
     => "greetings"
        nil
 
-NOTE: `prn` keeps the quotes around strings; `println` does not.
+NOTE: `prn` keeps the quotes around strings; `println` does not
 
 
 == Answers
@@ -705,7 +705,7 @@ Print out message again, outside of the `let` block:
     (prn message)
     => "greetings"
 
-NOTE: `message` global var is still the original value.
+NOTE: `message` global var is still the original value
 
 
 == Answers
@@ -758,7 +758,7 @@ image:img/functions.jpg[]
     (square 2)
     => 4
 
-* Mathematical operators in prefix notation.
+* Mathematical operators in prefix notation
 
     (+ (square 2) (square 3))
     => 13
@@ -800,8 +800,8 @@ Function that captures values from the environment
 
 == Functions are values
 
-* Can be passed as arguments to other functions.
-* Functions that take a function as an argument are called higher order functions.
+* Can be passed as arguments to other functions
+* Functions that take a function as an argument are called higher order functions
 
     (defn higher-order-function [f]
       (f))
@@ -832,7 +832,7 @@ WARNING: `map` the function, not `hash-map` the data structure
     => (6 7 8)
 
 * Higher order function
-* Unnamed closures are useful as arguments to higher order functions.
+* Unnamed closures are useful as arguments to higher order functions
 
 
 == Inline named functions
@@ -910,7 +910,7 @@ Common bad pattern:
       ([x] (inc x))
       ([x y] (+ x y)))
 
-Multiple arities explicitly declared in parenthesis.
+Multiple arities explicitly declared in parenthesis
 
     (f 1) => 2
     (f 1 2) => 3
@@ -956,7 +956,7 @@ Pass a map instead
 
 [NOTE.speaker]
 --
-* Assertions about inputs and outputs of a function.
+* Assertions about inputs and outputs of a function
 * Sequence of conditions
 --
 
@@ -1005,7 +1005,7 @@ Terse, powerful expressions
 
 Named parameters; named purpose; stack traces
 
-NOTE: Prefer `(fn)` form
+TIP: Prefer `(fn)` form
 
 
 == Exercises
@@ -1318,7 +1318,7 @@ Test runner will call the fixture
 
 * prints “before”
 * executes the tests in the namespace
-* prints “after”.
+* prints “after”
 --
 
 
@@ -1380,8 +1380,8 @@ What is `(+ a (* a b))` evaluating to? `(doto ... (prn))`
 
 [NOTE.speaker]
 --
-* `prn` will not work, always returns `nil`.
-* `doto` causes side-effect to occur, and return the original argument.
+* `prn` will not work, always returns `nil`
+* `doto` causes side-effect to occur, and return the original argument
 --
 
 
@@ -1495,7 +1495,7 @@ image:img/control.jpg[]
 
 == Recursion
 
-Functions that call themselves are called recursive.
+Functions that call themselves are called recursive
 
     (defn sum-up [coll result]
       (if (empty? coll)
@@ -1720,7 +1720,7 @@ What if you have a sequence of many numbers?
 
 == partial
 
-In Clojure we often pass functions as values.
+In Clojure we often pass functions as values
 
     (partial + 1)
 
@@ -1751,7 +1751,7 @@ Alternatively:
 
 == Functions on sequences: map, reduce, and friends
 
-To embrace Clojure is to think in sequences and data structures.
+To embrace Clojure is to think in sequences and data structures
 
 
 == Sequences
@@ -1876,12 +1876,12 @@ Reduce takes a function, initial value, and sequence:
     (reduce * 1 [2 3 4])
     => 24
 
-Performs `(* 1 2)`, then `(* 3)`, then `(* 4)`. Multiplication called 3 times.
+Performs `(* 1 2)`, then `(* 3)`, then `(* 4)`. Multiplication called 3 times
 
     (reduce * [1 2 3 4])
     => 24
 
-The initial value can be left out, if so it is the first element.
+The initial value can be left out, if so it is the first element
 
 
 == reduce
@@ -1992,7 +1992,7 @@ Common situation in Java:
 	    print v[i] + v[i-1];
 	=> 3 5 7 9
 
-Using the previous value in the sequence.
+Using the previous value in the sequence
 
 Can we represent this as a sequence?
 
@@ -2001,7 +2001,7 @@ Imagine two identical sequences offset slightly:
 	  [1 2 3 4 5]
 	[1 2 3 4 5]
 
-The overlapping values are the pairs we want.
+The overlapping values are the pairs we want
 
 
 == map over both sequences
@@ -2050,7 +2050,7 @@ Better than loops?
 
 == New requirements
 
-Multiply all of those numbers together.
+Multiply all of those numbers together
 
 	result = 1;
 	for (i=1; i < v.length; i++)
@@ -2073,7 +2073,7 @@ Compose `reduce` with the original `map` expression:
 * `map`: adding items together from two sequences
 * `pairing`: the sequence of elements in v, adjacent to the rest of v
 
-This is dense, but descriptive code... if you know the vocabulary.
+This is dense, but descriptive code... if you know the vocabulary
 
 
 == Sequence solution
@@ -2086,7 +2086,7 @@ This is dense, but descriptive code... if you know the vocabulary.
 
 == Sequences summary
 
-Sequences are loop abstractions that allow you to ignore the implementation details.
+Sequences are loop abstractions that allow you to ignore the implementation details
 
 * `filter` keeps items in a sequence according to a predicate
 * `map` calls a function over input sequence(s)
@@ -2390,18 +2390,26 @@ Macros are functions with a `:macro` flag set in their metadata
 
 == Syntax quoting
 
-Special form called syntax-quote.
-
     `(inc 1)
     => (clojure.core/inc 1)
 
-All symbols in a syntax-quote form get fully qualified.
+* Special form called syntax-quote (also called back-quote)
+* All symbols in a syntax-quote form get fully qualified
+* ``` vs `'`
+
+
+== Unquoting
 
     `(1 2 ~(+ 1 2) ~@(map inc [3 4 5]))
     => (1 2 3 4 5 6)
 
-Back-quote (```) Unquote (`~`) and Unquote-splicing (`~@`)
-
+[options=header]
+|===
+|Syntax|Name|Behavior
+l|`|Back-quote|Fully qualified quote
+l|~|Unquote|Insert a value
+l|~@|Unquote-splicing|Insert a sequence
+|===
 
 == Why fully qualify?
 
@@ -2427,20 +2435,17 @@ Syntax quote avoids colliding with the `let` bindings
     (defmacro bad [expr]
       (list 'let '[a 1]
         (list 'inc expr)))
-
     (bad 0)
     => 1
-
     (def a 0)
     (bad a)
     => 2
 
-Notice that:
+WARNING: The parameter name collided with the implementation
 
     (macroexpand-1 '(bad a))
     => (let [a 1] (inc a))
 
-The parameter name collided with the implementation.
 
 
 == Gensyms
@@ -2450,27 +2455,25 @@ Gensyms produce a randomly named binding:
     (defmacro good [expr]
       `(let [a# 1]
          (inc ~expr)))
-
     (good a)
     => 1
-
     (good 0)
     => 1
+
+The `let` binding `a#` expands to a randomly generated symbol
 
     (macroexpand-1 '(good a))
     => (clojure.core/let [a__6500__auto__ 1] (clojure.core/inc a))
 
-The `let` binding `a#` expands to a randomly generated symbol
-
 
 == Code as data
 
-* Really writing a function that produces code.
+* Really writing a function that produces code
 * The output is code... as data
-* We manipulate code... as data.
-* Homoiconic means that the language text has the same structure as its abstract syntax tree (AST).
-* Code in the language can be transformed as data using the same representation.
-* Nested code is well represented as a data structure.
+* We manipulate code... as data
+* Homoiconic means that the language text has the same structure as its abstract syntax tree (AST)
+* Code in the language can be transformed as data using the same representation
+* Nested code is well represented as a data structure
 
 
 == Macro stragegy
@@ -2478,9 +2481,9 @@ The `let` binding `a#` expands to a randomly generated symbol
 When working on a non-trivial macro a good strategy is:
 
 * Step 1: Write a function!
-* Step 2: Call your function from the macro.
+* Step 2: Call your function from the macro
 
-Keep the macro as small. Offload transformations to other functions.
+TIP: Keep the macro small and offload form transformations to other functions
 
 
 == Exercises
@@ -2542,10 +2545,6 @@ image:img/parallel.jpg[]
 
 == Vars and dynamic scope
 
-* Vars are automatically derefed when evaluated
-* seem like just a variable
-* See the var itself using the var function or #' shorthand.
-
     (def one-hundred 100)
     => #'training.core-test/one-hundred
 
@@ -2555,6 +2554,9 @@ image:img/parallel.jpg[]
     (deref #'one-hundred)
     => 100
 
+* Vars are automatically derefed when evaluated
+* Behavi a variable
+* See the var itself using the var function or #' shorthand
 * Functions defined with defn are stored in Vars
 * Allows the re-definition of functions at runtime
 
@@ -2713,7 +2715,7 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 * Since another thread may have changed the value, it may have to retry
 * Retries in a spin loop
 * Net effect: the value will always be the result of the function
-* Function might be called multiple times, it must be free of side effects.
+* Function might be called multiple times, it must be free of side effects
 * Suitable for uncoordinated state
 * Synchronous changes
 
@@ -2730,7 +2732,7 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 * Refs ensure safe shared use of mutable storage locations via a software transactional memory (STM) system
 * Refs are bound to a single storage location for their lifetime
 * Only allow mutation of that location to occur within a transaction
-* In practise Refs are rarely used.
+* In practise Refs are rarely used
 
 
 == Agents
@@ -2742,11 +2744,11 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 
     (send-off a (fn [x] (do-some-io))
 
-* Like Refs, Agents provide shared access to mutable state.
+* Like Refs, Agents provide shared access to mutable state
 * Refs support coordinated, synchronous change of multiple locations
-* Agents provide independent, asynchronous change of individual locations.
+* Agents provide independent, asynchronous change of individual locations
 * `send` should be used for actions that are CPU limited
-* `send-off` is appropriate for actions that may block on IO.
+* `send-off` is appropriate for actions that may block on IO
 * Agents are integrated with the STM
 
 
@@ -2889,11 +2891,11 @@ Provide methods implementing functions to execute for a given dispatch value:
     (defmethod encounter [:lion :lion] [x y] :fight)
     (defmethod encounter [:bunny :bunny] [x y] :mate)
 
-* Between a case statement and a function definition.
-* Conditions under which to be called, and a function definition.
-* Given a dispatch result of `[:bunny :lion]`, the first method will be called.
+* Between a case statement and a function definition
+* Conditions under which to be called, and a function definition
+* Given a dispatch result of `[:bunny :lion]`, the first method will be called
 * `x` and `y` are inputs to the function
-* unused in this example.
+* Unused in this example
 
 
 == Multimethods
@@ -2918,9 +2920,9 @@ Call the multimethod
 
 == Multimethods
 
-Keywords are functions.
+Keywords are functions
 
-It is common to use a keyword as a dispatch function.
+Common to use a keyword as a dispatch function
 
     (defmulti draw :shape)
 
@@ -2986,8 +2988,8 @@ deftype, defrecord, or reify support protocols directly:
 * Extends the polymorphism of the protocol's methods
 * Will call the supplied functions when an AType is provided as the first argument
 * The `fn` can presume first argument is instanceof `AType`
-* You can implement a protocol on `nil`.
-* Default implementation of protocol with `Object`.
+* You can implement a protocol on `nil`
+* Default implementation of protocol with `Object`
 
 
 == extend-type
@@ -3091,11 +3093,11 @@ Sets are functions, so can be used as predicates that match one or more literal 
 
 == Registration
 
-Specs are registered using `s/def`.
+Specs are registered using `s/def`
 
     (s/def ::suit #{:club :diamond :heart :spade})
 
-A registered spec identifier can be used in place of a spec definition.
+A registered spec identifier can be used in place of a spec definition
 
     (s/valid? ::suit :club)
     => true
@@ -3116,7 +3118,7 @@ A registered spec identifier can be used in place of a spec definition.
 
     (s/def ::name-or-id (s/or :name string? :id int?))
 
-* Involves a choice during validity checking.
+* Involves a choice during validity checking
 * Each choice is tagged (`:name` and `:id`)
 
     (s/conform ::name-or-id "abc")
@@ -3138,7 +3140,7 @@ To include `nil` as a valid value:
 
 == explain
 
-Reports why a value does not conform to a spec.
+Reports why a value does not conform to a spec
 
     (s/explain ::big-even 5)
     => val: 5 fails spec: ::big-even predicate: even?
@@ -3346,7 +3348,7 @@ See also `inst-in` and `double-in`
     (ranged-rand 8 5)
     => CompilerException clojure.lang.ExceptionInfo: Call to #'spec.examples.guide/ranged-rand did not conform to spec
 
-* `unstrument` to turn off.
+* `unstrument` to turn off
 
 
 == check
@@ -3394,7 +3396,7 @@ image:img/database.jpg[]
     [org.clojure/java.jdbc "0.7.5"]
     [hsqldb/hsqldb "1.8.0.10"]
 
-NOTE: we need the driver we plan to use to connect to a database.
+NOTE: we need the driver we plan to use to connect to a database
 
 == Connecting
 
@@ -3435,7 +3437,7 @@ To selectively delete some data:
     (jdbc/query db ["select * from messages"])
     => ({:message "How now?"})
 
-Now there is only one row remaining.
+Now there is only one row remaining
 
 == insert-multi!
 
@@ -3454,13 +3456,13 @@ Now there is only one row remaining.
     (search "%How%")
     => ({:message "How now?"})
 
-* String concatenation is susceptible to SQL injection.
-* Parameters are not part of the query; cannot perform SQL from malicious input.
+* String concatenation is susceptible to SQL injection
+* Parameters are not part of the query; cannot perform SQL from malicious input
 
 
 == Starting fresh
 
-If you want to redo any steps, remember that you can always drop the table and start again.
+If you want to redo any steps, remember that you can always drop the table and start again
 
     (jdbc/execute! db "drop table messages")
 
@@ -3570,10 +3572,10 @@ Clojure for Java Programmers - Rich Hickey
 
 [NOTE.speaker]
 --
-* Writing Clojure code requires more thinking and less typing than other languages.
-* Don't feel frustrated if the code comes slowly at first.
-* Being a great programmer requires thinking.
-* You will only reach your true potential expressing code in ways that empower you rather than constrain you.
+* Writing Clojure code requires more thinking and less typing than other languages
+* Don't feel frustrated if the code comes slowly at first
+* Being a great programmer requires thinking
+* You will only reach your true potential expressing code in ways that empower you rather than constrain you
 --
 
 
