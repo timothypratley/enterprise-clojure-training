@@ -648,7 +648,7 @@ Removal of next form `#_`
     #_(this form is removed)
     #_#_ ignored-1 ignored-2
 
-* Temporarily remove a form when debuggin code
+* Temporarily remove a form when debugging code
 * Looks like a bug eyes emoji
 
 
@@ -804,7 +804,7 @@ Function that captures values from the environment
 
     (let [who "world"]
       (defn greet []
-        (str "Hello " who))
+        (str "Hello " who)))
     (greet)
     => "Hello world"
 
