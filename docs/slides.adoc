@@ -648,7 +648,7 @@ Removal of next form `#_`
     #_(this form is removed)
     #_#_ ignored-1 ignored-2
 
-* Temporarily remove a form when debuggin code
+* Temporarily remove a form when debugging code
 * Looks like a bug eyes emoji
 
 
@@ -804,24 +804,27 @@ Function that captures values from the environment
 
     (let [who "world"]
       (defn greet []
-        (str "Hello " who))
+        (str "Hello " who)))
     (greet)
     => "Hello world"
 
 
-== Functions are values
+== Passing a function to another function
 
+* Functions are values
 * Can be passed as arguments to other functions
 * Functions that take a function as an argument are called higher order functions
 
-    (defn higher-order-function [f]
-      (f))
+    (defn do-triple [f]
+      (f) (f) (f))
 
-    (higher-order-function greet)
-    => "Hello world"
+    (do-triple #(println "hot"))
+    => hot
+    hot
+    hot
 
 
-== Passing a function to another function
+== Map - the function named 'map'
 
 WARNING: `map` the function, not `hash-map` the data structure
 
@@ -835,8 +838,17 @@ WARNING: `map` the function, not `hash-map` the data structure
 
 * Don't need to create global definitions
 
+== Map continued (1)
 
-== Map
+    (defn greet-them [person]
+      (str "Hello " person))
+
+    (map greet-them ["Alice" "Bob" "Carol"])
+    => ("Hello Alice" "Hello Bob" "Hello Carol")
+
+* Using pre-defined functions is easy and readable
+
+== Map continued (2)
 
     (let [x 5]
       (map #(+ x %) [1 2 3]))
