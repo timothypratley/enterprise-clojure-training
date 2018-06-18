@@ -20,6 +20,26 @@ image:img/corgi.jpg[]
 
 
 [state=title]
+== Contents
+
+[cols=4]
+|===
+|link:#/the_clojure_ecosystem[Ecosystem]
+|link:#/clojure_syntax[Syntax]
+|link:#/functions[Functions]
+|link:#/testing_with_clojure_test[Testing]
+|link:#/control_flow[Control Flow]
+|link:#/functional_programming[Functional Programming]
+|link:#/macros[Macros]
+|link:#/parallel_programming_and_concurrency[Concurrency]
+|link:#/java_interop[Java Interop]
+|link:#/polymorphism_and_types[Polymorphism]
+|link:#/interacting_with_a_database[Databases]
+|link:#/further_reading[Further reading]
+|===
+
+
+[state=title]
 == Introductions
 
 image:img/art1.jpg[]
@@ -39,15 +59,6 @@ image:img/clojure-logo.png[]
 * Functions
 * A tool for thought
 * Getting stuff done
-
-
-== Contents
-
-|===
-|Ecosystem|Syntax|Functions|Testing
-|Control Flow|Functional Programming|Macros|Concurrency
-|Java Interop|Polymorphism|Databases|Further reading
-|===
 
 
 == !
@@ -900,7 +911,7 @@ Common bad pattern:
         (+ x y)
         (inc x)))
 
-    (f 1 2 3 4 "5")
+    (f 1 2 3 4 "not a number")
     => 3
 
 
@@ -1208,7 +1219,7 @@ Test more
 
 True assertion:
 
-	(deftest my-test
+	(deftest inc-adds-one-test
 	  (is (= 2 (inc 1))))
 
 	=> Ran 1 tests containing 1 assertions.
@@ -1221,22 +1232,12 @@ True assertion:
 
 == False assertion
 
-	(deftest my-test
+	(deftest broken-test
 	  (is (= 1 (inc 1))))
 
-	=> FAIL in (my-test)
+	=> FAIL in (broken-test)
     expected: (= 1 (inc 1))
       actual: (not (= 1 2))
-
-Plugins for showing helpful diffs:
-
-* humane
-* ultra
-
-[NOTE.speaker]
---
-Insert examples!
---
 
 
 == Can use any truthy assertion
@@ -1258,6 +1259,26 @@ Insert examples!
           of the other two sides"))
 
 
+== Comparing complex values
+
+    expected: (= {:foo :bar, :baz :quux} {:foo :bar, :baz :quux} {:fo :bar, :baz :quux})
+      actual: (not (= {:foo :bar, :baz :quux} {:foo :bar, :baz :quux} {:fo :bar, :baz :quux}))
+
+Huh?
+
+
+== Humane test output plugin
+
+    expected: {:foo :bar, :baz :quux}
+      actual: {:fo :bar, :baz :quux}
+        diff: - {:foo :bar}
+              + {:fo :bar}
+
+`pjstadig/humane-test-output`
+
+See also `venantius/ultra`
+
+
 == Grouping assertions
 
     (deftest math-test
@@ -1274,11 +1295,11 @@ Insert examples!
 
 == are
 
-Concisely expresses multiple assertions
-
     (are [x y] (= x y)
          2 (+ 1 1)
          4 (* 2 2))
+
+Concisely expresses multiple assertions
 
 WARNING: Disadvantages
 
@@ -1287,7 +1308,7 @@ WARNING: Disadvantages
 * Line numbers are not preserved (harder to find the failing test)
 
 
-== Asserting exceptions
+== Should throw an exception
 
     (defn bad [x]
       (throw (ex-info "oh no" {})))
@@ -1359,7 +1380,9 @@ NOTE: `let` does not suffice, `str` is outside of scope
 * Replace any var using `with-redefs`
 * Disable dependencies during the test
 * Isolate particular behaviors
-* Test response to external failures
+* Test exceptional conditions
+** always throw
+** never throw
 
 
 == Debugging
