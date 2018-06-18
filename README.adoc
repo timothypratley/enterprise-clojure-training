@@ -3,19 +3,27 @@
 "Clojure is serious business!"
 -- Timothy Pratley
 
-This is a Clojure training course for Developers and Senior Developers working on Enterprise software.
-The site is hosted https://timothypratley.github.io/enterprise-clojure-training[here].
-See https://timothypratley.github.io/enterprise-clojure-training/manual.html[manual.html]
-or https://timothypratley.github.io/enterprise-clojure-training/manual.pdf[manual.pdf]
-for the course material, and https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[example code].
+A Clojure training course for Developers and Senior Developers working on Enterprise software.
+
+Please visit the https://timothypratley.github.io/enterprise-clojure-training[Website].
+
 A list of companies and individuals offering Clojure training is here https://clojure.org/community/training[this page].
+
+See https://timothypratley.github.io/enterprise-clojure-training/manual.html[manual.html].
+or https://timothypratley.github.io/enterprise-clojure-training/manual.pdf[manual.pdf].
+for the course material, and https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[example code].
 
 
 == Rationale
 
-Clojure has been in the "adopt" zone of the Thoughtworks tech radar for some time now.
+Clojure has been in the "adopt" zone of the Thoughtworks tech radar since 2014.
 But companies face the challenge of how to prepare their staff to be productive using Clojure.
 Creating a structured enterprise style course material will enable more people to offer Clojure courses suitable for companies wanting to adopt Clojure.
+
+
+== Usage
+
+Slides have https://github.com/hakimel/reveal.js/wiki/Keyboard-Shortcuts[Keyboard shortcuts].
 
 
 == Contributing
@@ -34,6 +42,8 @@ Asciidoctor provides excellent document producing features and allows slides to 
 
 When editing the material, there are many live preview tools to chooose from https://asciidoctor.org/docs/editing-asciidoc-with-live-preview[here].
 I use the IntelliJ plugin as it is simple to install and works well.
+There is also a `./watch.sh` command to build when the source file changes.
+The Web (Epiphany) browser reloads from disk when the HTML file changes.
 
 
 == Building

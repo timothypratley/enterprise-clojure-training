@@ -1266,17 +1266,12 @@ True assertion:
 
 Huh?
 
-
-== Humane test output plugin
-
     expected: {:foo :bar, :baz :quux}
       actual: {:fo :bar, :baz :quux}
         diff: - {:foo :bar}
               + {:fo :bar}
 
-`pjstadig/humane-test-output`
-
-See also `venantius/ultra`
+`pjstadig/humane-test-output` (or `venantius/ultra`)
 
 
 == Grouping assertions
@@ -1425,6 +1420,9 @@ We get the constructed object, with side-effects applied
 * Ask the REPL questions
 * Build small incremental functions
 * Write tests
+
+
+== Workflow demo
 
 
 == Exercises

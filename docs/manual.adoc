@@ -1022,8 +1022,8 @@ It should apply the same logic, but make use of the Megacorp data.
 
 image:img/testing.jpg[width=300]
 
-"The greatest test of courage on earth is to bear defeat without losing heart."
--- Robert Green Ingersoll
+"The problem is not that testing is the bottleneck. The problem is that you don’t know what’s in the bottle."
+-- Michael Bolton
 
 
 === Defining tests with deftest
