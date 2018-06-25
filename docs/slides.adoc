@@ -203,7 +203,7 @@ Repeat
 
 == Exercises
 
-Refer to manual section 1.4
+See manual end of section 1
 
 
 == Answers
@@ -675,7 +675,7 @@ Prefer newlines
 
 == Exercises
 
-See manual section 2.9
+See manual end of section 2
 
 
 == Answers
@@ -951,9 +951,9 @@ NOTE: Destructure defaults with `:or`
     {:keys [port protocol] :or {port 8080, protocol "http"]}
 
 
-== Keyword arguments - do not use
+== Keyword arguments
 
-Prevents users from passing a map of options
+WARNING: Inconvenient
 
     (def config (slurp "config.edn"))
     (apply f (apply concat config))
@@ -1026,14 +1026,19 @@ Terse, powerful expressions
            (* x x))
          [1 2 3 4])
 
-Named parameters; named purpose; stack traces
+[TIP]
+--
+Prefer `(fn)` form
 
-TIP: Prefer `(fn)` form
+* Named parameter
+* named purpose
+* stack traces
+--
 
 
 == Exercises
 
-See manual section 3.6
+See manual end of section 3
 
 
 == Answers
@@ -1124,36 +1129,43 @@ image:img/testing.jpg[]
 
 == deftest
 
+    (ns training.my-namespace-test
+      (:require [clojure.test :refer :all]))
+
     (deftest my-test
       (prn "My test ran"))
 
-Defines a function with no arguments
-
     (my-test)
+    => "My test ran"
+    nil
+
+Tests are functions with no input arguments
 
 
 == Defining tests with deftest
 
-* Tests are functions
-* Define tests in any namespace
+Can define tests in any namespace
 
-Convention:
+Convention: `*test*` dir mirrors `*src*` dir, append `*_test*`
 
-* `*test*/my_namespace_test.clj` <- `*src*/my_namespace.clj`
-* `*test*` dir mirrors `*src*` dir, append `*_test*`
+
+|===
+|`*test*/training/my_namespace_test.clj`
+|`*src*/training/my_namespace.clj`
+|===
 
 
 == Refer all
 
 Common to refer all symbols from `clojure.test` for convenience:
 
-    (ns my-namespace-test
+    (ns training.my-namespace-test
       (:require [clojure.test :refer :all]))
     (deftest ...)
 
 vs
 
-    (ns my-namespace-test
+    (ns training.my-namespace-test
       (:require [clojure.test :as test]))
     (test/deftest ...)
 
@@ -1165,13 +1177,15 @@ vs
     => "My test ran"
        Ran 0 tests containing 0 assertions.
        0 failures, 0 errors.
-       {:test 0, :pass 0, :fail 0, :error 0, :type :summary}
+       {:test 1, :pass 0, :fail 0, :error 0, :type :summary}
 
 Runs all tests in the current namespace
 
 Or if you want to test specific namespaces:
 
-    (run-tests 'my.namespace 'other.namespace)
+    (run-tests 'training.my-namespace
+               'training.other-namespace)
+
 
 == Command line testing
 
@@ -1180,7 +1194,7 @@ Or if you want to test specific namespaces:
     => "My test ran"
        Ran 0 tests containing 0 assertions.
        0 failures, 0 errors.
-       {:test 0, :pass 0, :fail 0, :error 0, :type :summary}
+       {:test 1, :pass 0, :fail 0, :error 0, :type :summary}
 
 Runs all tests in a project
 
@@ -1227,9 +1241,7 @@ Use lein-test-refresh like a REPL
 Test more
 
 
-== Assertions with is and are
-
-True assertion:
+== Assertions
 
 	(deftest inc-adds-one-test
 	  (is (= 2 (inc 1))))
@@ -1242,7 +1254,7 @@ True assertion:
 * Actual: result of invoking the function under test
 
 
-== False assertion
+== Failures
 
 	(deftest broken-test
 	  (is (= 1 (inc 1))))
@@ -1285,6 +1297,17 @@ Huh?
 
 `pjstadig/humane-test-output` (or `venantius/ultra`)
 
+== Humane test output
+
+`~/.lein/profiles.clj`:
+
+    {:user
+     {:dependencies
+      [[pjstadig/humane-test-output "0.8.3"]]
+      :injections
+       [(require 'pjstadig.humane-test-output)
+        (pjstadig.humane-test-output/activate!)]}}
+
 
 == Grouping assertions
 
@@ -1311,20 +1334,22 @@ Concisely expresses multiple assertions
 WARNING: Disadvantages
 
 * Easy to make an error in the syntax
-* Confusing
+* Overly terse
 * Line numbers are not preserved (harder to find the failing test)
 
 
 == Should throw an exception
 
-    (defn bad [x]
-      (throw (ex-info "oh no" {})))
+    (defn maybe-inc [x]
+      (if (= 42 x)
+        (throw (ex-info "oh no" {}))
+        (inc x)))
 
-    (deftest test-exception
+    (deftest test-maybe-inc-throws
       (is (thrown? Exception
-            (bad 42)))
+            (maybe-inc 42)))
       (is (thrown-with-msg? Exception #"oh no"
-            (bad 42))))
+            (maybe-inc 42))))
 
 
 == Test fixtures
@@ -1439,7 +1464,7 @@ We get the constructed object, with side-effects applied
 
 == Exercises
 
-See manual section 4.7
+See manual end of section 4
 
 
 == Answers
@@ -1575,7 +1600,7 @@ Special forms `try` `catch` `finally` and `throw`
 
 == Exercises
 
-See manual section 5.6
+See manual end of section 5
 
 
 == Answers
@@ -2254,7 +2279,7 @@ Datastructures as functions do too:
 
 == Exercises
 
-See manual section 6.6
+See manual end of section 6
 
 
 == Answers
@@ -2521,7 +2546,7 @@ TIP: Keep the macro small and offload form transformations to other functions
 
 == Exercises
 
-See manual section 7.5
+See manual end of section 7
 
 
 == Answers
@@ -3511,7 +3536,7 @@ However if you do not need to do such manipulation, I recommend using plain old 
 
 == Exercises
 
-See manual section 11.4
+See manual end of section 11
 
 
 == Answers

@@ -245,8 +245,12 @@ The main feature that sets Cursive apart is that it does error highlighting in t
 * Open the project we just created and launch a REPL.
 * Click file -> open and browse to the project.clj file in the directory.
 * In the file navigator, right click the project.clj file and select launch REPL.
-* Press control+shift+T to send a form to the REPL.
+* Tools -> REPL shows actions available
 * Press control+shift+A to see all actions available.
+* Press control+shift+T to send a form to the REPL.
+* Set up a macro:
+** [Make sure repl is running]
+** sync, load, change namespace
 
 Alternative: Lighttable (http://lighttable.com)
 
@@ -958,9 +962,9 @@ Create a new namespace called `fun-functions`. Define the following functions an
 :!sectnums:
 == Challenge 1: Corgi Cover eligibility
 
-Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy.
+Insuricorp is about to launch a marketing campaign for a new “corgi cover” insurance policy.
 Only certain people are eligible to register for “corgi cover”.
-To be eligible they must own a corgi, live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO).
+To be eligible they must own a corgi and live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO).
 You are tasked with building a system to validate applications for the policy.
 
 
@@ -1233,6 +1237,91 @@ This is also very useful when interacting with Java, because you can construct a
       (.put "a" 1)
       (.put "b" 2))
     => {"a" 1, "b" 2}
+
+
+=== Workflow
+
+To demonstrate these techniques in action let's walk through the first 2 parts of Challenge 1 from the manual.
+
+See <<Challenge 1: Corgi Cover eligibility>>
+
+`lein new corgi-cover` creates a new project.
+When we run the tests, one failure is shown.
+In order to use test-refresh we first need to install the plugin.
+Global plugins are defined in `~/.lein/profiles.clj`.
+I like to configure "changes only" because on large projects I will get more focused output.
+`lein test-refresh` listens for source code changes.
+
+I like to dock test refresh on the right hand side and open my editor on the left.
+I'll open the project in Idea.
+I can see the code side by side with the test output.
+When I make changes to the code and save, I see the results immediately.
+Changes in non-test namespaces also get reloaded.
+I don't have a REPL running, but I can still evaluate code immediately just by saving the file.
+Test refresh loads source files as they change rather than relying on editor integration.
+
+Let's set up a function to check eligibility for a Corgi Cover insurance policy.
+The rule limits the set of states available, and requires at least one corgi.
+The states are Illanois, Washington, New York and Colorado.
+Pressing control-q shows docinfo on a function.
+Control-p shows the parameter summary for a function.
+
+Printing the result of an expression in global scope is a handy way to experiment.
+This is quite useful because it replaces much of what I would otherwise do by sending forms to a REPL.
+I use `prn` because it is easy to search for and remove later.
+Add something attention grabbing to highlight the output in test refresh.
+Let's play around with some input values and see that we get the expected output.
+Once the function is doing what we want, we move this example into a test.
+Let's make sure that the test is effective by breaking it temporarily.
+Verifying that the test reports an error gives us confidence that the test is working correctly.
+
+Part 2 is about introducing platinum, gold, and silver tiers.
+The hint is to use cond to specify the conditions and return the appropriate tier.
+Platinum requires a corgi count of 7 or more, or you have 3 corgies and an existing policy.
+Note that the `>=` operator is used in prefix notation, which may seem confusing.
+My rule of thumb is to look at the `>` arrow direction as indicating "getting smaller".
+The arrow is pointing to the right, so values from left to right must get smaller.
+
+Let's introduce an error to the code.
+Test refresh detects the problem and will not run the tests until we fix it.
+Now let's see if we can get `:platinum` back from our function.
+If ineligible inputs are given we should return `nil`.
+We can use a shared definition of the eligible states, or call the `eligible?` function from part 1.
+
+The REPL is fantastic at answering questions, and we can do the same thing using test refresh.
+To confirm how `when` behaves we can experiment.
+We can now confidently wrap our `cond` in `when eligible?`.
+Let's add the logic for gold.
+Silver applies to any other eligible application.
+
+When debugging we might be interested in what the eligibility check is returning.
+We can wrap that form in a `doto prn` to spy on the intermediary result.
+Prepending a label helps me identify the output in the test refresh window.
+In some ways this is similar to creating a breakpoint.
+This approach is convenient because we don't need to restart anything manually.
+The working example is reloading as we make adjustments.
+
+We can capture more requirements in separate assertions.
+
+You can alternatively use a more REPL based approach.
+Let's start up a REPL in Idea.
+There is an action to run the tests in the current namespace.
+It highlights failures in the editor.
+We need to switch between the test and implementation namespace quite often.
+There is an action to assist with this called `goto test`.
+
+When working from a REPL it is convenient to create a commented form.
+The commented form can be sent to the REPL for evaluation.
+But if we forget to re-evaluate the function that the comment calls in the REPL,
+then any changes will not be active in the environment yet.
+I find it a little distracting to think about what needs to be evaluated.
+Delegating this responsibility to test refresh frees up my attention to focus on the code.
+
+
+
+
+
+** paredit etc
 
 
 === Exercises
