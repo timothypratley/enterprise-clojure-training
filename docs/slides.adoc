@@ -811,20 +811,20 @@ Function that captures values from the environment
 
 == Passing a function to another function
 
-* Functions are values
-* Can be passed as arguments to other functions
-* Functions that take a function as an argument are called higher order functions
-
     (defn do-triple [f]
-      (f) (f) (f))
+      (f)
+      (f)
+      (f))
 
-    (do-triple #(println "hot"))
-    => hot
-    hot
-    hot
+    (do-triple #(print "hot "))
+    => hot hot hot nil
+
+* Functions are values
+* Can be passed to other functions
+* Functions that take a function are called "higher order functions"
 
 
-== Map - the function named 'map'
+== Mapping a function over a sequence
 
 WARNING: `map` the function, not `hash-map` the data structure
 
@@ -838,7 +838,8 @@ WARNING: `map` the function, not `hash-map` the data structure
 
 * Don't need to create global definitions
 
-== Map continued (1)
+
+== Map
 
     (defn greet-them [person]
       (str "Hello " person))
@@ -848,14 +849,16 @@ WARNING: `map` the function, not `hash-map` the data structure
 
 * Using pre-defined functions is easy and readable
 
-== Map continued (2)
+
+== Map
 
     (let [x 5]
       (map #(+ x %) [1 2 3]))
     => (6 7 8)
 
 * Higher order function
-* Unnamed closures are useful as arguments to higher order functions
+* Closure as argument to higher order function
+* Source of expressiveness
 
 
 == Inline named functions
@@ -955,7 +958,7 @@ NOTE: Destructure defaults with `:or`
 
 WARNING: Inconvenient
 
-    (def config (slurp "config.edn"))
+    (def config (edn/read-string (slurp "config.edn")))
     (apply f (apply concat config))
 
 Pass a map instead
@@ -1505,8 +1508,8 @@ image:img/control.jpg[]
 == Conditionals: if
 
     (if (pos? 1)
-      (println "one is positive")
-      (println "or is it?"))
+      "one is positive"
+      "or is it?")
     => "one is positive"
 
 * Chooses between two options
@@ -1519,9 +1522,11 @@ image:img/control.jpg[]
 
     (when (pos? 1)
       (println "one is positive")
-      (println "multiple expressions allowed"))
-    => "one is positive"
-       "multiple expressions allowed"
+      (println "multiple expressions allowed")
+      :ok)
+    => one is positive
+       multiple expressions allowed
+       :ok
 
 * Executes code only when a condition is met
 * When test fails, nothing is evaluated
@@ -1664,7 +1669,7 @@ image:img/functional.jpg[]
 -- Yves Behar
 
 
-== Functions
+== Functions recap
 
 Functions always return a value
 
@@ -1807,9 +1812,11 @@ Alternatively:
     => (1 1/2 1/3 1/4)
 
 
-== Functions on sequences: map, reduce, and friends
+== Functions on sequences
 
-To embrace Clojure is to think in sequences and data structures
+To embrace Clojure
+
+is to think in sequences and data structures
 
 
 == Sequences
@@ -1841,7 +1848,7 @@ Limit the number of items to consume:
     (take 5 (range))
     => (0 1 2 3 4)
 
-    (drop 5 (take 5 (range)))
+    (take 5 (drop 5 (range)))
     => (5 6 7 8 9)
 
 
@@ -1887,14 +1894,14 @@ Prefer `(seq xs)` over `(not (empty? xs))`
 
 == map
 
-`map` is a function that calls another function for every element in a sequence:
+`map` calls a function for every element in a sequence:
 
 	(map inc [1 2 3 4])
 	=> (2 3 4 5)
 
 * `map` `inc` over `[1 2 3 4]`
-* The result is a sequence of the increment of each number in `[1 2 3 4]`
-* Not to be confused with hash-maps
+* Result is a sequence
+* Not to be confused with the map datastructure
 * Name is similar, behavior is similar keys -> values
 
 
@@ -1934,7 +1941,9 @@ Reduce takes a function, initial value, and sequence:
     (reduce * 1 [2 3 4])
     => 24
 
-Performs `(* 1 2)`, then `(* 3)`, then `(* 4)`. Multiplication called 3 times
+Performs `(* 1 2)`, then `(* 3)`, then `(* 4)`
+
+Multiplication called 3 times
 
     (reduce * [1 2 3 4])
     => 24
@@ -1971,6 +1980,7 @@ add map example
 * 3 letter words ["the" "fox"]
 * 5 letter words ["quick" and "brown"]
 * Can we do this with reduce?
+* `frequencies`
 
 
 == Sequences are loop abstractions
@@ -2005,7 +2015,7 @@ add map example
 
 == Sequences and lambda expressions
 
-Recall the special form `#()` for anonymous functions:
+Anonymous functions:
 
     #(< % 3)
 
@@ -2017,9 +2027,7 @@ Handy for adding small snippets of logic:
 	(map #(if (odd? %) "odd" "even") [1 2 3 4 5])
 	=> ("odd" "even" "odd" "even" "odd")
 
-* more concise than loops
-* more descriptive than loops
-* composable
+More concise, descriptive, composable than loops
 
 
 == Creating sequences
@@ -2036,7 +2044,7 @@ Handy for adding small snippets of logic:
 
 == Transpose
 
-    (map vector [1 2 3] [4 5 6])
+    (apply map vector [[1 2 3] [4 5 6]])
     => [[1 4]
         [2 5]
         [3 6]]
@@ -2059,8 +2067,6 @@ Imagine two identical sequences offset slightly:
 	  [1 2 3 4 5]
 	[1 2 3 4 5]
 
-The overlapping values are the pairs we want
-
 
 == map over both sequences
 
@@ -2069,7 +2075,7 @@ Recall that `map` can take multiple sequences:
     (map + [1 3] [2 4])
     => (3 7)
 
-`rest` is a function which returns the input sequence without its first element:
+`rest`:
 
     (def v [1 2 3 4 5])
     (rest v)
@@ -2086,18 +2092,16 @@ Put them together:
 	v        => (1 2 3 4 5)
 	(rest v) => (2 3 4 5)
 
-* Sequences were of different lengths
-* `map +` stopped when the smallest sequence was exhausted
-* The result was a new sequence of the pairwise sums:
+* Sequences are of different lengths
+* map stops when the smallest sequence is exhausted
+* Produces a new sequence of the pairwise sums:
 
 	(3 5 7 9)
 
 
 == Sequences beat loops
 
-Better than loops?
-
-* Loop requires comprehend the entire block of code
+* Must comprehend the entire loop
 * Loop bodies grow and change -> more complexity
 * Loop “off by one” mistakes
 * Testing loops requires invasion
@@ -2269,7 +2273,7 @@ Instead of
 `get` can be passed a `not-found` value:
 
     (get {} :a "default")
-    => "default
+    => "default"
 
 Datastructures as functions do too:
 
@@ -2367,38 +2371,66 @@ image:img/macros.jpg[]
 -- Frank Ocean
 
 
+== Macros defn
+
+    (def square
+      (fn [x]
+        (* x x)))
+
+rearranged
+
+    (defn square [x]
+      (* x x))
+
+
+== Macro when
+
+    (if (< x 2)
+      (do
+        (println "It's less than 2!")
+        :ok))
+
+rearranged
+
+    (when (< x 2)
+      (println "It's less than 2!")
+      :ok)
+
+
 == Macros
 
-`defn` is a macro
-
-    (defn square [x] (* x x))
-
-Expands to a `def` and `fn` form:
-
-    (def square (fn [x] (* x x)))
-
-
-== Macros
-
+* Arguments manipulated at compile time
+* Arguments not evaluated
 Macros allow us to extend the syntax of Clojure
-
-* Macro arguments are manipulated at compile time
-* Not evaluated
-* Less useful than functions
-** Cannot be passed to higher order functions
 
 
 == Expanding macros
 
 * Macros expand to produce new code
 * The form is expanded at compile time
-* Examine the expansion using `macroexpand-1`
+
+Expansion:
 
     (macroexpand-1 '(defn square [x] (* x x)))
     => (def my-namespace/square
          (clojure.core/fn
            ([my-namespace/x]
-            (clojure.core/* my-namespace/x my-namespace/x))))
+            (clojure.core/*
+              my-namespace/x my-namespace/x))))
+
+
+== Macro drawbacks
+
+    and
+    => CompilerException: Can't take value of a macro
+
+    (map and [true false] [true true])
+    => CompilerException: Can't take value of a macro
+
+
+* Not values
+* Cannot be passed to higher order functions
+* Less useful than functions
 
 
 == Defining macros
@@ -2432,18 +2464,10 @@ vs
 
 == Macros
 
-Macros are functions with a `:macro` flag set in their metadata
-
-* Causes macros to be passed in the input forms unevaluated
-* Caused the result to be evaluated
-
-
-== But what are they?
-
-* Manipulate the operand forms
-* Do not evaluate the input forms
-* Not functions
-* Cannot be passed to other functions
+* Have a `:macro` flag set in metadata
+* Passed the input forms unevaluated
+* Compiler replaces form
+* Clojure evaluation occurs on the expanded form
 
 
 == Syntax quoting
@@ -2468,6 +2492,7 @@ l|`|Back-quote|Fully qualified quote
 l|~|Unquote|Insert a value
 l|~@|Unquote-splicing|Insert a sequence
 |===
+
 
 == Why fully qualify?
 
@@ -2508,8 +2533,6 @@ WARNING: The parameter name collided with the implementation
 
 == Gensyms
 
-Gensyms produce a randomly named binding:
-
     (defmacro good [expr]
       `(let [a# 1]
          (inc ~expr)))
@@ -2518,10 +2541,11 @@ Gensyms produce a randomly named binding:
     (good 0)
     => 1
 
-The `let` binding `a#` expands to a randomly generated symbol
+`a#` expands to a randomly generated symbol
 
     (macroexpand-1 '(good a))
-    => (clojure.core/let [a__6500__auto__ 1] (clojure.core/inc a))
+    => (clojure.core/let [a__6500__auto__ 1]
+         (clojure.core/inc a))
 
 
 == Code as data
@@ -2544,6 +2568,14 @@ When working on a non-trivial macro a good strategy is:
 TIP: Keep the macro small and offload form transformations to other functions
 
 
+== Macro summary
+
+* Manipulate the operand forms
+* Do not evaluate the input forms
+* Not functions
+* Cannot be passed to other functions
+
+
 == Exercises
 
 See manual end of section 7
@@ -2551,7 +2583,7 @@ See manual end of section 7
 
 == Answers
 
-    (defmacro ignore  [expr]  nil)
+    (defmacro ignore [expr] nil)
 
     (defmacro when2 [test & body]
       (list 'if test (cons 'do body))
@@ -2563,8 +2595,6 @@ See manual end of section 7
       `(let [result# ~expr]
          (println "Expression" '~expr "has value" result#)
          result#))
-    => Expression (* 2 3) has value 6
-       7
 
     (macroexpand-1 '(spy (* 2 3)))
     => (clojure.core/let [result__6418__auto__ (* 2 3)]
@@ -2572,7 +2602,11 @@ See manual end of section 7
            "Expression" (quote (* 2 3))
            "has value" result__6418__auto__)
          result__6418__auto__)
+
     (+ 1 (spy (* 2 3)))
+    => Expression (* 2 3) has value 6
+       7
+
 
 
 == Answers
