@@ -1588,8 +1588,34 @@ Recursion which avoids consuming the stack
 
 * Loop establishes bindings
 * Allows recur to the start of the loop
-* Can be expressed as functions
+* Can almost always be expressed as functions
 
+[NOTE.speaker]
+--
+Example of a situation in which loop becomes necessary:
+
+If you want to print the duplicates of a collection, you can use `distinct`.  If
+you want to print just the values that appear more than / only once, you can use
+`frequencies`.
+
+But if want to print only the repeat occurrences of distinc tvalues in a
+collection (skip the 1st, print the 2nd, 3rd, etc.), then it gets more complex.
+You need to keep track of which values have been seen so far when visiting each
+element, so `map` is not sufficient.  `reduce` avoids that problem since it has
+an accumulator, but since you need to return a seq in the end while keeping
+track of previously seen values, `reduce` is more awkward than just using `loop`
+here.
+
+(loop [unseen-vals original-vals
+       seen-val-set #{}
+       repeat-occurrences []]
+  (if (empty? unseen-vals)
+    repeat-occurrences
+    (let [next-val (first unseen-vals)]
+      (if (contains? seen-val-set next-val)
+        (recur (rest unseen-vals) seen-val-set (conj repeat-occurrences next-val))
+        (recur (rest unseen-vals) (conj seen-val-set next-val) repeat-occurrences)))))
+--
 
 == Exception handling
 
