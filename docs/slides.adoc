@@ -2371,82 +2371,137 @@ image:img/macros.jpg[]
 -- Frank Ocean
 
 
-== Macros defn
+== Macro defn
 
     (def square
       (fn [x]
         (* x x)))
 
-rearranged
+Rearranged
 
     (defn square [x]
       (* x x))
 
+* Syntactic sugar
+* Extend the syntax of Clojure
 
-== Macro when
+
+== Macros do things functions cannot
 
     (if (< x 2)
       (do
         (println "It's less than 2!")
         :ok))
 
-rearranged
+Rearranged
 
     (when (< x 2)
       (println "It's less than 2!")
       :ok)
 
-
-== Macros
-
 * Arguments manipulated at compile time
 * Arguments not evaluated
-Macros allow us to extend the syntax of Clojure
+* Cannot be replaced by a function
 
 
-== Expanding macros
-
-* Macros expand to produce new code
-* The form is expanded at compile time
-
-Expansion:
-
-    (macroexpand-1 '(defn square [x] (* x x)))
-    => (def my-namespace/square
-         (clojure.core/fn
-           ([my-namespace/x]
-            (clojure.core/*
-              my-namespace/x my-namespace/x))))
-
-
-== Macro drawbacks
+== Functions do things macros cannot
 
     and
     => CompilerException: Can't take value of a macro
 
-    (map and [true false] [true true])
+    (map and [true false]
+             [true true])
     => CompilerException: Can't take value of a macro
 
 
-* Not values
+* Macros are not values
 * Cannot be passed to higher order functions
 * Less useful than functions
 
 
+== Expanding defn
+
+    (macroexpand-1
+      '(defn square [x]
+         (* x x)))
+    => (def square
+         (clojure.core/fn ([x] (* x x))))
+
+Manual expansion shows what a macro does
+
+
+== Macros produce code
+
+* Functions that manipulate code
+* Have a `:macro` flag set in metadata
+* Passed input forms unevaluated
+* Replaces the form at compile time
+
+
+== Using macros
+
+    (map
+      (fn maybe-ok [x]
+        (when (< x 2)
+          :ok))
+      (range 4))
+    => (:ok :ok nil nil)
+
+* `when` is only expanded once
+* The form is expanded at compile time
+* `maybe-ok` function is compiled to bytecode
+
+
 == Defining macros
 
+    (defmacro infix [[operand1 op operand2]]
+      (list op operand1 operand2))
+
+    (infix (1 + 1))
+    => 2
+
+    (macroexpand '(infix (1 + 1)))
+    => (+ 1 1)
+
+
+== Defining macros
+
+    (defmacro my-when [test & body]
+      (list 'if test (cons 'do body)))
+
+    (macroexpand-1
+      '(my-when (< x 1)
+         (println "hi")
+         :ok))
+    => (if (< x 1)
+         (do
+           (println "hi")
+           :ok))
+
+NOTE: `test` and `body` are values, `if` and `do` are symbols
+
+[NOTE.speaker]
+--
+Review quote
+--
+
+
+== Macros using arguments
+
     (defmacro zen1 [x]
-      (println "x:" x) x)
+      (println "x:" x)
+      x)
     (zen1 (+ 1 2))
-    => x:(+ 1 2)
+    => x: (+ 1 2)
     3
 
 vs
 
     (defn zen2 [x]
-      (println "x:" x) x)
+      (println "x:" x)
+      x)
     (zen2 (+ 1 2))
-    => x:3
+    => x: 3
     3
 
 [NOTE.speaker]
@@ -2457,17 +2512,8 @@ vs
 * But the final result was `3`
 * The list was evaluated as a function call to `+`
 * resulting in `3`
-
 * The input to `zen2` was the result of evaluating the list
 --
-
-
-== Macros
-
-* Have a `:macro` flag set in metadata
-* Passed the input forms unevaluated
-* Compiler replaces form
-* Clojure evaluation occurs on the expanded form
 
 
 == Syntax quoting
@@ -2496,8 +2542,6 @@ l|~@|Unquote-splicing|Insert a sequence
 
 == Why fully qualify?
 
-Symbols may have another meaning in the context:
-
     (defmacro m1 []
       '(inc 1))
 
@@ -2510,10 +2554,11 @@ Symbols may have another meaning in the context:
 
     => {:m1 0, :m2 2}
 
-Syntax quote avoids colliding with the `let` bindings
+* Symbols have contextual meaning
+* Macros are defined with no context
 
 
-== Another source of collisions
+== Another source of naming collisions
 
     (defmacro bad [expr]
       (list 'let '[a 1]
@@ -2528,7 +2573,6 @@ WARNING: The parameter name collided with the implementation
 
     (macroexpand-1 '(bad a))
     => (let [a 1] (inc a))
-
 
 
 == Gensyms
@@ -2548,6 +2592,29 @@ WARNING: The parameter name collided with the implementation
          (clojure.core/inc a))
 
 
+== Macro strategy
+
+When working on a non-trivial macro a good strategy is:
+
+* Step 1: Write a function!
+* Step 2: Call your function from the macro
+
+TIP: Keep the macro small and offload form transformations to other functions
+
+
+== When should I write a macro?
+
+Almost never
+
+To provide new syntax: core.async
+
+    (def echo-chan (chan))
+    (go (println (<! echo-chan)))
+    (>!! echo-chan "hello")
+    => true
+    hello
+
+
 == Code as data
 
 * Really writing a function that produces code
@@ -2556,16 +2623,17 @@ WARNING: The parameter name collided with the implementation
 * Homoiconic means that the language text has the same structure as its abstract syntax tree (AST)
 * Code in the language can be transformed as data using the same representation
 * Nested code is well represented as a data structure
+* Language can be extended
+* Lisp "syntax" underpins Clojure "syntax"
 
 
-== Macro stragegy
+== Reading macros is a useful skill
 
-When working on a non-trivial macro a good strategy is:
-
-* Step 1: Write a function!
-* Step 2: Call your function from the macro
-
-TIP: Keep the macro small and offload form transformations to other functions
+* Macros are common in clojure.core and libraries
+* Macros can have surprising behavior
+* Debugging
+** Identifying macros
+** Expanding macros
 
 
 == Macro summary
@@ -2606,7 +2674,6 @@ See manual end of section 7
     (+ 1 (spy (* 2 3)))
     => Expression (* 2 3) has value 6
        7
-
 
 
 == Answers
