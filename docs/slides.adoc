@@ -1694,7 +1694,7 @@ Functions always return a value
 
 * Not a pure function
 * Returns a useful result, but changes every time
-* Modifying a hidden state
+* Modifying a hidden state (or based on it)
 
 == Side effects
 
@@ -1720,12 +1720,23 @@ Functions always return a value
 * `conj` returns a new vector value
 
 
-== Persistent data structures
+== Persistent immutable data structures
 
 * Clojure implements efficient immutable data structures
 * Creating derivative values is cheap
 * Using a Java vector would require duplicating the vector
 * Clojure uses shared structure
+
+[NOTE.speaker]
+--
+Persistent + Immutable FTW!
+
+- Just immutable w/o persistent in Java - Guava collections (nice, but add/
+remote ops deprecated b/c of performance reasons)
+- Just persistent w/o immutable in Java - no popular, solid solutions. Perhaps
+less a problem for complex bugs in the wild than immutability, if you had to
+choose one but not the other.
+--
 
 
 == Pure functions are desirable
