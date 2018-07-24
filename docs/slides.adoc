@@ -3126,38 +3126,35 @@ image:img/types.jpg[]
 -- Joe Louis
 
 
-== Multimethods
+== Defining a multimethod
 
-Polymorphic dispatch. Define the name of the multimethod and the dispatch function:
+Polymorphic dispatch. Define the name and the dispatch function:
 
     (defmulti encounter
       (fn dispatch [x y]
         [(:species x) (:species y)]))
 
-Provide methods implementing functions to execute for a given dispatch value:
+
+== Defining method implementations
+
+Provide methods to execute for a given dispatch value:
 
     (defmethod encounter [:bunny :lion] [x y] :run-away)
     (defmethod encounter [:lion :bunny] [x y] :eat)
     (defmethod encounter [:lion :lion] [x y] :fight)
     (defmethod encounter [:bunny :bunny] [x y] :mate)
 
-* Between a case statement and a function definition
-* Conditions under which to be called, and a function definition
 * Given a dispatch result of `[:bunny :lion]`, the first method will be called
 * `x` and `y` are inputs to the function
 * Unused in this example
 
 
-== Multimethods
-
-Test data
+== Calling the multimethod
 
     (def bunny1 {:species :bunny, :other :stuff})
     (def bunny2 {:species :bunny, :other :stuff})
     (def lion1 {:species :lion, :other :stuff})
     (def lion2 {:species :lion, :other :stuff})
-
-Call the multimethod
 
     (encounter bunny1 bunny2)
     => :mate
@@ -3170,9 +3167,10 @@ Call the multimethod
 
 == Multimethods
 
-Keywords are functions
-
-Common to use a keyword as a dispatch function
+* Between a case statement and a function definition
+* Conditions under which to be called, and a function definition
+* Keywords are functions
+* Common to use a keyword as a dispatch function
 
     (defmulti draw :shape)
 
@@ -3191,7 +3189,7 @@ A named set of named methods and their signatures:
 * The functions dispatch on the type of their first argument
 * Must have at least one argument
 
-deftype, defrecord, or reify support protocols directly:
+== deftype supports protocols directly
 
     (defprotocol P
       (foo [x])
@@ -3206,6 +3204,9 @@ deftype, defrecord, or reify support protocols directly:
     (bar-me (Foo. 1 2 3) 42)
     => 45
 
+
+== and reify
+
     (foo
      (let [x 42]
        (reify P
@@ -3218,8 +3219,7 @@ deftype, defrecord, or reify support protocols directly:
 == defprotocol
 
 * Dynamic
-* Generates a corresponding interface, with the same name as the protocol
-* The interface will have methods corresponding to the protocol functions
+* Generates a corresponding interface with the same name
 * The protocol will automatically work with instances of the interface
 * A Java client can implement the protocol-generated interface
 
@@ -3235,8 +3235,6 @@ deftype, defrecord, or reify support protocols directly:
         {...}
     ...)
 
-* Extends the polymorphism of the protocol's methods
-* Will call the supplied functions when an AType is provided as the first argument
 * The `fn` can presume first argument is instanceof `AType`
 * You can implement a protocol on `nil`
 * Default implementation of protocol with `Object`
@@ -3285,14 +3283,14 @@ Expands into:
 	(ns training.core
 	  (:import (java.net FileNameMap)))
 
-    (defrecord Thing [a]
-      FileNameMap
-      (getContentTypeFor [this fileName] (str a "-" fileName)))
+    (defrecord Thing [a] FileNameMap
+      (getContentTypeFor [this fileName]
+        (str a "-" fileName)))
 
 * Defines a record named `Thing`
 * single field `a`
-* Implements `FileNameMap` interface
-* Implements `String getContentTypeFor(String fileName)`
+* `FileNameMap` interface
+* `String getContentTypeFor(String fileName)`
 
 
 == record constructor
