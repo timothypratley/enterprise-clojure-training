@@ -31,8 +31,8 @@ image:img/corgi.jpg[]
 |link:#/control_flow[Control Flow]
 |link:#/functional_programming[Functional Programming]
 |link:#/macros[Macros]
-|link:#/parallel_programming_and_concurrency[Concurrency]
 |link:#/java_interop[Java Interop]
+|link:#/parallel_programming_and_concurrency[Concurrency]
 |link:#/polymorphism_and_types[Polymorphism]
 |link:#/interacting_with_a_database[Databases]
 |link:#/further_reading[Further reading]
@@ -2617,13 +2617,12 @@ To provide new syntax: core.async
 
 == Code as data
 
-* Really writing a function that produces code
-* The output is code... as data
-* We manipulate code... as data
-* Homoiconic means that the language text has the same structure as its abstract syntax tree (AST)
-* Code in the language can be transformed as data using the same representation
+* Functions that produce code
+* Manipulate code... as data
+* Homoiconic: the language text has the same structure as its abstract syntax tree
+* Code transformed using the same representation
 * Nested code is well represented as a data structure
-* Language can be extended
+* Language can be extended conveniently
 * Lisp "syntax" underpins Clojure "syntax"
 
 
@@ -2694,7 +2693,86 @@ Often good to start with an example and customize
 
 
 [state=title]
-== 8. Parallel Programming and Concurrency
+== 8. Java Interop
+
+image:img/interop.jpg[]
+
+"Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
+-- Libba Bray
+
+
+== Clojure syntax for Java constructors
+
+Constructing a Java object is done by appending a period to the class identifier:
+
+    (ns training.core
+      (:import [java.util Date]))
+
+    (Date.)
+    (Date. 2018 02 17)
+
+Which is equivalent to the less used variant:
+
+    (new Date)
+    (new Date 2018 02 17)
+
+
+== Calling methods
+
+Calling a method on a Java object done by prepending a leading period:
+
+    (.length "hello world")
+    (.isDirectory (java.io.File. "my-dir"))
+
+Which is equivalent to the less used variant:
+
+    (. "hello world" length)
+    (. (java.io.File. "my-dir") isDirectory)
+
+Java static method calls are accessed by slash:
+
+    (Math/pow 1 2)
+    (.print System/out "hi")
+
+Inner classes can be accessed using the dollar symbol:
+
+    java.nio.channels.FileChannel$MapMode/READ_ONLY
+
+
+== reify
+
+`reify` creates an object that conforms to an interface:
+
+    (.listFiles (java.io.File. ".")
+      (reify
+        java.io.FileFilter
+        (accept [this f]
+          (.isDirectory f))))
+
+Notice that we did not define a class?
+
+
+== gen-class and proxy
+
+`gen-class` creates a class. In practise the need to create a class from within Clojure is rare, so we won't be covering the syntax.
+(see https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html if you want to explore this further)
+
+`proxy` can be used to extend a concrete superclass. Again the need for this is rare.
+(see https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html if you want to explore this further)
+
+
+== Including Java classes in Clojure projects
+
+You can define Java classes in Java in a separate directory and add
+
+    :java-source-paths ["java-src"]
+
+To your `project.clj` file
+(See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
+
+
+[state=title]
+== 9. Parallel Programming and Concurrency
 
 image:img/parallel.jpg[]
 
@@ -2702,22 +2780,43 @@ image:img/parallel.jpg[]
 -- Friedrich August von Hayek
 
 
+== Based on Java Threads
+
+(.start (Thread. (fn []
+
+
 == Vars and dynamic scope
 
-    (def one-hundred 100)
-    => #'training.core-test/one-hundred
+`def` returns a var
 
-    (var one-hundred)
-    => #'training.core-test/one-hundred
+    (def a 1)
+    => #'user/a
 
-    (deref #'one-hundred)
+See the var associated with a symbol using `var`
+
+    (var a)
+    => #'user/a
+
+`#'` is shorthand for `(var)`
+
+    #'one
+    => #'user/one
+
+== Vars (2)
+
+    (deref #'a)
     => 100
 
-* Vars are automatically derefed when evaluated
-* Behavi a variable
-* See the var itself using the var function or #' shorthand
+Deref gets the value associated with a var
+
+    (#'inc 1)
+    => 2
+
+Vars are automatically derefed when in the function call position
+
+* Global mutable state, like a variable
 * Functions defined with defn are stored in Vars
-* Allows the re-definition of functions at runtime
+* Allows re-definition of functions at runtime
 
 
 == Metadata
@@ -2731,7 +2830,7 @@ Metadata provided using `^{}`
 
     (def x ^{:private true} 1)
 
-You can attach whatever metadata you wish. These are the keys the compiler looks for:
+Attach whatever metadata you wish. Compiler looks for:
 
     :private
     :doc
@@ -2741,24 +2840,26 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 
 == Dynamic vars
 
-* By default Vars are static
-* Can be marked as dynamic to allow per-thread bindings
-* Per thread they obey a stack discipline
-
 	(def ^:dynamic x 1)
 	(def ^:dynamic y 1)
 	(+ x y)
 	=> 2
 
-	(binding [x 2 y 3]
+* Vars can be marked as dynamic to allow per-thread bindings
+* By default Vars are static
+* Bindings cannot be seen by any other thread
+
+== Binding dynamic vars
+
+	(binding [x 2
+	          y 3]
 	         (+ x y))
 	=> 5
 
 	(+ x y)
 	=> 2
 
-
-* Bindings cannot be seen by any other thread
+* Per thread they obey a stack discipline
 * Bindings can be assigned to
 
 
@@ -2914,85 +3015,6 @@ You can attach whatever metadata you wish. These are the keys the compiler looks
 == Exercises
 
 See manual section Challenge 3
-
-
-[state=title]
-== 9. Java Interop
-
-image:img/interop.jpg[]
-
-"Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
--- Libba Bray
-
-
-== Clojure syntax for Java constructors
-
-Constructing a Java object is done by appending a period to the class identifier:
-
-    (ns training.core
-      (:import [java.util Date]))
-
-    (Date.)
-    (Date. 2018 02 17)
-
-Which is equivalent to the less used variant:
-
-    (new Date)
-    (new Date 2018 02 17)
-
-
-== Calling methods
-
-Calling a method on a Java object done by prepending a leading period:
-
-    (.length "hello world")
-    (.isDirectory (java.io.File. "my-dir"))
-
-Which is equivalent to the less used variant:
-
-    (. "hello world" length)
-    (. (java.io.File. "my-dir") isDirectory)
-
-Java static method calls are accessed by slash:
-
-    (Math/pow 1 2)
-    (.print System/out "hi")
-
-Inner classes can be accessed using the dollar symbol:
-
-    java.nio.channels.FileChannel$MapMode/READ_ONLY
-
-
-== reify
-
-`reify` creates an object that conforms to an interface:
-
-    (.listFiles (java.io.File. ".")
-      (reify
-        java.io.FileFilter
-        (accept [this f]
-          (.isDirectory f))))
-
-Notice that we did not define a class?
-
-
-== gen-class and proxy
-
-`gen-class` creates a class. In practise the need to create a class from within Clojure is rare, so we won't be covering the syntax.
-(see https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html if you want to explore this further)
-
-`proxy` can be used to extend a concrete superclass. Again the need for this is rare.
-(see https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html if you want to explore this further)
-
-
-== Including Java classes in Clojure projects
-
-You can define Java classes in Java in a separate directory and add
-
-    :java-source-paths ["java-src"]
-
-To your `project.clj` file
-(See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
 
 
 == Challenge 3: Mocking parallel web requests

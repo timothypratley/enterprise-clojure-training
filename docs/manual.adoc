@@ -2201,6 +2201,87 @@ Create the following macros and test cases:
              (if or# or# (or ~@next)))))
 
 
+== Java Interop
+
+image:img/interop.jpg[width=300]
+
+"Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
+-- Libba Bray
+
+
+=== Clojure syntax for Java constructors
+
+Constructing a Java object is done by appending a period to the class identifier:
+
+    (ns training.core
+      (:import [java.util Date]))
+
+    (Date.)
+    (Date. 2018 02 17)
+
+Which is equivalent to the less used variant:
+
+    (new Date)
+    (new Date 2018 02 17)
+
+
+=== Calling methods
+
+Calling a method on a Java object done by prepending a leading period:
+
+    (.length "hello world")
+    (.isDirectory (java.io.File. "my-dir"))
+
+Which is equivalent to the less used variant:
+
+    (. "hello world" length)
+    (. (java.io.File. "my-dir") isDirectory)
+
+Java static method calls are accessed by slash:
+
+    (Math/pow 1 2)
+    (.print System/out "hi")
+
+Inner classes can be accessed using the dollar symbol:
+
+    java.nio.channels.FileChannel$MapMode/READ_ONLY
+
+
+=== reify
+
+`reify` creates an object that conforms to an interface:
+
+    (.listFiles (java.io.File. ".")
+      (reify
+        java.io.FileFilter
+        (accept [this f]
+          (.isDirectory f))))
+
+Notice that we didn't define a class? We directly created an object that conforms to the `FileFilter` interface.
+`reify` is a convenient way to provide a concrete implementation of an interface.
+
+
+=== gen-class and proxy
+
+`gen-class` creates a class.
+In practice the need to create a class from within Clojure is rare, so we won't be covering the syntax.
+(see https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html if you want to explore this further)
+
+`proxy` can be used to extend a concrete superclass.
+Again the need for this is rare.
+(see https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html if you want to explore this further)
+
+
+=== Including Java classes in Clojure projects
+
+You can define Java classes in Java in a separate directory and add
+
+    :java-source-paths ["src/java"]
+
+To your `project.clj` file
+(See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
+
+
 == Parallel Programming and Concurrency
 
 image:img/parallel.jpg[width=300]
@@ -2403,87 +2484,6 @@ No user-code locking is involved.
 
 Note that use of Agents starts a pool of non-daemon background threads that will prevent shutdown of the JVM.
 Use shutdown-agents to terminate these threads and allow shutdown.
-
-
-== Java Interop
-
-image:img/interop.jpg[width=300]
-
-"Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
--- Libba Bray
-
-
-=== Clojure syntax for Java constructors
-
-Constructing a Java object is done by appending a period to the class identifier:
-
-    (ns training.core
-      (:import [java.util Date]))
-
-    (Date.)
-    (Date. 2018 02 17)
-
-Which is equivalent to the less used variant:
-
-    (new Date)
-    (new Date 2018 02 17)
-
-
-=== Calling methods
-
-Calling a method on a Java object done by prepending a leading period:
-
-    (.length "hello world")
-    (.isDirectory (java.io.File. "my-dir"))
-
-Which is equivalent to the less used variant:
-
-    (. "hello world" length)
-    (. (java.io.File. "my-dir") isDirectory)
-
-Java static method calls are accessed by slash:
-
-    (Math/pow 1 2)
-    (.print System/out "hi")
-
-Inner classes can be accessed using the dollar symbol:
-
-    java.nio.channels.FileChannel$MapMode/READ_ONLY
-
-
-=== reify
-
-`reify` creates an object that conforms to an interface:
-
-    (.listFiles (java.io.File. ".")
-      (reify
-        java.io.FileFilter
-        (accept [this f]
-          (.isDirectory f))))
-
-Notice that we didn't define a class? We directly created an object that conforms to the `FileFilter` interface.
-`reify` is a convenient way to provide a concrete implementation of an interface.
-
-
-=== gen-class and proxy
-
-`gen-class` creates a class.
-In practice the need to create a class from within Clojure is rare, so we won't be covering the syntax.
-(see https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html if you want to explore this further)
-
-`proxy` can be used to extend a concrete superclass.
-Again the need for this is rare.
-(see https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html if you want to explore this further)
-
-
-=== Including Java classes in Clojure projects
-
-You can define Java classes in Java in a separate directory and add
-
-    :java-source-paths ["src/java"]
-
-To your `project.clj` file
-(See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
 
 
 :!sectnums:
