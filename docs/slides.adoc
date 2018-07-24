@@ -2706,7 +2706,7 @@ image:img/interop.jpg[]
 Constructing a Java object is done by appending a period to the class identifier:
 
     (ns training.core
-      (:import [java.util Date]))
+      (:import (java.util Date)))
 
     (Date.)
     (Date. 2018 02 17)
@@ -2737,6 +2737,19 @@ Java static method calls are accessed by slash:
 Inner classes can be accessed using the dollar symbol:
 
     java.nio.channels.FileChannel$MapMode/READ_ONLY
+
+
+== Initializing objects with doto
+
+    (ns training.core
+      (:import (java.util HashMap)))
+
+    (doto (HashMap.)
+      (.put "a" 1)
+      (.put "b" 2))
+    => {"a" 1, "b" 2}
+
+We get the constructed object, with side-effects applied
 
 
 == reify
@@ -2782,10 +2795,15 @@ image:img/parallel.jpg[]
 
 == Based on Java Threads
 
-(.start (Thread. (fn []
+    (.start (Thread. (fn [] (println "Hello world"))))
+    => nil
+    Hello world
+
+* Message is printed after result is returned
+* `IFn` implements `IRunnable`
 
 
-== Vars and dynamic scope
+== Vars
 
 `def` returns a var
 
@@ -2797,31 +2815,63 @@ See the var associated with a symbol using `var`
     (var a)
     => #'user/a
 
-`#'` is shorthand for `(var)`
+`#'` is shorthand for `(var ...)`
 
-    #'one
-    => #'user/one
+    #'a
+    => #'user/a
 
-== Vars (2)
+
+== Deref
+
+Gets the value associated with a var
 
     (deref #'a)
-    => 100
+    => 1
 
-Deref gets the value associated with a var
+`@` is shorthand for `(deref ...)`
+
+    @(var a)
+    => 1
+
+    @#'a => 1
+
+
+== Vars automatically deref when evaluated
+
+    a
+    => 1
+
+Symbol `a` -> Var `a` -> value
+
+We don't normally write `@#'a`
+
+`#'` prevents deref
+
+
+== Function calls
+
+Get the function associated with inc and invoke it:
 
     (#'inc 1)
     => 2
 
-Vars are automatically derefed when in the function call position
+Vars automatically deref:
 
+    (inc 1)
+    => 2
+
+Symbol `inc` -> Var `inc` -> function
+
+
+== Vars enable function redefinition
+
+* Functions defined with defn are stored in vars
+* Redefine vars at runtime (redefine functions)
 * Global mutable state, like a variable
-* Functions defined with defn are stored in Vars
-* Allows re-definition of functions at runtime
+* Not coordinated
 
 
-== Metadata
-
-Examine the metadata of a var:
+== Metadata on Vars
 
     (meta #'one-hundred)
     => {:line 73, :column 1, ...}
@@ -2845,47 +2895,62 @@ Attach whatever metadata you wish. Compiler looks for:
 	(+ x y)
 	=> 2
 
-* Vars can be marked as dynamic to allow per-thread bindings
-* By default Vars are static
-* Bindings cannot be seen by any other thread
-
-== Binding dynamic vars
-
-	(binding [x 2
-	          y 3]
-	         (+ x y))
+	(binding [x 2, y 3]
+	  (+ x y))
 	=> 5
 
 	(+ x y)
 	=> 2
 
+[NOTE.speaker]
+--
+* By default Vars are static
+* Vars can be marked as dynamic to allow per-thread bindings
+* Bindings cannot be seen by any other thread
 * Per thread they obey a stack discipline
 * Bindings can be assigned to
+* Thread global
+* Rarely used; often better options
+--
 
 
-== Delays, Futures, and Promises
+== Communicating values
 
-* Wrap an arbitrary body of code for evaluation
-* Executes at a later stage
-* Run only if the answer is asked for
-* Delays also cache the result value
-* Prevents another execution
-* Body only runs once, even concurrently
+Delays, Futures, and Promises
+
+Thread safe
 
 
 == Delays
 
-    (def d (delay (println "Hello world!") 42))
+Execute at a later stage
 
+    (def d (delay (println "Hello world!")
+                  42))
+    => #'user/d
     d
-    => #object[clojure.lang.Delay {:status :pending, :val nil}]
+    => #object[clojure.lang.Delay
+               {:status :pending, :val nil}]
 
     (realized? d)
     => false
 
+[NOTE.speaker]
+--
+Wrap an arbitrary body of code for evaluation
+--
+
+
+== Delay result is requested with deref
+
     @d
     => Hello world!
        42
+
+
+== Delay result is cached
+
+Body runs once, even concurrently
 
     @d
     => 42
@@ -2893,31 +2958,23 @@ Attach whatever metadata you wish. Compiler looks for:
     (realized? d)
     => true
 
-
-== Futures
-
-* Easy way to spin off a new thread
-* Do some computation or I/O
-* Access in the future
-* Call style is compatible with delay
-* Work begins immediately on another thread
-* Flow of control is not blocked
-* Dereferencing a future will block until the value is available
+* Delays also cache the result value
+* Prevents another execution
+* Body only runs once, even concurrently
 
 
-== Futures
+== Future
 
     (def f
-      (future (Thread/sleep 10000) 42))
+      (future (Thread/sleep 5000) 42))
 
     f
     => #object[clojure.core$future_call {:status :pending, :val nil}]
 
-
     (realized? f)
     => false
 
---- 10 seconds pass ---
+== 5 seconds pass
 
     (realized? f)
     => true
@@ -2929,17 +2986,18 @@ Attach whatever metadata you wish. Compiler looks for:
     #object[clojure.core$future_call {:status :ready, :val 42}]
 
 
-== Promises
+== Futures
 
-* Used in a similar way to delay or future
-* Dereference them for a value
-* Check if they have a value with `realized?`
-* Block when you dereference them until they have a value
-* Don't immediately give them a value
-* Provide them with one by calling deliver
+* Easy way to spin off a new thread
+* Do some computation or I/O
+* Access in the future
+* Call style is compatible with delay
+* Work begins immediately on another thread
+* Flow of control is not blocked
+* *Dereferencing a future will block until the value is available*
 
 
-== Promises
+== Promise
 
     (def p (promise))
     (realized? p)
@@ -2952,41 +3010,48 @@ Attach whatever metadata you wish. Compiler looks for:
     @p
     => "as-promised"
 
+== Promises
 
-== Atoms
+* Dereference them for a value
+* Check if they have a value with `realized?`
+* Block when you dereference them until they have a value
+* *Provide them with a value by calling deliver*
+* Deliver will often occur on a different thread
+
+
+== Atom
 
     (def a (atom 1))
     (swap! a inc)
     @a
     => 2
 
-* Manage shared, synchronous, independent state
-* Reference type like refs and vars
-* Create an atom with `atom`
-* Access state with `deref`/`@`
 * Change the value of an atom with `swap!` or `reset!`
-* Changes to atoms are always free of race conditions
+* `swap!` reads the current value, applies the function to it, and attempts to `compare-and-set!` it in
+* It may have to retry since another thread may have changed the value
+* Retries in a spin loop
+* The value will always be the result of the function
 
 
 == Atoms
 
 * Atomic
-* `swap!` reads the current value, applies the function to it, and attempts to `compare-and-set!` it in
-* Since another thread may have changed the value, it may have to retry
-* Retries in a spin loop
-* Net effect: the value will always be the result of the function
+* Changes to atoms are always free of race conditions
 * Function might be called multiple times, it must be free of side effects
-* Suitable for uncoordinated state
-* Synchronous changes
+* Uncoordinated
+* Synchronous
 
 
-== Refs
+== Ref
 
     (def r (ref 1))
     (dosync
       (alter r inc))
     @r
     => 2
+
+
+== Refs
 
 * Vars ensure safe use of mutable storage locations via thread isolation, transactional references
 * Refs ensure safe shared use of mutable storage locations via a software transactional memory (STM) system
@@ -2995,7 +3060,7 @@ Attach whatever metadata you wish. Compiler looks for:
 * In practise Refs are rarely used
 
 
-== Agents
+== Agent
 
     (def a (agent 1))
     (send a inc)
@@ -3004,11 +3069,15 @@ Attach whatever metadata you wish. Compiler looks for:
 
     (send-off a (fn [x] (do-some-io))
 
+* `send` should be used for actions that are CPU limited
+* `send-off` is appropriate for actions that may block on IO
+
+
+== Agents
+
 * Like Refs, Agents provide shared access to mutable state
 * Refs support coordinated, synchronous change of multiple locations
 * Agents provide independent, asynchronous change of individual locations
-* `send` should be used for actions that are CPU limited
-* `send-off` is appropriate for actions that may block on IO
 * Agents are integrated with the STM
 
 
