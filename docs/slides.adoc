@@ -31,8 +31,8 @@ image:img/corgi.jpg[]
 |link:#/control_flow[Control Flow]
 |link:#/functional_programming[Functional Programming]
 |link:#/macros[Macros]
-|link:#/parallel_programming_and_concurrency[Concurrency]
 |link:#/java_interop[Java Interop]
+|link:#/parallel_programming_and_concurrency[Concurrency]
 |link:#/polymorphism_and_types[Polymorphism]
 |link:#/interacting_with_a_database[Databases]
 |link:#/further_reading[Further reading]
@@ -2371,19 +2371,22 @@ image:img/macros.jpg[]
 -- Frank Ocean
 
 
-== Macros defn
+== Macro defn
 
     (def square
       (fn [x]
         (* x x)))
 
-rearranged
+Rearranged
 
     (defn square [x]
       (* x x))
 
+* Syntactic sugar
+* Extend the syntax of Clojure
 
-== Macro when
+
+== Macros do things functions cannot
 
     (if (< x 2)
       (do
@@ -2391,46 +2394,28 @@ rearranged
         :ok)
       nil)
 
-rearranged
+Rearranged
 
     (when (< x 2)
       (println "It's less than 2!")
       :ok)
 
-
-== Macros overview
-
 * Arguments manipulated at compile time
 * Arguments not evaluated
-
-Macros allow us to extend the syntax of Clojure
-
-
-== Expanding macros
-
-* Macros expand to produce new code
-* The form is expanded at compile time
-
-Expansion:
-
-    (macroexpand-1 '(defn square [x] (* x x)))
-    => (def my-namespace/square
-         (clojure.core/fn
-           ([my-namespace/x]
-            (clojure.core/*
-              my-namespace/x my-namespace/x))))
+* Cannot be replaced by a function
 
 
-== Macro drawbacks
+== Functions do things macros cannot
 
     and
     => CompilerException: Can't take value of a macro
 
-    (map and [true false] [true true])
+    (map and [true false]
+             [true true])
     => CompilerException: Can't take value of a macro
 
 
-* Not values
+* Macros are not values
 * Cannot be passed to higher order functions
 * Less useful than functions
 
@@ -2441,20 +2426,89 @@ Expansion:
 --
 
 
+== Expanding defn
+
+    (macroexpand-1
+      '(defn square [x]
+         (* x x)))
+    => (def square
+         (clojure.core/fn ([x] (* x x))))
+
+Manual expansion shows what a macro does
+
+
+== Macros produce code
+
+* Functions that manipulate code
+* Have a `:macro` flag set in metadata
+* Passed input forms unevaluated
+* Replaces the form at compile time
+
+
+== Using macros
+
+    (map
+      (fn maybe-ok [x]
+        (when (< x 2)
+          :ok))
+      (range 4))
+    => (:ok :ok nil nil)
+
+* `when` is only expanded once
+* The form is expanded at compile time
+* `maybe-ok` function is compiled to bytecode
+
+
 == Defining macros
 
+    (defmacro infix [[operand1 op operand2]]
+      (list op operand1 operand2))
+
+    (infix (1 + 1))
+    => 2
+
+    (macroexpand '(infix (1 + 1)))
+    => (+ 1 1)
+
+
+== Defining macros
+
+    (defmacro my-when [test & body]
+      (list 'if test (cons 'do body)))
+
+    (macroexpand-1
+      '(my-when (< x 1)
+         (println "hi")
+         :ok))
+    => (if (< x 1)
+         (do
+           (println "hi")
+           :ok))
+
+NOTE: `test` and `body` are values, `if` and `do` are symbols
+
+[NOTE.speaker]
+--
+Review quote
+--
+
+
+== Macros using arguments
+
     (defmacro zen1 [x]
-      (println "x:" x) x)
+      (println "x:" x)
+      x)
     (zen1 (+ 1 2))
-    => x:(+ 1 2)
+    => x: (+ 1 2)
     3
 
 vs
 
     (defn zen2 [x]
-      (println "x:" x) x)
+      (println "x:" x)
+      x)
     (zen2 (+ 1 2))
-    => x:3
+    => x: 3
     3
 
 [NOTE.speaker]
@@ -2465,17 +2519,8 @@ vs
 * But the final result was `3`
 * The list was evaluated as a function call to `+`
 * resulting in `3`
-
 * The input to `zen2` was the result of evaluating the list
 --
-
-
-== Macros as seen by REPL
-
-* Have a `:macro` flag set in metadata
-* Passed the input forms unevaluated
-* Compiler replaces form
-* Clojure evaluation occurs on the expanded form
 
 
 == Syntax quoting
@@ -2504,8 +2549,6 @@ l|~@|Unquote-splicing|Insert a sequence
 
 == Why fully qualify?
 
-Symbols may have another meaning in the context:
-
     (defmacro m1 []
       '(inc 1))
 
@@ -2518,10 +2561,11 @@ Symbols may have another meaning in the context:
 
     => {:m1 0, :m2 2}
 
-Syntax quote avoids colliding with the `let` bindings
+* Symbols have contextual meaning
+* Macros are defined with no context
 
 
-== Another source of collisions
+== Another source of naming collisions
 
     (defmacro bad [expr]
       (list 'let '[a 1]
@@ -2536,7 +2580,6 @@ WARNING: The parameter name collided with the implementation
 
     (macroexpand-1 '(bad a))
     => (let [a 1] (inc a))
-
 
 
 == Gensyms
@@ -2556,17 +2599,7 @@ WARNING: The parameter name collided with the implementation
          (clojure.core/inc a))
 
 
-== Code as data
-
-* Really writing a function that produces code
-* The output is code... as data
-* We manipulate code... as data
-* Homoiconic means that the language text has the same structure as its abstract syntax tree (AST)
-* Code in the language can be transformed as data using the same representation
-* Nested code is well represented as a data structure
-
-
-== Macro stragegy
+== Macro strategy
 
 When working on a non-trivial macro a good strategy is:
 
@@ -2574,6 +2607,39 @@ When working on a non-trivial macro a good strategy is:
 * Step 2: Call your function from the macro
 
 TIP: Keep the macro small and offload form transformations to other functions
+
+
+== When should I write a macro?
+
+Almost never
+
+To provide new syntax: core.async
+
+    (def echo-chan (chan))
+    (go (println (<! echo-chan)))
+    (>!! echo-chan "hello")
+    => true
+    hello
+
+
+== Code as data
+
+* Functions that produce code
+* Manipulate code... as data
+* Homoiconic: the language text has the same structure as its abstract syntax tree
+* Code transformed using the same representation
+* Nested code is well represented as a data structure
+* Language can be extended conveniently
+* Lisp "syntax" underpins Clojure "syntax"
+
+
+== Reading macros is a useful skill
+
+* Macros are common in clojure.core and libraries
+* Macros can have surprising behavior
+* Debugging
+** Identifying macros
+** Expanding macros
 
 
 == Macro summary
@@ -2616,7 +2682,6 @@ See manual end of section 7
        7
 
 
-
 == Answers
 
 See clojure source code
@@ -2635,230 +2700,7 @@ Often good to start with an example and customize
 
 
 [state=title]
-== 8. Parallel Programming and Concurrency
-
-image:img/parallel.jpg[]
-
-"Our moral traditions developed concurrently with our reason, not as its product."
--- Friedrich August von Hayek
-
-
-== Vars and dynamic scope
-
-    (def one-hundred 100)
-    => #'training.core-test/one-hundred
-
-    (var one-hundred)
-    => #'training.core-test/one-hundred
-
-    (deref #'one-hundred)
-    => 100
-
-* Vars are automatically derefed when evaluated
-* Behavi a variable
-* See the var itself using the var function or #' shorthand
-* Functions defined with defn are stored in Vars
-* Allows the re-definition of functions at runtime
-
-
-== Metadata
-
-Examine the metadata of a var:
-
-    (meta #'one-hundred)
-    => {:line 73, :column 1, ...}
-
-Metadata provided using `^{}`
-
-    (def x ^{:private true} 1)
-
-You can attach whatever metadata you wish. These are the keys the compiler looks for:
-
-    :private
-    :doc
-    :author
-    :type
-
-
-== Dynamic vars
-
-* By default Vars are static
-* Can be marked as dynamic to allow per-thread bindings
-* Per thread they obey a stack discipline
-
-	(def ^:dynamic x 1)
-	(def ^:dynamic y 1)
-	(+ x y)
-	=> 2
-
-	(binding [x 2 y 3]
-	         (+ x y))
-	=> 5
-
-	(+ x y)
-	=> 2
-
-
-* Bindings cannot be seen by any other thread
-* Bindings can be assigned to
-
-
-== Delays, Futures, and Promises
-
-* Wrap an arbitrary body of code for evaluation
-* Executes at a later stage
-* Run only if the answer is asked for
-* Delays also cache the result value
-* Prevents another execution
-* Body only runs once, even concurrently
-
-
-== Delays
-
-    (def d (delay (println "Hello world!") 42))
-
-    d
-    => #object[clojure.lang.Delay {:status :pending, :val nil}]
-
-    (realized? d)
-    => false
-
-    @d
-    => Hello world!
-       42
-
-    @d
-    => 42
-
-    (realized? d)
-    => true
-
-
-== Futures
-
-* Easy way to spin off a new thread
-* Do some computation or I/O
-* Access in the future
-* Call style is compatible with delay
-* Work begins immediately on another thread
-* Flow of control is not blocked
-* Dereferencing a future will block until the value is available
-
-
-== Futures
-
-    (def f
-      (future (Thread/sleep 10000) 42))
-
-    f
-    => #object[clojure.core$future_call {:status :pending, :val nil}]
-
-
-    (realized? f)
-    => false
-
---- 10 seconds pass ---
-
-    (realized? f)
-    => true
-
-    @f
-    => 42
-
-    f
-    #object[clojure.core$future_call {:status :ready, :val 42}]
-
-
-== Promises
-
-* Used in a similar way to delay or future
-* Dereference them for a value
-* Check if they have a value with `realized?`
-* Block when you dereference them until they have a value
-* Don't immediately give them a value
-* Provide them with one by calling deliver
-
-
-== Promises
-
-    (def p (promise))
-    (realized? p)
-    => false
-
-    (deliver p "as-promised")
-    (realized? p)
-    => true
-
-    @p
-    => "as-promised"
-
-
-== Atoms
-
-    (def a (atom 1))
-    (swap! a inc)
-    @a
-    => 2
-
-* Manage shared, synchronous, independent state
-* Reference type like refs and vars
-* Create an atom with `atom`
-* Access state with `deref`/`@`
-* Change the value of an atom with `swap!` or `reset!`
-* Changes to atoms are always free of race conditions
-
-
-== Atoms
-
-* Atomic
-* `swap!` reads the current value, applies the function to it, and attempts to `compare-and-set!` it in
-* Since another thread may have changed the value, it may have to retry
-* Retries in a spin loop
-* Net effect: the value will always be the result of the function
-* Function might be called multiple times, it must be free of side effects
-* Suitable for uncoordinated state
-* Synchronous changes
-
-
-== Refs
-
-    (def r (ref 1))
-    (dosync
-      (alter r inc))
-    @r
-    => 2
-
-* Vars ensure safe use of mutable storage locations via thread isolation, transactional references
-* Refs ensure safe shared use of mutable storage locations via a software transactional memory (STM) system
-* Refs are bound to a single storage location for their lifetime
-* Only allow mutation of that location to occur within a transaction
-* In practise Refs are rarely used
-
-
-== Agents
-
-    (def a (agent 1))
-    (send a inc)
-    @a
-    => 2
-
-    (send-off a (fn [x] (do-some-io))
-
-* Like Refs, Agents provide shared access to mutable state
-* Refs support coordinated, synchronous change of multiple locations
-* Agents provide independent, asynchronous change of individual locations
-* `send` should be used for actions that are CPU limited
-* `send-off` is appropriate for actions that may block on IO
-* Agents are integrated with the STM
-
-
-== Exercises
-
-See manual section Challenge 3
-
-
-[state=title]
-== 9. Java Interop
+== 8. Java Interop
 
 image:img/interop.jpg[]
 
@@ -2871,7 +2713,7 @@ image:img/interop.jpg[]
 Constructing a Java object is done by appending a period to the class identifier:
 
     (ns training.core
-      (:import [java.util Date]))
+      (:import (java.util Date)))
 
     (Date.)
     (Date. 2018 02 17)
@@ -2904,6 +2746,19 @@ Inner classes can be accessed using the dollar symbol:
     java.nio.channels.FileChannel$MapMode/READ_ONLY
 
 
+== Initializing objects with doto
+
+    (ns training.core
+      (:import (java.util HashMap)))
+
+    (doto (HashMap.)
+      (.put "a" 1)
+      (.put "b" 2))
+    => {"a" 1, "b" 2}
+
+We get the constructed object, with side-effects applied
+
+
 == reify
 
 `reify` creates an object that conforms to an interface:
@@ -2934,6 +2789,308 @@ You can define Java classes in Java in a separate directory and add
 
 To your `project.clj` file
 (See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
+
+
+[state=title]
+== 9. Parallel Programming and Concurrency
+
+image:img/parallel.jpg[]
+
+"Our moral traditions developed concurrently with our reason, not as its product."
+-- Friedrich August von Hayek
+
+
+== Based on Java Threads
+
+    (.start (Thread. (fn [] (println "Hello world"))))
+    => nil
+    Hello world
+
+* Message is printed after result is returned
+* `IFn` implements `IRunnable`
+
+
+== Vars
+
+`def` returns a var
+
+    (def a 1)
+    => #'user/a
+
+See the var associated with a symbol using `var`
+
+    (var a)
+    => #'user/a
+
+`#'` is shorthand for `(var ...)`
+
+    #'a
+    => #'user/a
+
+
+== Deref
+
+Gets the value associated with a var
+
+    (deref #'a)
+    => 1
+
+`@` is shorthand for `(deref ...)`
+
+    @(var a)
+    => 1
+
+    @#'a => 1
+
+
+== Vars automatically deref when evaluated
+
+    a
+    => 1
+
+Symbol `a` -> Var `a` -> value
+
+We don't normally write `@#'a`
+
+`#'` prevents deref
+
+
+== Function calls
+
+Get the function associated with inc and invoke it:
+
+    (#'inc 1)
+    => 2
+
+Vars automatically deref:
+
+    (inc 1)
+    => 2
+
+Symbol `inc` -> Var `inc` -> function
+
+
+== Vars enable function redefinition
+
+* Functions defined with defn are stored in vars
+* Redefine vars at runtime (redefine functions)
+* Global mutable state, like a variable
+* Not coordinated
+
+
+== Metadata on Vars
+
+    (meta #'one-hundred)
+    => {:line 73, :column 1, ...}
+
+Metadata provided using `^{}`
+
+    (def x ^{:private true} 1)
+
+Attach whatever metadata you wish. Compiler looks for:
+
+    :private
+    :doc
+    :author
+    :type
+
+
+== Dynamic vars
+
+	(def ^:dynamic x 1)
+	(def ^:dynamic y 1)
+	(+ x y)
+	=> 2
+
+	(binding [x 2, y 3]
+	  (+ x y))
+	=> 5
+
+	(+ x y)
+	=> 2
+
+[NOTE.speaker]
+--
+* By default Vars are static
+* Vars can be marked as dynamic to allow per-thread bindings
+* Bindings cannot be seen by any other thread
+* Per thread they obey a stack discipline
+* Bindings can be assigned to
+* Thread global
+* Rarely used; often better options
+--
+
+
+== Communicating values
+
+Delays, Futures, and Promises
+
+Thread safe
+
+
+== Delays
+
+Execute at a later stage
+
+    (def d (delay (println "Hello world!")
+                  42))
+    => #'user/d
+    d
+    => #object[clojure.lang.Delay
+               {:status :pending, :val nil}]
+
+    (realized? d)
+    => false
+
+[NOTE.speaker]
+--
+Wrap an arbitrary body of code for evaluation
+--
+
+
+== Delay result is requested with deref
+
+    @d
+    => Hello world!
+       42
+
+
+== Delay result is cached
+
+Body runs once, even concurrently
+
+    @d
+    => 42
+
+    (realized? d)
+    => true
+
+* Delays also cache the result value
+* Prevents another execution
+* Body only runs once, even concurrently
+
+
+== Future
+
+    (def f
+      (future (Thread/sleep 5000) 42))
+
+    f
+    => #object[clojure.core$future_call {:status :pending, :val nil}]
+
+    (realized? f)
+    => false
+
+== 5 seconds pass
+
+    (realized? f)
+    => true
+
+    @f
+    => 42
+
+    f
+    #object[clojure.core$future_call {:status :ready, :val 42}]
+
+
+== Futures
+
+* Easy way to spin off a new thread
+* Do some computation or I/O
+* Access in the future
+* Call style is compatible with delay
+* Work begins immediately on another thread
+* Flow of control is not blocked
+* *Dereferencing a future will block until the value is available*
+
+
+== Promise
+
+    (def p (promise))
+    (realized? p)
+    => false
+
+    (deliver p "as-promised")
+    (realized? p)
+    => true
+
+    @p
+    => "as-promised"
+
+== Promises
+
+* Dereference them for a value
+* Check if they have a value with `realized?`
+* Block when you dereference them until they have a value
+* *Provide them with a value by calling deliver*
+* Deliver will often occur on a different thread
+
+
+== Atom
+
+    (def a (atom 1))
+    (swap! a inc)
+    @a
+    => 2
+
+* Change the value of an atom with `swap!` or `reset!`
+* `swap!` reads the current value, applies the function to it, and attempts to `compare-and-set!` it in
+* It may have to retry since another thread may have changed the value
+* Retries in a spin loop
+* The value will always be the result of the function
+
+
+== Atoms
+
+* Atomic
+* Changes to atoms are always free of race conditions
+* Function might be called multiple times, it must be free of side effects
+* Uncoordinated
+* Synchronous
+
+
+== Ref
+
+    (def r (ref 1))
+    (dosync
+      (alter r inc))
+    @r
+    => 2
+
+
+== Refs
+
+* Vars ensure safe use of mutable storage locations via thread isolation, transactional references
+* Refs ensure safe shared use of mutable storage locations via a software transactional memory (STM) system
+* Refs are bound to a single storage location for their lifetime
+* Only allow mutation of that location to occur within a transaction
+* In practise Refs are rarely used
+
+
+== Agent
+
+    (def a (agent 1))
+    (send a inc)
+    @a
+    => 2
+
+    (send-off a (fn [x] (do-some-io))
+
+* `send` should be used for actions that are CPU limited
+* `send-off` is appropriate for actions that may block on IO
+
+
+== Agents
+
+* Like Refs, Agents provide shared access to mutable state
+* Refs support coordinated, synchronous change of multiple locations
+* Agents provide independent, asynchronous change of individual locations
+* Agents are integrated with the STM
+
+
+== Exercises
+
+See manual section Challenge 3
 
 
 == Challenge 3: Mocking parallel web requests
@@ -2976,38 +3133,35 @@ image:img/types.jpg[]
 -- Joe Louis
 
 
-== Multimethods
+== Defining a multimethod
 
-Polymorphic dispatch. Define the name of the multimethod and the dispatch function:
+Polymorphic dispatch. Define the name and the dispatch function:
 
     (defmulti encounter
       (fn dispatch [x y]
         [(:species x) (:species y)]))
 
-Provide methods implementing functions to execute for a given dispatch value:
+
+== Defining method implementations
+
+Provide methods to execute for a given dispatch value:
 
     (defmethod encounter [:bunny :lion] [x y] :run-away)
     (defmethod encounter [:lion :bunny] [x y] :eat)
     (defmethod encounter [:lion :lion] [x y] :fight)
     (defmethod encounter [:bunny :bunny] [x y] :mate)
 
-* Between a case statement and a function definition
-* Conditions under which to be called, and a function definition
 * Given a dispatch result of `[:bunny :lion]`, the first method will be called
 * `x` and `y` are inputs to the function
 * Unused in this example
 
 
-== Multimethods
-
-Test data
+== Calling the multimethod
 
     (def bunny1 {:species :bunny, :other :stuff})
     (def bunny2 {:species :bunny, :other :stuff})
     (def lion1 {:species :lion, :other :stuff})
     (def lion2 {:species :lion, :other :stuff})
-
-Call the multimethod
 
     (encounter bunny1 bunny2)
     => :mate
@@ -3020,9 +3174,10 @@ Call the multimethod
 
 == Multimethods
 
-Keywords are functions
-
-Common to use a keyword as a dispatch function
+* Between a case statement and a function definition
+* Conditions under which to be called, and a function definition
+* Keywords are functions
+* Common to use a keyword as a dispatch function
 
     (defmulti draw :shape)
 
@@ -3041,7 +3196,7 @@ A named set of named methods and their signatures:
 * The functions dispatch on the type of their first argument
 * Must have at least one argument
 
-deftype, defrecord, or reify support protocols directly:
+== deftype supports protocols directly
 
     (defprotocol P
       (foo [x])
@@ -3056,6 +3211,9 @@ deftype, defrecord, or reify support protocols directly:
     (bar-me (Foo. 1 2 3) 42)
     => 45
 
+
+== and reify
+
     (foo
      (let [x 42]
        (reify P
@@ -3068,8 +3226,7 @@ deftype, defrecord, or reify support protocols directly:
 == defprotocol
 
 * Dynamic
-* Generates a corresponding interface, with the same name as the protocol
-* The interface will have methods corresponding to the protocol functions
+* Generates a corresponding interface with the same name
 * The protocol will automatically work with instances of the interface
 * A Java client can implement the protocol-generated interface
 
@@ -3085,8 +3242,6 @@ deftype, defrecord, or reify support protocols directly:
         {...}
     ...)
 
-* Extends the polymorphism of the protocol's methods
-* Will call the supplied functions when an AType is provided as the first argument
 * The `fn` can presume first argument is instanceof `AType`
 * You can implement a protocol on `nil`
 * Default implementation of protocol with `Object`
@@ -3135,14 +3290,14 @@ Expands into:
 	(ns training.core
 	  (:import (java.net FileNameMap)))
 
-    (defrecord Thing [a]
-      FileNameMap
-      (getContentTypeFor [this fileName] (str a "-" fileName)))
+    (defrecord Thing [a] FileNameMap
+      (getContentTypeFor [this fileName]
+        (str a "-" fileName)))
 
 * Defines a record named `Thing`
 * single field `a`
-* Implements `FileNameMap` interface
-* Implements `String getContentTypeFor(String fileName)`
+* `FileNameMap` interface
+* `String getContentTypeFor(String fileName)`
 
 
 == record constructor
