@@ -2340,7 +2340,7 @@ You have been tasked with processing the files using the validation logic you bu
 
 Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it.
 Next use that data structure as an input to your validation function and print the result.
-See `slurp` `line-seq` `clojure.string/split`.
+See `slurp`, `line-seq`, `clojure.string/split`.
 
 
 == Part 2:
@@ -2391,7 +2391,8 @@ Rearranged
     (if (< x 2)
       (do
         (println "It's less than 2!")
-        :ok))
+        :ok)
+      nil)
 
 Rearranged
 
@@ -2417,6 +2418,12 @@ Rearranged
 * Macros are not values
 * Cannot be passed to higher order functions
 * Less useful than functions
+
+[NOTE.speaker]
+--
+* Workaround 1 to (map and ...) example: anon fn -- #(and %1 %2)
+* Workaround 2 to (map and ...) example: anon fn -- #(every? identity %&)
+--
 
 
 == Expanding defn
