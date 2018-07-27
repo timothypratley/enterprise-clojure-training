@@ -1578,6 +1578,24 @@ Arguments are not evaluated
 
 NOTE: Cannot be done with a function
 
+Macros are used to implement and extend Clojure syntax
+
+
+== Macros replace forms at compile time
+
+    (or true false)
+
+Expands to:
+
+    (let [a true]
+      (if a
+          a
+          (let [b false]
+            (if b
+                b)))))
+
+Writing macros is covered later in the course
+
 
 == Macros and special forms are not functions
 
