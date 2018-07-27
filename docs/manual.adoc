@@ -1999,208 +1999,6 @@ Create a new function that writes JSON data to an `eligible-corgi-cover-applicat
 
 
 :sectnums:
-== Macros
-
-image:img/macros.jpg[width=300]
-
-"I never think about myself as an artist working in this time. I think about it in macro."
--- Frank Ocean
-
-Macros manipulate the operand forms instead of evaluating them as input arguments.
-They are not functions, and cannot be used as values or arguments to functions.
-We already used a macro; defn is a macro for conveniently defining functions.
-
-    (defn square [x] (* x x))
-
-Actually expands to a def and fn form:
-
-    (def square (fn [x] (* x x)))
-
-The difference between macros and functions is that macro arguments are manipulated at compile time instead of evaluated.
-Macros allow the user to extend the syntax of Clojure, but macros are less useful than functions as they cannot be used as values or arguments to higher order functions.
-
-
-=== Expanding macros
-
-Macros provide syntactic sugar.
-Macros first expand to produce new code that then gets compiled.
-The form is expanded at compile time through manipulation of the form.
-You can examine the expansion using `macroexpand-1`:
-
-    (macroexpand-1 '(defn square [x] (* x x)))
-    => (def my-namespace/square
-         (clojure.core/fn
-           ([my-namespace/x]
-            (clojure.core/* my-namespace/x my-namespace/x))))
-
-
-=== Defining macros
-
-Consider two different definitions of zen:
-
-    (defmacro zen1 [x]
-      (println "x:" x) x)
-
-and
-
-    (defn zen2 [x]
-      (println "x:" x) x)
-
-Now call
-
-	(zen1 (+ 1 2))
-	=> x:(+ 1 2)
-	3
-
-	(zen2 (+ 1 2))
-	=> x:3
-	3
-
-The final result is the same, but notice that the input to `zen1` was a list, where as the input to `zen2` was the result of evaluating the list.
-That's the key difference between a macro and a function.
-
-Macros themselves are really just functions with a `:macro` flag set in their metadata, which causes them to be passed in the input forms unevaluated, and caused the result to be evaluated.
-This last part is less obvious... but think back to `zen1`... `x` was a list, we returned `x`, but the final result wasn't a list... it was `3`.
-The list was evaluated as a function call to `+`, resulting in `3`.
-
-
-=== Syntax quoting
-
-To help write macros there is a special quoting form called syntax-quote.
-
-Back-quote (```) Unquote (`~`) and Unquote-splicing (`~@`)
-
-    '(1 2 ~(+ 1 2) ~@(map inc [3 4 5]))
-    => (1 2 3 4 5 6)
-
-All symbols in a syntax-quote form get fully qualified.
-
-    `(inc 1)
-    => (clojure.core/inc 1)
-
-Fully qualified symbols is desirable when creating macros, otherwise symbols may have another meaning in the context that the macro is expanded in:
-
-    (defmacro m1 []
-      '(inc 1))
-    (defmacro m2 []
-      `(inc 1))
-    (let [inc dec]
-      {:m1 (m1)
-       :m2 (m2)})
-    => {:m1 0, :m2 2}
-
-Within the `let` block, the symbol `inc` has a different meaning than normal.
-Because `m2` uses syntax quote, `inc` gets fully qualified to `clojure.core/inc` which does not collide with the `let` binding.
-
-Fully qualified symbols avoids one source of collisions, but there is another:
-
-    (defmacro bad [expr]
-      (list 'let '[a 1]
-        (list 'inc expr)))
-
-    (bad 0)
-    => 1
-
-    (def a 0)
-    (bad a)
-    => 2
-
-
-This might seem confusing, unless you notice that:
-
-    (macroexpand-1 '(bad a))
-    => (let [a 1] (inc a))
-
-Instead of inc operating on the input parameter, it is operating on an internal let bound value.
-To avoid this situation Clojure provides a let gensyms form which will produce a randomly named binding:
-
-    (defmacro good [expr]
-      `(let [a# 1]
-         (inc ~expr)))
-
-    (good a)
-    => 1
-
-    (good 0)
-    => 1
-
-    (macroexpand-1 '(good a))
-    => (clojure.core/let [a__6500__auto__ 1] (clojure.core/inc a))
-
-The `let` binding `a#` expands out to a randomly generated symbol unlikely to collide with existing symbols.
-
-
-=== Code as data
-
-You may have noticed when we write a macro, we are really writing a function that produces code.
-The output is code… as data, and we manipulate code… as data.
-Homoiconic means that the language text has the same structure as its abstract syntax tree (AST).
-This allows all code in the language to be accessed and transformed as data, using the same representation.
-Nested code is well represented as a data structure.
-
-When working on a non-trivial macro a good strategy is:
-
-* Step 1: Write a function!
-* Step 2: Call your function from the macro.
-
-Stated another way; keep the macro as small as possible, and offload transformations to functions.
-
-
-=== Exercises
-
-Create the following macros and test cases:
-
-* Create a macro called ignore which accepts any number of expressions, does absolutely nothing, and always returns `nil`.
-
-    (ignore (println "hello???") (inc 42))
-
-* Define your own version of the when macro. When is like if, but only has one branch and allows multiple statements.
-
-    (when2 (pos? x)
-      (println "Positive:" x)
-      (inc x))
-
-* Write a spy macro. Spy wraps an expression and prints out its value.
-
-    (* (spy (+ 1 2)) 3)
-    => Expression (+ 1 2) has value 3
-       9
-
-* Write your own version of the `or` macro
-
-    (or2 (pos? 1) (println "does not execute"))
-
-
-=== Answers
-
-    (defmacro ignore  [expr]  nil)
-
-    (defmacro when2 [test & body]
-      (list 'if test (cons 'do body))
-
-
-    (defmacro spy [expr]
-      `(let [result# ~expr]
-         (println "Expression" '~expr "has value" result#)
-         result#))
-    (macroexpand-1 '(spy (* 2 3)))
-    => (clojure.core/let [result__6418__auto__ (* 2 3)]
-         (clojure.core/println
-           "Expression" (quote (* 2 3))
-           "has value" result__6418__auto__)
-         result__6418__auto__)
-    (+ 1 (spy (* 2 3)))
-    => Expression (* 2 3) has value 6
-       7
-
-    (defmacro or2
-      ([] nil)
-      ([x] x)
-      ([x & next]
-          `(let [or# ~x]
-             (if or# or# (or ~@next)))))
-
-
 == Java Interop
 
 image:img/interop.jpg[width=300]
@@ -3261,6 +3059,208 @@ For now the only difference with the rules from “Corgi Cover” is that “Poo
 
 
 :sectnums:
+== Macros
+
+image:img/macros.jpg[width=300]
+
+"I never think about myself as an artist working in this time. I think about it in macro."
+-- Frank Ocean
+
+Macros manipulate the operand forms instead of evaluating them as input arguments.
+They are not functions, and cannot be used as values or arguments to functions.
+We already used a macro; defn is a macro for conveniently defining functions.
+
+    (defn square [x] (* x x))
+
+Actually expands to a def and fn form:
+
+    (def square (fn [x] (* x x)))
+
+The difference between macros and functions is that macro arguments are manipulated at compile time instead of evaluated.
+Macros allow the user to extend the syntax of Clojure, but macros are less useful than functions as they cannot be used as values or arguments to higher order functions.
+
+
+=== Expanding macros
+
+Macros provide syntactic sugar.
+Macros first expand to produce new code that then gets compiled.
+The form is expanded at compile time through manipulation of the form.
+You can examine the expansion using `macroexpand-1`:
+
+    (macroexpand-1 '(defn square [x] (* x x)))
+    => (def my-namespace/square
+         (clojure.core/fn
+           ([my-namespace/x]
+            (clojure.core/* my-namespace/x my-namespace/x))))
+
+
+=== Defining macros
+
+Consider two different definitions of zen:
+
+    (defmacro zen1 [x]
+      (println "x:" x) x)
+
+and
+
+    (defn zen2 [x]
+      (println "x:" x) x)
+
+Now call
+
+	(zen1 (+ 1 2))
+	=> x:(+ 1 2)
+	3
+
+	(zen2 (+ 1 2))
+	=> x:3
+	3
+
+The final result is the same, but notice that the input to `zen1` was a list, where as the input to `zen2` was the result of evaluating the list.
+That's the key difference between a macro and a function.
+
+Macros themselves are really just functions with a `:macro` flag set in their metadata, which causes them to be passed in the input forms unevaluated, and caused the result to be evaluated.
+This last part is less obvious... but think back to `zen1`... `x` was a list, we returned `x`, but the final result wasn't a list... it was `3`.
+The list was evaluated as a function call to `+`, resulting in `3`.
+
+
+=== Syntax quoting
+
+To help write macros there is a special quoting form called syntax-quote.
+
+Back-quote (```) Unquote (`~`) and Unquote-splicing (`~@`)
+
+    '(1 2 ~(+ 1 2) ~@(map inc [3 4 5]))
+    => (1 2 3 4 5 6)
+
+All symbols in a syntax-quote form get fully qualified.
+
+    `(inc 1)
+    => (clojure.core/inc 1)
+
+Fully qualified symbols is desirable when creating macros, otherwise symbols may have another meaning in the context that the macro is expanded in:
+
+    (defmacro m1 []
+      '(inc 1))
+    (defmacro m2 []
+      `(inc 1))
+    (let [inc dec]
+      {:m1 (m1)
+       :m2 (m2)})
+    => {:m1 0, :m2 2}
+
+Within the `let` block, the symbol `inc` has a different meaning than normal.
+Because `m2` uses syntax quote, `inc` gets fully qualified to `clojure.core/inc` which does not collide with the `let` binding.
+
+Fully qualified symbols avoids one source of collisions, but there is another:
+
+    (defmacro bad [expr]
+      (list 'let '[a 1]
+        (list 'inc expr)))
+
+    (bad 0)
+    => 1
+
+    (def a 0)
+    (bad a)
+    => 2
+
+
+This might seem confusing, unless you notice that:
+
+    (macroexpand-1 '(bad a))
+    => (let [a 1] (inc a))
+
+Instead of inc operating on the input parameter, it is operating on an internal let bound value.
+To avoid this situation Clojure provides a let gensyms form which will produce a randomly named binding:
+
+    (defmacro good [expr]
+      `(let [a# 1]
+         (inc ~expr)))
+
+    (good a)
+    => 1
+
+    (good 0)
+    => 1
+
+    (macroexpand-1 '(good a))
+    => (clojure.core/let [a__6500__auto__ 1] (clojure.core/inc a))
+
+The `let` binding `a#` expands out to a randomly generated symbol unlikely to collide with existing symbols.
+
+
+=== Code as data
+
+You may have noticed when we write a macro, we are really writing a function that produces code.
+The output is code… as data, and we manipulate code… as data.
+Homoiconic means that the language text has the same structure as its abstract syntax tree (AST).
+This allows all code in the language to be accessed and transformed as data, using the same representation.
+Nested code is well represented as a data structure.
+
+When working on a non-trivial macro a good strategy is:
+
+* Step 1: Write a function!
+* Step 2: Call your function from the macro.
+
+Stated another way; keep the macro as small as possible, and offload transformations to functions.
+
+
+=== Exercises
+
+Create the following macros and test cases:
+
+* Create a macro called ignore which accepts any number of expressions, does absolutely nothing, and always returns `nil`.
+
+    (ignore (println "hello???") (inc 42))
+
+* Define your own version of the when macro. When is like if, but only has one branch and allows multiple statements.
+
+    (when2 (pos? x)
+      (println "Positive:" x)
+      (inc x))
+
+* Write a spy macro. Spy wraps an expression and prints out its value.
+
+    (* (spy (+ 1 2)) 3)
+    => Expression (+ 1 2) has value 3
+       9
+
+* Write your own version of the `or` macro
+
+    (or2 (pos? 1) (println "does not execute"))
+
+
+=== Answers
+
+    (defmacro ignore  [expr]  nil)
+
+    (defmacro when2 [test & body]
+      (list 'if test (cons 'do body))
+
+
+    (defmacro spy [expr]
+      `(let [result# ~expr]
+         (println "Expression" '~expr "has value" result#)
+         result#))
+    (macroexpand-1 '(spy (* 2 3)))
+    => (clojure.core/let [result__6418__auto__ (* 2 3)]
+         (clojure.core/println
+           "Expression" (quote (* 2 3))
+           "has value" result__6418__auto__)
+         result__6418__auto__)
+    (+ 1 (spy (* 2 3)))
+    => Expression (* 2 3) has value 6
+       7
+
+    (defmacro or2
+      ([] nil)
+      ([x] x)
+      ([x & next]
+          `(let [or# ~x]
+             (if or# or# (or ~@next)))))
+
+
 == Further reading
 
 image:img/further-reading.jpg[width=300]
