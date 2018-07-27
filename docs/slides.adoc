@@ -1549,11 +1549,52 @@ image:img/control.jpg[]
 * See also `condp` and `case`
 
 
-== But what are they?
+== Conditionals are special forms
 
-* Special forms: Built in primitives, not functions
-* `def`, `let`, `quote` and `fn` are special forms
-* Don't evaluate their arguments
+Built in primitives, not functions
+
+`def`, `let`, `quote` and `fn` are special forms
+
+Arguments are not evaluated
+
+    (if condition (println "a") (println "b"))
+    => b
+       nil
+
+    (f condition (println "a") (println "b"))
+    => a
+       b
+       nil
+
+
+== Macros are also special
+
+`or` is a macro
+
+    (or true (println "Hello"))
+    => true
+
+Arguments are not evaluated
+
+NOTE: Cannot be done with a function
+
+
+== Macros and special forms are not functions
+
+    (apply or [true false true])
+    => CompilerException: Can't take value of a macro
+
+
+    (apply if [true :a :b])
+    => CompilerException: Unable to resolve symbol: if
+
+
+== Identifying special forms and macros
+
+* Control flow forms
+* Navigate to source
+* Documentation
+* Metadata
 
 
 == Recursion
@@ -1564,6 +1605,7 @@ Functions that call themselves are called recursive
       (if (empty? coll)
         result
         (sum-up (rest coll) (+ result (first coll)))))
+
 
 == Tail Call Optimization
 
