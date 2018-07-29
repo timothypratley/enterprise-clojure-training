@@ -1609,10 +1609,12 @@ Writing macros is covered later in the course
 
 == Identifying special forms and macros
 
-* Control flow forms
-* Navigate to source
-* Documentation
+* Remember the special forms:
+  `def` `if` `do` `let` `quote` `var` `fn` `loop` `recur` `throw` `try`
+* Control flow forms: `cond` `or` `and` `when`
+* Navigate to source: `defn` or `defmacro`
 * Metadata
+* Documentation
 
 
 == Recursion
@@ -1648,7 +1650,37 @@ Recursion which avoids consuming the stack
 
 * Loop establishes bindings
 * Allows recur to the start of the loop
-* Can be expressed as functions
+
+
+== A short Lisp detour
+
+    (loop [a 0
+           b 1]
+      (if (< b 1000)
+        (recur b (+ a b))
+        a))
+
+Can also be expressed as
+
+    ((fn [a b]
+       (if (< b 1000)
+         (recur b (+ a b))
+         a))
+     0 1)
+
+Variables can be emulated with function arguments
+
+
+== The detour continues
+
+   (let [a 1]
+     (inc a))
+
+   ((fn [a]
+      (inc a))
+    1)
+
+Functions are the fundamental abstraction
 
 
 == Exception handling
