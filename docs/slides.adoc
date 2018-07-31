@@ -2899,27 +2899,47 @@ image:img/types.jpg[]
 -- Joe Louis
 
 
+== Multimethods introduction
+
+    (def my-square {:shape "square"})
+
+    (defmulti draw :shape)
+
+    (defmethod draw "square" [x] (render ...))
+
+    (draw my-square)
+
+* Keywords are functions
+* Common to use a keyword as a dispatch function
+* Looks similar to Object Oriented type dispatch
+* User or library can add methods later
+
+
 == Defining a multimethod
 
 Polymorphic dispatch. Define the name and the dispatch function:
 
     (defmulti encounter
-      (fn dispatch [x y]
-        [(:species x) (:species y)]))
+      (fn dispatch [a b]
+        [(:species a) (:species b)]))
+
+* Dispatch is not limited to a single type
+* Dispatch might not even involve a type
 
 
 == Defining method implementations
 
 Provide methods to execute for a given dispatch value:
 
-    (defmethod encounter [:bunny :lion] [x y] :run-away)
-    (defmethod encounter [:lion :bunny] [x y] :eat)
-    (defmethod encounter [:lion :lion] [x y] :fight)
-    (defmethod encounter [:bunny :bunny] [x y] :mate)
+    (defmethod encounter [:bunny :lion] [a b] :run-away)
+    (defmethod encounter [:lion :bunny] [a b] :eat)
+    (defmethod encounter [:lion :lion] [a b] :fight)
+    (defmethod encounter [:bunny :bunny] [a b] :mate)
 
-* Given a dispatch result of `[:bunny :lion]`, the first method will be called
-* `x` and `y` are inputs to the function
-* Unused in this example
+* Similar to a case block
+* Dispatch results map to function definitons
+* Input is unused in this example
+* Not limited to a single input
 
 
 == Calling the multimethod
@@ -2938,63 +2958,78 @@ Provide methods to execute for a given dispatch value:
     (encounter lion1 lion2)
     => :fight
 
-== Multimethods
 
-* Between a case statement and a function definition
-* Conditions under which to be called, and a function definition
-* Keywords are functions
-* Common to use a keyword as a dispatch function
+== Multimethods summary
 
-    (defmulti draw :shape)
+* Conditions under which to be called + function definitions
+* Often dispatch by type, but not limited to that
+* *Provide a point of extension*
+** Clojure test reporter can be modified
+** JDBC types can have custom handlers added
+
+
+== Protocols also provide a point of extension
+
+* Protocols directly implement host polymorphism (JVM)
+** Dispatch on the type of their first argument
+** Fast
+* *User or library can add methods later*
 
 
 == Protocols
-
-A named set of named methods and their signatures:
 
     (defprotocol AProtocol
       "A doc string for AProtocol abstraction"
       (bar [a b] "bar docs")
       (baz [a] [a b] [a b c] "baz docs"))
 
+* A named set of named methods and their signatures
+
+
+== Protocols are similar to Java Interfaces
+
 * No implementations are provided
-* Yields a set of polymorphic functions and a protocol object
-* The functions dispatch on the type of their first argument
-* Must have at least one argument
+* Dynamic
+* Generates a corresponding interface with the same name
+* The protocol will automatically work with instances of the interface
+* A Java client can implement the protocol-generated interface
+
 
 == deftype supports protocols directly
 
     (defprotocol P
       (foo [x])
-      (bar-me [x] [x y]))
+      (bar [x] [x y]))
 
-    (deftype Foo [a b c]
+    (deftype T [a b c]
       P
       (foo [x] a)
-      (bar-me [x] b)
-      (bar-me [x y] (+ c y)))
+      (bar [x] b)
+      (bar [x y] (+ c y)))
 
-    (bar-me (Foo. 1 2 3) 42)
+    (bar (T. 1 2 3) 42)
     => 45
 
+[NOTE.speaker]
+--
+* `bar` has 2 signatures
+* `a`, `b`, `c` are constructor arguments
+--
 
-== and reify
 
-    (foo
-     (let [x 42]
-       (reify P
-         (foo [this] 17)
-         (bar-me [this] x)
-         (bar-me [this y] x))))
+== reify
+
+    (def obj (reify P
+               (foo [this] 17)))
+    (foo obj)
     => 17
 
-
-== defprotocol
-
-* Dynamic
-* Generates a corresponding interface with the same name
-* The protocol will automatically work with instances of the interface
-* A Java client can implement the protocol-generated interface
+* Creates an object that implements a protocol without defining a type
+* Do not have to implement all protocol signatures
+* Can also reify Java interfaces
+* Cannot reify a class
+** Java classes are closed
+** Java interfaces cannot be extended
 
 
 == extend
@@ -3032,9 +3067,17 @@ Expands into:
         :bar (fn [x y] ...)})
 
 
+== Protocols are extensible
+
+* User or library can add functionality later
+* Embrace the host (JVM or JavaScript)
+* Use when extension is required
+* Create when extension is anticipated
+
+
 == Creating types with defrecord and deftype
 
-* `deftype`, `defrecord`, and `reify` provide the mechanism for defining implementations of abstractions, and instances of those implementations.
+* `deftype`, `defrecord`, and `reify` define implementations of abstractions, and instances of those implementations.
 * Resist the urge to use them to define 'structured data' as you would define classes or structures in other languages.
 * It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.
 
@@ -3049,6 +3092,8 @@ Expands into:
 
     (->Circle 10)
     (->Square 5 11)
+
+* No protocol required
 
 
 == defrecord
@@ -3079,74 +3124,128 @@ Call the method on the `thing` instance and pass `"bar"`:
     => "foo-bar"
 
 
-== Specifications with clojure.spec
+== Specifications (clojure.spec)
 
 * Specifies the structure of data
 * Validates data structures
-* Can generate data
-* Introduced into Clojure 1.9.0
+* A spec is a single argument function
+* Values conform to specs or don't (validation)
+* A values may conform to one of multiple specs (parsing)
+* A registrar of named specs
+* Can generate data and tests
+* Asserts arbitrary requirements
+* More flexible than types
+
+
+== Spec Introduced in Clojure 1.9.0
+
 * Update `project.clj` to the right version:
 
 	[org.clojure/clojure "1.9.0"]
+
+* Require it
 
     (ns training.spec
       (:require [clojure.spec.alpha :as s]))
 
 
-== Validation
+== Any single argument function is a spec
 
-    (s/valid? even? 10)
-    => true
+    (string? 0)
+    => false
+
+    (identity 1)
+    => 1
+
+    (identity nil)
+    => nil
+
+Result truthiness indicates conformity
+
+
+== Validation checks a value against a spec
 
     (s/valid? string? 0)
     => false
 
-Any single argument function is a valid predicate spec
+    (s/valid? identity nil)
+    => false
 
-
-== Common to use a set
-
-Sets are functions, so can be used as predicates that match one or more literal values:
-
-    (s/valid? #{:club :diamond :heart :spade} :club)
+    (s/valid? identity 1)
     => true
 
 
-== Registration
+== Naming a spec
 
-Specs are registered using `s/def`
+    (s/def ::first-name string?)
+    => :user/first-name
+
+Identifier -> spec is stored in the registrar.
+
+    (s/valid? ::first-name "Tim")
+    => true
+
+`::first-name` is shorthand for `:my.namespace/first-name`
+
+Naming collisions are expected.
+Spec identifiers must be namespaced
+
+
+== Another spec example
 
     (s/def ::suit #{:club :diamond :heart :spade})
-
-A registered spec identifier can be used in place of a spec definition
-
     (s/valid? ::suit :club)
     => true
+
+Sets are functions that return the element if it is in the set
 
 
 == Composing specs
 
     (s/def ::big-even (s/and int? even? #(> % 1000)))
 
-    (s/valid? ::big-even 10)
-    => false
-
     (s/valid? ::big-even 100000)
     => true
+
+    (s/valid? ::big-even 5)
+    => false
+
+
+== Explaining non-conformance
+
+    (s/explain ::big-even 5)
+    => val: 5 fails spec: ::big-even predicate: even?
+
+See also `explain-str`
+
+See also expound library https://github.com/bhb/expound
+
+TIP: What would happen if we had not used `s/and`?
+
+    #(and (int? %) (even? %) (> % 1000))
 
 
 == Conforming
 
-    (s/def ::name-or-id (s/or :name string? :id int?))
+    (s/def ::name-or-id (s/or :name string?
+                              :id int?))
 
-* Involves a choice during validity checking
-* Each choice is tagged (`:name` and `:id`)
+Chose which spec matches
 
     (s/conform ::name-or-id "abc")
     => [:name "abc"]
 
     (s/conform ::name-or-id 100)
     => [:id 100]
+
+Each choice is tagged (`:name` and `:id`)
+
+
+== Useful for parsing
+
+* Events
+* Function signatures
+* Expectations about data
 
 
 == nil
@@ -3159,34 +3258,33 @@ To include `nil` as a valid value:
     (s/nilable string?)
 
 
-== explain
-
-Reports why a value does not conform to a spec
-
-    (s/explain ::big-even 5)
-    => val: 5 fails spec: ::big-even predicate: even?
-
-See also `explain-str`
-
-
-== Maps
+== regex in a spec
 
     (def email-regex
       #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$")
-    (s/def ::email-type (s/and string? #(re-matches email-regex %)))
+    (s/def ::email
+      (s/and string?
+             #(re-matches email-regex %)))
+    (s/valid? ::email "not an email address")
+    => false
+    (s/valid? ::email "timothypratley@gmail.com")
+    => true
+
+
+== Map specs
+
     (s/def ::acctid int?)
     (s/def ::first-name string?)
     (s/def ::last-name string?)
-    (s/def ::email ::email-type)
+    (s/def ::phone string?)
 
-    (s/def ::person (s/keys :req [::first-name ::last-name ::email]
+    (s/def ::person (s/keys :req [::first-name ::last-name]
                             :opt [::phone]))
+
+* Entity definition
 
 
 == Validating maps
-
-* required attributes are included
-* every registered key has a conforming value
 
     (s/valid? ::person
       {::first-name "Elon"
@@ -3194,8 +3292,26 @@ See also `explain-str`
        ::email "elon@example.com"})
     => true
 
+* Required attributes are included
+* Every registered key has a conforming value
 
-== Unqualified
+
+== Qualified keys
+
+Namespacing keys preserves more meaning
+
+    {:my.namespace/first-name "Elon"
+     :my.namespace/last-name "Musk"
+     :my.namespace/email "elon@example.com"}
+
+But existing code often does not namespace keys
+
+    {:first-name "Elon"
+     :last-name "Musk"
+     :email "elon@example.com"}
+
+
+== Unqualified keys
 
     (s/def :unq/person
       (s/keys :req-un [::first-name ::last-name ::email]
@@ -3207,21 +3323,47 @@ See also `explain-str`
        :email "elon@example.com"})
     => true
 
-* Existing Clojure code not use namespaced keys
 * req-un -> required unqualified keys
 * opt-un -> optional unqualified keys
 
 
-== map-of
+== Generic specification: map-of
 
     (s/def ::scores (s/map-of string? int?))
-    (s/valid? ::scores {"Sally" 1000, "Joe" 500})
+
+    (s/valid? ::scores {"Sally" 1000,
+                        "Joe" 500
+                        "Jess" 750})
     => true
 
-* Specifies a map with homogenous key and value predicates
+* Homogeneous keys and homogeneous values
 
 
-== pre and post conditions
+== Specs for sequences
+
+    (s/alt ...)
+    ...
+
+    (s/cat :a number? :b string?)
+
+    (s/conform [2 "three"])
+    =>
+
+
+== Function specs
+
+    (s/fdef f
+      :args (s/cat ...)
+      :ret ...
+      :fn ...)
+
+== Function args
+
+== Function ret
+
+== Function invariant
+
+== Can combine conditions
 
     (defn adder [x]
       #(+ x %))
