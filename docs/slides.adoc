@@ -3359,28 +3359,36 @@ But existing code often does not namespace keys
 
 == Function args
 
+    (s/fdef f :args (s/cat :num number? :item string?))
+
+    (defn f [num item]
+      (str num " bottles of " item " on the wall"))
+
+Can be declared in a different namespace, before or after
+
+
 == Function ret
+
+    (s/fdef f :ret string?)
+
 
 == Function invariant
 
-== Can combine conditions
-
-    (defn adder [x]
-      #(+ x %))
-
-    (s/fdef adder
-      :args (s/cat :x number?)
-      :ret (s/fspec :args (s/cat :y number?)
-                    :ret number?)
-      :fn #(= (-> % :args :x) ((:ret %) 0)))
-
-* `:ret` declares that the returning function takes and returns a number
-* `:fn` calling any adder with `0` should return `x`
+    (s/fdef f
+      :fn #(str/includes? (:ret %) (-> % :args :item))
 
 
-== A game of cards
+== Putting them all together
 
-Model a game of cards:
+    (s/fdef f :args (s/cat :num number?
+                           :item string?))
+              :ret string?
+              :fn #(str/includes?
+                     (-> % :args :item)
+                     (:ret %))
+
+
+== Card game basics
 
     (def suit? #{:club :diamond :heart :spade})
     (def rank? (into #{:jack :queen :king :ace} (range 2 11)))
@@ -3388,6 +3396,9 @@ Model a game of cards:
 
     (s/def ::card (s/tuple rank? suit?))
     (s/def ::hand (s/* ::card))
+
+
+== A game with players
 
     (s/def ::name string?)
     (s/def ::score int?)
@@ -3397,6 +3408,9 @@ Model a game of cards:
     (s/def ::deck (s/* ::card))
     (s/def ::game (s/keys :req [::players ::deck]))
 
+
+== Example player
+
     (def kenny
       {::name "Kenny Rogers"
        ::score 100
@@ -3404,7 +3418,8 @@ Model a game of cards:
     (s/valid? ::player kenny)
     => true
 
-Bad data produces errors
+
+== Bad data explained
 
     (s/explain ::game
       {::deck deck
@@ -3440,7 +3455,10 @@ Bad data produces errors
 
 Spec generators rely on the `test.check` as a development dependency in `project.clj`:
 
-    :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]]}}
+    :profiles
+    {:dev
+     {:dependencies
+      [[org.clojure/test.check "0.9.0"]]}}
 
     (ns training.spec
       (:require [clojure.spec.gen.alpha :as gen]))
@@ -3560,6 +3578,7 @@ image:img/database.jpg[]
     [hsqldb/hsqldb "1.8.0.10"]
 
 NOTE: we need the driver we plan to use to connect to a database
+
 
 == Connecting
 
