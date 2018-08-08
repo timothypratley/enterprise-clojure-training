@@ -1822,7 +1822,7 @@ choose one but not the other.
     v
     => [1 2]
 
-* `v` remained unchanged
+* `v` remains unchanged
 * Manage change explicitly
 
 
@@ -1954,6 +1954,8 @@ Limit the number of items to consume:
 
 Clojure collections implement `ISeq`
 
+Even Java types like strings and iterables
+
 
 == Empty sequences
 
@@ -1987,9 +1989,9 @@ Prefer `(seq xs)` over `(not (empty? xs))`
     => [11 12 13]
 
 
-== Composing sequences
+== Chaining operations over seqs
 
-Sequences can input for other functions:
+Output sequences can input for other functions:
 
     (filter odd? (map inc [1 2 3 4]))
     => (3 5)
