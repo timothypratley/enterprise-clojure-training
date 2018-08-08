@@ -2513,7 +2513,188 @@ Call the method on the `thing` instance and pass `"bar"`:
     (.getContentTypeFor thing "bar")
 
 
-=== Specifications with clojure.spec
+== Interacting with a Database
+
+image:img/database.jpg[width=300]
+
+"You can have data without information, but you cannot have information without data."
+-- Daniel Keys Moran
+
+
+=== Intro to clojure.java.jdbc
+
+Database persistence is important for many applications.
+We can use clojure.java.jdbc to interact with a database.
+
+To start, create a new project
+
+    $ lein new messenger
+
+and add dependencies to your `project.clj` file:
+
+    [org.clojure/java.jdbc "0.7.5"]
+    [hsqldb/hsqldb "1.8.0.10"]
+
+Note that we need the driver we plan to use to connect to a database.
+In this case we are using an in memory HSQL database.
+
+In the Clojure project we require jdbc, and set up a db connection url.
+
+    (ns messenger.core
+      (:require [clojure.java.jdbc :as jdbc]))
+
+    (def db "jdbc:hsqldb:mem:testdb")
+
+Now we are all set to start doing queries.
+
+
+=== Inserting, updating and retrieving data
+
+First we will create a table called testing inside the database with a text field named data, and then insert some rows.
+
+    (jdbc/execute! db
+      "create table messages (message varchar(1024))")
+
+    (jdbc/insert-multi! db :messages
+                        [{:message "Hello World"}
+                         {:message "How now?"}])
+
+And we can query the data back:
+
+    (jdbc/query db ["select * from messages"])
+    => ({:message "Hello World"}
+        {:message "How now?"})
+
+To selectively delete some data:
+
+    (jdbc/delete! db :messages ["message like '%World%'"])
+
+And now there is only one row remaining.
+
+    (jdbc/query db ["select * from messages"])
+    => ({:message "Hello World"})
+
+Let's add some more data...
+
+    (jdbc/insert-multi! db :messages
+                    [{:message "Nobody panic!!!"}
+                     {:message "What in the world?"}
+                     {:message "All is well."}])
+
+And now we create a function to do a parameterized query.
+
+    (defn search [s]
+      (jdbc/query db
+        ["select * from messages where message like ?" s]))
+
+    (search "%How%")
+    => ({:message "How now?"})
+
+It is important to use parameterized queries instead of string concatenation in this example because it protects us from SQL injection.
+Parameters are not part of the query, so they cannot perform SQL from malicious input.
+
+If you want to redo any steps, remember that you can always drop the table and start again.
+
+    (jdbc/execute! db "drop table messages")
+
+
+=== Solutions for SQL management
+
+HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures.
+This is useful when you have to programmatically combine clauses to produce a final SQL statement.
+For example if the user can check a checkbox to enable an additional clause in a search.
+In such cases it is more convenient to use Clojure's capabilities for manipulating data structures.
+However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
+
+
+=== Exercises
+
+* Create and populate a table `person` with two columns; `id`, `name`.
+* Create and populate a table `policy` with two columns; `id`, `name`
+* Create and populate a table `person_policy` with two columns; `person_id`, `policy_id`
+* Write a function that given a person name queries all the policies associated with them.
+
+
+=== Answers
+
+    (ns messenger.core
+      (:require [clojure.java.jdbc :as jdbc]))
+
+    (def db "jdbc:hsqldb:mem:testdb")
+
+    (jdbc/execute! db
+      "create table person (id bigint, name varchar(1024))")
+    (jdbc/execute! db
+      "create table policy (id bigint, name varchar(1024))")
+    (jdbc/execute! db
+      "create table person_policy
+      (person_id bigint, policy_id bigint)")
+    (jdbc/insert-multi! db :person
+                        [{:id 1 :name "Sally"}
+                         {:id 2 :name "Billy"}])
+    (jdbc/insert-multi! db :policy
+                        [{:id 1 :name "Corgi Cover"}
+                         {:id 2 :name "Poodle Protection"}])
+    (jdbc/insert-multi! db :person_policy
+                        [{:person_id 1 :policy_id 1}
+                         {:person_id 1 :policy_id 2}
+                         {:person_id 2 :policy_id 1}])
+
+    (defn find-policies [person-name]
+      (jdbc/query db ["select a.name
+                      from policy a
+                      inner join person_policy b
+                      on a.id = b.policy_id
+                      inner join person c
+                      on b.person_id = c.id
+                      where c.name = ?"
+                      person-name]))
+
+    (find-policies "Sally")
+    => ({:name "Corgi Cover"} {:name "Poodle Protection"})
+    (find-policies "Jane")
+    => ()
+    (find-policies "Billy")
+    => ({:name "Corgi Cover"})
+
+
+:!sectnums:
+== Challenge 4: Corgi Cover Database
+
+Sending files around is proving to be problematic.
+Sometimes applications are lost or the results of the eligibility check are not communicated back to the customer.
+You have been tasked with creating a central source of truth that can be queried as to what applications have been submitted and processed.
+
+
+=== Part 1: Set up the schema
+
+Using the database of your choice, set up an initial database for the Corgi Cover project.
+In the code, connect to the database and create the initial table required.
+You can use whatever schema you like, but the first requirement is to store the applications with exactly the same data as was retrieved from the file format in Challenge 2.
+
+
+=== Part 2: Populate the data
+
+Modify the code to store the applications as they are processed, and the result of the eligibility check.
+
+
+=== Part 3: Write a spec
+
+Ensure that all records processed from the files meets your expectations for required fields.
+Write a spec that explicitly defines what should be in the applications.
+Validate the spec on the incoming records.
+
+
+=== Part 4: Extending to Poodle Protection
+
+Insuricorp is about to launch a new policy called “Poodle Protection”.
+Soon they will be processing applications with completely new rules.
+Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications.
+For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
+
+
+:sectnums:
+== Specifications with clojure.spec
 
 The spec library specifies the structure of data, validates or destructures it, and can generate data based on the spec.
 Spec was introduced into Clojure 1.9.0, so update your `project.clj` to the right version:
@@ -2878,187 +3059,6 @@ Finally, we can use check on the higher level function to test that it behaves p
 There is even more to spec! Once you are comfortable with the basics you can learn more at https://clojure.org/guides/spec.
 
 
-== Interacting with a Database
-
-image:img/database.jpg[width=300]
-
-"You can have data without information, but you cannot have information without data."
--- Daniel Keys Moran
-
-
-=== Intro to clojure.java.jdbc
-
-Database persistence is important for many applications.
-We can use clojure.java.jdbc to interact with a database.
-
-To start, create a new project
-
-    $ lein new messenger
-
-and add dependencies to your `project.clj` file:
-
-    [org.clojure/java.jdbc "0.7.5"]
-    [hsqldb/hsqldb "1.8.0.10"]
-
-Note that we need the driver we plan to use to connect to a database.
-In this case we are using an in memory HSQL database.
-
-In the Clojure project we require jdbc, and set up a db connection url.
-
-    (ns messenger.core
-      (:require [clojure.java.jdbc :as jdbc]))
-
-    (def db "jdbc:hsqldb:mem:testdb")
-
-Now we are all set to start doing queries.
-
-
-=== Inserting, updating and retrieving data
-
-First we will create a table called testing inside the database with a text field named data, and then insert some rows.
-
-    (jdbc/execute! db
-      "create table messages (message varchar(1024))")
-
-    (jdbc/insert-multi! db :messages
-                        [{:message "Hello World"}
-                         {:message "How now?"}])
-
-And we can query the data back:
-
-    (jdbc/query db ["select * from messages"])
-    => ({:message "Hello World"}
-        {:message "How now?"})
-
-To selectively delete some data:
-
-    (jdbc/delete! db :messages ["message like '%World%'"])
-
-And now there is only one row remaining.
-
-    (jdbc/query db ["select * from messages"])
-    => ({:message "Hello World"})
-
-Let's add some more data...
-
-    (jdbc/insert-multi! db :messages
-                    [{:message "Nobody panic!!!"}
-                     {:message "What in the world?"}
-                     {:message "All is well."}])
-
-And now we create a function to do a parameterized query.
-
-    (defn search [s]
-      (jdbc/query db
-        ["select * from messages where message like ?" s]))
-
-    (search "%How%")
-    => ({:message "How now?"})
-
-It is important to use parameterized queries instead of string concatenation in this example because it protects us from SQL injection.
-Parameters are not part of the query, so they cannot perform SQL from malicious input.
-
-If you want to redo any steps, remember that you can always drop the table and start again.
-
-    (jdbc/execute! db "drop table messages")
-
-
-=== Solutions for SQL management
-
-HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures.
-This is useful when you have to programmatically combine clauses to produce a final SQL statement.
-For example if the user can check a checkbox to enable an additional clause in a search.
-In such cases it is more convenient to use Clojure's capabilities for manipulating data structures.
-However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
-
-
-=== Exercises
-
-* Create and populate a table `person` with two columns; `id`, `name`.
-* Create and populate a table `policy` with two columns; `id`, `name`
-* Create and populate a table `person_policy` with two columns; `person_id`, `policy_id`
-* Write a function that given a person name queries all the policies associated with them.
-
-
-=== Answers
-
-    (ns messenger.core
-      (:require [clojure.java.jdbc :as jdbc]))
-
-    (def db "jdbc:hsqldb:mem:testdb")
-
-    (jdbc/execute! db
-      "create table person (id bigint, name varchar(1024))")
-    (jdbc/execute! db
-      "create table policy (id bigint, name varchar(1024))")
-    (jdbc/execute! db
-      "create table person_policy
-      (person_id bigint, policy_id bigint)")
-    (jdbc/insert-multi! db :person
-                        [{:id 1 :name "Sally"}
-                         {:id 2 :name "Billy"}])
-    (jdbc/insert-multi! db :policy
-                        [{:id 1 :name "Corgi Cover"}
-                         {:id 2 :name "Poodle Protection"}])
-    (jdbc/insert-multi! db :person_policy
-                        [{:person_id 1 :policy_id 1}
-                         {:person_id 1 :policy_id 2}
-                         {:person_id 2 :policy_id 1}])
-
-    (defn find-policies [person-name]
-      (jdbc/query db ["select a.name
-                      from policy a
-                      inner join person_policy b
-                      on a.id = b.policy_id
-                      inner join person c
-                      on b.person_id = c.id
-                      where c.name = ?"
-                      person-name]))
-
-    (find-policies "Sally")
-    => ({:name "Corgi Cover"} {:name "Poodle Protection"})
-    (find-policies "Jane")
-    => ()
-    (find-policies "Billy")
-    => ({:name "Corgi Cover"})
-
-
-:!sectnums:
-== Challenge 4: Corgi Cover Database
-
-Sending files around is proving to be problematic.
-Sometimes applications are lost or the results of the eligibility check are not communicated back to the customer.
-You have been tasked with creating a central source of truth that can be queried as to what applications have been submitted and processed.
-
-
-=== Part 1: Set up the schema
-
-Using the database of your choice, set up an initial database for the Corgi Cover project.
-In the code, connect to the database and create the initial table required.
-You can use whatever schema you like, but the first requirement is to store the applications with exactly the same data as was retrieved from the file format in Challenge 2.
-
-
-=== Part 2: Populate the data
-
-Modify the code to store the applications as they are processed, and the result of the eligibility check.
-
-
-=== Part 3: Write a spec
-
-Ensure that all records processed from the files meets your expectations for required fields.
-Write a spec that explicitly defines what should be in the applications.
-Validate the spec on the incoming records.
-
-
-=== Part 4: Extending to Poodle Protection
-
-Insuricorp is about to launch a new policy called “Poodle Protection”.
-Soon they will be processing applications with completely new rules.
-Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications.
-For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
-
-
-:sectnums:
 == Macros
 
 image:img/macros.jpg[width=300]
