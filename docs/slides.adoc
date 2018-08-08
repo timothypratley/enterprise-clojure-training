@@ -34,8 +34,12 @@ image:img/corgi.jpg[]
 |link:#/parallel_programming_and_concurrency[Concurrency]
 |link:#/polymorphism_and_types[Polymorphism]
 |link:#/interacting_with_a_database[Databases]
+|link:#/spec[Spec]
 |link:#/macros[Macros]
 |link:#/further_reading[Further reading]
+|
+|
+|
 |===
 
 
@@ -3268,7 +3272,7 @@ Ensure that all records processed from the files meets your expectations for req
 Insuricorp is about to launch a new policy called “Poodle Protection”. Soon they will be processing applications with completely new rules. Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications. For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
 
 
-== 11. Specifications (clojure.spec)
+== 11. Spec
 
 * Specifies the structure of data
 * Validates data structures
