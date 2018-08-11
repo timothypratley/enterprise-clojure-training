@@ -3276,6 +3276,14 @@ Insuricorp is about to launch a new policy called “Poodle Protection”. Soon 
 
 == 11. Spec
 
+image:img/spec.jpg[]
+
+"Much of the essence of building a program is in fact the debugging of the specification."
+-- Fred Brooks
+
+
+== Specifications
+
 * Specifies the structure of data
 * Validates data structures
 * A spec is a single argument function
@@ -3330,14 +3338,15 @@ Result truthiness indicates conformity
     (s/def ::first-name string?)
     => :user/first-name
 
-Identifier -> spec is stored in the registrar.
+Identifier -> spec is stored in the registrar
 
     (s/valid? ::first-name "Tim")
     => true
 
 `::first-name` is shorthand for `:my.namespace/first-name`
 
-Naming collisions are expected.
+Naming collisions are expected
+
 Spec identifiers must be namespaced
 
 
@@ -3431,7 +3440,7 @@ To include `nil` as a valid value:
     (s/def ::person (s/keys :req [::first-name ::last-name]
                             :opt [::phone]))
 
-* Entity definition
+Entity definition
 
 
 == Validating maps
@@ -3506,6 +3515,7 @@ But existing code often does not namespace keys
       :args (s/cat ...)
       :ret ...
       :fn ...)
+
 
 == Function args
 
@@ -3603,12 +3613,17 @@ Can be declared in a different namespace, before or after
 * Produce sample data that conforms to the spec
 * Useful for property-based testing
 
-Spec generators rely on the `test.check` as a development dependency in `project.clj`:
+
+== Generator setup
+
+Add to your `project.clj`:
 
     :profiles
     {:dev
      {:dependencies
       [[org.clojure/test.check "0.9.0"]]}}
+
+Require:
 
     (ns training.spec
       (:require [clojure.spec.gen.alpha :as gen]))
@@ -3620,7 +3635,10 @@ Spec generators rely on the `test.check` as a development dependency in `project
     => -959
 
 * `gen` obtains the generator for a spec
-* `generated` creates a value that conforms to the spec
+* `generate` creates a value that conforms to the spec
+
+
+== gen complex values
 
     (gen/generate (s/gen ::player))
     => {:spec.examples.guide/name "sAt8r6t",
@@ -3785,9 +3803,10 @@ Manual expansion shows what a macro does
 == Macros produce code
 
 * Functions that manipulate code
-* Have a `:macro` flag set in metadata
+* Think of it as text manipulation
 * Passed input forms unevaluated
 * Replaces the form at compile time
+* Have a `:macro` flag set in metadata
 
 
 == Using macros

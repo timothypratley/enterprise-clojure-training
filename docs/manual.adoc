@@ -2694,7 +2694,15 @@ For now the only difference with the rules from “Corgi Cover” is that “Poo
 
 
 :sectnums:
-== Specifications with clojure.spec
+== Spec
+
+image:img/spec.jpg[width=300]
+
+"Much of the essence of building a program is in fact the debugging of the specification."
+-- Fred Brooks
+
+
+=== Specifications
 
 The spec library specifies the structure of data, validates or destructures it, and can generate data based on the spec.
 Spec was introduced into Clojure 1.9.0, so update your `project.clj` to the right version:
