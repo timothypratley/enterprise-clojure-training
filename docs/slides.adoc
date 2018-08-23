@@ -3348,7 +3348,7 @@ Spec identifiers must be namespaced
 Sets are functions that return the element if it is in the set
 
 
-== Composing specs
+== Logical specs
 
     (s/def ::big-even (s/and int? even? #(> % 1000)))
 
@@ -3486,16 +3486,78 @@ But existing code often does not namespace keys
 
 * Homogeneous keys and homogeneous values
 
+== Collections
 
-== Specs for sequences
+    (s/valid (s/coll-of number?)
+             #{5 10 2})
+    => true
 
-    (s/alt ...)
-    ...
+    (s/valid (s/tuple number? string?)
+             [42 "meaning of life"])
+    => true
 
-    (s/cat :a number? :b string?)
 
-    (s/conform [2 "three"])
-    =>
+== Sequence specs are regular expressions
+
+* `*` : 0 or more of a predicate/pattern
+* `+` : 1 or more of a predicate/pattern
+* `?` : 0 or 1 of a predicate/pattern
+
+
+== Sequence specs
+
+Useful for function arguments
+
+    (s/valid? (s/* string?) ["a" "b" "c"])
+    => true
+
+    (s/valid? (s/+ string?) ["a" "b" "c"])
+    => true
+
+    (s/valid? (s/? string?) ["a"])
+    => true
+
+
+== cat - Concatenation of predicates
+
+    (s/def ::t
+      (s/cat :a number? :b string?))
+
+    (s/conform ::t [2 "three"])
+    => {:a 2, :b "three"}
+
+
+== alt - Choice among alternatives
+
+    (s/def ::t2
+      (s/alt :a number? :b string?))
+
+    (s/conform ::t2 [2])
+    [:a 2]
+
+
+== Combining sequence specs
+
+    (s/def ::config (s/*
+                      (s/cat :prop string?
+                             :val  (s/alt :s string? :b boolean?))))
+    (s/conform ::config ["-server" "foo" "-verbose" true "-user" "joe"])
+    => [{:prop "-server", :val [:s "foo"]}
+        {:prop "-verbose", :val [:b true]}
+        {:prop "-user", :val [:s "joe"]}]
+
+== Additional constraints
+
+    (s/def ::even-strings (s/& (s/* string?) #(even? (count %))))
+
+    (s/valid? ::even-strings ["a"])
+    => false
+    (s/valid? ::even-strings ["a" "b"])
+    => true
+    (s/valid? ::even-strings ["a" "b" "c"])
+    => false
+    (s/valid? ::even-strings ["a" "b" "c" "d"])
+    => true
 
 
 == Function specs
@@ -3504,6 +3566,7 @@ But existing code often does not namespace keys
       :args (s/cat ...)
       :ret ...
       :fn ...)
+
 
 == Function args
 
@@ -4177,6 +4240,7 @@ Produces suggestions on how to write idiomatic Clojure
 * 4Clojure problems http://www.4clojure.com
 * Project Euler https://projecteuler.net
 * Katas
+
 
 [state=title]
 == Thank you
