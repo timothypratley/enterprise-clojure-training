@@ -3318,10 +3318,10 @@ image:img/spec.jpg[]
     (identity nil)
     => nil
 
-Result truthiness indicates conformity
+A truthy result indicates conformity
 
 
-== Validation checks a value against a spec
+== We validate values against specs
 
     (s/valid? string? 0)
     => false
@@ -3400,14 +3400,15 @@ Chose which spec matches
 Each choice is tagged (`:name` and `:id`)
 
 
-== Useful for parsing
+== Conform is useful for parsing
 
 * Events
 * Function signatures
 * Expectations about data
+* Can match one of many alternatives
 
 
-== nil
+== Allowing nil
 
     (string? nil)
     => false
@@ -3424,15 +3425,15 @@ To include `nil` as a valid value:
     (s/def ::email
       (s/and string?
              #(re-matches email-regex %)))
-    (s/valid? ::email "not an email address")
-    => false
+
     (s/valid? ::email "timothypratley@gmail.com")
     => true
+    (s/valid? ::email "not-a-valid-email-address")
+    => false
 
 
 == Map specs
 
-    (s/def ::acctid int?)
     (s/def ::first-name string?)
     (s/def ::last-name string?)
     (s/def ::phone string?)
@@ -3486,7 +3487,7 @@ But existing code often does not namespace keys
 * opt-un -> optional unqualified keys
 
 
-== Generic specification: map-of
+== Generic map: map-of
 
     (s/def ::scores (s/map-of string? int?))
 
@@ -3496,6 +3497,7 @@ But existing code often does not namespace keys
     => true
 
 * Homogeneous keys and homogeneous values
+
 
 == Collections
 
@@ -3557,9 +3559,11 @@ Useful for function arguments
         {:prop "-verbose", :val [:b true]}
         {:prop "-user", :val [:s "joe"]}]
 
+
 == Additional constraints
 
-    (s/def ::even-strings (s/& (s/* string?) #(even? (count %))))
+    (s/def ::even-strings (s/& (s/* string?)
+                               #(even? (count %))))
 
     (s/valid? ::even-strings ["a"])
     => false
@@ -3569,6 +3573,8 @@ Useful for function arguments
     => false
     (s/valid? ::even-strings ["a" "b" "c" "d"])
     => true
+
+TODO: how is this different from s/and?
 
 
 == Function specs
