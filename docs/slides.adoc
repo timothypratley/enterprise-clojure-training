@@ -3352,11 +3352,11 @@ Spec identifiers must be namespaced
 
 == Another spec example
 
-    (s/def ::suit #{:club :diamond :heart :spade})
-    (s/valid? ::suit :club)
+    (s/def :corgi-cover/state #{"IL" "WA" "NY" "CO"})
+    (s/valid? :corgi-cover/state "IL")
     => true
 
-Sets are functions that return the element if it is in the set
+TIP: Sets are functions that return the element if it is in the set
 
 
 == Logical specs
@@ -3510,6 +3510,90 @@ But existing code often does not namespace keys
     => true
 
 
+== Specs can be combined
+
+(s/def :mega-corp/name string?)
+(s/def :mega-corp/policy-count int?)
+(s/def :corgi-cover/state #{"IL" "WA" "NY" "CO"})
+(s/def :corgi-cover/corgi-count pos-int?)
+
+(s/def :mega-corp/corgi-cover
+  (s/keys :req-un [:mega-corp/name
+                   :corgi-cover/state
+                   :corgi-cover/corgi-count]))
+
+
+== Generators
+
+* Specs are designed to act as generators
+* Produce sample data that conforms to the spec
+* Useful for property-based testing
+
+
+== Generator setup
+
+Add to your `project.clj`:
+
+    :profiles
+    {:dev
+     {:dependencies
+      [[org.clojure/test.check "0.9.0"]]}}
+
+Require:
+
+    (ns training.spec
+      (:require [clojure.spec.gen.alpha :as gen]))
+
+
+== generate and gen
+
+    (gen/generate (s/gen int?))
+    => -959
+
+* `gen` obtains the generator for a spec
+* `generate` creates a value that conforms to the spec
+
+
+== generate can build complex values
+
+    (gen/generate (s/gen :mega-corp/corgi-cover))
+    => {:name "yNd516AYD",
+        :state "NY",
+        :corgi-count 1}
+
+
+== sample
+
+    (gen/sample (s/gen string?))
+    => ("" "" "" "" "8" "W" "" "G74SmCm" "K9sL9" "82vC")
+
+Produces 10 examples
+
+
+== int-in range
+
+    (s/def ::roll (s/int-in 0 11))
+    (gen/sample (s/gen ::roll))
+    => (1 0 0 3 1 7 10 1 5 0)
+
+See also `inst-in` and `double-in`
+
+`test.check` tutorial https://clojure.github.io/test.check/intro.html
+
+
+== What about functions arguments?
+
+    (defn f [x y z]
+      ...)
+
+`[x y z]` is a sequence of data arguments with different specs
+
+Positional importance
+
+
+NOTE: unlike a stream of events
+
+
 == Sequence specs are regular expressions
 
 * `*` : 0 or more of a predicate/pattern
@@ -3531,7 +3615,7 @@ Useful for function arguments
     => true
 
 
-== cat - Concatenation of predicates
+== cat - Concatenation
 
     (s/def ::t
       (s/cat :a number? :b string?))
@@ -3539,42 +3623,7 @@ Useful for function arguments
     (s/conform ::t [2 "three"])
     => {:a 2, :b "three"}
 
-
-== alt - Choice among alternatives
-
-    (s/def ::t2
-      (s/alt :a number? :b string?))
-
-    (s/conform ::t2 [2])
-    [:a 2]
-
-
-== Combining sequence specs
-
-    (s/def ::config (s/*
-                      (s/cat :prop string?
-                             :val  (s/alt :s string? :b boolean?))))
-    (s/conform ::config ["-server" "foo" "-verbose" true "-user" "joe"])
-    => [{:prop "-server", :val [:s "foo"]}
-        {:prop "-verbose", :val [:b true]}
-        {:prop "-user", :val [:s "joe"]}]
-
-
-== Additional constraints
-
-    (s/def ::even-strings (s/& (s/* string?)
-                               #(even? (count %))))
-
-    (s/valid? ::even-strings ["a"])
-    => false
-    (s/valid? ::even-strings ["a" "b"])
-    => true
-    (s/valid? ::even-strings ["a" "b" "c"])
-    => false
-    (s/valid? ::even-strings ["a" "b" "c" "d"])
-    => true
-
-TODO: how is this different from s/and?
+Covers most function argument signature
 
 
 == Function specs
@@ -3583,6 +3632,10 @@ TODO: how is this different from s/and?
       :args (s/cat ...)
       :ret ...
       :fn ...)
+
+* Sequence of inputs
+* Return spec
+* Invariant function has access to inputs and return
 
 
 == Function args
@@ -3616,183 +3669,166 @@ Can be declared in a different namespace, before or after
                      (:ret %))
 
 
-== Card game basics
+== Checking that a function obeys its spec
 
-    (def suit? #{:club :diamond :heart :spade})
-    (def rank? (into #{:jack :queen :king :ace} (range 2 11)))
-    (def deck (for [suit suit? rank rank?] [rank suit]))
-
-    (s/def ::card (s/tuple rank? suit?))
-    (s/def ::hand (s/* ::card))
-
-
-== A game with players
-
-    (s/def ::name string?)
-    (s/def ::score int?)
-    (s/def ::player (s/keys :req [::name ::score ::hand]))
-
-    (s/def ::players (s/* ::player))
-    (s/def ::deck (s/* ::card))
-    (s/def ::game (s/keys :req [::players ::deck]))
-
-
-== Example player
-
-    (def kenny
-      {::name "Kenny Rogers"
-       ::score 100
-       ::hand []})
-    (s/valid? ::player kenny)
-    => true
-
-
-== Bad data explained
-
-    (s/explain ::game
-      {::deck deck
-       ::players [{::name "Kenny Rogers"
-                   ::score 100
-                   ::hand [[2 :banana]]}]})
-    => In: [::players 0 ::hand 0 1]
-       val: :banana fails spec: ::card
-       at: [::players ::hand 1]
-       predicate: suit?
-
-
-== Restricting deal to valid games
-
-    (defn total-cards [{:keys [::deck ::players] :as game}]
-      (apply + (count deck)
-        (map #(-> % ::hand count) players)))
-
-    (defn deal [game] ...)
-
-    (s/fdef deal
-      :args (s/cat :game ::game)
-      :ret ::game
-      :fn #(= (total-cards (-> % :args :game))
-              (total-cards (-> % :ret))))
-
-
-== Generators
-
-* Specs are designed to act as generators
-* Produce sample data that conforms to the spec
-* Useful for property-based testing
-
-
-== Generator setup
-
-Add to your `project.clj`:
-
-    :profiles
-    {:dev
-     {:dependencies
-      [[org.clojure/test.check "0.9.0"]]}}
-
-Require:
+    (ns training.core)
+    (defn f [x]
+      (inc x))
 
     (ns training.spec
-      (:require [clojure.spec.gen.alpha :as gen]))
+      (:require [training.core :as c]
+                [clojure.spec.alpha :as s]))
+    (s/fdef c/f :args (s/cat :x int?)
+                :ret int?)
+
+    (ns training.core-test
+      (:require [clojure.test :refer :all]
+                [clojure.spec.test.alpha :as stest]
+                [training.core :as c]))
+    (deftest f-test
+      (is (nil? (-> (stest/check `c/f) first :failure))))
 
 
-== gen
+== Issues with spec
 
-    (gen/generate (s/gen int?))
-    => -959
-
-* `gen` obtains the generator for a spec
-* `generate` creates a value that conforms to the spec
-
-
-== gen complex values
-
-    (gen/generate (s/gen ::player))
-    => {:spec.examples.guide/name "sAt8r6t",
-        :spec.examples.guide/score 233843,
-        :spec.examples.guide/hand ([8 :spade] [5 :heart] [9 :club] [3 :heart])}
-
-	(gen/generate (s/gen ::game))
-    => {...}
+* Common to keep specs in a separate namespace
+* `stest/check` returns a sequence containing a failure cases
+* Shrinks to a minimal case
+* Difficult to find what you want in the output
+* Designed for running at the REPL, clunky in tests
+* Make sure you tests for failure before success
+* The expound library helps
 
 
-== sample
+== Expound
 
-    (gen/sample (s/gen string?))
-    => ("" "" "" "" "8" "W" "" "G74SmCm" "K9sL9" "82vC")
+Add to project.clj dependencies
 
-    (gen/sample (s/gen #{:club :diamond :heart :spade}))
-    => (:heart :diamond :heart :heart :heart :diamond :spade :spade :spade :club)
+    [expound "0.5.0"]
 
-
-== int-in range
-
-    (s/def ::roll (s/int-in 0 11))
-    (gen/sample (s/gen ::roll))
-    => (1 0 0 3 1 7 10 1 5 0)
-
-See also `inst-in` and `double-in`
-
-`test.check` tutorial https://clojure.github.io/test.check/intro.html
-
-
-== Instrumentation and Testing
-
-    (ns training.spec
-      (:require [clojure.spec.test.alpha :as stest]))
-
-    (defn ranged-rand
-      "Returns random int in range start <= rand < end"
-      [start end]
-      (+ start (long (rand (- end start)))))
-
-    (s/fdef ranged-rand
-      :args (s/and (s/cat :start int? :end int?)
-                   #(< (:start %) (:end %)))
-      :ret int?
-      :fn (s/and #(>= (:ret %) (-> % :args :start))
-                 #(< (:ret %) (-> % :args :end))))
-
-
-== instrument
-
-    (stest/instrument `ranged-rand)
-
-* Fully-qualified symbol, use ```
-* Provides validation for external uses of a function
-
-    (ranged-rand 8 5)
-    => CompilerException clojure.lang.ExceptionInfo: Call to #'spec.examples.guide/ranged-rand did not conform to spec
-
-* `unstrument` to turn off
+    (ns training.expound-test
+      (:require [expound.alpha :as e]))
+    (e/expound string? 1)
+    =>
+    -- Spec failed --------------------
+      1
+    should satisfy
+      string?
+    -------------------------
 
 
 == check
 
-* Generate arguments based on the `:args` spec
-* Invoke the function
-* Check that `:ret` and `:fn` specs were satisfied
-
-    (stest/check `ranged-rand)
-    => ({:spec #object[clojure.spec.alpha$fspec_impl ...],
-         :clojure.spec.test.check/ret {:result true, :num-tests 1000, :seed 1466805740290},
-         :sym spec.examples.guide/ranged-rand,
-         :result true})
-
-* `ranged-rand` contains a bug
-* Run check several times to find it
+* Generates arguments based on the `:args` spec
+* Invokes the function
+* Checks that `:ret` and `:fn` specs were satisfied
+* Reduces to the shortest failing case
 
 
 == enumerate-namespace
 
-    (stest/check (stest/enumerate-namespace 'testing.spec))
+    (stest/check (stest/enumerate-namespace 'training.core))
 
-* Test all spec'ed functions in a namespace
+Tests all functions in a namespace that have a spec
 
     (stest/check)
 
-* Check all spec'ed functions
+Checks all functions that have a spec
+
+
+== instrument
+
+    (stest/instrument `c/f)
+    (c/f "bad argument")
+    => CompilerException: did not conform to spec
+
+* Requires a fully-qualified symbol
+* Provides validation for external uses of a function
+* `unstrument` to turn off
+
+
+== Can instrument namespaces, or everything
+
+    (stest/instrument (stest/enumerate-namespace 'training.core))
+
+    (stest/instrument)
+
+
+== cat with subsequences
+
+    (s/def ::t
+      (s/cat :a (s/* int?) :b string?))
+
+    (s/conform ::t [1 2 "three"])
+    => {:a [1 2], :b "three"}
+
+NOTE: Matched `[1 2 "three"]`, not `[[1 2] "three"]`
+
+Think of it as a regex: `int*string`
+
+"Any number of ints followed by a string"
+
+
+== alt - Alternatives
+
+    (s/def ::t
+      (s/cat :a (s/alt :b (s/* int?)
+                       :c (s/* string?))
+             :d keyword?))
+
+Builds a regex: `(int*|string*)keyword`
+
+   [1 2 3 :foo]
+   ["abc" "def" :bar]
+
+
+== Compare alt with or
+
+WARNING: Is `s/alt` the same as `s/or`?
+
+Inside a sequence `s/or` would match
+
+   [[1 2 3] :foo]
+   [["abc" "def"] :bar]
+
+The key is to think about the regex being constructed
+
+Outside of sequences they do behave the same
+
+
+== Additional constraints
+
+    (s/def ::even-strings (s/cat :a (s/& (s/* string?)
+                                         #(even? (count %)))
+                                 :b keyword?))
+
+Matches
+
+    ["hello" "world" :k]
+
+* `s/&` is like `s/and`
+* `s/&` is can participate in subsequences (similar to `s/alt` vs `s/or`)
+
+
+== exercise samples and conforms
+
+    (s/exercise (s/* (s/cat :w (s/alt :x int?))))
+
+    (s/exercise-fn training.core/f)
+
+* Generates 10 samples and conforms them
+* Very useful to test specs as you build them
+* Can see the example and where the parts were matched
+
+
+== Spec summary
+
+* Spec data
+* Validate data
+* Spec function arguments
+* Generate data from specs
+* Check functions with generated data
+* Instrument functions
 
 
 [state=title]
