@@ -46,7 +46,7 @@ There is also a `./watch.sh` command to build when the source file changes.
 The Web (Epiphany) browser reloads from disk when the HTML file changes.
 
 
-== Building
+=== Building
 
 You can install asciidoctor, asciidoctor-pdf, and ascidoctor-revealjs locally and run
 
@@ -55,7 +55,7 @@ You can install asciidoctor, asciidoctor-pdf, and ascidoctor-revealjs locally an
 But installing these tools is a bit of a pain... so two ways to get the dependencies are provided:
 
 
-=== The Ruby way
+==== The Ruby way
 
 Requires https://www.ruby-lang.org/en/documentation/installation[Ruby].
 
@@ -75,8 +75,14 @@ Now you can call the build script:
 
     bundle exec ./build.sh
 
+To have the build watch for file changes and rebuild automatically:
 
-=== The Docker way
+    ./watch.sh
+
+You need entr installed for watch to work, I highly recomend it.
+
+
+==== The Docker way
 
 Alternatively, if you prefer pulling a Docker image over installing dependencies:
 
