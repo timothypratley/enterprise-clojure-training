@@ -395,6 +395,7 @@ Identity and by value
 * For people from other languages, same as: dictionary (Python), hash (Ruby), object (JS), associative array (Perl)
 --
 
+
 == Keywords
 
 * `:my-keyword`
@@ -467,6 +468,7 @@ WARNING: Avoid re-def'ing after creating a binding
 example of def inside defn and why it is bad...
 global mutable state, concurrent access
 --
+
 
 == Atoms
 
@@ -645,7 +647,8 @@ Less common is the comment form:
 
     (comment anything)
 
-== Comments
+
+== Bug eye comments
 
 Removal of next form `#_`
 
@@ -660,7 +663,8 @@ Removal of next form `#_`
 
 Commas are optional and treated as whitespace
 
-    (= {:a 1, :b 2, :c 3} {:a 1 :b 2 :c 3})
+    (= {:a 1, :b 2, :c 3}
+       {:a 1 :b 2 :c 3})
 
 Prefer newlines
 
@@ -1304,6 +1308,7 @@ Huh?
 
 `pjstadig/humane-test-output` (or `venantius/ultra`)
 
+
 == Humane test output
 
 `~/.lein/profiles.clj`:
@@ -1604,8 +1609,6 @@ Expands to:
             (if b
                 b)))))
 
-Writing macros is covered later in the course
-
 
 == Macros and special forms are not functions
 
@@ -1626,20 +1629,22 @@ Writing macros is covered later in the course
 * Metadata
 * Documentation
 
+NOTE: Writing macros is covered later in the course
+
 
 == Recursion
-
-Functions that call themselves are called recursive
 
     (defn sum-up [coll result]
       (if (empty? coll)
         result
         (sum-up (rest coll) (+ result (first coll)))))
 
+Functions that invoke themselves are recursive
+
 
 == Tail Call Optimization
 
-Recursion which avoids consuming the stack
+Recursion without consuming the stack
 
     (defn sum-up-with-recur [coll result]
       (if (empty? coll)
@@ -1647,7 +1652,9 @@ Recursion which avoids consuming the stack
         (recur (rest coll) (+ result (first coll)))))
 
 * Recur can only occur where a function returns
-* Stack can be discarded
+* Current frame will return the result of the next call
+* No further calculations needed
+* Current frame can be released
 
 
 == Loops
@@ -1749,6 +1756,7 @@ Functions always return a value
 * `(println "hi")` -> `nil` causes a side-effect
 * All Input/Output is considered a side-effect
 
+
 == Pure functions
 
     (str "hi" "there")
@@ -1766,6 +1774,7 @@ Functions always return a value
 * Not a pure function
 * Returns a useful result, but changes every time
 * Modifying a hidden state (or based on it)
+
 
 == Side effects
 
@@ -2262,6 +2271,7 @@ Sequences are loop abstractions that allow you to ignore the implementation deta
 * Layers make the code cryptic!
 --
 
+
 == Solution: order forms inside first
 
 Name intermediary results:
@@ -2270,6 +2280,7 @@ Name intermediary results:
 	      odd-incs (filter odd? incs)]
 	  (reduce * odd-incs))
 	=> 15
+
 
 == Or use a thread last
 
@@ -2729,7 +2740,8 @@ Body runs once, even concurrently
     (realized? f)
     => false
 
-== 5 seconds pass
+
+== 5 seconds later
 
     (realized? f)
     => true
@@ -2764,6 +2776,7 @@ Body runs once, even concurrently
 
     @p
     => "as-promised"
+
 
 == Promises
 
@@ -3172,6 +3185,7 @@ To selectively delete some data:
 
 Now there is only one row remaining
 
+
 == insert-multi!
 
     (jdbc/insert-multi! db :messages
@@ -3248,6 +3262,7 @@ See manual end of section 11
                         [{:person_id 1 :policy_id 1}
                          {:person_id 1 :policy_id 2}
                          {:person_id 2 :policy_id 1}])
+
 
 == Answers
 
