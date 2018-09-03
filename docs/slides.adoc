@@ -1522,17 +1522,24 @@ image:img/control.jpg[]
 * A function call evaluates all arguments
 
 
+== Use do to group multiple statements
+
+    (if (pos? 1)
+      (do (println "hi")
+          "one is positive")
+      "or is it?")
+    => "hi"
+       "one is positive"
+
+
 == Conditionals: when
 
     (when (pos? 1)
-      (println "one is positive")
       (println "multiple expressions allowed")
       :ok)
-    => one is positive
-       multiple expressions allowed
+    => multiple expressions allowed
        :ok
 
-* Executes code only when a condition is met
 * When test fails, nothing is evaluated
 * When test passes, the entire body is evaluated
 * Returns a result
@@ -1541,7 +1548,6 @@ image:img/control.jpg[]
 == Conditionals: cond
 
     (def x {:cake 1})
-
     (cond (= x 1) "one"
           (= x :cake) "the cake is a lie"
           (map? x) "it's a map!"
@@ -2451,8 +2457,6 @@ image:img/interop.jpg[]
 
 == Clojure syntax for Java constructors
 
-Constructing a Java object is done by appending a period to the class identifier:
-
     (ns training.core
       (:import (java.util Date)))
 
@@ -2465,24 +2469,25 @@ Which is equivalent to the less used variant:
     (new Date 2018 02 17)
 
 
-== Calling methods
-
-Calling a method on a Java object done by prepending a leading period:
+== Calling methods on a Java object
 
     (.length "hello world")
     (.isDirectory (java.io.File. "my-dir"))
 
-Which is equivalent to the less used variant:
+Equivalent to the less used variant:
 
     (. "hello world" length)
     (. (java.io.File. "my-dir") isDirectory)
 
-Java static method calls are accessed by slash:
+
+== Static and inner
+
+Java static method calls:
 
     (Math/pow 1 2)
     (.print System/out "hi")
 
-Inner classes can be accessed using the dollar symbol:
+Inner classes:
 
     java.nio.channels.FileChannel$MapMode/READ_ONLY
 
@@ -2491,7 +2496,6 @@ Inner classes can be accessed using the dollar symbol:
 
     (ns training.core
       (:import (java.util HashMap)))
-
     (doto (HashMap.)
       (.put "a" 1)
       (.put "b" 2))
@@ -2515,11 +2519,11 @@ Notice that we did not define a class?
 
 == gen-class and proxy
 
-`gen-class` creates a class. In practise the need to create a class from within Clojure is rare, so we won't be covering the syntax.
-(see https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html if you want to explore this further)
+`gen-class` creates a class.
 
-`proxy` can be used to extend a concrete superclass. Again the need for this is rare.
-(see https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html if you want to explore this further)
+`proxy` extends a concrete superclass.
+
+Rarely needed, refer to manual.
 
 
 == Including Java classes in Clojure projects
@@ -2529,7 +2533,10 @@ You can define Java classes in Java in a separate directory and add
     :java-source-paths ["java-src"]
 
 To your `project.clj` file
-(See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
+
+    lein compile
+
+Java code in that directory will be usable from Clojure
 
 
 [state=title]
@@ -2776,16 +2783,20 @@ Body runs once, even concurrently
 
 * Change the value of an atom with `swap!` or `reset!`
 * `swap!` reads the current value, applies the function to it, and attempts to `compare-and-set!` it in
-* It may have to retry since another thread may have changed the value
+* May retry since another thread may have changed the value
 * Retries in a spin loop
+
+[NOTE.speaker]
+--
 * The value will always be the result of the function
+--
 
 
 == Atoms
 
 * Atomic
 * Changes to atoms are always free of race conditions
-* Function might be called multiple times, it must be free of side effects
+* Function must be pure; it might be called multiple times
 * Uncoordinated
 * Synchronous
 
@@ -2877,11 +2888,8 @@ image:img/types.jpg[]
 == Multimethods introduction
 
     (def my-square {:shape "square"})
-
     (defmulti draw :shape)
-
     (defmethod draw "square" [x] (render ...))
-
     (draw my-square)
 
 * Keywords are functions
@@ -3002,9 +3010,12 @@ Provide methods to execute for a given dispatch value:
 * Creates an object that implements a protocol without defining a type
 * Do not have to implement all protocol signatures
 * Can also reify Java interfaces
-* Cannot reify a class
-** Java classes are closed
-** Java interfaces cannot be extended
+
+
+== Cannot reify a class
+
+* Java classes are closed
+* Java interfaces cannot be extended
 
 
 == extend
@@ -3068,7 +3079,7 @@ Expands into:
     (->Circle 10)
     (->Square 5 11)
 
-* No protocol required
+No protocol required
 
 
 == defrecord
@@ -3191,11 +3202,17 @@ If you want to redo any steps, remember that you can always drop the table and s
 
 == Solutions for SQL management
 
-HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures.
-This is useful when you have to programmatically combine clauses to produce a final SQL statement.
-For example if the user can check a checkbox to enable an additional clause in a search.
-In such cases it is more convenient to use Clojure's capabilities for manipulating data structures.
-However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
+HoneySQL can be used to build SQL statements from data structures.
+
+[NOTE.speaker]
+--
+* https://github.com/jkk/honeysql
+* Useful to programmatically combine clauses to produce a final SQL statement
+* For example, user can check a checkbox to enable an additional clause in a search
+* Convenient to use Clojure's capabilities for manipulating data structures
+* If you do not need to do manipulation, I recommend using string SQL queries
+* It's easier to run string SQL interactively from a prompt
+--
 
 
 == Exercises
@@ -3297,11 +3314,11 @@ image:img/spec.jpg[]
 
 == Spec Introduced in Clojure 1.9.0
 
-* Update `project.clj` to the right version:
+Update `project.clj` to the right version:
 
 	[org.clojure/clojure "1.9.0"]
 
-* Require it
+Require it
 
     (ns training.spec
       (:require [clojure.spec.alpha :as s]))
@@ -3376,8 +3393,6 @@ TIP: Sets are functions that return the element if it is in the set
     => val: 5 fails spec: ::big-even predicate: even?
 
 See also `explain-str`
-
-See also expound library https://github.com/bhb/expound
 
 TIP: What would happen if we had not used `s/and`?
 
@@ -3512,15 +3527,15 @@ But existing code often does not namespace keys
 
 == Specs can be combined
 
-(s/def :mega-corp/name string?)
-(s/def :mega-corp/policy-count int?)
-(s/def :corgi-cover/state #{"IL" "WA" "NY" "CO"})
-(s/def :corgi-cover/corgi-count pos-int?)
+    (s/def :mega-corp/name string?)
+    (s/def :mega-corp/policy-count int?)
+    (s/def :corgi-cover/state #{"IL" "WA" "NY" "CO"})
+    (s/def :corgi-cover/corgi-count pos-int?)
 
-(s/def :mega-corp/corgi-cover
-  (s/keys :req-un [:mega-corp/name
-                   :corgi-cover/state
-                   :corgi-cover/corgi-count]))
+    (s/def :mega-corp/corgi-cover
+      (s/keys :req-un [:mega-corp/name
+                       :corgi-cover/state
+                       :corgi-cover/corgi-count]))
 
 
 == Generators
@@ -3578,7 +3593,7 @@ Produces 10 examples
 
 See also `inst-in` and `double-in`
 
-`test.check` tutorial https://clojure.github.io/test.check/intro.html
+See also `test.check` documentation
 
 
 == What about functions arguments?
@@ -3590,29 +3605,7 @@ See also `inst-in` and `double-in`
 
 Positional importance
 
-
 NOTE: unlike a stream of events
-
-
-== Sequence specs are regular expressions
-
-* `*` : 0 or more of a predicate/pattern
-* `+` : 1 or more of a predicate/pattern
-* `?` : 0 or 1 of a predicate/pattern
-
-
-== Sequence specs
-
-Useful for function arguments
-
-    (s/valid? (s/* string?) ["a" "b" "c"])
-    => true
-
-    (s/valid? (s/+ string?) ["a" "b" "c"])
-    => true
-
-    (s/valid? (s/? string?) ["a"])
-    => true
 
 
 == cat - Concatenation
@@ -3645,7 +3638,7 @@ Covers most function argument signature
     (defn f [num item]
       (str num " bottles of " item " on the wall"))
 
-Can be declared in a different namespace, before or after
+Often declared in a different namespace
 
 
 == Function ret
@@ -3669,17 +3662,26 @@ Can be declared in a different namespace, before or after
                      (:ret %))
 
 
-== Checking that a function obeys its spec
+== Example showing different namespaces
+
+`src/training/core.clj`
 
     (ns training.core)
     (defn f [x]
       (inc x))
 
-    (ns training.spec
+`src/training/core_spec.clj`
+
+    (ns training.core-spec
       (:require [training.core :as c]
                 [clojure.spec.alpha :as s]))
     (s/fdef c/f :args (s/cat :x int?)
                 :ret int?)
+
+
+== Checking that a function obeys its spec
+
+`src/training/core_test`
 
     (ns training.core-test
       (:require [clojure.test :refer :all]
@@ -3752,6 +3754,27 @@ Checks all functions that have a spec
     (stest/instrument (stest/enumerate-namespace 'training.core))
 
     (stest/instrument)
+
+
+== Sequence specs are regular expressions
+
+|===
+|`*` | 0 or more of a pattern
+|`+` | 1 or more of a pattern
+|`?` | 0 or 1 of a pattern
+|===
+
+
+== Sequence specs
+
+    (s/valid? (s/* string?) ["a" "b" "c"])
+    => true
+
+    (s/valid? (s/+ string?) [])
+    => false
+
+    (s/valid? (s/? string?) ["a" "b"])
+    => false
 
 
 == cat with subsequences
@@ -3840,58 +3863,48 @@ image:img/macros.jpg[]
 -- Frank Ocean
 
 
-== Macro defn
+== Macros provide syntax
+
+The "real" way to define a function:
 
     (def square
       (fn [x]
         (* x x)))
 
-Rearranged
+Special syntax:
 
     (defn square [x]
       (* x x))
 
-* Syntactic sugar
-* Extend the syntax of Clojure
+Syntactic sugar to remove boilerplate
+
+Macros extend the syntax of Clojure
 
 
-== Macros do things functions cannot
+== Macros expand
+
+    (when (< x 2)
+      (println "It's less than 2!")
+      :ok)
+
+Expands to
 
     (if (< x 2)
       (do
         (println "It's less than 2!")
         :ok))
 
-Rearranged
 
-    (when (< x 2)
-      (println "It's less than 2!")
-      :ok)
+== macroexpand-1 shows you what a macro does
 
-* Arguments manipulated at compile time
-* Arguments not evaluated
-* Cannot be replaced by a function
+    (macroexpand-1 '(when (< x 2)
+                      (println "It's less than 2!")
+                      :ok))
+    => (if (< x 2)
+         (do
+           (println "It's less than 2!")
+           :ok))
 
-
-== Functions do things macros cannot
-
-    and
-    => CompilerException: Can't take value of a macro
-
-    (map and [true false]
-             [true true])
-    => CompilerException: Can't take value of a macro
-
-
-* Macros are not values
-* Cannot be passed to higher order functions
-* Less useful than functions
-
-[NOTE.speaker]
---
-* Workaround 1 to (map and ...) example: anon fn -- #(and %1 %2)
-* Workaround 2 to (map and ...) example: anon fn -- #(every? identity %&)
---
 
 == Expanding defn
 
@@ -3900,8 +3913,6 @@ Rearranged
          (* x x)))
     => (def square
          (clojure.core/fn ([x] (* x x))))
-
-Manual expansion shows what a macro does
 
 
 == Macros produce code
@@ -3925,6 +3936,40 @@ Manual expansion shows what a macro does
 * `when` is only expanded once
 * The form is expanded at compile time
 * `maybe-ok` function is compiled to bytecode
+
+
+== Macros do things functions cannot
+
+* Arguments manipulated at compile time
+* Arguments not evaluated
+* Cannot be replaced by a function
+
+
+== Functions do things macros cannot
+
+    and
+    => CompilerException: Can't take value of a macro
+
+    (map and [true false]
+             [true true])
+    => CompilerException: Can't take value of a macro
+
+
+* Macros are not values
+* Cannot be passed to higher order functions
+* Less useful than functions
+
+
+== To use a macro as a function, wrap it in a function
+
+    (map #(and %1 %2) [true false]
+                      [true true])
+    => (true false)
+
+
+NOTE: Cannot apply arguments though...
+
+    #(every? identity %&)
 
 
 == Defining macros
@@ -4239,7 +4284,6 @@ Clojure for Java Programmers - Rich Hickey
 * Reading stacktraces
 ** Try line 1
 ** Scan down for your namespace
-** Might be project/profile
 * Small functions
 * Test as you go
 * Print things
