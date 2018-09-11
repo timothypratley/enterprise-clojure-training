@@ -26,19 +26,25 @@ This course is for developers learning Clojure for the purpose of building enter
 
 === Overview
 
-Clojure is a dynamic, general-purpose programming language, combining interactive development with an efficient and robust infrastructure for multithreaded programming.
-Clojure provides direct access to the Java frameworks.
-Clojure is a dialect of Lisp, and shares with Lisp the code-as-data philosophy and macro system.
-Clojure is predominantly a functional programming language, and features a rich set of immutable, persistent data structures.
+Clojure is a general-purpose programming language that combines interactive development with a robust infrastructure for multithreaded programming.
+Clojure is a dialect of Lisp that runs on the JVM and provides direct access to Java libraries.
+Clojure is a functional programming language with immutable data structures.
 
-In this course we will cover how to:
-  install Clojure and related tools;
-  interact with Clojure via the read-eval-print- loop (REPL);
-  create functions, data-structures, macros, and types;
-  use functional programming constructs like map and reduce;
-  and design, implement, and test Clojure programs.
+In this course we will cover 12 sections:
+  the Clojure ecosystem;
+  Clojure syntax;
+  functions;
+  unit testing;
+  control flow;
+  functional programming;
+  Java interop;
+  concurrency;
+  polymorphism;
+  interacting with a database;
+  specifications;
+  and macros.
 
-Each section will feature interactive exercises, and course material will be reinforced with guided case studies.
+Each section has exercises to put the information into practise and re-enforce learnings.
 
 
 === Duration
@@ -51,8 +57,9 @@ Each section will feature interactive exercises, and course material will be rei
 At the end of this course, you will be able to
 
 * Write Clojure code
-* Structure Clojure products
-* Interact with Java
+* Structure Clojure projects
+* Interop with Java
+* Interface with a database
 * Use Clojure's parallel programming and concurrency facilities
 
 
@@ -108,6 +115,8 @@ Timothy Pratley is the author of the book “Professional Clojure”, and a cont
 He has 18 years of professional software development experience in banking, robotics, logistics, and advertising.
 He spent the last 4 years exclusively using Clojure and ClojureScript developing enterprise systems for Fortune 500 companies.
 He enjoys making YouTube videos about Clojure, running, and reading books.
+
+Please ask questions
 
 
 ==== Clojure
@@ -180,6 +189,9 @@ l|(.bar foo x)
 |===
 
 Things that would be declarations, control structures, function calls, operators, are all just lists with an op at front.
+
+Please ask questions!
+Asking questions is the most valuable part of the course.
 
 
 :sectnums:
