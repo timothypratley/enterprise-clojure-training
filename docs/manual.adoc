@@ -116,7 +116,9 @@ He has 18 years of professional software development experience in banking, robo
 He spent the last 4 years exclusively using Clojure and ClojureScript developing enterprise systems for Fortune 500 companies.
 He enjoys making YouTube videos about Clojure, running, and reading books.
 
-Please ask questions
+Please ask questions!
+I am here to help.
+Asking questions is the most valuable part of the course.
 
 
 ==== Clojure
@@ -189,9 +191,6 @@ l|(.bar foo x)
 |===
 
 Things that would be declarations, control structures, function calls, operators, are all just lists with an op at front.
-
-Please ask questions!
-Asking questions is the most valuable part of the course.
 
 
 :sectnums:

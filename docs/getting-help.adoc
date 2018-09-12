@@ -1,0 +1,10 @@
+= Getting Help
+
+* A REPL can answer most questions :)
+* StackOverflow.com #clojure
+* ClojureVerse https://clojureverse.org
+* Clojure mailing list https://groups.google.com/forum/#!forum/clojure
+* Clojurians Slack http://clojurians.net
+* Create minimal examples to illustrate your question and you'll get better responses
+* Forum https://timothypratley.github.io/enterprise-clojure-training/forum
+* Email me timothypratley@gmail.com; I want to hear from you!

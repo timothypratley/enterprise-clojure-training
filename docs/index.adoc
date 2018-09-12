@@ -12,5 +12,6 @@ This is a Clojure training course for Developers and Senior Developers working o
 * https://timothypratley.github.io/enterprise-clojure-training/advanced-topics.html[Advanced topics slides]
 * https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[Examples source code]
 * https://github.com/timothypratley/enterprise-clojure-training[Course Github]
+* https://timothypratley.github.io/enterprise-clojure-training/getting-help.html[Getting help]
 
 image:img/corgi.jpg[Corgi]
