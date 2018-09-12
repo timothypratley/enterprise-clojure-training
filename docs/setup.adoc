@@ -1,0 +1,37 @@
+= Setup
+
+== Introduction
+
+This is a walk-through for installing the software tools necessary to particpate in the Enterprise Clojure Training course.
+
+Setting up tools can be frustrating when we just want to learn Clojure.
+But in order to apply our knowledge we need a clear and working toolchain for coding.
+We will have a better learning experience if we can avoid exploring things like editor customization and focus instead on the code.
+Therefore I recommend you stick with the tools that I have selected for this course, and branch out into other options later, once you are comfortable with the key concepts behind Clojure.
+
+We will be installing Java, Leiningen, IntelliJ IDEA and Cursive.
+
+Java is a programming language and a virtual machine to execute compiled code.
+Leiningen is a build tool for Clojure projects.
+IDEA is a text editor for editing code, also known as an Integrated Development Environment.
+Cursive is a plugin that provides Clojure support in IDEA.
+
+It might be a little surprising that Clojure is not on the installation list.
+Clojure the language is pulled in by these tools as a library.
+We do not need to install it directly.
+
+I will be demonstrating the installation in Windows first.
+I recommend watching the Windows installation regardless of your operating system because the steps are very similar, and I'll be explaining the tools as we install them.
+
+O.K. let's get installing!
+
+
+== Installation
+
+=== Windows
+
+Install Java first.
+There is no way to avoid Java.
+All the other tools depend on Java.
+
+

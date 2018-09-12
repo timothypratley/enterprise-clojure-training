@@ -22,15 +22,17 @@ image:img/corgi.jpg[width=300]
 
 Welcome to Enterprise Clojure Training.
 This course is for developers learning Clojure for the purpose of building enterprise software.
+Some previous programming experience is necessary to get the most out of this course.
 
 
 === Overview
 
 Clojure is a general-purpose programming language that combines interactive development with a robust infrastructure for multithreaded programming.
 Clojure is a dialect of Lisp that runs on the JVM and provides direct access to Java libraries.
-Clojure is a functional programming language with immutable data structures.
+Clojure is a functional programming language that produces new values instead of changing objects.
+Clojure has been in the "adopt" category of the Thoughtworks tech radar since 2014 because it enables teams to build better software faster.
 
-In this course we will cover 12 sections:
+This course is divided into 12 bite sized sections:
   the Clojure ecosystem;
   Clojure syntax;
   functions;
