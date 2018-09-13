@@ -30,8 +30,116 @@ O.K. let's get installing!
 
 === Windows
 
+==== Java
+
 Install Java first.
 There is no way to avoid Java.
 All the other tools depend on Java.
+We want to install the Java Development Kit (JDK), Standard Edition (SE); not the JRE which is the Runtime Environment.
+Search for "Java JDK" and you should find http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html[the download site hosted by Oracle].
+The JDK includes the runtime and developer tools.
+IDEA will need the JDK, so that is why we choose it instead of the JRE.
+Install version 1.8 whichever the latest patch version is.
+Java 9 and higher has backward compatibility breakages that not all the tools have caught up with yet, so let's avoid those for now.
+Once you have installed the downloaded file open a command prompt and run `java -version` to check that the installation worked correctly.
 
 
+==== Leiningen
+
+Next we are going to install Leiningen.
+Search for the https://leiningen.org/[Leiningen website].
+Download the script directly as the packaged versions are not very well maintained.
+Save the lein script somewhere on your path.
+If you don't have a directory set up on your path for executables already, you can check out what your current path is with `echo %PATH%`.
+We can identify a directory on the path such as `C:\Users\[myusername]\AppData\Local\Microsoft\WindowsApps`.
+Move the lein script into this directory.
+Now can run the `lein` script and it will prompt us to run `lein self-install`.
+This currently fails under Windows, but don't panic; we just need to get the file it is trying to download.
+Download the file with a browser and move it to the folder `.lein` in your home directory.
+Now rename the extension from `.zip` to `.jar`.
+Now we can run `lein -version` to check that it was installed correctly.
+
+So what can Leiningen do for us?
+We can now create projects by typing `lein new training` where training is the name of our project.
+Leiningen created a bunch of files for us.
+The important ones are `project.clj` and `core.clj`.
+The important information in the project file is the dependencies section.
+Right now we only have one dependency, Clojure 1.8.0.
+We can add other libraries that we want to use here later.
+The `core.clj` file is where we are going to write our code.
+
+
+==== Intellij IDEA
+
+We need an editor to edit the code with.
+Any editor will do but for this course please use IntelliJ IDEA.
+Search for https://www.jetbrains.com/idea[Intellij IDEA].
+Download and install the Community Edition because it is free.
+There is a checkbox to allow IDEA to download it's own JRE and I recommend you check that as they claim it will help the IDEA run better.
+
+
+==== Cursive Clojure plugin
+
+Now that IDEA is installed and running, click "configure" -> "plugins".
+In the search box type in "cursive" and click the "browse repositories" button.
+Click the install button, and once installed click restart.
+The Cursive plugin is free for non-commercial use and can be used without a license for 30 days.
+
+Now we can open the project that we previously created with Leiningen.
+Click on "import project" and navigate to the `training` directory and click on the `project.clj` file.
+We will be prompted to specify a project SDK.
+Select JDK and click the "plus" button.
+Navigate to where we installed the JDK earlier.
+The default location is `C:\Program Files\Java\jdk1.8.0_172`.
+
+The first time the project loads, it didn't quite work.
+These words being yellow indicates something isn't quite right.
+We need to restart IDEA again.
+Now the words are understood so we are good to go.
+
+So what can IDEA and Cursive do for us?
+Structural editing. The most important thing to know about structural editing is how to turn it off.
+You can do that in the bottom right hand corner.
+Structural editing attempts to preserve balanced parenthesis.
+We will be creating nested expressions in parentheses quite a lot, so this can be very helpful.
+Structural editing also provides some shortcuts for rearranging code based on nesting.
+It is something definitely worthwhile learning, but right now it is less important than Clojure itself.
+So if you get stuck or find it annoying and just turn it off.
+
+NOTE: haven't explained REPL yet (consider moving to a later section).
+
+If you right click on the `project.clj` file on the left, you can select "Run REPL".
+You can send text from your code editor to the REPL.
+
+I like to dock my REPL at the bottom so I can see the text.
+
+We can interact with the REPL by typing code in, copying code in, or sending it from the editor directly.
+The list of REPL actions can be found under "Tools" -> "REPL" when the REPL is running.
+We will be making use of the load file and send form commands, so it is worthwhile remembering the shortcuts for those.
+In Windows they are shift+alt+m and shift+alt+P.
+
+One really nice feature of cursive is that it highlights errors in the code immediately.
+Here I am trying to call a function with no arguments and cursive shows the problem by highlighting it in red.
+When I move the mouse over the red I get an indication of the problem.
+
+Cursive also provides the ability to rename functions and variables and to navigate to the definitions in the source code.
+Cursive will show you when variables are unused which is usually a sign that there is a typo somewhere.
+Another useful feature is that it will create files that match namespace rules, which can be a little bit confusing otherwise.
+
+Control+shift+a brings up the action finder.
+There are many capabilities built into idea and this is a great way to find one without having to dig through the menus or documentation.
+If you forget a shortcut, you can find it quickly using the action finder.
+One action you may want to make use of is the go-to file action which allows you to switch files from the keyboard.
+
+You might have seen mention of Maven, so it's worth talking about what Maven is.
+Maven is a Java dependency tool.
+Leiningen wraps Maven to provide dependencies.
+We don't need to install maven directly.
+All the dependencies that get downloaded by Leiningen and Maven are stored in the `.m2` directory in your user home.
+If we have a look in there we can see that Clojure was downloaded into our `.m2` folder.
+Java dependencies are jar files which are very similar to zip files.
+They are just a compressed set of class files.
+Clojure dependencies are also Jar files but they contain Clojure source code files instead.
+Closure libraries are source code, not compiled artifacts.
+
+Great we are now all set to start the Enterprise closure training course together.
