@@ -21,446 +21,217 @@ Arguments are evaluated from left to right before the function is called.
 You can declare unnamed functions using the `fn` form.
 It is just the same as `defn` but does not create a Var.
 
-There is also a shorthand syntax.
-Using the hash at the front of
-the list this is the same as this
-unnamed functions are also called
-anonymous functions or lambda
-expressions in the same way that you
-might put square in the start of our
-list you can put a function directly in
-the start of the list and it will be
-called immediately so in this example
-we're actually immediately calling this
-function definition
-with the argument 1 so this function
-just performs an increment on its
-argument an increment of 1 is 2 here's
-how it would look using the special
-syntax notice that the argument for the
-special syntax is the percentage sign a
-closure is a function that captures
-values from the environment here's a let
-binding where who is bound to the string
-world inside this let's go we define a
-function that makes use of the string
-STR is a function that produces a new
-string by combining its arguments so in
-this case it's going to combine hello
-with who which is world producing hello
-world
-notice that we defined the function
-inside the let's go
-so who was accessible outside of the
-let's go palaver
-we can't evaluate who if we try to
-evaluate who outside of the let's go
-we'd get unbound however we did create a
-function we created a VAR called greet
-which is a function if we call that
-function it's going to return hello
-world this is because the function was
-defined inside the scope of whoo and so
-it captured the value from the
-environment and that's all the closure
-is it's a function that is making use of
-values from the environment this turns
-out to be very useful it's also possible
-to pass a function to another function
-in this example we're going to pass in a
-function called F and we're just going
-to call F three times in a row the
-result will be the last evaluation of F
-because closure always returns the last
-evaluation as a result so how do we make
-use of this fashion for all we need to
+There is also a shorthand syntax; putting a hash at the front of the list.
+Unnamed functions are also called anonymous functions or lambda expressions.
+In the same way that we might put `square` in the first position of our list we can put a function directly in the start of the list and it will be called immediately.
+In this example we are immediately calling this function definition with the argument 1.
+This function just performs an increment on its argument.
+The increment of 1 is 2.
+Here is how it would look using the special syntax.
+Notice that the argument in the special syntax is the percentage sign.
+
+A closure is a function that captures values from the environment.
+Here is a let binding where `who` is bound to the string "world".
+Inside this let scope we define a function that makes use of the string.
+`str` is a function that produces a new string by combining its arguments.
+So in this case `str` is going to combine "hello" with `who` which is "world", producing "hello world".
+Notice that we defined the function inside the let scope so `who` was not accessible outside of the let scope.
+We can't evaluate `who`.
+If we try to evaluate `who` outside of the let scope we get an error "unbound".
+However we did create a function.
+We created a Var called `greet` which is a function.
+If we call that function it is going to return "hello world".
+This is because the function was defined inside the scope where `who` was bound, and so it captured the value from the environment when it was defined.
+And that's all the closure is; it is a function that is making use of values from the environment.
+This turns out to be very useful.
+
+It is also possible to pass a function to another function.
+In this example we're going to pass in a function called `f` and we are just going to call `f` three times in a row.
+The result will be the last evaluation of `f` because Clojure always returns the last evaluation as a result.
+So how do we make use of this fashion for all we need to
 pass it a function so we invoke it
-passing in a function in this case we're
-just going to print hut and so the
-function gets evaluated three times and
-the last result is nil because the
-result of print is nil the important
-thing to note from this is that
-functions are values so they can be
-arguments to other functions a function
-that takes a function as an argument is
-called a higher-order function in
-closure there's a function code map it
-can be a little bit confusing because
-there's also a data structure called a
-map but in this slide on topic talking
-about the function map now the function
-map takes a function as its first
-argument and a sequence as its second
-argument and it applies that function
-over the sequence which is to say for
-each element in the sequence it's going
-to call this function so the increment
-of one is to the increment of 2 is 3 the
-increment of 3 is 4 we call this mapping
-a function over a sequence the function
-of course can be defined in lime using
-an enormous function so in this case I'm
-just going to define a function that I
-want to map over this sequence right
-here and the function is going to be
-multiplying the single argument by
-itself which is essentially taking the
-square so we could have put square in
-here or we can define a function in line
-here it doesn't matter the point is
-we're passing a function to the map
-function and it's applying that over the
-sequence the result is a sequence where
-we squared each element in the sequence
-so it's 1 4 9 16 and the key point about
-this is that we don't always need to
-create a global definition of a function
-in order to pass a function to another
-function here's another example just to
-show you what it would look like if we
-defined a function to use with map we
-define a function and greet them that
-takes in a person as a name it combines
-the hello with the person's name and
-returns
-hello person so if we mat greet them
-over a sequence of people names we get
-back hello Alice hello Bob hello Carol
-personally I like to lean towards
-creating predefined functions I feel
-that it's a little bit more readable and
-easier to think about however we can
-create very terse expressions if we want
-to and this brings with it a lot of
-expressivity using the lambda syntax
-here I have defined a function that adds
-X to the argument X is being captured
-from the environment X is always 5 in
-this case and then it just adds whatever
-the argument is to that so adding 5 to 1
-get 6 adding 5 to 2 is 7 and in 5 2 3 is
-a this is a very compact example showing
-you how you can go to mine higher-order
-functions with closures to get stuff
-done it turns out that using
-higher-order functions and closures can
-be very expressive it's also possible to
-provide a name to the FN definition of
-an inline function here I've assigned
-the name add 1 to this function this
-doesn't create a VAR like defin and so
-if you try and call add 1 it says unable
-to resolve this so this definition can
-only be used in place where are you
-going to pass a function directly or
-invoke the function directly the
-advantage here is that the name
-documents the purpose of the function
-and another benefit is that if you do
-get an error and you have a stack trace
-you'll actually see this name in the
-stack trace so it makes a searchable
-clue as to what's gone wrong if you
-don't give it a name you'll just get an
-anonymous function and it would be very
-clear where that occurred also the
-function can call itself using this name
-so coming back to named functions we
-already saw that we create named
-functions using Devon so in this case we
-define if
-option F that just increments X this
-turns out to just be a shorthand to
-defining a VAR f to be a function this
-code here is an expansion of this this
-is a Defen is a macro which gets
-expanded out into this code and we'll
-delve into what that all means later but
-the important thing to take away here is
-that all functions are equivalent in
-reality the named function is simply
-Duffing a VAR f so that we can use it in
-a global context very otic arguments is
-a fancy way of saying that a function
-accepts any number of inputs we can
-define a function f that can take three
-arguments it can take as many as we
-throw it actually so we could call this
-with five arguments sometimes that's
-useful for instance the plus operator
-there's no reason why we can't just take
-as many arguments as as people want to
-give us an enclosure plus can actually
-take as many arguments as you want the
-point of this slide is just to show you
-the syntax which is that if you want to
-take a variable number of arguments use
-this ampersand sign and this is a
-destructuring form where we're
-destructuring i want a sequence of
-arguments arts is going to be a sequence
-so in this case you can see when we
-called F with one two three we got back
-this sequence one two three so if you
-ever hear very attic arguments it just
-means a variable number Varitek
-can have some disadvantages it's not
-always convenient because sometimes you
-do want to apply a function to a
-sequence and of course we can do that
-with apply so in this example we've set
-up a very attic function called bake
-cakes and we can pass in cake one cake -
-cake three but in the case that we
-actually get a bunch of cakes out of the
-database for instance we have to use a
-ply to use bake cakes
-that's not a huge inconvenience but it
-just shows that well maybe we should
-have just used a sequence as an input
-instead of a very Adak function so it
-depends a little bit on how the function
-is going to be used in general I think
-it's a good rule of thumb to prefer
-functions that just do one thing because
-you can always combine those with
-sequence operations and what I mean by
-that is in in this particular scenario I
-could have just created a function that
-makes a single cake and I feel that
-would have actually been preferable and
-in the case that I get out a bunch of
-cakes from my database I can call my
-function multiple times using built in
-sequence operators in this case do c is
-for side-effect purposes it's simply
-calling the function for each each
-element in the sequence so this is very
-similar to Matt the difference here is
-that Matt will produce a result for
-everything in the sequence whereas do
-seek just calls the function for its
-side-effects so it does not keep the
-result there is one particular very
-addict pattern that you should avoid you
-might see this add in closure code if
-you do just be aware that it's bad style
-and you shouldn't do it but it's
-possible to provide a destructuring that
-says I'm gonna take any number of
-arguments but I'm just gonna take the
-first argument so this bears a little
-bit of explaining you can think of this
-ampersand is saying okay I'm going to
-destructor any number of arguments here
-as a sequence and then we're further
-destructuring that sequence we're saying
-the sequence the first element is y and
-then there's nothing after Y so we're
-essentially ignoring everything after
-the first element in the sequence
-so this destructuring form is a neat
-little way to get out the first element
-of any number of arguments and that
-seems like a great idea if you just want
-to allow a function to be called with
-some additional
-option or something like that however it
-turns out to be a bad idea to do it this
-way the reason is that if I call this
-function now with a whole lot of
-arguments closure is just fine with that
-because we're just ignoring all the
-other arguments and so it'll make use of
-the first two arguments here and in this
-case it says if you gave me a y-value
-I'm going to add x and y so and X&Y add
-1 and 2 we get 3 but I think most people
-would be kind of surprised that you know
-if you've give it a string
-it doesn't affect it in any way so a
-better way to achieve the same result is
-to explicitly specify what argument
-lists are possible this is the way you
-can express the same thing in a more
-explicit way we just get one argument
-we're just going to return Inc of X if
-you get two arguments then we're going
-to add those two arguments together so
-when you do your defend form if you have
-in parens these argument and then
-function body argument list function
-body that's a way to set up a function
-that can take different amounts of
-arguments but it there is an explicit
-list of what's acceptable and what's not
-acceptable and the good thing about this
-obviously is that if you call it with
-something that doesn't make sense yeah
-you'll actually get an exception so you
-can see that there's a problem pleasure
-also supports keyword arguments I
-recommend you avoid them but I want you
-to see what the syntax is just so you're
-aware of them so in this case we're
-setting up a function f and here we've
-got the ampersand which means very odd e
-but then we've got a map where we're
-destructuring certain keys out of that
-map in this case we're looking for port
-and protocol and the way you can invoke
-this is with F colon particle HTTP and
-so what this is saying is that protocol
-is a
-optional key and so we could have put in
-here F Colin port 1000 or we could put
-in both options or we could put in
-neither of the options and it would work
-in either case you can also do structure
-defaults from a map when you're
-destructuring any map
-if you want to destructor the defaults
-of a map you can specify them with this
-or form so you can specify if someone
-doesn't pass in a port then I want to
-use port 8080 if someone doesn't pass in
-a protocol well I wouldn't use HTTP and
-so this is the way that you do that but
-it turns out that keyword arguments can
-be fairly inconvenient the specific case
-where they're inconvenient is if you
-have a map already and then you want to
-call the function it's a little bit
-tricky figuring out well how do I
-actually convert this map into something
-that I can call the function with
-because as you saw here this kind of
-this flattened key value pair form that
-we need to create so in this case I'm
-slurping in some configuration from an
-even file maybe it's got you know the
-port and the protocol in there and then
-I want to I want to actually call my
-function there is a way to do it I think
-you'll agree this looks a little bit
-tricky to think about so I'll explain
-what it's doing config is a map and
-apply concat is concatenating sequences
-together now a map can be considered to
-be a sequence of key value pairs so if
-you apply concat to the config it
-produces what we need which is the key
-value key value key value just as a
-sequence but that's not what the
-argument of F is f needs to be called
-with those as the direct arguments not a
-sequence of them and so we need to apply
-F to that sequence and the result of
-that is essentially F key value key
-value key value
-so all of that is doable but it's quite
-confusing and we'd be way better off if
-instead we just called F with the map so
-to me this is a much more pleasing way
-of calling our function we just pass in
-the map we want so we should define F to
-explicitly take a map of import
-arguments and it's really not that
-inconvenient to call F wrapped in a map
-when I know what those are up front and
-it's definitely very much more
-convenient when I've slept in a map for
-instance when you define a function it
-is possible to set up some pre and post
-conditions if you want pre and post
-conditions you need to specify a map
-after the argument list with pre and
-post keys in it
-they should be sequences of assertions
-so in this case the precondition is a
-sequence of one assertion the assertions
-is that X is positive notice that for
-the post condition you need to use the
-percent symbol this will be the return
-result unfortunately the syntax for pre
-and post conditions is pretty easy to
-get wrong for instance if you don't and
-give a sequence of assertions it's
-possible that no assertion will be made
-it's also possible at runtime that their
-sessions are disabled you also have
-slightly less control over how our
-reporting and handling is done so for
-these reasons pre and post conditions
-are pretty rarely used it seems to be
-more common to actually check for a
-condition and throw an explicit
-exception in this example we're actually
-checking the inputs and throwing an
-exception if there's a problem and
-similarly for the result we're checking
-it and throwing exception if there's a
-problem with that it's becoming more
-popular now to use spec which we'll
-cover more in detail later
-so you've already seen that functions
-can be defined in line they're called
-function literals I just want to show
-you here that you can specify multiple
-argument in line literals for instance
-if you use percent one percent to means
-that this function takes two arguments
-you can use as many as you want if you
-want to you can create a very attic
-inline function as well using this
-percent ampersand form function literals
-are a terse and useful but personally I
-prefer to use the FN form as much as
-possible in this case we can use the FN
-form to give a name to what we're doing
-here we're squaring the numbers and it's
-going to show up in the stack traces if
-there's any kind of an exception here
-but ultimately it's just a preference
-thing feel free to use either now it's a
-great time to pause the video and take a
-look at the exercises at the end of
-section 3 of the manual ok let's check
-out the answers we can define the square
-function and call it with 55 to get 3025
-we can define a square of square
-function which actually calls a
-previously defined square function on
-the result of squaring the input so it's
-the square of the square we additionally
-checks the input range if X is less than
-100 we do the square of the square if
-it's outside of that range then we throw
-an exception saying that the input is
-too large so if we try this with a few
-values we see that the square of square
-of 2 is 16 and the square of square of
-123 is too large so we get the exception
-we can create a function that as a
-single Fibonacci step a Fibonacci step
-takes in two numbers and produces the
-next two numbers in the sequence the
-Fibonacci sequence is 1 1 2 3 5
-where it's adding together the last two
-numbers in the sequence we want the
-result of one one to be one two
-the result of one two to be two three
-and the way we do that is we say the
-first argument we need to add with the
-second argument and that's going to be
-the second element in the resulting
-sequence and the existing second
-argument is going to become the first so
-this produces the next part of the
-sequence in the manual the next section
-is a challenge which encourages to use
-what you've learned to build something a
-little bit bigger so it'd be great if
-you could take a crack of that and see
-how you go
+passing in a function
+
+In this case we are going to print out.
+The function gets evaluated three times and the last result is nil because the result of `print` is `nil`.
+The important thing to note from this is that functions are values.
+So functions can be arguments to other functions.
+A function that takes a function as an argument is called a higher-order function.
+In Clojure there is a function called `map`.
+It can be a little bit confusing because there's also a data structure called map.
+But right now we are talking about the *function* map.
+The function `map` takes a function as its first argument, and a sequence as its second argument.
+The function map applies the input function function over the sequence.
+For each element in the sequence the input function gets called.
+The increment of 1 is 2, the increment of 2 is 3, the increment of 3 is 4.
+We call this mapping a function over a sequence.
+The function of course can be defined inline using an anonymous function.
+In this case I am going to define a function that I want to map over this sequence right here.
+The function is going to be multiplying the single argument by itself which is the square calculation.
+So we could have put `square` in here.
+Alternatively we can define a function inline here, it doesn't matter.
+The point is that we are passing a function to the `map` function and it's applying that over the sequence.
+The result is a sequence where we squared each element in the sequence.
+So it's 1 4 9 16.
+The key point about this is that we don't always need to create a global definition of a function in order to pass a function to another function.
+
+Here is another example just to show you what it would look like if we defined a function to use with map.
+We define a function `greet` that takes in a person's name.
+It combines "hello" with the person's name and returns "hello <person>".
+So if we map `greet` over a sequence of names we get back "hello Alice", "hello Bob", "hello Carol".
+Personally I like to lean towards creating predefined functions.
+I feel that it is a little bit more readable and easier to think about.
+However we can create very terse expressions if we want to.
+This brings with it a lot of expressivity.
+Using the lambda syntax here I have defined a function that adds `x` to the argument.
+`x` is being captured from the environment.
+`x` is always 5 in this case and then it just adds whatever the argument is to that.
+So adding 5 to 1 is 6, adding 5 to 2 is 7, adding  5 to 3 is 8.
+This is a very compact example showing you how you can combine higher-order functions with closures to get stuff done.
+It turns out that using higher-order functions and closures can be very expressive.
+It is also possible to provide a name to the `fn` definition of an inline function.
+Here I've assigned the name `add-one` to this function.
+This doesn't create a Var like `defn` and so if you try and call `add-one` it says unable to resolve this so this definition can only be used in place where are you going to pass a function directly or invoke the function directly.
+The advantage here is that the name documents the purpose of the function.
+Another benefit is that if you do get an error and you have a stack trace, you will see this name in the stack trace.
+It makes a searchable clue as to what's gone wrong.
+If you don't give it a name you'll just get an anonymous function and it would not be very clear where that occurred.
+Also the function can call itself using this name.
+
+Coming back to named functions, we already saw that we create named functions using `defn`.
+So in this case we define a function `f` that just increments `x`.
+This turns out to be a shorthand to defining a Var `f` to be a function.
+This code here is an expansion of this.
+This is a `defn` is a macro which gets expanded out into this code.
+We will delve into what that all means later, but the important thing for now is that all functions are equivalent.
+The named function is simply defining a Var `f` so that we can use it in a global context.
+
+Variadic arguments is a fancy way of saying that a function accepts any number of inputs.
+We can define a function `f` that can take any arguments.
+It can take as many as we throw it.
+So we could call this with five arguments sometimes that is useful.
+For example the `+` operator.
+There is no reason why we cannot just take as many arguments as as people want to give us.
+An in Clojure `+` can actually take as many arguments as you want.
+The syntax is that if you want to take a variable number of arguments use this `&` sign.
+This is a destructuring form.
+I want a sequence of arguments.
+`args` is going to be a sequence.
+So in this case you can see when we called `f` with 1 2 3, we got back this sequence (1 2 3).
+Again, variadic arguments just means a variable number.
+
+Variadic can have some disadvantages.
+It's not always convenient because sometimes you do want to apply a function to a sequence.
+Of course we can do that with `apply` so in this example we have set up a variadic function called `bake-cakes`, and we can pass in `cake1` `cake1` `cake3`.
+But in the case that we actually get a bunch of cakes out of the database, we have to use `apply` to use `bake-cakes`.
+That is not a huge inconvenience but it shows that maybe we should have used a sequence as an input instead of a variadic definition.
+It depends a little bit on how the function is going to be used.
+
+In general I think it is a good rule of thumb to prefer functions that just do one thing because you can always combine those with sequence operations.
+In this particular scenario I could have instead created a function that makes a single cake, and that would have been preferable.
+In the case that I get out a bunch of cakes from my database I can call my function multiple times, using built in sequence operators.
+
+In this example `doseq` is for side-effect purposes.
+It is calling the function for each each element in the sequence.
+This is very similar to `map`.
+The difference here is that `map` will produce a result for everything in the sequence, whereas `doseq` just calls the function for its side-effects.
+`doseq` does not keep the result.
+
+There is one particular anti-pattern that you should avoid.
+You might see this around in Clojure code; if you do just be aware that it is bad style and you shouldn't do it.
+It is possible to provide a destructuring that says I'm gonna take any number of arguments but I'm just gonna take the first argument.
+This bears a little bit of explaining.
+You can think of this ampersand as saying okay I'm going to destructure any number of arguments here as a sequence.
+Then we are further destructuring that sequence, we are saying that from the sequence the first element is `y` and then there's nothing after `y`.
+We are ignoring everything after the first element in the sequence.
+So this destructuring form is a neat little way to get out the first element of any number of arguments and that seems like a great idea if you just want to allow a function to be called with some additional option or something like that.
+However it turns out to be a bad idea to do it this way.
+The reason is that if I call this function now with a whole lot of arguments, Clojure is just fine with that because we're just ignoring all the other arguments.
+The function will make use of the first two arguments here and in this case it says if you gave me a `y` value, I am going to add `x` and `y` so add 1 and 2 to get 3.
+But I think most people would be kind of surprised that you know if you've give it a string it doesn't affect it in any way.
+So a better way to achieve the same result is to explicitly specify what argument lists are possible.
+
+This is the way you can express the same thing in a more explicit way we just get one argument.
+We are just going to return `inc` of `x`.
+If you get two arguments then we're going to add those two arguments together.
+When you do your `defn` form if you have in parens these argument and then the function body argument list function body that's a way to set up a function that can take different numbers of arguments but it there is an explicit list of what is acceptable and what's not acceptable.
+The good thing about this is that if you call the function with a signature that doesn't make sense you will get an exception, so you can see that there's a problem.
+
+Clojure also supports keyword arguments.
+I recommend you avoid them, but I want you to see what the syntax is just so you're aware of them.
+In this case we are setting up a function `f` and here we have got the `&`, which means variadic destructuring.
+Then we have a map where we are destructuring certain keys out of that map.
+In this case we are looking for `:port` and `:protocol` and the way you can invoke this is with `f` colon particle HTTP.
+What this is saying is that protocol is an optional key and so we could have put in here `f` colon port 1000 or we could put in both options or we could put in neither of the options and it would work.
+
+In either case you can also destructure defaults from a map when you are destructuring any map.
+If you want to destructor the defaults of a map you can specify them with this `:or` form so you can specify if someone does not pass in a port then I want to use port 8080.
+If someone doesn't pass in a protocol well I wouldn't use HTTP and so this is the way that you do that.
+
+But it turns out that keyword arguments can be fairly inconvenient.
+The situation where they are inconvenient is if you have a map already and then you want to call the function.
+It is a little bit tricky figuring out well how do I convert this map into something that I can call the function with?
+As you saw here this kind of this flattened key value pair form that we need to create.
+In this example I am slurping in some configuration from a file.
+It contains the port and the protocol and I want to call my function with it.
+Is a way to do it?
+I think you will agree that this looks a little bit tricky!
+What it is doing config is a map and apply concat is concatenating sequences together.
+
+Now a map can be considered to be a sequence of key value pairs so if you apply concat to the config it produces what we need which is the key value key value key value just as a sequence.
+But that's not what the argument of `f` is.
+`f` needs to be called with those as the direct arguments not a sequence of them and so we need to apply `f` to that sequence and the result of that is essentially `f` key value key value key value.
+So all of that is doable but it is quite confusing and we would be way better off if instead we just called `f` with the map!
+
+So to me this is a much more pleasing way of calling our function.
+We just pass in the map we want so we should define `f` to explicitly take a map of input arguments.
+It is not that inconvenient to call `f` wrapped in a map when I know what those are up front.
+And it is definitely very much more convenient when I've slurped in a map.
+
+When you define a function it is possible to set up some pre and post conditions.
+If you want pre and post conditions you need to specify a map after the argument list with pre and post keys in it they should be sequences of assertions.
+In this case the precondition is a sequence of one assertion.
+The assertions is that `x` is positive.
+Notice that for the post condition you need to use the percent symbol.
+This will be the return result.
+Unfortunately the syntax for pre and post conditions is pretty easy to get wrong.
+For example if you do not give a sequence of assertions, it is possible that no assertion will be made.
+It is also possible at runtime that assertions are disabled.
+You also have slightly less control over how error reporting and handling is done.
+For these reasons pre and post conditions are rarely used.
+It seems to be more common to actually check for a condition and throw an explicit exception.
+In this example we are actually checking the inputs and throwing an exception if there's a problem.
+Similarly, for the result we are checking it and throwing exception if there is a problem with that.
+It is becoming more popular now to use spec, which we will cover more in detail later.
+
+You have already seen that functions can be defined inline.
+They are called function literals.
+You can specify multiple argument in inline literals.
+For instance if you use `%1` `%2` means that this function takes two arguments.
+You can use as many as you want.
+If you want to you can create a variadic inline function as well using this `%&` form.
+Function literals are a terse and useful but personally I prefer to use the `fn` form as much as possible.
+In this case we can use the `fn` form to give a name to what we're doing.
+Here we are squaring the numbers and it is going to show up in the stack traces if there's any kind of an exception here.
+It is just a preference thing, feel free to use either form.
+
+Now is a great time to pause the video and take a look at the exercises at the end of section 3 of the manual.
+
+O.K. let's check out the answers.
+We can define the square function and call it with 55 to get 3025.
+We can define a square of square function which actually calls a previously defined square function on the result of squaring the input.
+So it is the square of the square.
+We check the input range if `x` is less than 100.
+We do the square of the square.
+If it is outside of that range then we throw an exception saying that the input is too large.
+So if we try this with a few values we see that the square of square of 2 is 16 and the square of square of 123 is too large so we get the exception.
+We can create a function that as a single Fibonacci step.
+A Fibonacci step takes in two numbers and produces the next two numbers in the sequence.
+The Fibonacci sequence is 1 1 2 3 5 where it is adding together the last two numbers in the sequence.
+We want the result of 1 1 to be 1 2, the result of 1 2 to be 2 3.
+The way we do that is we say the first argument we need to add with the second argument and that's going to be the second element in the resulting sequence.
+The existing second argument is going to become the first.
+This produces the next part of the sequence.
+
+In the manual the next section is a challenge which encourages you to use what you've learned to build something a little bit bigger.
+Take a crack at that and see how you go.
