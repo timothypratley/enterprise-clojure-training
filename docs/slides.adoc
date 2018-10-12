@@ -152,6 +152,9 @@ Clojure returns a result:
 
 Repeat
 
+NOTE: `=>` means evaluates to
+
+
 [NOTE.speaker]
 --
 * evaluates
@@ -260,16 +263,11 @@ Empty list
     ()
     => ()
 
-NOTE: `=>` means evaluates to
-
 
 == Making lists
 
-    (quote (1 2))
-    => (1 2)
-
-    '(1 2)
-    => (1 2)
+    (list 1 2 3)
+    => (1 2 3)
 
 
 == Vectors
@@ -277,12 +275,10 @@ NOTE: `=>` means evaluates to
     [1 2 3 4]
 
 * Order 1 count and lookup by index
-* Preferred over quoted lists for data expressions
+* Preferred over lists
 
 
-== Equality
-
-By identity and by value
+== Equality by value
 
     (def a [1 2 3 4])
     (= a a)
@@ -292,41 +288,19 @@ By identity and by value
     (= a b)
     => true
 
+NOTE: `a` and `b` are different objects
 
-== Equality by sequence value
-
-    (= [1 2 3 4] '(1 2 3 4))
-    => true
-
-WARNING: A vector and a list can be sequentially equal
-
-
-== Sequences
-
-Fundamental abstraction
-
-    (drop 1 '(0 0 0 0))
-    => (0 0 0)
-
-    (take 3 "abcd")
-    => (\a \b \c)
-
-
-    (seq? "abc")
-    => true
-
-    (seq? 8)
+    (identical? a b)
     => false
 
-* Many sequence oriented functions
-* Most are lazy
-* See section X
 
+== Sequential equality
 
-[NOTE.speaker]
---
-* Collections (not yet introduced, but list, vector, set, map) all implement seq
---
+    (= [1 2 3 4] (list 1 2 3 4))
+    => true
+
+WARNING: Different types, but considered equal
+
 
 == Symbols
 
@@ -348,8 +322,23 @@ Fundamental abstraction
 	foo
 	=> Exception: Unable to resolve symbol foo
 
+    (quote foo)
+    => foo
+
 	'foo
 	=> foo
+
+`quote` means don't resolve or evaluate
+
+== Quote also works on lists
+
+    (quote (1 2))
+    => (1 2)
+
+    '(1 2)
+    => (1 2)
+
+Prevents invokation of `1` as a function
 
 
 == !
@@ -417,12 +406,13 @@ Characters written with a backslash
 * `:my-keyword`
 * Shorthand identifiers
 * Begin with a colon
-* Often used as keys in hashmaps
-
+* *Often used as keys in hashmaps*
+--
     {:name "Fate of the Furious"
      :sequence-number 8
      :rotten-tomatoes 0.66
      :imdb 0.67}
+--
 
 
 == Namespaced keywords
@@ -432,14 +422,14 @@ Characters written with a backslash
     ::rect
     => :timothy.example/rect
 
-* shorthand for current namespace
+Shorthand for current namespace
 
 
 == Sets
 
     #{1 2 3}
 
-* Near constant time lookup
+Near constant time lookup
 
 
 == Nesting
@@ -453,7 +443,7 @@ Characters written with a backslash
     {[1 2] {:name "diamond" :type :treasure}
      [3 4] {:name "dragon" :type :monster}}
 
-* A map with vector coordinate keys, and map values
+A map with vector coordinate keys, and map values
 
 
 == Invoking functions
@@ -461,42 +451,32 @@ Characters written with a backslash
     (inc 1)
     => 2
 
-* Prefix order
+    (+ 1 2)
+    => 3
+
+Always in prefix form
 
 
 == Defining vars
 
-    (def x)
-    x
-    => #object[clojure.lang.Var$Unbound "Unbound: #'user/x"]
-
     (def x 1)
+    => #'user/x
+
     x
     => 1
 
 * Global mutable reference (use sparingly)
 * Dereferenced when evaluated
-
-WARNING: Avoid re-def'ing after creating a binding
+* `#'user/x` is shorthand for `(var user/x)`
+* `def` is not a function, it is a special form
 
 [NOTE.speaker]
 --
+Make a separate slide, probably in a later section
+WARNING: Avoid re-def'ing
 example of def inside defn and why it is bad...
 global mutable state, concurrent access
 --
-
-
-== Atoms
-
-Change over time
-
-    (def a (atom 1))
-    (swap! a inc)
-    @a
-    => 2
-
-    (deref a)
-    => 2
 
 
 == Let
@@ -520,9 +500,7 @@ Change over time
 * Matches structure
 
 
-== Destructuring
-
-Avoids extracting substructure manually:
+== Why destructure?
 
     (defn normalize1 [v]
       (let [x (first v)
@@ -530,17 +508,53 @@ Avoids extracting substructure manually:
             length (Math/sqrt (+ (* x x) (* y y)))]
         [(/ x length) (/ y length)]))
 
+Avoid extracting substructure manually:
+
     (defn normalize2 [[x y]]
       (let [length (Math/sqrt (+ (* x x) (* y y)))]
         [(/ x length) (/ y length)]))
 
 
-== Destructuring
+== Vector structures match any sequence
 
-Available in any binding form
+    (let [[a b] (list 1 2)]
+      b)
+    => 2
 
-    (for [[k v] m]
-      [v k])
+
+== Strings and Collections (list, vector, set, map) implement seq
+
+    (seq "abc")
+    => (\a \b \c)
+
+    (seq {:a 1, :b 2, :c 3})
+    => ([:a 1] [:b 2] [:c 3])
+
+    (seq? 8)
+    => false
+
+
+== Basic sequences
+
+    (drop 2 [0 0 0 0])
+    => (0 0)
+
+    (range 5)
+    => (0 1 2 3 4)
+
+    (take 2 "abcd")
+    => (\a \b)
+
+* Many sequence oriented functions
+* Never modify the original sequence
+* Fundamental abstraction
+* Often lazy
+
+
+== Lazy sequences
+
+
+== Infinite sequences
 
 
 == For expressions
@@ -559,6 +573,14 @@ Available in any binding form
           :when (odd? i)]
       (* i i))
     => (1 9 25 49 81)
+
+
+== Destructuring again
+
+Available in any binding form
+
+    (for [[k v] m]
+      [v k])
 
 
 == Variadic functions
@@ -1867,6 +1889,27 @@ choose one but not the other.
 
 * `v` remains unchanged
 * Manage change explicitly
+
+
+== Use Atoms for mutatable state
+
+    (def a (atom 1))
+    (swap! a inc)
+    (deref a)
+    => 2
+
+Shorthand for `deref`:
+
+    @a
+    => 2
+
+
+== Atoms work with any data structure
+
+    (def a (atom [1 2]))
+    (swap! a conj 3)
+    @a
+    => [1 2 3]
 
 
 == Separate side effects out
