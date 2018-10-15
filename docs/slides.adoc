@@ -591,6 +591,17 @@ TIP: `ns` works in the REPL!
 `::` is shorthand for current namespace
 
 
+== Defining functions
+
+    (defn square [x]
+      (* x x))
+
+    (defn square
+      "Multiplies a number by itself"
+      [x]
+      (* x x))
+
+
 == Defining Vars
 
     (def x 1)
@@ -610,8 +621,9 @@ TIP: `ns` works in the REPL!
 * The symbol `x` resolves to a Var
 * Vars are automatically dereferenced when evaluated
 * Dereferrencing returns the value associated with the Var
-* Can use `#'x` or `(var x)` to access the Var
 * Avoid using vars like variables
+* `defn` is actually `def` with a function value
+* Can use `#'x` or `(var x)` to access the Var
 
 
 == Let
