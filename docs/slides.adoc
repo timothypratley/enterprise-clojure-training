@@ -258,13 +258,28 @@ Evaluated as function calls
     (inc 1)
     => 2
 
-Empty list
+
+== Invoking functions
+
+    (+ 1 2)
+    => 3
+
+Always in prefix form
+
+
+== Empty list
 
     ()
     => ()
 
 
 == Making lists
+
+    (cons 1 ())
+    => (1)
+
+    (cons 1 (cons 2 ())
+    => (1 2)
 
     (list 1 2 3)
     => (1 2 3)
@@ -274,8 +289,32 @@ Empty list
 
     [1 2 3 4]
 
-* Order 1 count and lookup by index
-* Preferred over lists
+Preferred over lists; easier to write
+
+Order 1 count and lookup by index
+
+   (get [1 2 3 4 5] 3)
+   => 4
+
+Similar to arrays, but can be added to
+
+
+== Vector operations
+
+    (conj [1 2 3] 4)
+    => [1 2 3 4]
+
+    (pop [1 2 3 4])
+    => [1 2 3]
+
+    (assoc [1 2 3 4] 0 5)
+    => [5 2 3 4]
+
+    (vec (list 1 2 3 4))
+    => [1 2 3 4]
+
+    (cons 5 [1 2 3 4])
+    => (5 1 2 3 4)
 
 
 == Equality by value
@@ -299,19 +338,15 @@ NOTE: `a` and `b` are different objects
     (= [1 2 3 4] (list 1 2 3 4))
     => true
 
-WARNING: Different types, but considered equal
+Different types, but considered equal
 
 
 == Symbols
 
+* Usually `lowercase-words-hyphenated`
 * Begin with an alphabet character
 * Can contain numbers and punctuation
-* Usually `lowercase-words-hyphenated`
-
-[NOTE.speaker]
---
-* Can think of them like the (identifiers, reserved keywords, operators) of other mainstream languages
---
+* Identifiers
 
 
 == Resolving symbols
@@ -330,6 +365,7 @@ WARNING: Different types, but considered equal
 
 `quote` means don't resolve or evaluate
 
+
 == Quote also works on lists
 
     (quote (1 2))
@@ -338,7 +374,10 @@ WARNING: Different types, but considered equal
     '(1 2)
     => (1 2)
 
-Prevents invokation of `1` as a function
+Prevents invoking `1` as a function
+
+    (1 2)
+    Exception: Long cannot be cast to IFn
 
 
 == !
@@ -375,8 +414,6 @@ Characters written with a backslash
 
     \a \b \c
     \newline \tab \space
-    \5
-    \~
 
 
 == Maps
@@ -415,14 +452,68 @@ Characters written with a backslash
 --
 
 
-== Namespaced keywords
+== Map operations
 
-    :timothy.example/rect
+    (get {:a 1} :a)
+    => 1
 
-    ::rect
-    => :timothy.example/rect
+    (get {:a 1} :b 2)
+    => 2
 
-Shorthand for current namespace
+    (assoc {:a 1} :b 2)
+    => {:a 1, :b 2}
+
+    (dissoc {:a 1} :a)
+    => {}
+
+    (merge {:a 1} {:b 2})
+    => {:a 1, :b 2}
+
+
+== Commas
+
+Commas are optional and treated as whitespace
+
+    (= {:a 1, :b 2, :c 3}
+       {:a 1 :b 2 :c 3})
+
+Prefer newlines
+
+    {:a 1
+     :b 2
+     :c 3}
+
+
+== Nesting datastructures
+
+    {:name "Fate of the Furious"
+     :sequence-number 8
+     :ratings {:rotten-tomatoes 0.66
+               :imdb 0.67}}
+
+Ratings are a nested map
+
+    {[1 2] {:name "diamond", :type :treasure}
+     [3 4] {:name "dragon", :type :monster}}
+
+A map with vector coordinate keys, and map values
+
+
+== Nested updates
+
+    (update {:a 2} :a inc)
+    => {:a 3}
+
+    (update {:a [1 2 3]} :a conj 4)
+    => {:a [1 2 3 4]}
+
+    (assoc-in {:a {:b {:c 1}}} :d 2)
+    => {:a {:b {:c 1, :d 2}}}
+
+    (update-in {:a {:b {:c 1}}} [:a :b :c] inc)
+    => {:a {:b {:c 2}}}
+
+    (get-in {:a {:b {:c 1}}} [:a :b :c])
 
 
 == Sets
@@ -431,52 +522,96 @@ Shorthand for current namespace
 
 Near constant time lookup
 
-
-== Nesting
-
-    {:name "Fate of the Furious"
-     :sequence-number 8
-     :ratings {
-       :rotten-tomatoes 0.66
-       :imdb 0.67}}
-
-    {[1 2] {:name "diamond" :type :treasure}
-     [3 4] {:name "dragon" :type :monster}}
-
-A map with vector coordinate keys, and map values
+    (contains? #{1 2 3} 3)
+    => true
 
 
-== Invoking functions
+== Set operations
 
-    (inc 1)
-    => 2
+    (conj #{1 2 3} 4)
+    => #{1 2 3 4}
 
-    (+ 1 2)
-    => 3
+    (disj #{1 2 3} 2)
+    => #{1 3}
 
-Always in prefix form
+`union`, `difference` and `intersection` are available in the `clojure.set` namespace
 
 
-== Defining vars
+== Namespaces
+
+`src/training/my_namespace.clj`
+
+    (ns training.my-namespace
+      (:require [clojure.set :as set])
+      (:import (java.time Instant Duration)))
+    (set/union #{1 2 3} #{3 4})
+    => #{1 2 3 4}
+
+* The name must match path and filename
+* `my-namespace` -> `my_namespace.clj`
+* `training.` -> `training/`
+
+[NOTE.speaker]
+--
+* Must be the first form in the file
+* Other forms exist, but prefer this one
+--
+
+== From the REPL
+
+    (require '[clojure.set :as set])
+    (import
+    (use 'clojure.set)
+    (require '[clojure.set :refer :all])
+
+WARNING: Avoid `use` and `:refer :all`
+
+TIP: `ns` works in the REPL!
+
+    (ns training.my-namespace
+       (:require [clojure.set :as set]))
+
+
+== Programs
+
+* Expressions which are evaluated to results
+* If an expression needs to be compiled, it will be
+* Can be loaded from files or evaluated dynamically
+* Unit of compilation is a form
+* Nominate an entry point namespace/function
+
+
+== Namespaced keywords
+
+    :my.namespace/rect
+
+    ::rect
+    => :my.namespace/rect
+
+`::` is shorthand for current namespace
+
+
+== Defining Vars
 
     (def x 1)
     => #'user/x
 
+`#'user/x` is shorthand for `(var user/x)`
+
     x
     => 1
 
-* Global mutable reference (use sparingly)
-* Dereferenced when evaluated
-* `#'user/x` is shorthand for `(var user/x)`
-* `def` is not a function, it is a special form
+* Global mutable reference
+* Use sparingly
 
-[NOTE.speaker]
---
-Make a separate slide, probably in a later section
-WARNING: Avoid re-def'ing
-example of def inside defn and why it is bad...
-global mutable state, concurrent access
---
+
+== Defining Vars continued
+
+* The symbol `x` resolves to a Var
+* Vars are automatically dereferenced when evaluated
+* Dereferrencing returns the value associated with the Var
+* Can use `#'x` or `(var x)` to access the Var
+* Avoid using vars like variables
 
 
 == Let
@@ -533,6 +668,10 @@ Avoid extracting substructure manually:
     (seq? 8)
     => false
 
+    (let [[a b] "abc"]
+      b)
+    => \b
+
 
 == Basic sequences
 
@@ -547,14 +686,16 @@ Avoid extracting substructure manually:
 
 * Many sequence oriented functions
 * Never modify the original sequence
-* Fundamental abstraction
 * Often lazy
 
 
 == Lazy sequences
 
+Lazy means that the next value in the sequence is only calculated when it is made use of
 
-== Infinite sequences
+Stream abstraction; only the currently used item needs to be in memory
+
+Useful for processing files that don't fit in memory
 
 
 == For expressions
@@ -563,29 +704,29 @@ Avoid extracting substructure manually:
       (* i i))
     => (0 1 4 9 16 25 36 49 64 81)
 
-    (for [file ["a" "b" "c" "d"
-                "e" "f" "g" "h"]
+    (for [file ["a" "b" "c" "d"]
           rank (range 1 9)]
       (str file rank))
-   => ("a1" "a2"..."a8" "b1"..."h8")
+    => ("a1" "a2" ... "a8" "b1" ... "d8")
 
     (for [i (range 10)
-          :when (odd? i)]
-      (* i i))
+          :when (odd? i)
+          :let [square (* i i)]
+      square)
     => (1 9 25 49 81)
 
 
-== Destructuring again
+== Destructuring in a for expression
 
-Available in any binding form
+    (let [m {:a 1, :b 2, :c 3}]
+      (for [[k v] m]
+        [v k]))
+    => ([1 :a] [2 :b] [3 :c])
 
-    (for [[k v] m]
-      [v k])
+TIP: Destructuring is available in any binding form
 
 
-== Variadic functions
-
-Destructured using `&`
+== Variadic functions using `&`
 
     (defn sub [& vs]
       vs)
@@ -613,65 +754,88 @@ Destructured using `&`
 
 == Destructuring a map
 
-    (def x {:field1 10 :field2 20})
+    (def x {:a 10
+            :b 20})
 
-    (:field1 x)
-    (:field2 x)
+    (let [{a :a, b :b} x]
+      (+ a b))
+    => 30
 
-    {:keys [field1 field2]} x
+    (let [{:keys [a b]} x]
+      (+ a b))
+    => 30
 
-    {f1 :field1, f2 :field2} x
 
-    (def y {"field1" 10 "field2" 20})
 
-    {:strs [label1 label2]} y
+== Destructuring strings from a map
+
+    (def y {"a" 10
+            "b" 20})
+
+    (let [{a "a", b "b"} y]
+      (+ a b))
+    => 30
+
+    (let [{:strs [a b]} y]
+      (+ a b))
+    => 30
 
 
 == Destructuring a sequence:
 
-    (first x)
-    (rest x)
+    (def x (range 5))
 
-    [a & more]
+    (first x)
+    => 0
+
+    (rest x)
+    => (1 2 3 4)
+
+    (let [[a & more] (range 5)]
+      a)
+    => 0
+
+    (let [[a & more] (range 5)]
+      more)
+    => (1 2 3 4)
 
 
 == Nested destructuring
 
-    (get-in movies [:ratings :imdb])
+    (def movie {:name "Fate of the Furious"
+                :sequence-number 8
+                :ratings {:rotten-tomatoes 0.66
+                          :imdb 0.67}})
 
-    {{imdb :imdb} :ratings} movies
+    (get-in movie [:ratings :imdb])
+    => 0.67
+
+    (let [{{:keys [imdb]} :ratings} movie]
+      imdb)
+    => 0.67
 
 
 == More destructuring
 
-    :as x
-
-    :or {field1 "default"}
-
-* Prefer (merge defaults inputs) instead of :or
-
-
-== Namespaces
-
-    (ns training.core
-      (:require [clojure.string :as string])
-      (:import [java.util Date]))
-
-    (string/upper-case "shout")
-
-* First thing in a file
-* Must match path and filename
-* `training.core` in `src/training/core.clj`
-* `-` replaced with `_` and `.` replaced with `/`
-* Other forms exist, but prefer this one
+    (defn f [{:keys [a b] :as x}]
+      x)
+    (f {})
+    => {}
 
 
-== Programs
+== Destructuring with defaults
 
-* Expressions which are evaluated to results
-* If an expression needs to be compiled, it will be
-* Can be loaded from files or evaluated dynamically
-* Unit of compilation is a form
+    (defn f [{:keys [a b] :or {a "default"}}]
+      a)
+    (f {})
+    => "default"
+
+    (defn f [x]
+      (let [defaults {:a "default"}]
+            {:keys [a b]} (merge defaults x)]
+        a))
+    (f {})
+    => "default"
 
 
 == Comments
@@ -691,24 +855,10 @@ Less common is the comment form:
 Removal of next form `#_`
 
     #_(this form is removed)
-    #_#_ ignored-1 ignored-2
+    #_#_ (ignored-1) (ignored-2)
 
 * Temporarily remove a form when debugging code
 * Looks like a bug eyes emoji
-
-
-== Commas
-
-Commas are optional and treated as whitespace
-
-    (= {:a 1, :b 2, :c 3}
-       {:a 1 :b 2 :c 3})
-
-Prefer newlines
-
-    {:a 1
-     :b 2
-     :c 3}
 
 
 == Regex
@@ -1922,9 +2072,20 @@ Shorthand for `deref`:
 * Keep logic pure
 
 
-== apply
+== Do not
 
-Given 4 numbers we can call
+    (defn f [x]
+      (def y 2)
+      (+ x y))
+
+Prefer instead:
+
+    (defn f [x]
+      (let [y 2]
+        (+ x y)))
+
+
+== apply
 
     (max 1 2 5 3)
     => 5
@@ -1936,11 +2097,7 @@ What if you have a sequence of many numbers?
     (apply max numbers)
     => 7
 
-
-== apply
-
-* Useful when calling variadic functions like max
-* The term apply means call or invoke
+TIP: `apply` means to call or invoke
 
 
 == partial
