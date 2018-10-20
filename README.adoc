@@ -5,13 +5,9 @@
 
 A Clojure training course for Developers and Senior Developers working on Enterprise software.
 
-Please visit the https://timothypratley.github.io/enterprise-clojure-training[Website].
+Please visit the https://timothypratley.github.io/enterprise-clojure-training[Website] to see the precompiled course material.
 
 A list of companies and individuals offering Clojure training is here https://clojure.org/community/training[this page].
-
-See https://timothypratley.github.io/enterprise-clojure-training/manual.html[manual.html].
-or https://timothypratley.github.io/enterprise-clojure-training/manual.pdf[manual.pdf].
-for the course material, and https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[example code].
 
 
 == Rationale
@@ -79,7 +75,13 @@ To have the build watch for file changes and rebuild automatically:
 
     ./watch.sh
 
-You need entr installed for watch to work, I highly recomend it.
+You need `entr` (Event Notify Test Runner) installed for watch to work, I highly recomend it.
+
+    brew install entr
+
+Or
+
+    apt install entr
 
 
 ==== The Docker way
