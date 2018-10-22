@@ -1,0 +1,424 @@
+= What are you waiting for?
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+:customcss: slides.css
+:revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0
+:revealjs_theme: simple
+:revealjs_center: false
+:revealjs_controls: false
+:revealjs_transition: none
+:revealjs_history: true
+:docinfo: shared
+:notitle:
+:icons: font
+
+
+[state=title]
+== What are you waiting for?
+
+.Waiting patiently for Clojure adoption in the workplace
+image::img/talk/corgi-waiting.jpg[Corgi waiting at door]
+
+[NOTE.speaker]
+--
+* Just among us friends, the potential for Clojure to take over the programming world is obvious.
+* But... why isn’t everybody using it yet?
+* Why aren't my friends using it?
+* Why isn't Google using it?
+* My name is Timothy Pratley, and this talk is titled "What are you waiting for?"
+* My goal today is to encourage you to hurry up and start using Clojure at work
+* This isn't a "why Clojure" talk...
+* The reasons are well understood at this point
+* There are excellent resources on that topic already
+* This talk is about why, despite all reason, do companies still hesitate?
+--
+
+
+== One reason
+
+.I can't do this on my own
+image::img/talk/corgi-asleep-at-vet.jpg[]
+
+[NOTE.speaker]
+--
+* This isn't the only reason, but this is one reason I am very familiar with
+* It's hard to believe that you can switch languages effectively without some help
+* You do need some help
+* A company asked me to take 28 developers, and get them ready to start day one using Clojure
+* in 2 days
+* Challenge accepted
+--
+
+
+[state=title]
+== Enterprise Clojure Training
+
+image:img/art1.jpg[Art]
+
+
+== A book
+
+
+== Slides
+
+
+== Examples
+
+
+== Videos
+
+
+== Target audience
+
+* Software Engineers who don't know Clojure
+* Who will be using it professionally
+* Who need to be productive next week
+
+[NOTE.speaker]
+--
+* This is a boot camp
+--
+
+
+== Open source
+
+* Anyone can access it
+* You can use it to run a course
+* You can modify it
+* Don't reinvent the wheel
+
+
+== The role of teachers
+
+* Questions and answers
+* Helping with the unexpected
+* Enterprise Clojure Training is a resource for teachers
+
+
+== Typical Learners
+
+* Experienced
+* Fresh
+* Medium
+
+
+== What should I learn?
+
+* JavaScript remains supreme
+* Java
+* Python
+
+My experience?
+
+* Nope
+
+
+== Change of thinking required
+
+.Woha, I get it!
+image::img/talk/corgi-lights.png[Corgi in lights]
+
+[NOTE.speaker]
+--
+* Took me a long time
+* See it in others
+* Some people get it quickly, some never do
+* Check your preconception at the door
+--
+
+
+== Simple ain't easy
+
+"I had high hopes for Clojure for a while, but they're fairly user-hostile, even if they think (and loudly assert) that they aren't."
+-- Steve Yegge
+
+
+== Tips for learning
+
+* Focus on the language first
+* Focus on the mental shift second
+* Try to delay investing in tools and editors
+* Join the community
+* Find a teacher
+* Ask questions
+
+
+== Join the community
+
+"I am so happy with, and proud of, the Clojure community. People are helpful, and respectful, and positive. I think the key point is that the community values itself, such that people will decide it is more important to preserve the quality of the community than to vent their emotions or prove themselves right."
+-- Rich Hickey
+
+https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/RichHickeyQandA.md
+
+
+[state=title]
+== At work
+
+.How did I get here?
+image::img/corgi.jpg[Corgi with tie and glasses]
+
+
+[NOTE.speaker]
+--
+* My goal today is to encourage you to hurry up and start using Clojure at work
+* Part one of that is providing a resource
+* Part two is sharing my path
+* And to do that I must first begin with how I came to Clojure
+--
+
+
+== Rewind << 2007
+
+.My first encounter with Lisp
+image::img/talk/corgi-encounter.jpg[Corgi encounters budgie]
+
+[NOTE.speaker]
+--
+* In 2007 I was a bit of a know it all kind of programmer
+* Hiring an engineer, their code submission was... concise, elegant
+* I didn’t understand it
+* It was in a language I didn’t know
+* I thought I knew all the languages: C, C++ and Java
+* It must be one of those weird languages we dabbled with at university like prolog or haskell
+* It was Lisp
+* Well fine, I can program in any language, I’ll just learn the constructs and...
+* Six months later I was ready to put lisp back in it’s box
+* I’d worked through SICP and onlisp, and written small programs
+* There was an elegance to the concepts,
+* but applying them to the kinds of computation I wanted to do was not practical
+* Then this happened:
+--
+
+
+== Rich Hickey <rich@ri...> - 2007-10-17
+
+[small]
+--
+
+
+Hello,
+
+As someone interested in Foil or jFli, I thought you might want to
+know about my latest project - Clojure, a dialect of Lisp for the
+JVM. It's currently alpha, but fairly complete. I'm looking for some
+feedback from some intrepid folks willing to kick the tires.
+http://clojure.sourceforge.net/
+
+Please use the Google group for feedback:
+http://groups.google.com/group/clojure
+
+Regards and thanks,
+
+Rich
+--
+
+[NOTE.speaker]
+--
+* I was instantly hooked
+* I could build stuff!
+* Even render 3d images!
+* Fnil - completely new way of thinking, solves a real problem in an unexpected way.
+* Not really an option for my day job
+* Clojure was for personal projects
+--
+
+
+== 2010
+
+image::img/talk/corgi-team.jpg[Corgis carrying a branch together]
+
+[NOTE.speaker]
+--
+* Managing a team of 12 people building logistics software
+* Using C#
+* Agile
+* I build Version One plugins
+* Technical challenges would be so much easier in Clojure
+* But how could I transition my team over?
+* I didn't think it was possible on my own
+--
+
+
+== 2014
+
+image::img/talk/corgi-herding-ducks.jpg[]
+
+[NOTE.speaker]
+--
+* Joined a startup using Clojure/ClojureScript greenfield
+* Clojure scales
+* Large teams
+* Large codebase
+* Build an entire system in a month
+* Training people wasn't so hard
+--
+
+
+== 2018
+
+image::img/talk/suiteness.png[]
+
+[NOTE.speaker]
+--
+Booking connected hotel rooms for family or group travel
+--
+
+
+== Why didn't I convert my team to Clojure?
+
+.I can't do this on my own
+image::img/talk/corgi-asleep-at-vet.jpg[]
+
+
+[NOTE.speaker]
+--
+* What prevents companies from sliding into Clojure en masse?
+* What prevented me from converting my team to Clojure?
+* I can't do this on my own
+* Needed training, another expert, C-level buy in
+* What can we do about it?
+--
+
+
+== Many people don't know anything about Clojure
+
+.Looking different can feel weird
+image::img/talk/corgi-weird.jpeg[]
+
+[NOTE.speaker]
+--
+* It's natural to be suspicious of what we don't know
+* They have real concerns
+  - Is it really better?
+  - Is this for "regular" programmers?
+  - Can we learn it?
+  - Who will support it?
+  - Can we hire people?
+--
+
+
+== What are *developers* waiting for?
+
+.Jobs!
+image::img/talk/clojure-jobs.png[Clojure job listings]
+
+
+== What are *companies* waiting for?
+
+.Developers!
+image::img/talk/corgi-developer.jpg[Corgi using a laptop]
+
+[NOTE.speaker]
+--
+* It's hard to hire for Clojure
+  - not really though
+--
+
+
+== What are *employees* waiting for?
+
+.A greenfield!
+image::img/talk/corgi-on-field.jpg[Corgi on a green field]
+
+[NOTE.speaker]
+--
+* Room to do things right
+* Figure out what that means
+* But why not do some boring stuff too?
+--
+
+
+== What are *employers* waiting for?
+
+.A framework!
+image::img/talk/corgi-in-crate.jpg[Corgi in dog crate]
+
+[NOTE.speaker]
+--
+* Something to start with and add to
+* Get going quickly
+* Structure
+* That's all totally possible
+--
+
+
+== Sounds complicated
+
+.Clojure isn't for everybody...
+image::img/talk/complicated.png[]
+
+
+== What's working?
+
+* Small teams of experts
+* Bringing in non-experts
+* Cognitect
+
+
+== Is Clojure Enterprise?
+
+image::img/talk/popularity.png[]
+
+[NOTE.speaker]
+--
+* I get to use it at work
+* I've built Enterprise Systems with it
+* Several large companies do use it
+* There are Clojure jobs available
+--
+
+== Or not?
+
+image::img/talk/most-used-jvm.jpg[]
+
+[NOTE.speaker]
+--
+* Still a niche
+* Secret weapon, and that's O.K.
+* Value principles over popularity
+  ** simplicity
+  ** thinking
+  ** community
+--
+
+
+== Clojure makes me happy
+
+I want other people to be happy too
+
+* Many books
+* Great community
+* Many experts
+* Many jobs
+
+
+== Start using Clojure already
+
+.Training for the win
+image::img/talk/corgi-training.jpeg[]
+
+[NOTE.speaker]
+--
+* But it could be for you!
+* Stop wondering if Clojure is an Enterprise language
+* You don't need another experience report
+* You don't need another convincing argument
+* Give it a try
+* Hopefully my training course can give you some confidence to get started
+--
+
+
+[state=title]
+== Thank you
+
+Enterprise Clojure Training
+
+https://timothypratley.github.io/enterprise-clojure-training
+
+Contact me
+
+timothypratley@gmail.com
+
+My blog
+
+https://timothypratley.blogspot.com
