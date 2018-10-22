@@ -192,10 +192,8 @@ image::img/talk/corgi-encounter.jpg[Corgi encounters budgie]
 
 == Rich Hickey <rich@ri...> - 2007-10-17
 
-[small]
+[.small]
 --
-
-
 Hello,
 
 As someone interested in Foil or jFli, I thought you might want to
