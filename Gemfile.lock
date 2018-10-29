@@ -5,7 +5,7 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     afm (0.2.2)
-    asciidoctor (1.5.7.1)
+    asciidoctor (1.5.8)
     asciidoctor-pdf (1.5.0.alpha.16)
       asciidoctor (>= 1.5.0)
       prawn (>= 1.3.0, < 2.3.0)
@@ -19,6 +19,7 @@ GEM
     asciidoctor-revealjs (1.1.3)
       asciidoctor (~> 1.5.6)
       thread_safe (~> 0.3.5)
+    concurrent-ruby (1.0.5)
     css_parser (1.6.0)
       addressable
     hashery (2.1.2)
@@ -43,7 +44,7 @@ GEM
     prawn-templates (0.1.1)
       pdf-reader (~> 2.0)
       prawn (~> 2.2)
-    public_suffix (3.0.2)
+    public_suffix (3.0.3)
     ruby-rc4 (0.1.5)
     safe_yaml (1.0.4)
     thread_safe (0.3.6)
@@ -58,6 +59,7 @@ DEPENDENCIES
   asciidoctor
   asciidoctor-pdf
   asciidoctor-revealjs
+  concurrent-ruby
 
 BUNDLED WITH
    1.16.1

@@ -23,29 +23,23 @@ image::img/talk/corgi-waiting.jpg[Corgi waiting at door]
 --
 * Just among us friends, the potential for Clojure to take over the programming world is obvious.
 * But... why isn’t everybody using it yet?
-* Why aren't my friends using it?
-* Why isn't Google using it?
 * My name is Timothy Pratley, and this talk is titled "What are you waiting for?"
+* This isn't a "why Clojure" talk; most of you are here because you already know and love Clojure
 * My goal today is to encourage you to hurry up and start using Clojure at work
-* This isn't a "why Clojure" talk...
-* The reasons are well understood at this point
-* There are excellent resources on that topic already
-* This talk is about why, despite all reason, do companies still hesitate?
+* I will be introducing an open source training course called Enterprise Clojure Training
+* My collaborator Elango will be speaking about the theory and practise of teaching Clojure
 --
 
 
-== One reason
+[state=title]
+== Train 28 developers in 24 hours
 
-.I can't do this on my own
-image::img/talk/corgi-asleep-at-vet.jpg[]
-
+.Challenge accepted
+image::img/talk/corgi-challenge.jpg[]
 [NOTE.speaker]
 --
-* This isn't the only reason, but this is one reason I am very familiar with
-* It's hard to believe that you can switch languages effectively without some help
-* You do need some help
 * A company asked me to take 28 developers, and get them ready to start day one using Clojure
-* in 2 days
+* in 2 10 hour days
 * Challenge accepted
 --
 
@@ -53,26 +47,16 @@ image::img/talk/corgi-asleep-at-vet.jpg[]
 [state=title]
 == Enterprise Clojure Training
 
-image:img/art1.jpg[Art]
-
-
-== A book
-
-
-== Slides
-
-
-== Examples
-
-
-== Videos
+.An open source training course for Clojure
+image::img/corgi.jpg[Art]
 
 
 == Target audience
 
-* Software Engineers who don't know Clojure
-* Who will be using it professionally
+* Software Engineers
+* Who will be using Clojure professionally
 * Who need to be productive next week
+* Have a practical focus (files, databases, hadoop)
 
 [NOTE.speaker]
 --
@@ -80,37 +64,132 @@ image:img/art1.jpg[Art]
 --
 
 
-== Open source
+== The programme
 
-* Anyone can access it
-* You can use it to run a course
-* You can modify it
-* Don't reinvent the wheel
+* 2 x 10 hour days
+* 12 sections
+* 1 hour for lunch
+* Follow up 2 x 2 hour webinars
+
+
+== Sections
+
+|===
+|Mini lecture|15-25 minutes
+|Exercises|25-35 minutes
+|Answers|10 minutes
+|Snack/bio breaks|10 minutes
+|Challenges|When ahead
+|===
+
+
+== Course material
+
+link:slides.html[Slides]
+
+link:manual.html[HTML Manual]
+
+link:manual.pdf[PDF Manual]
+
+link:advanced-topics.html[Webinar Topics]
+
+link:../examples[Webinar Topics Examples]
+
+link:https://www.youtube.com/playlist?list=PLHl2BS5yLgWE96d5Q07C5Ou8SB7QteFAN[Videos]
 
 
 == The role of teachers
 
 * Questions and answers
 * Helping with the unexpected
-* Enterprise Clojure Training is a resource for teachers
+* Setting pace
+* Sharing relevant case studies
+* *Enterprise Clojure Training is a resource for teachers*
 
 
-== Typical Learners
+== Open source
 
-* Experienced
-* Fresh
-* Medium
+* Easy access
+* You can use it to run a course
+* Easy to modify
+* Don't reinvent the wheel
 
 
-== What should I learn?
+== Adapting or contributing
 
-* JavaScript remains supreme
-* Java
-* Python
+* Easy to edit text
+* Merge first, ask questions later
 
-My experience?
 
-* Nope
+[state=title]
+== How the sausage is made
+
+image::img/talk/corgi-herding-ducks.jpg[]
+
+
+== Text
+
+* Asciidoc is a flavor of markdown
+* Better for publishing
+* Excellent tooling support
+* Github and Github Pages
+* Asciidoctor is an improved implementation of Asciidoc
+
+
+== Flavor of Markdown
+
+----
+= Document Name
+
+== Title
+
+A sentence per line makes it easy to rearrange.
+
+* lists
+* image::corgi.jpg[A corgi wearing glasses]
+* https://host.com/links.html[Links]
+
+    (defn example [] "code")
+----
+
+
+== Better for publishing
+
+* Automatic table of contents
+* Target books, slides, web pages as PDF, eBook, HTML
+* Tables
+* Note/tip/warning callouts
+* Code highlighting
+* Style customization
+* Latex
+
+
+== Excellent tooling
+
+* Produces attractive content by default
+* Compiler available on Brew/Apt/Ruby/Bundler/NodeJS/Docker
+* Many editor plugins
+* Chrome live reloading extension
+
+
+== The ingredients
+
+link::../../docs/book.adoc
+link::../../docs/slides.adoc
+
+
+== Entr
+
+* Watches for file changes
+* Runs a command on change
+* Useful for the RevealJS slide build
+* `brew install entr` or `apt install entr`
+
+
+[state=title]
+== Teaching and learning Clojure
+
+image::img/talk/corgi-training.jpeg[Corgi jumping a bar]
 
 
 == Change of thinking required
@@ -239,11 +318,12 @@ image::img/talk/corgi-team.jpg[Corgis carrying a branch together]
 
 == 2014
 
-image::img/talk/corgi-herding-ducks.jpg[]
+image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
 
 [NOTE.speaker]
 --
-* Joined a startup using Clojure/ClojureScript greenfield
+* Joined a startup using Ruby
+* Transitioning to entirely Clojure/ClojureScript
 * Clojure scales
 * Large teams
 * Large codebase
@@ -254,26 +334,33 @@ image::img/talk/corgi-herding-ducks.jpg[]
 
 == 2018
 
-image::img/talk/suiteness.png[]
+image::img/talk/suiteness.png[Suiteness logo]
 
 [NOTE.speaker]
 --
-Booking connected hotel rooms for family or group travel
+Suiteness is the place to find rooms that connect to suites for half the price of a 2 bedroom suite.
+So you can stretch out without stretching your budget.
+Or you can find all the space and affordability of a vacation rental with the amenities of a hotel.
+
+* Our biggest users are families and group events.
 --
 
 
 == Why didn't I convert my team to Clojure?
 
 .I can't do this on my own
-image::img/talk/corgi-asleep-at-vet.jpg[]
+image::img/talk/corgi-asleep-at-vet.jpg[Corgi asleep at the vet]
 
 
 [NOTE.speaker]
 --
 * What prevents companies from sliding into Clojure en masse?
 * What prevented me from converting my team to Clojure?
-* I can't do this on my own
+* Main obstacle; How could I get my team up and running on Clojure quickly
+* It felt like it was too much to do on my own
 * Needed training, another expert, C-level buy in
+* It's hard to believe that you can switch languages effectively without some help
+* You do need some help
 * What can we do about it?
 --
 
@@ -313,6 +400,35 @@ image::img/talk/corgi-developer.jpg[Corgi using a laptop]
 --
 
 
+== What are *learners* waiting for?
+
+.A market!
+
+[NOTE.speaker]
+--
+* The first question a beginner asks is which language should I learn?
+* The standard answer is JavaScript, Java, Python
+* Clojure is a better tools for thought
+  - Maps/sets/vectors
+  - Concise algorithm expression
+  - Focus on important concepts
+  - Less baggage and distractions
+  - Reach mastery of algorithmic concepts faster
+* Supply and demand is not as simple as "most used"
+  - Supply and demand does not favor the most popular
+  - The most popular market is also the most average market
+  - You will benefit from an imbalance in supply to demand found in smaller markets
+* The future is ... the future
+  - You will be writing something else in the future
+  - I have used a different programming language in every job I have worked
+  - Good employers value skills, knowledge and culture over specific technology experience
+  - Fortran, Cobol, VisualBasic, PHP, C# were the popular choices once
+  - Things change
+  - Optimize for computer science mastery, not basics
+  - Language choice matters
+--
+
+
 == What are *employees* waiting for?
 
 .A greenfield!
@@ -340,19 +456,6 @@ image::img/talk/corgi-in-crate.jpg[Corgi in dog crate]
 --
 
 
-== Sounds complicated
-
-.Clojure isn't for everybody...
-image::img/talk/complicated.png[]
-
-
-== What's working?
-
-* Small teams of experts
-* Bringing in non-experts
-* Cognitect
-
-
 == Is Clojure Enterprise?
 
 image::img/talk/popularity.png[]
@@ -364,6 +467,7 @@ image::img/talk/popularity.png[]
 * Several large companies do use it
 * There are Clojure jobs available
 --
+
 
 == Or not?
 
@@ -380,29 +484,52 @@ image::img/talk/most-used-jvm.jpg[]
 --
 
 
-== Clojure makes me happy
+== Why do I care?
 
-I want other people to be happy too
+* Clojure makes me happy
+* I want you to be happy too
+* There are obstacles
+* There is uncertainty
+* There is opportunity
 
-* Many books
+
+== Clojure adoption
+
+.A challenging knot to approach
+image::img/talk/corgi-rope.jpg[Corgi pulling a rope]
+
+[NOTE.speaker]
+--
+* Clojure adoption seems like a challenging knot to approach.
+* In 333 B.C. Alexander the Great marched his army into Gordium in modern day Turkey.
+* He encountered an ancient wagon tied with knots so tightly entangled that it was impossible to see how they were fastened.
+* Tradition held that the wagon had once belonged to Gordius, the father of the celebrated King Midas.
+* An oracle had declared that anyone who could unravel its elaborate knots was destined to become ruler of all of Asia.
+* Alexander proclaimed "It makes no difference how they are loosed," drew his sword and sliced the knot in half with a single stroke.
+
+The Gordian Knot story is one to take inspiration from.
+Don't over-think it, see past implied limitations, be decisive.
+--
+
+
+== Clojure is a great choice for your company
+
+* Books
 * Great community
-* Many experts
-* Many jobs
+* Experts
+* Jobs
+* Cognitect
+* Training
 
 
 == Start using Clojure already
 
-.Training for the win
+.Confidence from training
 image::img/talk/corgi-training.jpeg[]
 
 [NOTE.speaker]
 --
-* But it could be for you!
-* Stop wondering if Clojure is an Enterprise language
-* You don't need another experience report
-* You don't need another convincing argument
-* Give it a try
-* Hopefully my training course can give you some confidence to get started
+* Hopefully my training course can give you the confidence to get started
 --
 
 
@@ -420,3 +547,5 @@ timothypratley@gmail.com
 My blog
 
 https://timothypratley.blogspot.com
+
+image::img/art1.jpg[Art]
