@@ -139,7 +139,6 @@ image::img/talk/corgi-herding-ducks.jpg[]
 
 ----
 = Document Name
-
 == Title
 
 A sentence per line makes it easy to rearrange.
@@ -173,8 +172,9 @@ A sentence per line makes it easy to rearrange.
 
 == The ingredients
 
-link::../../docs/book.adoc
-link::../../docs/slides.adoc
+link:../docs/manual.adoc[Manual]
+
+link:../docs/slides.adoc[Slides]
 
 
 == Entr
