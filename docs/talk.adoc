@@ -2,7 +2,6 @@
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
 :customcss: slides.css
-:revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0
 :revealjs_theme: simple
 :revealjs_center: false
 :revealjs_controls: false
@@ -127,7 +126,7 @@ link:https://www.youtube.com/playlist?list=PLHl2BS5yLgWE96d5Q07C5Ou8SB7QteFAN[Vi
 image::img/talk/corgi-herding-ducks.jpg[]
 
 
-== Text
+== Asciidoc Text
 
 * Asciidoc is a flavor of markdown
 * Better for publishing
@@ -536,15 +535,9 @@ image::img/talk/corgi-training.jpeg[]
 [state=title]
 == Thank you
 
-Enterprise Clojure Training
-
 https://timothypratley.github.io/enterprise-clojure-training
 
-Contact me
-
 timothypratley@gmail.com
-
-My blog
 
 https://timothypratley.blogspot.com
 
