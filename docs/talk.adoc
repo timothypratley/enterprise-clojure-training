@@ -527,11 +527,12 @@ image::img/talk/corgi-in-crate.jpg[Corgi in dog crate]
 
 == 2014
 
+.Enterprise facing Clojure startup
 image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
 
 [NOTE.speaker]
 --
-* Joined a Ruby startup transitioning to Clojure
+* Joined a Clojure startup
 * Built an entirely new Clojure/ClojureScript core product
 * Clojure scales
 * Large teams
@@ -543,7 +544,8 @@ image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
 
 == 2018
 
-video::cc9Xg2uaEgA[youtube]
+.Customer facing Clojure startup
+image::img/talk/suiteness.png[Suiteness logo]
 
 [NOTE.speaker]
 --
@@ -557,9 +559,14 @@ video::cc9Xg2uaEgA[youtube]
 --
 
 
+== Suiteness
+
+video::cc9Xg2uaEgA[youtube]
+
+
 == Is Clojure Enterprise?
 
-image::img/talk/popularity.png[]
+image::img/talk/popularity.png[Language popularity]
 
 [NOTE.speaker]
 --
@@ -569,12 +576,13 @@ image::img/talk/popularity.png[]
 * Several large companies do use it
 * There are Clojure jobs available
 * Companies are recruiting for Clojure experience
+* It's getting popular
 --
 
 
 == Or not?
 
-image::img/talk/most-used-jvm.jpg[]
+image::img/talk/most-used-jvm.jpg[Most used JVM languages]
 
 [NOTE.speaker]
 --
