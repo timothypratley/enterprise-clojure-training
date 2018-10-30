@@ -116,34 +116,36 @@ link:https://www.youtube.com/playlist?list=PLHl2BS5yLgWE96d5Q07C5Ou8SB7QteFAN[Vi
 
 == Adapting or contributing
 
-* Easy to edit text
+* It's just text
+* You don't need any software
 * Merge first, ask questions later
 
 
 [state=title]
-== How the sausage is made
+== Creating a course
 
-image::img/talk/corgi-herding-ducks.jpg[]
+.Under the hood of Enterprise Clojure Training
+image::img/talk/corgi-hoodie.jpg[]
 
 
-== Asciidoc Text
+== Asciidoctor
 
 * Asciidoc is a flavor of markdown
 * Better for publishing
 * Excellent tooling support
 * Github and Github Pages
-* Asciidoctor is an improved implementation of Asciidoc
+
+NOTE: Asciidoctor is an improved implementation of Asciidoc
 
 
-== Flavor of Markdown
+== Flavor of markdown
 
 ----
 = Document Name
 == Title
 
-A sentence per line makes it easy to rearrange.
+One sentence per line; rearrange with ease.
 
-* lists
 * image::corgi.jpg[A corgi wearing glasses]
 * https://host.com/links.html[Links]
 
@@ -151,43 +153,78 @@ A sentence per line makes it easy to rearrange.
 ----
 
 
+== The documents
+
+link:../docs/manual.adoc[manual.adoc]
+
+link:../docs/slides.adoc[slides.adoc]
+
+link:../docs/advanced-topics.adoc[advanced-topics.adoc]
+
+link:../docs/talk.adoc[talk.adoc]
+
+link:../docs/index.adoc[index.adoc]
+
+
 == Better for publishing
 
 * Automatic table of contents
-* Target books, slides, web pages as PDF, eBook, HTML
+* Create books, slides, web pages
+* Output as HTML, PDF, DocBook, ePub
 * Tables
-* Note/tip/warning callouts
 * Code highlighting
 * Style customization
-* Latex
+
+TIP: Note/tip/warning callouts
 
 
 == Excellent tooling
 
 * Produces attractive content by default
-* Compiler available on Brew/Apt/Ruby/Bundler/NodeJS/Docker
-* Many editor plugins
+* Brew, apt, ruby, bundler, node, docker
+* Editor plugins
 * Chrome live reloading extension
 
 
-== The ingredients
+== IntelliJ IDEA
 
-link:../docs/manual.adoc[Manual]
+.Asciidoctor plugin
+image::img/talk/idea-asciidoctor.png[]
 
-link:../docs/slides.adoc[Slides]
+
+== Chrome live reloading
+
+* Renders in the browser direct from `.adoc`
+* Updates when the file changes
 
 
-== Entr
+== Slides
 
-* Watches for file changes
+* Based on RevealJS
+* `asciidoctor-revealjs` plugin
+* Requires a build step
+
+
+== Event Notify Test Runner
+
+* Watches files
 * Runs a command on change
-* Useful for the RevealJS slide build
 * `brew install entr` or `apt install entr`
+* `./watch.sh`
+
+
+== Deploying
+
+* Github Pages build `adoc` via Jekyll
+* But not slides...
+* TravisCI auto-build/deploy
+* Change text, push, done!
 
 
 [state=title]
-== Teaching and learning Clojure
+== Observations from teaching
 
+.Learning Clojure
 image::img/talk/corgi-training.jpeg[Corgi jumping a bar]
 
 
@@ -198,10 +235,18 @@ image::img/talk/corgi-lights.png[Corgi in lights]
 
 [NOTE.speaker]
 --
+* A mental shift is required
+* Think in sequences
+* Think in maps, sets, vectors
+* Think in aggregation
+* Everything is a function
+* Passing lots of arguments or data is O.K.
 * Took me a long time
 * See it in others
 * Some people get it quickly, some never do
 * Check your preconception at the door
+* Embrace the idioms
+* Style guide
 --
 
 
@@ -210,23 +255,52 @@ image::img/talk/corgi-lights.png[Corgi in lights]
 "I had high hopes for Clojure for a while, but they're fairly user-hostile, even if they think (and loudly assert) that they aren't."
 -- Steve Yegge
 
+[NOTE.speaker]
+--
+* It's easy to forget our own path to enlightenment
+* New users face difficult obstacles
+* Example: just installing Java, Leiningen, IDEA
+* Java - which version? Quite easy to choose the wrong thing
+* Lein - doesn't work on Windows
+* IDEA - make sure you configure your SDK!
+  - And get Cursive!
+  - And now your parenthesis are out of your control
+* Objectively I think it is fair to call Clojure user hostile
+  - Error messages
+  - Tooling setup
+* We can see beyond these difficulties
+* But a little empathy goes a long way with beginners
+* They often blocked with something easily resolved by a question
+* Important to be approachable and sympathetic
+--
+
 
 == Tips for learning
 
 * Focus on the language first
 * Focus on the mental shift second
-* Try to delay investing in tools and editors
+* Delay investing in tools and editors
 * Join the community
 * Find a teacher
 * Ask questions
+* *Practise*
+* *Read code*
+* 4Clojure
 
 
 == Join the community
 
-"I am so happy with, and proud of, the Clojure community. People are helpful, and respectful, and positive. I think the key point is that the community values itself, such that people will decide it is more important to preserve the quality of the community than to vent their emotions or prove themselves right."
+"I am so happy with, and proud of, the Clojure community.
+ People are helpful, and respectful, and positive."
 -- Rich Hickey
 
-https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/RichHickeyQandA.md
+* ClojureVerse
+* StackOverflow [clojure] [clojurescript]
+* Google group: Clojure
+
+[NOTE.speaker]
+--
+--
 
 
 [state=title]
@@ -239,7 +313,7 @@ image::img/corgi.jpg[Corgi with tie and glasses]
 [NOTE.speaker]
 --
 * My goal today is to encourage you to hurry up and start using Clojure at work
-* Part one of that is providing a resource
+* Part one of this talk was about providing a resource
 * Part two is sharing my path
 * And to do that I must first begin with how I came to Clojure
 --
@@ -321,7 +395,7 @@ image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
 
 [NOTE.speaker]
 --
-* Joined a startup using Ruby
+* Joined a Ruby startup
 * Transitioning to entirely Clojure/ClojureScript
 * Clojure scales
 * Large teams
@@ -333,14 +407,13 @@ image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
 
 == 2018
 
-image::img/talk/suiteness.png[Suiteness logo]
+video::cc9Xg2uaEgA[youtube]
 
 [NOTE.speaker]
 --
-Suiteness is the place to find rooms that connect to suites for half the price of a 2 bedroom suite.
-So you can stretch out without stretching your budget.
-Or you can find all the space and affordability of a vacation rental with the amenities of a hotel.
-
+* Suiteness is the place to find rooms that connect to suites for half the price of a 2 bedroom suite.
+* So you can stretch out without stretching your budget.
+* Or you can find all the space and affordability of a vacation rental with the amenities of a hotel.
 * Our biggest users are families and group events.
 --
 
@@ -387,6 +460,15 @@ image::img/talk/corgi-weird.jpeg[]
 image::img/talk/clojure-jobs.png[Clojure job listings]
 
 
+[NOTE.speaker]
+--
+* Google group topics labeled [JOB] (anyone can post)
+* Clojure for the Brave and True
+* Twitter
+* Clojure/conj
+--
+
+
 == What are *companies* waiting for?
 
 .Developers!
@@ -396,6 +478,9 @@ image::img/talk/corgi-developer.jpg[Corgi using a laptop]
 --
 * It's hard to hire for Clojure
   - not really though
+  - my experiences at Outpace and Suiteness
+  - You shouldn't be hiring for Clojure specifically anyway
+  - Clojure is a perk, not a barrier
 --
 
 
