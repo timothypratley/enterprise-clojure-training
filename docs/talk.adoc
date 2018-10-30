@@ -1,4 +1,4 @@
-= What are you waiting for?
+= Talk
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
 :customcss: slides.css
@@ -221,11 +221,23 @@ image::img/talk/idea-asciidoctor.png[]
 * Change text, push, done!
 
 
-[state=title]
-== Observations from teaching
+== Existing options
 
-.Learning Clojure
-image::img/talk/corgi-training.jpeg[Corgi jumping a bar]
+https://clojure.org/community/training
+
+[NOTE.speaker]
+--
+* Good options but...
+* Didn't provide training material I could use
+* Not very Enterprise
+--
+
+
+[state=title]
+== Observations
+
+.Learning Clojure is challenging
+image::img/talk/corgi-training.jpg[Corgi jumping a bar]
 
 
 == Change of thinking required
@@ -297,10 +309,7 @@ image::img/talk/corgi-lights.png[Corgi in lights]
 * ClojureVerse
 * StackOverflow [clojure] [clojurescript]
 * Google group: Clojure
-
-[NOTE.speaker]
---
---
+* Clojurians
 
 
 [state=title]
@@ -313,7 +322,7 @@ image::img/corgi.jpg[Corgi with tie and glasses]
 [NOTE.speaker]
 --
 * My goal today is to encourage you to hurry up and start using Clojure at work
-* Part one of this talk was about providing a resource
+* Part one of this talk was about providing a course
 * Part two is sharing my path
 * And to do that I must first begin with how I came to Clojure
 --
@@ -389,35 +398,6 @@ image::img/talk/corgi-team.jpg[Corgis carrying a branch together]
 --
 
 
-== 2014
-
-image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
-
-[NOTE.speaker]
---
-* Joined a Ruby startup
-* Transitioning to entirely Clojure/ClojureScript
-* Clojure scales
-* Large teams
-* Large codebase
-* Build an entire system in a month
-* Training people wasn't so hard
---
-
-
-== 2018
-
-video::cc9Xg2uaEgA[youtube]
-
-[NOTE.speaker]
---
-* Suiteness is the place to find rooms that connect to suites for half the price of a 2 bedroom suite.
-* So you can stretch out without stretching your budget.
-* Or you can find all the space and affordability of a vacation rental with the amenities of a hotel.
-* Our biggest users are families and group events.
---
-
-
 == Why didn't I convert my team to Clojure?
 
 .I can't do this on my own
@@ -437,7 +417,7 @@ image::img/talk/corgi-asleep-at-vet.jpg[Corgi asleep at the vet]
 --
 
 
-== Many people don't know anything about Clojure
+== Many people don't know Clojure
 
 .Looking different can feel weird
 image::img/talk/corgi-weird.jpeg[]
@@ -451,10 +431,12 @@ image::img/talk/corgi-weird.jpeg[]
   - Can we learn it?
   - Who will support it?
   - Can we hire people?
+  - Why are you wasting your time on something so obscure?
+* Explaining isn't enough
 --
 
 
-== What are *developers* waiting for?
+== What were *developers* waiting for?
 
 .Jobs!
 image::img/talk/clojure-jobs.png[Clojure job listings]
@@ -462,6 +444,8 @@ image::img/talk/clojure-jobs.png[Clojure job listings]
 
 [NOTE.speaker]
 --
+* At the time there were not many Clojure jobs advertised
+* Now there are
 * Google group topics labeled [JOB] (anyone can post)
 * Clojure for the Brave and True
 * Twitter
@@ -469,7 +453,7 @@ image::img/talk/clojure-jobs.png[Clojure job listings]
 --
 
 
-== What are *companies* waiting for?
+== What were *companies* waiting for?
 
 .Developers!
 image::img/talk/corgi-developer.jpg[Corgi using a laptop]
@@ -477,16 +461,17 @@ image::img/talk/corgi-developer.jpg[Corgi using a laptop]
 [NOTE.speaker]
 --
 * It's hard to hire for Clojure
-  - not really though
+  - not anymore though
   - my experiences at Outpace and Suiteness
-  - You shouldn't be hiring for Clojure specifically anyway
+  - no need to hire for Clojure specifically anyway
   - Clojure is a perk, not a barrier
 --
 
 
-== What are *learners* waiting for?
+== What were *learners* waiting for?
 
 .A market!
+image::img/talk/corgi-student.png[Corgi student]
 
 [NOTE.speaker]
 --
@@ -513,7 +498,7 @@ image::img/talk/corgi-developer.jpg[Corgi using a laptop]
 --
 
 
-== What are *employees* waiting for?
+== What were *employees* waiting for?
 
 .A greenfield!
 image::img/talk/corgi-on-field.jpg[Corgi on a green field]
@@ -526,7 +511,7 @@ image::img/talk/corgi-on-field.jpg[Corgi on a green field]
 --
 
 
-== What are *employers* waiting for?
+== What were *employers* waiting for?
 
 .A framework!
 image::img/talk/corgi-in-crate.jpg[Corgi in dog crate]
@@ -540,16 +525,50 @@ image::img/talk/corgi-in-crate.jpg[Corgi in dog crate]
 --
 
 
+== 2014
+
+image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
+
+[NOTE.speaker]
+--
+* Joined a Ruby startup transitioning to Clojure
+* Built an entirely new Clojure/ClojureScript core product
+* Clojure scales
+* Large teams
+* Large codebase
+* Build an entire system in a month
+* Training people wasn't so hard
+--
+
+
+== 2018
+
+video::cc9Xg2uaEgA[youtube]
+
+[NOTE.speaker]
+--
+* Suiteness is the place to find rooms that connect to suites for half the price of a 2 bedroom suite.
+* So you can stretch out without stretching your budget.
+* Or you can find all the space and affordability of a vacation rental with the amenities of a hotel.
+* Our biggest users are families and group events.
+* Built on Clojure/ClojureScript
+  - make recruiting easy
+  - productive tech stack
+--
+
+
 == Is Clojure Enterprise?
 
 image::img/talk/popularity.png[]
 
 [NOTE.speaker]
 --
+* It is for me
 * I get to use it at work
 * I've built Enterprise Systems with it
 * Several large companies do use it
 * There are Clojure jobs available
+* Companies are recruiting for Clojure experience
 --
 
 
@@ -562,9 +581,9 @@ image::img/talk/most-used-jvm.jpg[]
 * Still a niche
 * Secret weapon, and that's O.K.
 * Value principles over popularity
-  ** simplicity
-  ** thinking
-  ** community
+  - simplicity
+  - thinking
+  - community
 --
 
 
@@ -584,15 +603,14 @@ image::img/talk/corgi-rope.jpg[Corgi pulling a rope]
 
 [NOTE.speaker]
 --
-* Clojure adoption seems like a challenging knot to approach.
-* In 333 B.C. Alexander the Great marched his army into Gordium in modern day Turkey.
-* He encountered an ancient wagon tied with knots so tightly entangled that it was impossible to see how they were fastened.
-* Tradition held that the wagon had once belonged to Gordius, the father of the celebrated King Midas.
-* An oracle had declared that anyone who could unravel its elaborate knots was destined to become ruler of all of Asia.
-* Alexander proclaimed "It makes no difference how they are loosed," drew his sword and sliced the knot in half with a single stroke.
-
-The Gordian Knot story is one to take inspiration from.
-Don't over-think it, see past implied limitations, be decisive.
+* Clojure adoption seems like a challenging knot to approach
+* In 333 B.C. Alexander the Great marched his army into Gordium in modern day Turkey
+* He encountered an ancient wagon tied with knots so tightly entangled that it was impossible to see how they were fastened
+* Tradition held that the wagon had once belonged to Gordius, the father of the celebrated King Midas
+* An oracle had declared that anyone who could unravel its elaborate knots was destined to become ruler of all of Asia
+* Alexander proclaimed "It makes no difference how they are loosed," drew his sword and sliced the knot in half with a single stroke
+* The Gordian Knot story is one to take inspiration from
+* Don't over-think it, see past implied limitations, be decisive
 --
 
 
@@ -604,16 +622,18 @@ Don't over-think it, see past implied limitations, be decisive.
 * Jobs
 * Cognitect
 * Training
+* *Build better stuff faster*
 
 
-== Start using Clojure already
+== So what are you waiting for?
 
-.Confidence from training
+.Start using Clojure already!
 image::img/talk/corgi-training.jpeg[]
 
 [NOTE.speaker]
 --
 * Hopefully my training course can give you the confidence to get started
+* I'd love to help you get a strong start
 --
 
 
