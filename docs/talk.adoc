@@ -157,7 +157,7 @@ https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/mas
 
 https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/master/docs/talk.adoc[talk.adoc]
 
-https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/master/docs/README.adoc[README.adoc]
+https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/master/README.adoc[README.adoc]
 
 https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/master/docs/index.adoc[index.adoc]
 
@@ -652,5 +652,7 @@ image::img/talk/corgi-training.jpeg[]
 https://timothypratley.github.io/enterprise-clojure-training
 
 timothypratley@gmail.com
+
+elango.cheran@gmail.com
 
 image::img/art1.jpg[Art]
