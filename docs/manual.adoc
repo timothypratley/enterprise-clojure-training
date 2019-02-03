@@ -1655,7 +1655,7 @@ There is a way to limit the amount of values to take:
     (take 5 (range))
     => (0 1 2 3 4)
 
-    (drop 5 (take 5 (range)))
+    (take 5 (drop 5 (range)))
     => (5 6 7 8 9)
 
 Clojure has an excellent sequence abstraction that fits naturally into the language.
