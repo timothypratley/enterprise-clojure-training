@@ -292,8 +292,8 @@ Create a new project called `training`.
 Open `src/training/core.clj` with your editor, write some expressions, and send them to the REPL:
 
 * Find the sum of 1, 2, and 3
-* Evaluate (println "hello world")
-* How many digits are in 5 factorial?
+* Evaluate the form: `(println "hello world")`
+* Calculate 5 factorial
 
 
 === Answers
@@ -315,6 +315,7 @@ Open `src/training/core.clj` with your editor, write some expressions, and send 
 
     (println "hello world")
     => "hello world"
+    nil
 
     (* 5 4 3 2 1)
     => 120
