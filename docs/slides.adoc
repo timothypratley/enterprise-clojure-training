@@ -808,20 +808,6 @@ Useful for processing files that don't fit in memory
     ;=> (1 9 25 49 81)
 
 
-== Avoid side-effects in lazy sequences
-
-[source,eval-clojure]
-    (let [message "Hello"]
-      (map (fn [x]
-             (println message x))
-           (range 10))
-      (println "Bye"))
-    ;;; Bye
-    ;=> nil
-
-WARNING: Hello is not printed
-
-
 == Destructuring in a for expression
 
 [source,eval-clojure]
@@ -1402,34 +1388,43 @@ See manual end of section 3
 
 == Answers
 
+[source,eval-clojure]
     (defn square [x]
       (* x x))
     (square 55)
-    => 3025
+    ;=> 3025
 
 
 == Answers
 
+[source,eval-clojure]
     (defn square-of-square [x]
       (if (< x 100)
         (square (square x))
         (throw (ex-info "Input too large" {:x x}))))
     (square-of-square 2)
-    => 16
+    ;=> 16
+
+[source,eval-clojure]
     (square-of-square 123)
-    => ExceptionInfo Input too large
+    ;;; ExceptionInfo Input too large
 
 
 == Answers
 
+[source,eval-clojure]
     (defn fib-step [a b]
       [b (+ a b)]))
     (fib-step 1 1)
-    => [1 2]
+    ;=> [1 2]
+
+[source,eval-clojure]
     (fib-step 1 2)
-    => [2 3]
+    ;=> [2 3]
+
+[source,eval-clojure]
     (fib-step 2 3)
-    => [3 5]
+    ;=> [3 5]
 
 
 == Challenge 1: Corgi Cover eligibility
@@ -1488,30 +1483,46 @@ image:img/testing.jpg[]
 
 == deftest
 
-    (ns training.my-namespace-test
-      (:require [clojure.test :refer :all]))
-
+[source,eval-clojure]
+    (ns my.namespace
+      (:require [clojure.test
+                 :refer [deftest is run-tests]]))
     (deftest my-test
-      (prn "My test ran"))
-
+      (prn "My test ran")
+      (is (= 1 1)))
     (my-test)
-    => "My test ran"
-    nil
+    ;;; "My test ran"
+    ;=> nil
 
 Tests are functions with no input arguments
+
+Tests make assertions: `(is (= 1 1))`
+
+
+== Failing tests
+
+[source,eval-clojure]
+    (deftest my-failing-test
+      (prn "My failing test ran")
+      (is (= 1 2)))
+    (my-failing-test)
+    ;;; "My failing test ran"
+    ;;; FAIL in (my-failing-test)
 
 
 == Defining tests with deftest
 
 Can define tests in any namespace
 
-Convention: `*test*` dir mirrors `*src*` dir, append `*_test*`
+Convention: `*test*` dir mirrors `*src*` dir; append `*test*`
 
 
 |===
-|`*test*/training/my_namespace_test.clj`
-|`*src*/training/my_namespace.clj`
+|`*test*/training/a_test.clj`
+|`*src*/training/a.clj`
 |===
+
+NOTE: The namespace `training.a-test` contains tests for functions from `training.a`
 
 
 == Refer all
@@ -1531,16 +1542,18 @@ vs
 
 == Running tests from the REPL
 
+[source,eval-clojure]
     (run-tests)
-
-    => "My test ran"
-       Ran 0 tests containing 0 assertions.
-       0 failures, 0 errors.
-       {:test 1, :pass 0, :fail 0, :error 0, :type :summary}
+    ;;; "My test ran"
+    ;;; "My failing test ran"
+    ;;; Ran 0 tests containing 0 assertions.
+    ;;; 0 failures, 0 errors.
+    ;=> {:test 1, :pass 0, :fail 0, :error 0, :type :summary}
 
 Runs all tests in the current namespace
 
-Or if you want to test specific namespaces:
+
+== Test specific namespaces:
 
     (run-tests 'training.my-namespace
                'training.other-namespace)
@@ -1550,10 +1563,10 @@ Or if you want to test specific namespaces:
 
     $ lein test
 
-    => "My test ran"
-       Ran 0 tests containing 0 assertions.
-       0 failures, 0 errors.
-       {:test 1, :pass 0, :fail 0, :error 0, :type :summary}
+    "My test ran"
+    "My failing test ran"
+    Ran 0 tests containing 0 assertions.
+    0 failures, 0 errors.
 
 Runs all tests in a project
 
@@ -1864,10 +1877,11 @@ image:img/control.jpg[]
 
 == Conditionals: if
 
+[source,eval-clojure]
     (if (pos? 1)
       "one is positive"
       "or is it?")
-    => "one is positive"
+    ;=> "one is positive"
 
 * Chooses between two options
 * Returns a result
@@ -1881,43 +1895,47 @@ image:img/control.jpg[]
 * `nil` means nothing and is considered false in logical tests
 * Anything else is truthy
 
+[source,eval-clojure]
     (if 5
       "it's five!"
       "no problem")
-    => "it's five!"
+    ;=> "it's five!"
 
 
 == Use do to group multiple statements
 
+[source,eval-clojure]
     (if (pos? 1)
-      (do (println "hi")
+      (do (prn "hi")
           "one is positive")
       "or is it?")
-    => "hi"
-       "one is positive"
+    ;;; "hi"
+    ;=> "one is positive"
 
 
 == Conditionals: when
 
+[source,eval-clojure]
     (when (pos? 1)
-      (println "multiple expressions allowed")
+      (prn "multiple expressions allowed")
       :ok)
-    => multiple expressions allowed
-       :ok
+    ;;; multiple expressions allowed
+    ;=> :ok
 
 * When test fails, nothing is evaluated
 * When test passes, the entire body is evaluated
-* Returns a result
+* Returns the last expression as a result
 
 
 == Conditionals: cond
 
+[source,eval-clojure]
     (def x {:cake 1})
     (cond (= x 1) "one"
           (= x :cake) "the cake is a lie"
           (map? x) "it's a map!"
           :else "not sure what it is")
-    => "it's a map!"
+    ;=> "it's a map!"
 
 * Multiple branches
 * `:else` is not special, keywords are truthy
@@ -1932,26 +1950,36 @@ Built in primitives, not functions
 
 Arguments are not evaluated
 
-    (if condition (println "a") (println "b"))
-    => b
-       nil
+[source,eval-clojure]
+    (if (= 1 2)
+      (prn "a")
+      (prn "b"))
+    ;;; "b"
+    ;=> nil
 
-    (f condition (println "a") (println "b"))
-    => a
-       b
-       nil
+
+== Reminder: functions evaluate all arguments
+
+[source,eval-clojure]
+    (defn if-fn [condition a b]
+      (if condition a b))
+    (if-fn (= 1 2)
+      (prn "a")
+      (prn "b"))
+    ;;; a
+    ;;; b
+    ;=> nil
 
 
 == Macros are also special
 
 `or` is a macro
 
+[source,eval-clojure]
     (or true (println "Hello"))
-    => true
+    ;=> true
 
 Arguments are not evaluated
-
-NOTE: Cannot be done with a function
 
 Macros are used to implement and extend Clojure syntax
 
@@ -1972,21 +2000,25 @@ Expands to:
 
 == Macros and special forms are not functions
 
+[source,eval-clojure]
     (apply or [true false true])
-    => CompilerException: Can't take value of a macro
+    ;;; CompilerException: Can't take value of a macro
 
 
+[source,eval-clojure]
     (apply if [true :a :b])
-    => CompilerException: Unable to resolve symbol: if
+    ;;; CompilerException: Unable to resolve symbol: if
+
+WARNING: Macros cannot be passed as arguments to functions
 
 
 == Identifying special forms and macros
 
 * Remember the special forms:
-  `def` `if` `do` `let` `quote` `var` `fn` `loop` `recur` `throw` `try`
-* Control flow forms: `cond` `or` `and` `when`
-* Navigate to source: `defn` or `defmacro`
-* Metadata
+  `if`, `do`, `let`, `quote`, `var`, `fn`, `loop`, `recur`, `throw`, `try`
+* Control flow forms: `cond`, `or`, `and`, `when`
+* Navigate to source: `def`, `defn`, `defmacro`
+* See `:macro` in Metadata
 * Documentation
 
 NOTE: Writing macros is covered later in the course
@@ -1997,7 +2029,8 @@ NOTE: Writing macros is covered later in the course
     (defn sum-up [coll result]
       (if (empty? coll)
         result
-        (sum-up (rest coll) (+ result (first coll)))))
+        (sum-up (rest coll)
+                (+ result (first coll)))))
 
 Functions that invoke themselves are recursive
 
@@ -2119,8 +2152,9 @@ Functions always return a value
 
 == Pure functions
 
+[source,eval-clojure]
     (str "hi" "there")
-    => "hithere"
+    ;=> "hithere"
 
 * No side-effects occur
 * Inputs always produce the same corresponding output
@@ -2128,8 +2162,9 @@ Functions always return a value
 
 == Side effects
 
+[source,eval-clojure]
     (rand-int 100)
-    => 42
+    ;=> 42
 
 * Not a pure function
 * Returns a useful result, but changes every time
@@ -2153,8 +2188,9 @@ Functions always return a value
 
 == Many Clojure functions are pure
 
+[source,eval-clojure]
     (conj [1 2] 3)
-    => [1 2 3]
+    ;=> [1 2 3]
 
 * `conj` does not add something to a vector
 * `conj` returns a new vector value
@@ -2190,12 +2226,14 @@ choose one but not the other.
 
 == How can you change a variable?
 
+[source,eval-clojure]
     (def v [1 2])
     (conj v 3)
-    => [1 2 3]
+    ;=> [1 2 3]
 
+[source,eval-clojure]
     v
-    => [1 2]
+    ;=> [1 2]
 
 * `v` remains unchanged
 * Manage change explicitly
@@ -2203,23 +2241,26 @@ choose one but not the other.
 
 == Use Atoms for mutatable state
 
+[source,eval-clojure]
     (def a (atom 1))
     (swap! a inc)
     (deref a)
-    => 2
+    ;=> 2
 
 Shorthand for `deref`:
 
+[source,eval-clojure]
     @a
-    => 2
+    ;=> 2
 
 
 == Atoms work with any data structure
 
+[source,eval-clojure]
     (def a (atom [1 2]))
     (swap! a conj 3)
     @a
-    => [1 2 3]
+    ;=> [1 2 3]
 
 
 == Separate side effects out
@@ -2247,15 +2288,16 @@ Prefer instead:
 
 == apply
 
+[source,eval-clojure]
     (max 1 2 5 3)
-    => 5
+    ;=> 5
 
 What if you have a sequence of many numbers?
 
+[source,eval-clojure]
     (def numbers [1 2 3 4 5 6 7])
-
     (apply max numbers)
-    => 7
+    ;=> 7
 
 TIP: `apply` means to call or invoke
 
@@ -2279,16 +2321,20 @@ Returns a function that is equivalent to:
 
 Produces a function:
 
+[source,eval-clojure]
     ((partial + 1) 2 3)
-    => 6
+    ;=> 6
 
+[source,eval-clojure]
     (map (partial / 1) (range 1 5))
-    => (1 1/2 1/3 1/4)
+    ;=> (1 1/2 1/3 1/4)
 
-Alternatively:
 
+== Alternative to partial:
+
+[source,eval-clojure]
     (map #(/ 1 %) (range 1 5))
-    => (1 1/2 1/3 1/4)
+    ;=> (1 1/2 1/3 1/4)
 
 
 == Functions on sequences
@@ -2300,14 +2346,17 @@ is to think in sequences and data structures
 
 == Sequences
 
+[source,eval-clojure]
     (cons 1 ())
-    => (1)
+    ;=> (1)
 
+[source,eval-clojure]
     (cons 3 (cons 2 (cons 1 ())))
-    => (3 2 1)
+    ;=> (3 2 1)
 
+[source,eval-clojure]
     (range 10)
-    => (0 1 2 3 4 5 6 7 8 9)
+    ;=> (0 1 2 3 4 5 6 7 8 9)
 
 
 == Careful
@@ -2324,20 +2373,24 @@ Clojure can produce infinite sequences
 
 Limit the number of items to consume:
 
+[source,eval-clojure]
     (take 5 (range))
-    => (0 1 2 3 4)
+    ;=> (0 1 2 3 4)
 
+[source,eval-clojure]
     (take 5 (drop 5 (range)))
-    => (5 6 7 8 9)
+    ;=> (5 6 7 8 9)
 
 
 == filter and remove
 
+[source,eval-clojure]
     (filter odd? [1 2 3 4])
-    => (1 3)
+    ;=> (1 3)
 
+[source,eval-clojure]
     (remove nil? [1 2 nil 3])
-    => (1 2 3)
+    ;=> (1 2 3)
 
 * filter and remove are higher order functions
 * They take a function and a sequence
@@ -2346,14 +2399,17 @@ Limit the number of items to consume:
 
 == Most things are seqable
 
+[source,eval-clojure]
     (seq #{"a" "b" "c"})
-    => ("a" "b" "c")
+    ;=> ("a" "b" "c")
 
+[source,eval-clojure]
     (seq "string")
-    => (\s \t \r \i \n \g)
+    ;=> (\s \t \r \i \n \g)
 
+[source,eval-clojure]
     (seq {:a 1, :b 2})
-    => ([:a 1] [:b 2])
+    ;=> ([:a 1] [:b 2])
 
 Clojure collections implement `ISeq`
 
@@ -2364,21 +2420,24 @@ Even Java types like strings and iterables
 
 `seq` returns `nil` on empty sequences
 
+[source,eval-clojure]
     (seq ())
-    => nil
+    ;=> nil
 
+[source,eval-clojure]
     (empty? ())
-    => true
+    ;=> true
 
-Prefer `(seq xs)` over `(not (empty? xs))`
+NOTE: Common to use `(seq xs)` instead of `(not-empty xs)` or `(not (empty? xs))`
 
 
 == map
 
 `map` calls a function for every element in a sequence:
 
-	(map inc [1 2 3 4])
-	=> (2 3 4 5)
+[source,eval-clojure]
+    (map inc [1 2 3 4])
+    ;=> (2 3 4 5)
 
 * `map` `inc` over `[1 2 3 4]`
 * Result is a sequence
@@ -2388,16 +2447,18 @@ Prefer `(seq xs)` over `(not (empty? xs))`
 
 == map over multiple sequences
 
+[source,eval-clojure]
     (map + [1 2 3] [10 10 10])
-    => [11 12 13]
+    ;=> [11 12 13]
 
 
 == Chaining operations over seqs
 
 Output sequences can input for other functions:
 
+[source,eval-clojure]
     (filter odd? (map inc [1 2 3 4]))
-    => (3 5)
+    ;=> (3 5)
 
 Keeps odd numbers from the result of `map` `inc`
 
@@ -2419,27 +2480,30 @@ Composition is aided by
 
 Reduce takes a function, initial value, and sequence:
 
+[source,eval-clojure]
     (reduce * 1 [2 3 4])
-    => 24
+    ;=> 24
 
 Performs `(* 1 2)`, then `(* 3)`, then `(* 4)`
 
 Multiplication called 3 times
 
+[source,eval-clojure]
     (reduce * [1 2 3 4])
-    => 24
+    ;=> 24
 
 The initial value can be left out, if so it is the first element
 
 
 == reduce
 
+[source,eval-clojure]
     (reduce
       (fn step [acc x]
         (* acc x))
       1
       (range 2 5))
-    => 24
+    ;=> 24
 
 * Step function takes 2 arguments; aggregate and item
 * Step function called for every item
@@ -2454,8 +2518,9 @@ add map example
 
 == group-by
 
+[source,eval-clojure]
     (group-by count ["the" "quick" "brown" "fox"])
-    => {3 ["the" "fox"], 5 ["quick" "brown"]}
+    ;=> {3 ["the" "fox"], 5 ["quick" "brown"]}
 
 * Produced a map
 * 3 letter words ["the" "fox"]
@@ -2469,8 +2534,8 @@ add map example
 `filter` is like a Java loop:
 
     for (i=0; i < vector.length; i++)
-	    if (condition)
-	        result.append(vector[i]);
+        if (condition)
+            result.append(vector[i]);
 
 `map` is like a Java loop:
 
@@ -2502,42 +2567,49 @@ Anonymous functions:
 
 Handy for adding small snippets of logic:
 
-	(filter #(< % 3) (range 10))
-	=> (0 1 2)
+[source,eval-clojure]
+    (filter #(< % 3) (range 10))
+    ;=> (0 1 2)
 
-	(map #(if (odd? %) "odd" "even") [1 2 3 4 5])
-	=> ("odd" "even" "odd" "even" "odd")
+[source,eval-clojure]
+    (map #(if (odd? %) "odd" "even") [1 2 3 4 5])
+    ;=> ("odd" "even" "odd" "even" "odd")
 
 More concise, descriptive, composable than loops
 
 
 == Creating sequences
 
-	(range 5)
-	=> (0 1 2 3 4)
+[source,eval-clojure]
+    (range 5)
+    ;=> (0 1 2 3 4)
 
-	(repeat 3 1)
-	=> (1 1 1)
+[source,eval-clojure]
+    (repeat 3 1)
+    ;=> (1 1 1)
 
-	(partition 3 (range 9))
-	=> ((0 1 2) (3 4 5) (6 7 8))
+[source,eval-clojure]
+    (partition 3 (range 9))
+    ;=> ((0 1 2) (3 4 5) (6 7 8))
 
 
 == Transpose
 
-    (apply map vector [[1 2 3] [4 5 6]])
-    => [[1 4]
-        [2 5]
-        [3 6]]
+[source,eval-clojure]
+    (apply mapv vector [[1 2 3]
+                        [4 5 6]])
+    ;=> [[1 4]
+    ;    [2 5]
+    ;    [3 6]]
 
 
 == Tricky
 
 Common situation in Java:
 
-	for (i=1; i < v.length; i++)
-	    print v[i] + v[i-1];
-	=> 3 5 7 9
+    for (i=1; i < v.length; i++)
+        print v[i] + v[i-1];
+    => 3 5 7 9
 
 Using the previous value in the sequence
 
@@ -2545,39 +2617,42 @@ Can we represent this as a sequence?
 
 Imagine two identical sequences offset slightly:
 
-	  [1 2 3 4 5]
-	[1 2 3 4 5]
+      [1 2 3 4 5]
+    [1 2 3 4 5]
 
 
 == map over both sequences
 
 Recall that `map` can take multiple sequences:
 
+[source,eval-clojure]
     (map + [1 3] [2 4])
-    => (3 7)
+    ;=> (3 7)
 
 `rest`:
 
+[source,eval-clojure]
     (def v [1 2 3 4 5])
     (rest v)
-    => (2 3 4 5)
+    ;=> (2 3 4 5)
 
 Put them together:
 
-	(map + v (rest v))
-	=> (3 5 7 9)
+[source,eval-clojure]
+    (map + v (rest v))
+    ;=> (3 5 7 9)
 
 
 == Visually
 
-	v        => (1 2 3 4 5)
-	(rest v) => (2 3 4 5)
+    v        => (1 2 3 4 5)
+    (rest v) => (2 3 4 5)
 
 * Sequences are of different lengths
 * map stops when the smallest sequence is exhausted
 * Produces a new sequence of the pairwise sums:
 
-	(3 5 7 9)
+    (3 5 7 9)
 
 
 == Sequences beat loops
@@ -2595,10 +2670,10 @@ Put them together:
 
 Multiply all of those numbers together
 
-	result = 1;
-	for (i=1; i < v.length; i++)
-	    result *= (v[i] + v[i-1]);
-	=> 945
+    result = 1;
+    for (i=1; i < v.length; i++)
+        result *= (v[i] + v[i-1]);
+    => 945
 
 * Invasive to the imperative loop
 * The change occurs inside the loop
@@ -2609,8 +2684,9 @@ Multiply all of those numbers together
 
 Compose `reduce` with the original `map` expression:
 
-	(reduce * (map + v (rest v)))
-	=> 945
+[source,eval-clojure]
+    (reduce * (map + v (rest v)))
+    ;=> 945
 
 * `reduce`: Aggregate by multiplication the sequence
 * `map`: adding items together from two sequences
@@ -2645,8 +2721,9 @@ Sequences are loop abstractions that allow you to ignore the implementation deta
 
 == Threading operators: why?
 
-	(reduce * (filter odd? (map inc v)))
-	=> 15
+[source,eval-clojure]
+    (reduce * (filter odd? (map inc v)))
+    ;=> 15
 
 * Functions offer combinatorial power
 * Simple functions + sequence operations
@@ -2664,19 +2741,21 @@ Sequences are loop abstractions that allow you to ignore the implementation deta
 
 Name intermediary results:
 
-	(let [incs (map inc v)
-	      odd-incs (filter odd? incs)]
-	  (reduce * odd-incs))
-	=> 15
+[source,eval-clojure]
+    (let [incs (map inc v)
+          odd-incs (filter odd? incs)]
+      (reduce * odd-incs))
+    ;=> 15
 
 
 == Or use a thread last
 
-	(->> v
-	     (map inc)
-	     (filter odd?)
-	     (reduce *))
-	=> 15
+[source,eval-clojure]
+    (->> v
+         (map inc)
+         (filter odd?)
+         (reduce *))
+    ;=> 15
 
 * Unwraps nested function calls
 * Avoids naming steps
@@ -2687,29 +2766,34 @@ Name intermediary results:
 
 Similar to thread last, passes value in first position:
 
+[source,eval-clojure]
     (-> 42
         (/ 2)
         (inc))
-    => 22
+    ;=> 22
 
 For empty expressions, the parens are optional:
 
+[source,eval-clojure]
     (-> 42
         (/ 2)
         inc)
-    => 22
+    ;=> 22
 
 
 == Data structures are functions
 
+[source,eval-clojure]
     (get {:a 1 :b 2} :a)
-    => 1
+    ;=> 1
 
+[source,eval-clojure]
     ({:a 1 :b 2} :a)
-    => 1
+    ;=> 1
 
+[source,eval-clojure]
     (map {:a 1, :b 2} [:a :b])
-    => (1 2)
+    ;=> (1 2)
 
 * Maps are functions
 * They delegate to `get`
@@ -2717,57 +2801,76 @@ For empty expressions, the parens are optional:
 
 == Keywords are functions
 
+[source,eval-clojure]
     (:a {:a 1 :b 2})
-    => 1
+    ;=> 1
 
+[source,eval-clojure]
     (map :a [{:a 1} {:a 2} {:a 3}])
-    => (1 2 3)
+    ;=> (1 2 3)
 
 `get` `:a` for each element in a sequence
 
 Instead of
 
+[source,eval-clojure]
     (map (fn [m] (get m :a)) [{:a 1} {:a 2} {:a 3}])
-    => (1 2 3)
+    ;=> (1 2 3)
 
 
 == Sets are functions
 
+[source,eval-clojure]
     (get #{1 2 3} 2)
-    => 2
+    ;=> 2
 
+[source,eval-clojure]
     (#{1 2 3} 2)
-    => 2
+    ;=> 2
 
+[source,eval-clojure]
     (remove #{nil "bad"} [:a nil :b "bad" "good"])
+    ;=> (:a :b "good")
 
 
 == Vectors are functions
 
+[source,eval-clojure]
     (get [1 2 3] 0)
-    => 1
+    ;=> 1
 
+[source,eval-clojure]
     ([1 2 3] 0)
-    => 1
+    ;=> 1
 
 
 == Defaults
 
 `get` can be passed a `not-found` value:
 
+[source,eval-clojure]
     (get {} :a "default")
-    => "default"
+    ;=> "default"
 
 Datastructures as functions do too:
 
+[source,eval-clojure]
     ({:a 1, :b 2} :c -1)
-    => -1
+    ;=> -1
 
 
-== Laziness
+== Avoid side-effects in lazy sequences
 
-TODO
+[source,eval-clojure]
+    (let [message "Hello"]
+      (map (fn [x]
+             (println message x))
+           (range 10))
+      (println "Bye"))
+    ;;; Bye
+    ;=> nil
 
+WARNING: Hello is not printed
 
 
 == Exercises
@@ -2777,46 +2880,52 @@ See manual end of section 6
 
 == Answers
 
+[source,eval-clojure]
     (defn sum-between [a b]
       (apply + (range a (inc b))))
     (sum-between 3 5)
-    => 12
+    ;=> 12
 
+[source,eval-clojure]
     (defn powers-of [n]
       (iterate #(* % n) 1))
     (take 5 (powers-of 2))
-    => (1 2 4 8 16)
+    ;=> (1 2 4 8 16)
 
 
 == Answers
 
+[source,eval-clojure]
     (defn shorten [s]
       (remove #{\a \e \i \o \u} s))
     (apply str (shorten "Clojure sets are functions"))
-    => "Cljr sts r fnctns"
+    ;=> "Cljr sts r fnctns"
 
 
 == Answers
 
+[source,eval-clojure]
     (defn fractions []
       (map / (repeat 1) (rest (range))))
     (take 5 (fractions))
-    => (1 1/2 1/3 1/4 1/5)
+    ;=> (1 1/2 1/3 1/4 1/5)
 
+[source,eval-clojure]
     (defn fraction-powers [n]
       (map / (repeat 1) (powers-of n)))
     (take 5 (fraction-powers 2))
-    => (1 1/2 1/4 1/8 1/16)
+    ;=> (1 1/2 1/4 1/8 1/16)
 
 
 == Answers
 
+[source,eval-clojure]
     (defn fib-step [[a b]]
       [b (+ a b)])
     (defn fib-seq []
       (map first (iterate fib-step [1 1])))
     (take 10 (fib-seq))
-    => (1 1 2 3 5 8 13 21 34 55)
+    ;=> (1 1 2 3 5 8 13 21 34 55)
 
 
 == Challenge 2: Processing files
@@ -2967,39 +3076,47 @@ image:img/parallel.jpg[]
 
 `def` returns a var
 
+[source,eval-clojure]
     (def a 1)
-    => #'user/a
+    ;=> #'user/a
 
 See the var associated with a symbol using `var`
 
+[source,eval-clojure]
     (var a)
-    => #'user/a
+    ;=> #'user/a
 
 `#'` is shorthand for `(var ...)`
 
+[source,eval-clojure]
     #'a
-    => #'user/a
+    ;=> #'user/a
 
 
 == Deref
 
 Gets the value associated with a var
 
+[source,eval-clojure]
     (deref #'a)
-    => 1
+    ;=> 1
 
 `@` is shorthand for `(deref ...)`
 
+[source,eval-clojure]
     @(var a)
-    => 1
+    ;=> 1
 
-    @#'a => 1
+[source,eval-clojure]
+    @#'a
+    ;=> 1
 
 
 == Vars automatically deref when evaluated
 
+[source,eval-clojure]
     a
-    => 1
+    ;=> 1
 
 Symbol `a` -> Var `a` -> value
 
@@ -3012,13 +3129,15 @@ We don't normally write `@#'a`
 
 Get the function associated with inc and invoke it:
 
+[source,eval-clojure]
     (#'inc 1)
-    => 2
+    ;=> 2
 
 Vars automatically deref:
 
+[source,eval-clojure]
     (inc 1)
-    => 2
+    ;=> 2
 
 Symbol `inc` -> Var `inc` -> function
 
@@ -3033,14 +3152,18 @@ Symbol `inc` -> Var `inc` -> function
 
 == Metadata on Vars
 
-    (meta #'one-hundred)
-    => {:line 73, :column 1, ...}
-
 Metadata provided using `^{}`
 
-    (def x ^{:private true} 1)
+[source,eval-clojure]
+    (def ^{:private true} one-hundred 100)
+    ;=> #'one-hundred
 
-Attach whatever metadata you wish. Compiler looks for:
+[source,eval-clojure]
+    (meta #'one-hundred)
+    ;=> {:line 73, :column 1, ...}
+
+
+== Special metadata
 
     :private
     :doc
@@ -3050,17 +3173,20 @@ Attach whatever metadata you wish. Compiler looks for:
 
 == Dynamic vars
 
-	(def ^:dynamic x 1)
-	(def ^:dynamic y 1)
-	(+ x y)
-	=> 2
+[source,eval-clojure]
+    (def ^:dynamic x 1)
+    (def ^:dynamic y 1)
+    (+ x y)
+    ;=> 2
 
-	(binding [x 2, y 3]
-	  (+ x y))
-	=> 5
+[source,eval-clojure]
+    (binding [x 2, y 3]
+      (+ x y))
+    ;=> 5
 
-	(+ x y)
-	=> 2
+[source,eval-clojure]
+    (+ x y)
+    ;=> 2
 
 [NOTE.speaker]
 --
@@ -3085,15 +3211,20 @@ Thread safe
 
 Execute at a later stage
 
-    (def d (delay (println "Hello world!")
-                  42))
-    => #'user/d
-    d
-    => #object[clojure.lang.Delay
-               {:status :pending, :val nil}]
+[source,eval-clojure]
+    (def d1 (delay (prn "Hello world")))
+    ;=> #'user/d1
 
-    (realized? d)
-    => false
+[source,eval-clojure]
+    d1
+    ;=> #object[clojure.lang.Delay
+    ;           {:status :pending, :val nil}]
+
+[source,eval-clojure]
+    (realized? d1)
+    ;=> false
+
+NOTE: Nothing printed yet
 
 [NOTE.speaker]
 --
@@ -3103,20 +3234,30 @@ Wrap an arbitrary body of code for evaluation
 
 == Delay result is requested with deref
 
-    @d
-    => Hello world!
-       42
+[source,eval-clojure]
+    (def d2 (delay (prn "Hello world!")
+                   42))
+    ;=> #'user/d2
+
+[source,eval-clojure]
+    @d2
+    ;;; Hello world!
+    ;=> 42
+
+[source,eval-clojure]
+    (realized? d2)
+    ;=> true
 
 
 == Delay result is cached
 
 Body runs once, even concurrently
 
-    @d
-    => 42
+[source,eval-clojure]
+    @d2
+    ;=> 42
 
-    (realized? d)
-    => true
+NOTE: Nothing is printed the second time
 
 * Delays also cache the result value
 * Prevents another execution
@@ -3183,10 +3324,11 @@ Body runs once, even concurrently
 
 == Atom
 
-    (def a (atom 1))
-    (swap! a inc)
-    @a
-    => 2
+[source,eval-clojure]
+    (def my-atom (atom 1))
+    (swap! my-atom inc)
+    @my-atom
+    ;=> 2
 
 * Change the value of an atom with `swap!` or `reset!`
 * `swap!` reads the current value, applies the function to it, and attempts to `compare-and-set!` it in
@@ -3210,6 +3352,7 @@ Body runs once, even concurrently
 
 == Ref
 
+[source,eval-clojure]
     (def r (ref 1))
     (dosync
       (alter r inc))
@@ -3294,24 +3437,29 @@ image:img/types.jpg[]
 
 == Multimethods introduction
 
+[source,eval-clojure]
     (def my-square {:shape "square"})
     (defmulti draw :shape)
-    (defmethod draw "square" [x] (render ...))
+    (defmethod draw "square" [x]
+      "Rendering a square...")
     (draw my-square)
+    ;=> "Rendering a square..."
 
 * Keywords are functions
 * Common to use a keyword as a dispatch function
 * Looks similar to Object Oriented type dispatch
-* User or library can add methods later
+* Users can add methods later
 
 
 == Defining a multimethod
 
 Polymorphic dispatch. Define the name and the dispatch function:
 
+[source,eval-clojure]
     (defmulti encounter
       (fn dispatch [a b]
         [(:species a) (:species b)]))
+    ;=> #'encounter
 
 * Dispatch is not limited to a single type
 * Dispatch might not even involve a type
@@ -3319,34 +3467,43 @@ Polymorphic dispatch. Define the name and the dispatch function:
 
 == Defining method implementations
 
-Provide methods to execute for a given dispatch value:
-
-    (defmethod encounter [:bunny :lion] [a b] :run-away)
-    (defmethod encounter [:lion :bunny] [a b] :eat)
-    (defmethod encounter [:lion :lion] [a b] :fight)
-    (defmethod encounter [:bunny :bunny] [a b] :mate)
+[source,eval-clojure]
+    (defmethod encounter [:bunny :lion] [a b]
+      :run-away)
+    (defmethod encounter [:lion :bunny] [a b]
+      :eat)
+    (defmethod encounter [:lion :lion] [a b]
+      :fight)
+    (defmethod encounter [:bunny :bunny] [a b]
+      :mate)
+    ;=> #object[cljs.core.MultiFn]
 
 * Similar to a case block
-* Dispatch results map to function definitons
-* Input is unused in this example
 * Not limited to a single input
+* Input is unused in this example
 
 
 == Calling the multimethod
 
+[source,eval-clojure]
     (def bunny1 {:species :bunny, :other :stuff})
     (def bunny2 {:species :bunny, :other :stuff})
     (def lion1 {:species :lion, :other :stuff})
     (def lion2 {:species :lion, :other :stuff})
-
     (encounter bunny1 bunny2)
-    => :mate
+    ;=> :mate
+
+[source,eval-clojure]
     (encounter bunny1 lion1)
-    => :run-away
+    ;=> :run-away
+
+[source,eval-clojure]
     (encounter lion1 bunny1)
-    => :eat
+    ;=> :eat
+
+[source,eval-clojure]
     (encounter lion1 lion2)
-    => :fight
+    ;=> :fight
 
 
 == Multimethods summary
@@ -3491,8 +3648,8 @@ No protocol required
 
 == defrecord
 
-	(ns training.core
-	  (:import (java.net FileNameMap)))
+    (ns training.core
+      (:import (java.net FileNameMap)))
 
     (defrecord Thing [a] FileNameMap
       (getContentTypeFor [this fileName]
@@ -3725,7 +3882,7 @@ image:img/spec.jpg[]
 
 Update `project.clj` to the right version:
 
-	[org.clojure/clojure "1.9.0"]
+    [org.clojure/clojure "1.9.0"]
 
 Require it
 
@@ -4632,12 +4789,12 @@ image:img/further-reading.jpg[]
 
 == Further reading
 
-Further exercises:	https://www.4clojure.com/
+Further exercises: https://www.4clojure.com/
 
 Clojure for Java Programmers - Rich Hickey
 
-* Part 1:		https://www.youtube.com/watch?v=P76Vbsk_3J0
-* Part 2:		https://www.youtube.com/watch?v=hb3rurFxrZ8
+* Part 1: https://www.youtube.com/watch?v=P76Vbsk_3J0
+* Part 2: https://www.youtube.com/watch?v=hb3rurFxrZ8
 
 [NOTE.speaker]
 --
