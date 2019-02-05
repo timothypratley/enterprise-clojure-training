@@ -52,3 +52,12 @@ html.title body {
 code {
   background-color: #F8F8F8;
 }
+
+.CodeMirror-cursor {
+  border-left: 1px solid black !important;
+}
+
+.CodeMirror-scroll {
+  padding-bottom: 30px !important;
+  margin-bottom: -30px !important;
+}

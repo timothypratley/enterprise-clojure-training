@@ -1,0 +1,252 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== 9. Polymorphism and Types
+
+image:img/types.jpg[]
+
+"You need a lot of different types of people to make the world better."
+-- Joe Louis
+
+
+== Multimethods introduction
+
+[source,eval-clojure]
+    (def my-square {:shape "square"})
+    (defmulti draw :shape)
+    (defmethod draw "square" [x]
+      "Rendering a square...")
+    (draw my-square)
+    ;=> "Rendering a square..."
+
+* Keywords are functions
+* Common to use a keyword as a dispatch function
+* Looks similar to Object Oriented type dispatch
+* Users can add methods later
+
+
+== Defining a multimethod
+
+Polymorphic dispatch. Define the name and the dispatch function:
+
+[source,eval-clojure]
+    (defmulti encounter
+      (fn dispatch [a b]
+        [(:species a) (:species b)]))
+    ;=> #'encounter
+
+* Dispatch is not limited to a single type
+* Dispatch might not even involve a type
+
+
+== Defining method implementations
+
+[source,eval-clojure]
+    (defmethod encounter [:bunny :lion] [a b]
+      :run-away)
+    (defmethod encounter [:lion :bunny] [a b]
+      :eat)
+    (defmethod encounter [:lion :lion] [a b]
+      :fight)
+    (defmethod encounter [:bunny :bunny] [a b]
+      :mate)
+    ;=> #object[cljs.core.MultiFn]
+
+* Similar to a case block
+* Not limited to a single input
+* Input is unused in this example
+
+
+== Calling the multimethod
+
+[source,eval-clojure]
+    (def bunny1 {:species :bunny, :other :stuff})
+    (def bunny2 {:species :bunny, :other :stuff})
+    (def lion1 {:species :lion, :other :stuff})
+    (def lion2 {:species :lion, :other :stuff})
+    (encounter bunny1 bunny2)
+    ;=> :mate
+
+[source,eval-clojure]
+    (encounter bunny1 lion1)
+    ;=> :run-away
+
+[source,eval-clojure]
+    (encounter lion1 bunny1)
+    ;=> :eat
+
+[source,eval-clojure]
+    (encounter lion1 lion2)
+    ;=> :fight
+
+
+== Multimethods summary
+
+* Conditions under which to be called + function definitions
+* Often dispatch by type, but not limited to that
+* *Provide a point of extension*
+** Clojure test reporter can be modified
+** JDBC types can have custom handlers added
+
+
+== Protocols also provide a point of extension
+
+* Protocols directly implement host polymorphism (JVM)
+** Dispatch on the type of their first argument
+** Fast
+* *User or library can add methods later*
+
+
+== Protocols
+
+    (defprotocol AProtocol
+      "A doc string for AProtocol abstraction"
+      (bar [a b] "bar docs")
+      (baz [a] [a b] [a b c] "baz docs"))
+
+* A named set of named methods and their signatures
+
+
+== Protocols are similar to Java Interfaces
+
+* No implementations are provided
+* Dynamic
+* Generates a corresponding interface with the same name
+* The protocol will automatically work with instances of the interface
+* A Java client can implement the protocol-generated interface
+
+
+== deftype supports protocols directly
+
+    (defprotocol P
+      (foo [x])
+      (bar [x] [x y]))
+
+    (deftype T [a b c]
+      P
+      (foo [x] a)
+      (bar [x] b)
+      (bar [x y] (+ c y)))
+
+    (bar (T. 1 2 3) 42)
+    => 45
+
+[NOTE.speaker]
+--
+* `bar` has 2 signatures
+* `a`, `b`, `c` are constructor arguments
+--
+
+
+== reify
+
+    (def obj (reify P
+               (foo [this] 17)))
+    (foo obj)
+    => 17
+
+* Creates an object that implements a protocol without defining a type
+* Do not have to implement all protocol signatures
+* Can also reify Java interfaces
+
+
+== Cannot reify a class
+
+* Java classes are closed
+* Java interfaces cannot be extended
+
+
+== extend
+
+    (extend AType
+      AProtocol
+       {:foo an-existing-fn
+        :bar (fn [a b] ...)
+        :baz (fn ([a]...) ([a b] ...)...)}
+      BProtocol
+        {...}
+    ...)
+
+* The `fn` can presume first argument is instanceof `AType`
+* You can implement a protocol on `nil`
+* Default implementation of protocol with `Object`
+
+
+== extend-type
+
+    (extend-type MyType
+      Countable
+        (cnt [c] ...)
+      Foo
+        (bar [x y] ...)
+        (baz ([x] ...) ([x y zs] ...)))
+
+Expands into:
+
+    (extend MyType
+      Countable
+       {:cnt (fn [c] ...)}
+      Foo
+       {:baz (fn ([x] ...) ([x y zs] ...))
+        :bar (fn [x y] ...)})
+
+
+== Protocols are extensible
+
+* User or library can add functionality later
+* Embrace the host (JVM or JavaScript)
+* Use when extension is required
+* Create when extension is anticipated
+
+
+== Creating types with defrecord and deftype
+
+* `deftype`, `defrecord`, and `reify` define implementations of abstractions, and instances of those implementations.
+* Resist the urge to use them to define 'structured data' as you would define classes or structures in other languages.
+* It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.
+
+
+== deftype
+
+    (deftype Circle [radius])
+    (deftype Square [length width])
+
+    (Circle. 10)
+    (Square. 5 11)
+
+    (->Circle 10)
+    (->Square 5 11)
+
+No protocol required
+
+
+== defrecord
+
+    (ns training.core
+      (:import (java.net FileNameMap)))
+
+    (defrecord Thing [a] FileNameMap
+      (getContentTypeFor [this fileName]
+        (str a "-" fileName)))
+
+* Defines a record named `Thing`
+* single field `a`
+* `FileNameMap` interface
+* `String getContentTypeFor(String fileName)`
+
+
+== record constructor
+
+    (def thing (Thing. "foo"))
+
+    (instance? FileNameMap thing)
+    => true
+
+Call the method on the `thing` instance and pass `"bar"`:
+
+    (.getContentTypeFor thing "bar")
+    => "foo-bar"

@@ -1,0 +1,432 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== 3. Functions
+
+image:img/functions.jpg[]
+
+"The chief function of the body is to carry the brain around."
+-- Thomas A. Edison
+
+
+== Defining functions (again)
+
+[source,eval-clojure]
+    (defn square [x]
+      (* x x))
+    ;=> #my.namespace/square
+
+* Functions always return a value; the result of their last expression
+* `defn` creates a `var`
+
+[source,eval-clojure]
+    (square 2)
+    ;=> 4
+
+
+== Prefix notation
+
+[source,eval-clojure]
+    (+ (square 2) (square 3))
+    ;=> 13
+
+Mathematical operators are functions.
+
+NOTE: Arguments are evaluated from left to right before the function is called
+
+
+== Unnamed functions
+
+[source,eval-clojure]
+    (fn [a]
+      (inc a))
+    ;=> #object[Function]
+
+[source,eval-clojure]
+    #(inc %)
+    ;=> #object[Function]
+
+Unnamed; anonymous; Lambda (λ) expression
+
+
+== Invoking anonymous functions
+
+[source,eval-clojure]
+    ((fn [a] (inc a)) 1)
+    ;=> 2
+
+[source,eval-clojure]
+    (#(inc %) 1)
+    ;=> 2
+
+Just like a named function; first item in a list is applied
+
+
+== Closure
+
+Function that captures values from the environment
+
+[source,eval-clojure]
+    (let [who "world"]
+      (defn greet []
+        (str "Hello " who)))
+    (greet)
+    ;=> "Hello world"
+
+
+== Passing a function to another function
+
+[source,eval-clojure]
+    (defn do-triple [f]
+      (f)
+      (f)
+      (f))
+    (do-triple (fn []
+                 (print "hot ")))
+    ;;; hot hot hot
+    ;=> nil
+
+* Functions are values
+* Can be passed to other functions
+* Functions apply an input function are considered _"higher order functions"_
+
+
+== Mapping a function over a sequence
+
+WARNING: `map` the function, not `hash-map` the data structure
+
+* Function that applies a function to every element in a sequence
+
+[source,eval-clojure]
+    (map inc [1 2 3])
+    ;=> (2 3 4)
+
+[source,eval-clojure]
+    (map (fn [x] (* x x)) [1 2 3 4])
+    ;=> (1 4 9 16)
+
+
+== Map a previously defined function
+
+[source,eval-clojure]
+    (defn greet-them [person]
+      (str "Hello " person))
+    (map greet-them ["Alice" "Bob" "Carol"])
+    ;=> ("Hello Alice" "Hello Bob" "Hello Carol")
+
+The `greet-them` function is easier to test on its own
+
+
+== Map an anonymous function
+
+[source,eval-clojure]
+    (let [x 5]
+      (map #(+ x %) [1 2 3]))
+    ;=> (6 7 8)
+
+* Closure as argument to higher order function
+* Terse
+
+TIP: This is a key source of Clojure's expressiveness
+
+
+== Named anonymous functions?!?!?!
+
+    (fn add-one [x]
+      (inc x))
+    add-one
+    ;;; Unable to resolve symbol: add-one
+
+WARNING: The name `add-one` is only available inside the function
+
+* Documents purpose
+* Name appears in stacktraces (searchable clue)
+* The function can call itself
+
+
+== Named functions
+
+    (defn f [x]
+      (inc x))
+
+Is shorthand for
+
+    (def f
+      (fn [x]
+        (inc x)))
+
+
+== Variadic arguments
+
+[source,eval-clojure]
+    (defn f [& args]
+      args)
+    (f 1 2 3)
+    ;=> (1 2 3)
+
+[source,eval-clojure]
+    (+ 1 2 3 4 5)
+    ;=> 15
+
+
+== Variadic disadvantages
+
+WARNING: Not always convenient
+
+  (bake-cakes cake1 cake2 cake3)
+  (let [cakes (db/find-cakes "delicious")]
+    (apply bake-cakes cakes))
+
+Prefer functions that do one thing
+
+Combine with sequence operations
+
+  (doseq [cake (db/find-cakes "delicious")]
+    (bake-cake cake))
+
+
+== Variadic pitfall
+
+WARNING: Bypasses arity checking
+
+Common bad pattern:
+
+[source,eval-clojure]
+    (defn f [x & [y]]
+      (if y
+        (+ x y)
+        (inc x)))
+    (f 1 2 3 4 "not a number")
+    ;=> 3
+
+
+== Prefer explicit argument lists
+
+[source,eval-clojure]
+    (defn f
+      ([x] (inc x))
+      ([x y] (+ x y)))
+    (f 1)
+    ;=> 2
+
+[source,eval-clojure]
+    (f 1 2)
+    ;=> 3
+
+[source,eval-clojure]
+    (f 1 2 3)
+    ;;; Exception: Wrong number of args
+
+
+== Keyword arguments
+
+[source,eval-clojure]
+    (defn start [& {:keys [port protocol]
+                    :or {port 8080,
+                         protocol "https"}}]
+      protocol)
+    (start)
+    ;=> "https"
+
+[source,eval-clojure]
+    (start :protocol "ftp")
+    ;=> "ftp"
+
+
+== Avoid keyword arguments
+
+[source,eval-clojure]
+    (def config {:protocol "ftp"})
+    (start config)
+
+[source,eval-clojure]
+    (apply start (apply concat config))
+    ;=> "ftp"
+
+WARNING: Inconvenient and confusing
+
+
+== Take a map instead
+
+[source,eval-clojure]
+   (defn start2 [{:keys [port protocol]}]
+      protocol)
+    (start2 {:protocol "gopher"})
+    ;=> "gopher"
+
+[source,eval-clojure]
+    (start2 config)
+    ;=> "ftp"
+
+
+== Pre and post conditions
+
+[source,eval-clojure]
+    (defn f [x]
+      {:pre [(pos? x)]
+       :post [(neg? %) (int? %)]}
+      (- x))
+    (f 1)
+    ;=> -1
+
+[source,eval-clojure]
+    (f -1)
+    ;;; AssertionError Assert failed: (pos? x)
+
+[source,eval-clojure]
+    (f 1.5)
+    ;;; AssertionError Assert failed: (int? %)
+
+[NOTE.speaker]
+--
+* Assertions about inputs and outputs of a function
+* Sequence of conditions
+--
+
+
+== Pre/Post drawbacks:
+
+* Syntax is easy to get wrong, no assertion made
+* Assertions can be disabled
+* Less control over error reporting and handling
+* Rarely used
+
+
+== More common
+
+Check for a condition and throw an exception
+
+    (defn f [x]
+      (when-not (pos? x)
+        (throw (ex-info "bad input" {:x x}))
+      (let [result (- x)]
+        (if (and (neg? result) (int? result))
+          result
+          (throw (ex-info "bad result" {:x x})))
+
+Or use spec
+
+
+== Function literals
+
+    #(inc %)
+
+    #(+ %1 %2)
+
+    #(apply + %&)
+
+Terse, powerful expressions
+
+
+== Compare
+
+    (map #(* % %) [1 2 3 4])
+
+    (map (fn square [x]
+           (* x x))
+         [1 2 3 4])
+
+[TIP]
+--
+Prefer `(fn)` form
+
+* Named parameter
+* named purpose
+* stack traces
+--
+
+
+== Exercises
+
+See manual end of section 3
+
+
+== Answers
+
+[source,eval-clojure]
+    (defn square [x]
+      (* x x))
+    (square 55)
+    ;=> 3025
+
+
+== Answers
+
+[source,eval-clojure]
+    (defn square-of-square [x]
+      (if (< x 100)
+        (square (square x))
+        (throw (ex-info "Input too large" {:x x}))))
+    (square-of-square 2)
+    ;=> 16
+
+[source,eval-clojure]
+    (square-of-square 123)
+    ;;; ExceptionInfo Input too large
+
+
+== Answers
+
+[source,eval-clojure]
+    (defn fib-step [a b]
+      [b (+ a b)]))
+    (fib-step 1 1)
+    ;=> [1 2]
+
+[source,eval-clojure]
+    (fib-step 1 2)
+    ;=> [2 3]
+
+[source,eval-clojure]
+    (fib-step 2 3)
+    ;=> [3 5]
+
+
+== Challenge 1: Corgi Cover eligibility
+
+Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy. Only certain people are eligible to register for “corgi cover”. To be eligible they must own a corgi, live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO). You are tasked with building a system to validate applications for the policy.
+
+
+== Part 1:
+
+Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person's eligibility for the “corgi cover” policy.
+
+
+== Test data
+[style="literal", options="header"]
+|===
+|Name |State |Corgi count | Existing policy count
+|Chloe |IL |1 |0
+|Ethan |IL |4 |2
+|Annabelle |WY |19 |0
+|Logan |WA |2 |1
+|===
+
+
+== Part 2:
+
+A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”. Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp. Gold is available when covering at least 3 corgis. Silver is the original “corgi cover” policy. Create a new function that takes an additional argument policy-count and returns a keyword indicating their eligibility.
+
+See `cond`
+
+
+== Part 3:
+
+The “corgi cover” applications Insuricorp collect contain more information than necessary to determine eligibility. Create a new function that takes as input a single map data structure as input instead of multiple inputs. It should pick out the values that it needs from the input map. Create some test data and feed it to your function. The data should look something like:
+
+    {:name "Chloe", :state "IL", :corgi-count 1, :policy-count 0}
+
+
+== Part 4:
+
+Insuricorp just merged with Megacorp. Platinum level corgi cover is now offered to people with an existing Megacorp policy as well. Because the company is still restructuring, the policy-count input still only contains Insuricorp data. But a new input has been made available to you which is a map of people to policies.
+
+    {"Chloe" ["secure goldfish"]
+     "Ethan" ["cool cats cover" "megasafe"]}
+
+Create a new function that takes as inputs two maps: the application, and the existing policies. It should apply the same logic, but make use of the Megacorp data.
+

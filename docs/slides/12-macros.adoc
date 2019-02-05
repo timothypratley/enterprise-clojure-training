@@ -1,0 +1,362 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== 12. Macros
+
+image:img/macros.jpg[]
+
+"I never think about myself as an artist working in this time. I think about it in macro."
+-- Frank Ocean
+
+
+== Macros provide syntax
+
+The "real" way to define a function:
+
+    (def square
+      (fn [x]
+        (* x x)))
+
+Special syntax:
+
+    (defn square [x]
+      (* x x))
+
+Syntactic sugar to remove boilerplate
+
+Macros extend the syntax of Clojure
+
+
+== Macros expand
+
+    (when (< x 2)
+      (println "It's less than 2!")
+      :ok)
+
+Expands to
+
+    (if (< x 2)
+      (do
+        (println "It's less than 2!")
+        :ok))
+
+
+== macroexpand-1 shows you what a macro does
+
+    (macroexpand-1 '(when (< x 2)
+                      (println "It's less than 2!")
+                      :ok))
+    => (if (< x 2)
+         (do
+           (println "It's less than 2!")
+           :ok))
+
+
+== Expanding defn
+
+    (macroexpand-1
+      '(defn square [x]
+         (* x x)))
+    => (def square
+         (clojure.core/fn ([x] (* x x))))
+
+
+== Macros produce code
+
+* Functions that manipulate code
+* Think of it as text manipulation
+* Passed input forms unevaluated
+* Replaces the form at compile time
+* Have a `:macro` flag set in metadata
+
+
+== Using macros
+
+    (map
+      (fn maybe-ok [x]
+        (when (< x 2)
+          :ok))
+      (range 4))
+    => (:ok :ok nil nil)
+
+* `when` is only expanded once
+* The form is expanded at compile time
+* `maybe-ok` function is compiled to bytecode
+
+
+== Macros do things functions cannot
+
+* Arguments manipulated at compile time
+* Arguments not evaluated
+* Cannot be replaced by a function
+
+
+== Functions do things macros cannot
+
+    and
+    => CompilerException: Can't take value of a macro
+
+    (map and [true false]
+             [true true])
+    => CompilerException: Can't take value of a macro
+
+
+* Macros are not values
+* Cannot be passed to higher order functions
+* Less useful than functions
+
+
+== To use a macro as a function, wrap it in a function
+
+    (map #(and %1 %2) [true false]
+                      [true true])
+    => (true false)
+
+
+NOTE: Cannot apply arguments though...
+
+    #(every? identity %&)
+
+
+== Defining macros
+
+    (defmacro infix [[operand1 op operand2]]
+      (list op operand1 operand2))
+
+    (infix (1 + 1))
+    => 2
+
+    (macroexpand '(infix (1 + 1)))
+    => (+ 1 1)
+
+
+== Defining macros
+
+    (defmacro my-when [test & body]
+      (list 'if test (cons 'do body)))
+
+    (macroexpand-1
+      '(my-when (< x 1)
+         (println "hi")
+         :ok))
+    => (if (< x 1)
+         (do
+           (println "hi")
+           :ok))
+
+NOTE: `test` and `body` are values, `if` and `do` are symbols
+
+[NOTE.speaker]
+--
+Review quote
+--
+
+
+== Macros using arguments
+
+    (defmacro zen1 [x]
+      (println "x:" x)
+      x)
+    (zen1 (+ 1 2))
+    => x: (+ 1 2)
+    3
+
+vs
+
+    (defn zen2 [x]
+      (println "x:" x)
+      x)
+    (zen2 (+ 1 2))
+    => x: 3
+    3
+
+[NOTE.speaker]
+--
+* The input to `zen1` was a list
+* For `zen1` `x` was a list
+* We returned `x`
+* But the final result was `3`
+* The list was evaluated as a function call to `+`
+* resulting in `3`
+* The input to `zen2` was the result of evaluating the list
+--
+
+
+== Syntax quoting
+
+    `(inc 1)
+    => (clojure.core/inc 1)
+
+* Special form called syntax-quote (also called back-quote)
+* All symbols in a syntax-quote form get fully qualified
+* ``` vs `'`
+
+
+== Unquoting
+
+    `(1 2 ~(+ 1 2) ~@(map inc [3 4 5]))
+    => (1 2 3 4 5 6)
+
+[options=header]
+|===
+|Syntax|Name|Behavior
+l|`|Back-quote|Fully qualified quote
+l|~|Unquote|Insert a value
+l|~@|Unquote-splicing|Insert a sequence
+|===
+
+
+== Why fully qualify?
+
+    (defmacro m1 []
+      '(inc 1))
+
+    (defmacro m2 []
+      `(inc 1))
+
+    (let [inc dec]
+      {:m1 (m1)
+       :m2 (m2)})
+
+    => {:m1 0, :m2 2}
+
+* Symbols have contextual meaning
+* Macros are defined with no context
+
+
+== Another source of naming collisions
+
+    (defmacro bad [expr]
+      (list 'let '[a 1]
+        (list 'inc expr)))
+    (bad 0)
+    => 1
+    (def a 0)
+    (bad a)
+    => 2
+
+WARNING: The parameter name collided with the implementation
+
+    (macroexpand-1 '(bad a))
+    => (let [a 1] (inc a))
+
+
+== Gensyms
+
+    (defmacro good [expr]
+      `(let [a# 1]
+         (inc ~expr)))
+    (good a)
+    => 1
+    (good 0)
+    => 1
+
+`a#` expands to a randomly generated symbol
+
+    (macroexpand-1 '(good a))
+    => (clojure.core/let [a__6500__auto__ 1]
+         (clojure.core/inc a))
+
+
+== Macro strategy
+
+When working on a non-trivial macro a good strategy is:
+
+* Step 1: Write a function!
+* Step 2: Call your function from the macro
+
+TIP: Keep the macro small and offload form transformations to other functions
+
+
+== When should I write a macro?
+
+Almost never
+
+To provide new syntax: core.async
+
+    (def echo-chan (chan))
+    (go (println (<! echo-chan)))
+    (>!! echo-chan "hello")
+    => true
+    hello
+
+
+== Code as data
+
+* Functions that produce code
+* Manipulate code... as data
+* Homoiconic: the language text has the same structure as its abstract syntax tree
+* Code transformed using the same representation
+* Nested code is well represented as a data structure
+* Language can be extended conveniently
+* Lisp "syntax" underpins Clojure "syntax"
+
+
+== Reading macros is a useful skill
+
+* Macros are common in clojure.core and libraries
+* Macros can have surprising behavior
+* Debugging
+** Identifying macros
+** Expanding macros
+
+
+== Macro summary
+
+* Manipulate the operand forms
+* Do not evaluate the input forms
+* Not functions
+* Cannot be passed to other functions
+
+
+== Exercises
+
+See manual end of section 7
+
+
+== Answers
+
+    (defmacro ignore [expr] nil)
+
+    (defmacro when2 [test & body]
+      (list 'if test (cons 'do body))
+
+
+== Answers
+
+    (defmacro spy [expr]
+      `(let [result# ~expr]
+         (println "Expression" '~expr "has value" result#)
+         result#))
+
+    (macroexpand-1 '(spy (* 2 3)))
+    => (clojure.core/let [result__6418__auto__ (* 2 3)]
+         (clojure.core/println
+           "Expression" (quote (* 2 3))
+           "has value" result__6418__auto__)
+         result__6418__auto__)
+
+    (+ 1 (spy (* 2 3)))
+    => Expression (* 2 3) has value 6
+       7
+
+
+== Answers
+
+See clojure source code
+
+    (defmacro or2
+      ([] nil)
+      ([x] x)
+      ([x & next]
+          `(let [or# ~x]
+             (if or# or# (or ~@next)))))
+
+[NOTE.speaker]
+--
+Often good to start with an example and customize
+--
