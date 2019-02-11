@@ -547,7 +547,7 @@ The binding scope is within the parentheses enclosing the let form, and will sha
       (+ x y))
     => 3
 
-Destructing is providing a literal data structure containing symbols that get bound to the respective parts of a value with a matching structure. Where we might otherwise bind the vector `[1 2]` to a single symbol, here we destructure two symbols `x` and `y` by providing a pattern that matches the vector.
+Destructuring is providing a literal data structure containing symbols that get bound to the respective parts of a value with a matching structure. Where we might otherwise bind the vector `[1 2]` to a single symbol, here we destructure two symbols `x` and `y` by providing a pattern that matches the vector.
 
     (defn normalize
       "Divide all dimensions by the sum of squares"
