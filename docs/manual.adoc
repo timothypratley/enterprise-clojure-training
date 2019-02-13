@@ -557,19 +557,16 @@ Destructuring is providing a literal data structure containing symbols that get 
 
 Note that function arguments are already a destructured vector. The above case is an example of a vector of arguments which contains a vector of `x` and `y`.
 
-Destructuring avoids us having to extract substructure manually:
+Without destructuring we would extract substructure manually:
 
-    (defn normalize1 [v]
+    (defn normalize [v]
       (let [x (first v)
             y (second v)
             length (Math/sqrt (+ (* x x) (* y y)))]
         [(/ x length) (/ y length)]))
 
-    (defn normalize2 [[x y]]
-      (let [length (Math/sqrt (+ (* x x) (* y y)))]
-        [(/ x length) (/ y length)]))
-
-Destructuring is also useful in for comprehensions and loops:
+Destructuring can be used in any binding.
+We can use destructuring in for comprehensions:
 
     (defn invert [m]
       (into {} (for [[k v] m]
