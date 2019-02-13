@@ -1583,7 +1583,7 @@ We can use pure function to calculate the next value to be assigned to an atom g
 The logic is separate from the side effect.
 
 
-=== Apply, partial, and comp
+=== Apply and partial
 
 If you have 4 numbers and want the max, you can call
 
