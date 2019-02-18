@@ -6,7 +6,7 @@ include::slide.attrs[]
 
 == 11. Spec
 
-image:img/spec.jpg[]
+image:../img/spec.jpg[]
 
 "Much of the essence of building a program is in fact the debugging of the specification."
 -- Fred Brooks
@@ -565,3 +565,10 @@ Matches
 * Generate data from specs
 * Check functions with generated data
 * Instrument functions
+
+
+== End Spec
+
+link:0-introduction.html#contents[Contents]
+
+link:12-macros.html[Next Topic: 12 - Macros]

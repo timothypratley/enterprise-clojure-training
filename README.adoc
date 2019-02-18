@@ -1,7 +1,6 @@
 = Enterprise Clojure Training
 
-> Clojure is serious business!
-> -- Timothy Pratley
+> "Clojure is serious business!" -- Timothy Pratley
 
 A Clojure training course for Developers and Senior Developers working on Enterprise software.
 

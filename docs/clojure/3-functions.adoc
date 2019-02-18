@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 3. Functions
 
-image:img/functions.jpg[]
+image:../img/functions.jpg[]
 
 "The chief function of the body is to carry the brain around."
 -- Thomas A. Edison
@@ -15,7 +15,7 @@ image:img/functions.jpg[]
 
 == Defining functions (again)
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn square [x]
       (* x x))
     ;=> #my.namespace/square
@@ -23,14 +23,36 @@ image:img/functions.jpg[]
 * Functions always return a value; the result of their last expression
 * `defn` creates a `var`
 
-[source,eval-clojure]
+[NOTE.speaker]
+--
+To define a function we use the `defn` form.
+`defn` followed by the name of the function and then the arguments in a vector.
+In this case we are providing just one argument: `x`.
+We then make use of `x` inside the function.
+The last form of a function is returned as a result.
+We can optionally supply a docstring to describe what the function does.
+
+All functions return the last expression as a result.
+The effect of `defn` is to create a Var.
+--
+
+
+== Applying functions
+
+[source.eval-clojure, clojure]
     (square 2)
     ;=> 4
+
+[NOTE.speaker]
+--
+We created the square function and now we can call it by putting it in parens.
+The square of 2 is 4.
+--
 
 
 == Prefix notation
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (+ (square 2) (square 3))
     ;=> 13
 
@@ -41,12 +63,12 @@ NOTE: Arguments are evaluated from left to right before the function is called
 
 == Unnamed functions
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (fn [a]
       (inc a))
     ;=> #object[Function]
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     #(inc %)
     ;=> #object[Function]
 
@@ -55,11 +77,11 @@ Unnamed; anonymous; Lambda (λ) expression
 
 == Invoking anonymous functions
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     ((fn [a] (inc a)) 1)
     ;=> 2
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (#(inc %) 1)
     ;=> 2
 
@@ -70,7 +92,7 @@ Just like a named function; first item in a list is applied
 
 Function that captures values from the environment
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (let [who "world"]
       (defn greet []
         (str "Hello " who)))
@@ -80,7 +102,7 @@ Function that captures values from the environment
 
 == Passing a function to another function
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn do-triple [f]
       (f)
       (f)
@@ -101,18 +123,18 @@ WARNING: `map` the function, not `hash-map` the data structure
 
 * Function that applies a function to every element in a sequence
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (map inc [1 2 3])
     ;=> (2 3 4)
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (map (fn [x] (* x x)) [1 2 3 4])
     ;=> (1 4 9 16)
 
 
 == Map a previously defined function
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn greet-them [person]
       (str "Hello " person))
     (map greet-them ["Alice" "Bob" "Carol"])
@@ -123,7 +145,7 @@ The `greet-them` function is easier to test on its own
 
 == Map an anonymous function
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (let [x 5]
       (map #(+ x %) [1 2 3]))
     ;=> (6 7 8)
@@ -162,13 +184,13 @@ Is shorthand for
 
 == Variadic arguments
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn f [& args]
       args)
     (f 1 2 3)
     ;=> (1 2 3)
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (+ 1 2 3 4 5)
     ;=> 15
 
@@ -195,7 +217,7 @@ WARNING: Bypasses arity checking
 
 Common bad pattern:
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn f [x & [y]]
       (if y
         (+ x y)
@@ -206,25 +228,25 @@ Common bad pattern:
 
 == Prefer explicit argument lists
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn f
       ([x] (inc x))
       ([x y] (+ x y)))
     (f 1)
     ;=> 2
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (f 1 2)
     ;=> 3
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (f 1 2 3)
     ;;; Exception: Wrong number of args
 
 
 == Keyword arguments
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn start [& {:keys [port protocol]
                     :or {port 8080,
                          protocol "https"}}]
@@ -232,18 +254,18 @@ Common bad pattern:
     (start)
     ;=> "https"
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (start :protocol "ftp")
     ;=> "ftp"
 
 
 == Avoid keyword arguments
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def config {:protocol "ftp"})
     (start config)
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (apply start (apply concat config))
     ;=> "ftp"
 
@@ -252,20 +274,20 @@ WARNING: Inconvenient and confusing
 
 == Take a map instead
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
    (defn start2 [{:keys [port protocol]}]
       protocol)
     (start2 {:protocol "gopher"})
     ;=> "gopher"
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (start2 config)
     ;=> "ftp"
 
 
 == Pre and post conditions
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn f [x]
       {:pre [(pos? x)]
        :post [(neg? %) (int? %)]}
@@ -273,11 +295,14 @@ WARNING: Inconvenient and confusing
     (f 1)
     ;=> -1
 
-[source,eval-clojure]
+
+== Pre and post conditions assert
+
+[source.eval-clojure, clojure]
     (f -1)
     ;;; AssertionError Assert failed: (pos? x)
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (f 1.5)
     ;;; AssertionError Assert failed: (int? %)
 
@@ -347,7 +372,7 @@ See manual end of section 3
 
 == Answers
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn square [x]
       (* x x))
     (square 55)
@@ -356,7 +381,7 @@ See manual end of section 3
 
 == Answers
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn square-of-square [x]
       (if (< x 100)
         (square (square x))
@@ -364,24 +389,24 @@ See manual end of section 3
     (square-of-square 2)
     ;=> 16
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (square-of-square 123)
     ;;; ExceptionInfo Input too large
 
 
 == Answers
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn fib-step [a b]
-      [b (+ a b)]))
+      [b (+ a b)])
     (fib-step 1 1)
     ;=> [1 2]
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (fib-step 1 2)
     ;=> [2 3]
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (fib-step 2 3)
     ;=> [3 5]
 
@@ -430,3 +455,9 @@ Insuricorp just merged with Megacorp. Platinum level corgi cover is now offered 
 
 Create a new function that takes as inputs two maps: the application, and the existing policies. It should apply the same logic, but make use of the Megacorp data.
 
+
+== End Functions
+
+link:0-introduction.html#contents[Contents]
+
+link:4-testing.html[Next Topic: 4 - Testing]

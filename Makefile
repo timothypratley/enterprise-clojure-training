@@ -1,29 +1,27 @@
-SOURCEDIR := docs
-BUILDDIR := site
-FLAGS := --destination-dir=$(BUILDDIR)
-SOURCES := $(wildcard $(SOURCEDIR)/*.adoc)
-HTMLS := $(patsubst $(SOURCEDIR)/%.adoc, $(BUILDDIR)/%.html, $(SOURCES))
-PDFS := $(patsubst $(SOURCEDIR)/%.adoc, $(BUILDDIR)/%.pdf, $(SOURCES))
-SLIDESOURCES := $(wildcard $(SOURCEDIR)/slides/*.adoc)
-SLIDES := $(patsubst $(SOURCEDIR)/slides/%.adoc, $(BUILDDIR)/%.html, $(SLIDESOURCES))
+SOURCES := $(wildcard docs/*.adoc)
+HTML := $(patsubst docs/%.adoc, site/%.html, $(SOURCES))
+PDF := $(patsubst docs/%.adoc, site/%.pdf, $(SOURCES))
+CLOJURE_COURSE_SOURCES := $(wildcard docs/clojure/*.adoc)
+CLOJURE_COURSE := $(patsubst docs/clojure/%.adoc, site/clojure/%.html, $(CLOJURE_COURSE_SOURCES))
 
 .PHONY: all clean setup
 
-all: setup $(HTMLS) $(PDFS) $(SLIDES)
+all: setup $(HTML) $(PDF) $(CLOJURE_COURSE)
 
 clean:
-	rm $(BUILDDIR)/*.html $(BUILDDIR)/*.pdf
+	rm site/*.html site/*.pdf site/clojure/*.html
 
 setup: .bundle
 
 .bundle:
 	bundle --path=.bundle/gems --binstubs=.bundle/.bin
 
-$(BUILDDIR)/%.html: $(SOURCEDIR)/%.adoc
-	bundle exec asciidoctor $(FLAGS) $< 
+site/clojure/%.html: docs/clojure/%.adoc
+	bundle exec asciidoctor-revealjs --destination-dir=site/clojure $<
 
-$(BUILDDIR)/%.pdf: %.adoc
-	bundle exec asciidoctor-pdf $(FLAGS) $<
+site/%.html: docs/%.adoc
+	bundle exec asciidoctor --destination-dir=site $< 
 
-$(BUILDDIR)/slides/%.html: $(SOURCEDIR)/slides/%.adoc
-	bundle exec asciidoctor-revealjs $(FLAGS) $<
+site/%.pdf: docs/%.adoc
+	bundle exec asciidoctor-pdf --destination-dir=site $<
+

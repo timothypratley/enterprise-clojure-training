@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 8. Parallel Programming and Concurrency
 
-image:img/parallel.jpg[]
+image:../img/parallel.jpg[]
 
 "Our moral traditions developed concurrently with our reason, not as its product."
 -- Friedrich August von Hayek
@@ -27,19 +27,19 @@ image:img/parallel.jpg[]
 
 `def` returns a var
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def a 1)
     ;=> #'user/a
 
 See the var associated with a symbol using `var`
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (var a)
     ;=> #'user/a
 
 `#'` is shorthand for `(var ...)`
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     #'a
     ;=> #'user/a
 
@@ -48,24 +48,24 @@ See the var associated with a symbol using `var`
 
 Gets the value associated with a var
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (deref #'a)
     ;=> 1
 
 `@` is shorthand for `(deref ...)`
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     @(var a)
     ;=> 1
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     @#'a
     ;=> 1
 
 
 == Vars automatically deref when evaluated
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     a
     ;=> 1
 
@@ -80,13 +80,13 @@ We don't normally write `@#'a`
 
 Get the function associated with inc and invoke it:
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (#'inc 1)
     ;=> 2
 
 Vars automatically deref:
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (inc 1)
     ;=> 2
 
@@ -105,11 +105,11 @@ Symbol `inc` -> Var `inc` -> function
 
 Metadata provided using `^{}`
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def ^{:private true} one-hundred 100)
     ;=> #'one-hundred
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (meta #'one-hundred)
     ;=> {:line 73, :column 1, ...}
 
@@ -124,18 +124,18 @@ Metadata provided using `^{}`
 
 == Dynamic vars
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def ^:dynamic x 1)
     (def ^:dynamic y 1)
     (+ x y)
     ;=> 2
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (binding [x 2, y 3]
       (+ x y))
     ;=> 5
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (+ x y)
     ;=> 2
 
@@ -162,16 +162,16 @@ Thread safe
 
 Execute at a later stage
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def d1 (delay (prn "Hello world")))
     ;=> #'user/d1
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     d1
     ;=> #object[clojure.lang.Delay
     ;           {:status :pending, :val nil}]
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (realized? d1)
     ;=> false
 
@@ -185,17 +185,17 @@ Wrap an arbitrary body of code for evaluation
 
 == Delay result is requested with deref
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def d2 (delay (prn "Hello world!")
                    42))
     ;=> #'user/d2
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     @d2
     ;;; Hello world!
     ;=> 42
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (realized? d2)
     ;=> true
 
@@ -204,7 +204,7 @@ Wrap an arbitrary body of code for evaluation
 
 Body runs once, even concurrently
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     @d2
     ;=> 42
 
@@ -275,7 +275,7 @@ NOTE: Nothing is printed the second time
 
 == Atom
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def my-atom (atom 1))
     (swap! my-atom inc)
     @my-atom
@@ -303,12 +303,12 @@ NOTE: Nothing is printed the second time
 
 == Ref
 
-[source,eval-clojure]
-    (def r (ref 1))
-    (dosync
-      (alter r inc))
-    @r
-    => 2
+[source, clojure]
+(def r (ref 1))
+(dosync
+  (alter r inc))
+@r
+=> 2
 
 
 == Refs
@@ -375,3 +375,10 @@ The web service you are using can handle multiple requests faster than a series 
 == Part 4: Error handling
 
 Modify your mock of fetch-megacorp-policies such that it throws an exception randomly about 10% of the time. Make sure your tests report a failure. Now update your logic to handle the errors and retry up to 10 times. The tests should pass. Then create another test where the exception is thrown 100% of the time, and the max tries occurs.
+
+
+== End Concurrency
+
+link:0-introduction.html#contents[Contents]
+
+link:9-polymorphism.html[Next Topic: 8 - Polymorphism]

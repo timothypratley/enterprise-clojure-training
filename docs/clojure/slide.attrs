@@ -1,4 +1,4 @@
-:customcss: slides.css
+:customcss: ../slides.css
 :revealjs_theme: simple
 :revealjs_center: false
 :revealjs_controls: false
@@ -6,6 +6,7 @@
 :revealjs_history: true
 :revealjs_minScale: 1.0
 :revealjs_maxScale: 1.0
+:revealjsdir: ../reveal.js
 :docinfo: shared
 :notitle:
 :icons: font

@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 12. Macros
 
-image:img/macros.jpg[]
+image:../img/macros.jpg[]
 
 "I never think about myself as an artist working in this time. I think about it in macro."
 -- Frank Ocean
@@ -360,3 +360,10 @@ See clojure source code
 --
 Often good to start with an example and customize
 --
+
+
+== End Macros
+
+link:0-introduction.html#contents[Contents]
+
+link:13-further-reading.html[Next Topic: 13 - Further Reading]

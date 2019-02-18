@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 7. Java Interop
 
-image:img/interop.jpg[]
+image:../img/interop.jpg[]
 
 "Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
 -- Libba Bray
@@ -96,3 +96,9 @@ To your `project.clj` file
 
 Java code in that directory will be usable from Clojure
 
+
+== End Java Interop
+
+link:0-introduction.html#contents[Contents]
+
+link:8-concurrency.html[Next Topic: 8 - Concurrency]

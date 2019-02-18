@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == Enterprise Clojure Training
 
-image:img/corgi.jpg[]
+image:../img/corgi.jpg[]
 
 
 [state=title]
@@ -37,12 +37,12 @@ image:img/corgi.jpg[]
 [state=title]
 == Introductions
 
-image:img/art1.jpg[]
+image:../img/art1.jpg[]
 
 [state=title]
 == Clojure
 
-image:img/clojure-logo.png[]
+image:../img/clojure-logo.png[]
 
 "What language is it that meets all the criteria? What language would I choose if I had to choose today? Probably Clojure!"
 -- Robert Martin
@@ -54,3 +54,10 @@ image:img/clojure-logo.png[]
 * Functions
 * A tool for thought
 * Getting stuff done
+
+
+== End Introduction
+
+link:0-introduction.html#contents[Contents]
+
+link:2-syntax.html[Next Topic: 1 - Ecosystem]

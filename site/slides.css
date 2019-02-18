@@ -51,6 +51,11 @@ html.title body {
 
 code {
   background-color: #F8F8F8;
+  font-family: 'FiraCode', monospace !important;
+}
+
+.CodeMirror {
+  font-family: 'FiraCode', monospace !important;
 }
 
 .CodeMirror-cursor {

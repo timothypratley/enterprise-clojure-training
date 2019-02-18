@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 4. Testing with clojure.test
 
-image:img/testing.jpg[]
+image:../img/testing.jpg[]
 
 "The problem is not that testing is the bottleneck. The problem is that you don’t know what’s in the bottle."
 -- Michael Bolton
@@ -15,7 +15,7 @@ image:img/testing.jpg[]
 
 == deftest
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (ns my.namespace
       (:require [clojure.test
                  :refer [deftest is run-tests]]))
@@ -33,7 +33,7 @@ Tests make assertions: `(is (= 1 1))`
 
 == Failing tests
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (deftest my-failing-test
       (prn "My failing test ran")
       (is (= 1 2)))
@@ -74,7 +74,7 @@ vs
 
 == Running tests from the REPL
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (run-tests)
     ;;; "My test ran"
     ;;; "My failing test ran"
@@ -396,3 +396,10 @@ See manual end of section 4
           (post "http://service.com/greet")
           (post "http://service.com/greet")
           (is (= 3 @c)))))
+
+
+== End Testing
+
+link:0-introduction.html#contents[Contents]
+
+link:5-control-flow.html[Next Topic: 5 - Control Flow]

@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 5. Control Flow
 
-image:img/control.jpg[]
+image:../img/control.jpg[]
 
 "Control your own destiny or someone else will."
 -- Jack Welch
@@ -15,7 +15,7 @@ image:img/control.jpg[]
 
 == Conditionals: if
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (if (pos? 1)
       "one is positive"
       "or is it?")
@@ -33,7 +33,7 @@ image:img/control.jpg[]
 * `nil` means nothing and is considered false in logical tests
 * Anything else is truthy
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (if 5
       "it's five!"
       "no problem")
@@ -42,7 +42,7 @@ image:img/control.jpg[]
 
 == Use do to group multiple statements
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (if (pos? 1)
       (do (prn "hi")
           "one is positive")
@@ -53,7 +53,7 @@ image:img/control.jpg[]
 
 == Conditionals: when
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (when (pos? 1)
       (prn "multiple expressions allowed")
       :ok)
@@ -67,7 +67,7 @@ image:img/control.jpg[]
 
 == Conditionals: cond
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def x {:cake 1})
     (cond (= x 1) "one"
           (= x :cake) "the cake is a lie"
@@ -88,7 +88,7 @@ Built in primitives, not functions
 
 Arguments are not evaluated
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (if (= 1 2)
       (prn "a")
       (prn "b"))
@@ -98,7 +98,7 @@ Arguments are not evaluated
 
 == Reminder: functions evaluate all arguments
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defn if-fn [condition a b]
       (if condition a b))
     (if-fn (= 1 2)
@@ -113,7 +113,7 @@ Arguments are not evaluated
 
 `or` is a macro
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (or true (println "Hello"))
     ;=> true
 
@@ -138,12 +138,12 @@ Expands to:
 
 == Macros and special forms are not functions
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (apply or [true false true])
     ;;; CompilerException: Can't take value of a macro
 
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (apply if [true :a :b])
     ;;; CompilerException: Unable to resolve symbol: if
 
@@ -267,3 +267,10 @@ See manual end of section 5
 
     (deftest fib-test
       (is (= 89 (fib 100))))
+
+
+== End Control Flow
+
+link:0-introduction.html#contents[Contents]
+
+link:6-functional-programming.html[Next Topic: 6 - Functional Programming]

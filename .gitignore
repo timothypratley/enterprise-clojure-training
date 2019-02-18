@@ -1,3 +1,4 @@
 .bundle/
 site/*.html
 site/*.pdf
+site/clojure

@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 10. Interacting with a Database
 
-image:img/database.jpg[]
+image:../img/database.jpg[]
 
 "You can have data without information, but you cannot have information without data."
 -- Daniel Keys Moran
@@ -185,3 +185,10 @@ Ensure that all records processed from the files meets your expectations for req
 == Part 4: Extending to Poodle Protection
 
 Insuricorp is about to launch a new policy called “Poodle Protection”. Soon they will be processing applications with completely new rules. Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications. For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).
+
+
+== End Databases
+
+link:0-introduction.html#contents[Contents]
+
+link:11-spec.html[Next Topic: 11 - Spec]

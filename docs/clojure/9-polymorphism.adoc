@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 9. Polymorphism and Types
 
-image:img/types.jpg[]
+image:../img/types.jpg[]
 
 "You need a lot of different types of people to make the world better."
 -- Joe Louis
@@ -15,7 +15,7 @@ image:img/types.jpg[]
 
 == Multimethods introduction
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def my-square {:shape "square"})
     (defmulti draw :shape)
     (defmethod draw "square" [x]
@@ -33,7 +33,7 @@ image:img/types.jpg[]
 
 Polymorphic dispatch. Define the name and the dispatch function:
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (defmulti encounter
       (fn dispatch [a b]
         [(:species a) (:species b)]))
@@ -45,15 +45,11 @@ Polymorphic dispatch. Define the name and the dispatch function:
 
 == Defining method implementations
 
-[source,eval-clojure]
-    (defmethod encounter [:bunny :lion] [a b]
-      :run-away)
-    (defmethod encounter [:lion :bunny] [a b]
-      :eat)
-    (defmethod encounter [:lion :lion] [a b]
-      :fight)
-    (defmethod encounter [:bunny :bunny] [a b]
-      :mate)
+[source.eval-clojure, clojure]
+    (defmethod encounter [:bunny :lion] [a b] :run-away)
+    (defmethod encounter [:lion :bunny] [a b] :eat)
+    (defmethod encounter [:lion :lion] [a b] :fight)
+    (defmethod encounter [:bunny :bunny] [a b] :mate)
     ;=> #object[cljs.core.MultiFn]
 
 * Similar to a case block
@@ -63,7 +59,7 @@ Polymorphic dispatch. Define the name and the dispatch function:
 
 == Calling the multimethod
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (def bunny1 {:species :bunny, :other :stuff})
     (def bunny2 {:species :bunny, :other :stuff})
     (def lion1 {:species :lion, :other :stuff})
@@ -71,15 +67,15 @@ Polymorphic dispatch. Define the name and the dispatch function:
     (encounter bunny1 bunny2)
     ;=> :mate
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (encounter bunny1 lion1)
     ;=> :run-away
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (encounter lion1 bunny1)
     ;=> :eat
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (encounter lion1 lion2)
     ;=> :fight
 
@@ -250,3 +246,10 @@ Call the method on the `thing` instance and pass `"bar"`:
 
     (.getContentTypeFor thing "bar")
     => "foo-bar"
+
+
+== End Polymorphism
+
+link:0-introduction.html#contents[Contents]
+
+link:10-databases.html[Next Topic: 10 - Databases]

@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 13. Further reading
 
-image:img/further-reading.jpg[]
+image:../img/further-reading.jpg[]
 
 "You can never get a cup of tea large enough or a book long enough to suit me."
 -- C.S. Lewis
@@ -148,3 +148,8 @@ timothypratley@gmail.com
 https://timothypratley.blogspot.com
 
 @timothypratley
+
+
+== End Further Reading
+
+link:0-introduction.html#contents[Contents]

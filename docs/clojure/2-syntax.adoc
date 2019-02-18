@@ -7,7 +7,7 @@ include::slide.attrs[]
 [state=title]
 == 2. Clojure Syntax
 
-image:img/syntax.png[]
+image:../img/syntax.png[]
 
 "If the syntax is good enough for the information, it should be good enough for the meta-information."
 -- Erik Naggum
@@ -49,40 +49,40 @@ Syntax Summary:
 
 Evaluated as function calls
 
-[source,eval-clojure]
+[source.eval-clojure, clojure]
     (inc 1)
     ;=> 2
 
 
 == Invoking functions
 
-[source,eval-clojure]
-    (+ 1 2)
-    ;=> 3
+[source.eval-clojure, clojure]
+(+ 1 2)
+;=> 3
 
 Always in prefix form
 
 
 == Empty list
 
-[source,eval-clojure]
-    ()
-    ;=> ()
+[source.eval-clojure, clojure]
+()
+;=> ()
 
 
 == Making lists
 
-[source,eval-clojure]
-    (cons 1 ())
-    ;=> (1)
+[source.eval-clojure, clojure]
+(cons 1 ())
+;=> (1)
 
-[source,eval-clojure]
-    (cons 1 (cons 2 ()))
-    ;=> (1 2)
+[source.eval-clojure, clojure]
+(cons 1 (cons 2 ()))
+;=> (1 2)
 
-[source,eval-clojure]
-    (list 1 2 3)
-    ;=> (1 2 3)
+[source.eval-clojure, clojure]
+(list 1 2 3)
+;=> (1 2 3)
 
 
 == Vectors
@@ -93,60 +93,60 @@ Preferred over lists; easier to write
 
 Order 1 count and lookup by index
 
-[source,eval-clojure]
-    (get [10 20 30 40 50] 3)
-    ;=> 40
+[source.eval-clojure, clojure]
+(get [10 20 30 40 50] 3)
+;=> 40
 
 Similar to arrays, but can be added to
 
 
 == Vector operations
 
-[source,eval-clojure]
-    (conj [1 2 3] 4)
-    ;=> [1 2 3 4]
+[source.eval-clojure, clojure]
+(conj [1 2 3] 4)
+;=> [1 2 3 4]
 
-[source,eval-clojure]
-    (pop [1 2 3 4])
-    ;=> [1 2 3]
+[source.eval-clojure, clojure]
+(pop [1 2 3 4])
+;=> [1 2 3]
 
-[source,eval-clojure]
-    (assoc [1 2 3 4] 0 5)
-    ;=> [5 2 3 4]
+[source.eval-clojure, clojure]
+(assoc [1 2 3 4] 0 5)
+;=> [5 2 3 4]
 
-[source,eval-clojure]
-    (vec (list 1 2 3 4))
-    ;=> [1 2 3 4]
+[source.eval-clojure, clojure]
+(vec (list 1 2 3 4))
+;=> [1 2 3 4]
 
-[source,eval-clojure]
-    (cons 0 [1 2 3 4])
-    ;=> (0 1 2 3 4)
+[source.eval-clojure, clojure]
+(cons 0 [1 2 3 4])
+;=> (0 1 2 3 4)
 
 
 == Equality by value
 
-[source,eval-clojure]
-    (def a [1 2 3 4])
-    (= a a)
-    ;=> true
+[source.eval-clojure, clojure]
+(def a [1 2 3 4])
+(= a a)
+;=> true
 
-[source,eval-clojure]
-    (def b [1 2 3 4])
-    (= a b)
-    ;=> true
+[source.eval-clojure, clojure]
+(def b [1 2 3 4])
+(= a b)
+;=> true
 
 NOTE: `a` and `b` are different objects
 
-[source,eval-clojure]
-    (identical? a b)
-    ;=> false
+[source.eval-clojure, clojure]
+(identical? a b)
+;=> false
 
 
 == Sequential equality
 
-[source,eval-clojure]
-    (= [1 2 3 4] (list 1 2 3 4))
-    ;=> true
+[source.eval-clojure, clojure]
+(= [1 2 3 4] (list 1 2 3 4))
+;=> true
 
 Different types, but considered equal
 
@@ -161,39 +161,36 @@ Different types, but considered equal
 
 == Resolving symbols
 
-[source,eval-clojure]
-    inc
+[source.eval-clojure, clojure]
+inc
 
+[source.eval-clojure, clojure]
+foo
 
-[source,eval-clojure]
-    foo
+[source.eval-clojure, clojure]
+(quote foo)
 
-
-[source,eval-clojure]
-    (quote foo)
-
-
-[source,eval-clojure]
-    'foo
+[source.eval-clojure, clojure]
+'foo
 
 `quote` means don't resolve or evaluate
 
 
 == Quote also works on lists
 
-[source,eval-clojure]
-    (quote (1 2))
-    ;=> (1 2)
+[source.eval-clojure, clojure]
+(quote (1 2))
+;=> (1 2)
 
-[source,eval-clojure]
-    '(1 2)
-    ;=> (1 2)
+[source.eval-clojure, clojure]
+'(1 2)
+;=> (1 2)
 
 Without quote we have a problem:
 
-[source,eval-clojure]
-    (1 2)
-    ;=> Exception: Long cannot be cast to IFn
+[source.eval-clojure, clojure]
+(1 2)
+;=> Exception: Long cannot be cast to IFn
 
 WARNING: Tried to apply 1 as a function
 
@@ -272,25 +269,36 @@ Characters written with a backslash
 
 == Map operations
 
-[source,eval-clojure]
-    (get {:a 1} :a)
-    ;=> 1
+[source.eval-clojure, clojure]
+(get {:a 1} :a)
+;=> 1
 
-[source,eval-clojure]
-    (get {:a 1} :b 2)
-    ;=> 2
+[source.eval-clojure, clojure]
+(get {:a 1} :b 2)
+;=> 2
 
-[source,eval-clojure]
-    (assoc {:a 1} :b 2)
-    ;=> {:a 1, :b 2}
+[source.eval-clojure, clojure]
+(assoc {:a 1} :b 2)
+;=> {:a 1, :b 2}
 
-[source,eval-clojure]
-    (dissoc {:a 1} :a)
-    ;=> {}
+[source.eval-clojure, clojure]
+(dissoc {:a 1} :a)
+;=> {}
 
-[source,eval-clojure]
-    (merge {:a 1} {:b 2})
-    ;=> {:a 1, :b 2}
+
+== More map operations
+
+[source.eval-clojure, clojure]
+(update {:a 2} :a inc)
+;=> {:a 3}
+
+[source.eval-clojure, clojure]
+(update {:a [1 2 3]} :a conj 4)
+;=> {:a [1 2 3 4]}
+
+[source.eval-clojure, clojure]
+(merge {:a 1} {:b 2})
+;=> {:a 1, :b 2}
 
 
 == Commas
@@ -322,26 +330,18 @@ Ratings are a nested map
 A map with vector coordinate keys, and map values
 
 
-== Nested updates
+== Nested operations
 
-[source,eval-clojure]
-    (update {:a 2} :a inc)
-    ;=> {:a 3}
+[source.eval-clojure, clojure]
+(assoc-in {:a {:b {:c 1}}} [:a :b :d] 2)
+;=> {:a {:b {:c 1, :d 2}}}
 
-[source,eval-clojure]
-    (update {:a [1 2 3]} :a conj 4)
-    ;=> {:a [1 2 3 4]}
+[source.eval-clojure, clojure]
+(update-in {:a {:b {:c 1}}} [:a :b :c] inc)
+;=> {:a {:b {:c 2}}}
 
-[source,eval-clojure]
-    (assoc-in {:a {:b {:c 1}}} :d 2)
-    ;=> {:a {:b {:c 1, :d 2}}}
-
-[source,eval-clojure]
-    (update-in {:a {:b {:c 1}}} [:a :b :c] inc)
-    ;=> {:a {:b {:c 2}}}
-
-[source,eval-clojure]
-    (get-in {:a {:b {:c 1}}} [:a :b :c])
+[source.eval-clojure, clojure]
+(get-in {:a {:b {:c 1}}} [:a :b :c])
 
 
 == Sets
@@ -350,20 +350,20 @@ A map with vector coordinate keys, and map values
 
 Near constant time lookup
 
-[source,eval-clojure]
-    (contains? #{1 2 3} 3)
-    ;=> true
+[source.eval-clojure, clojure]
+(contains? #{1 2 3} 3)
+;=> true
 
 
 == Set operations
 
-[source,eval-clojure]
-    (conj #{1 2 3} 4)
-    ;=> #{1 2 3 4}
+[source.eval-clojure, clojure]
+(conj #{1 2 3} 4)
+;=> #{1 2 3 4}
 
-[source,eval-clojure]
-    (disj #{1 2 3} 2)
-    ;=> #{1 3}
+[source.eval-clojure, clojure]
+(disj #{1 2 3} 2)
+;=> #{1 3}
 
 `union`, `difference` and `intersection` are available in the `clojure.set` namespace
 
@@ -419,39 +419,39 @@ TIP: `ns` works in the REPL!
 
 Shortcut:
 
-[source,eval-clojure]
-    ::rectangle
-    ;=> :my.namespace/rectangle
+[source.eval-clojure, clojure]
+::rectangle
+;=> :my.namespace/rectangle
 
 `::` expands to the current namespace
 
 
 == Defining functions
 
-[source,eval-clojure]
-    (defn square [x]
-      (* x x))
-    (square 2)
-    ;=> 4
+[source.eval-clojure, clojure]
+(defn square [x]
+  (* x x))
+(square 2)
+;=> 4
 
-[source,eval-clojure]
-    (defn square
-    "Multiplies a number by itself"
-    [x]
-    (* x x))
-    (square 2)
-    ;=> 4
+[source.eval-clojure, clojure]
+(defn square
+  "Multiplies a number by itself"
+  [x]
+  (* x x))
+  (square 2)
+  ;=> 4
 
 
 == Defining Vars
 
-[source,eval-clojure]
-    (def x 1)
-    ;=> #'my.namespace/x
+[source.eval-clojure, clojure]
+(def x 1)
+;=> #'my.namespace/x
 
-[source,eval-clojure]
-    x
-    ;=> 1
+[source.eval-clojure, clojure]
+x
+;=> 1
 
 * Global mutable reference
 * Use sparingly
@@ -460,13 +460,13 @@ Shortcut:
 
 == Accessing a var (not the value)
 
-[source,eval-clojure]
-    (var x)
-    ;=> #'x
+[source.eval-clojure, clojure]
+(var x)
+;=> #'x
 
-[source,eval-clojure]
-    #'x
-    ;=> #'x
+[source.eval-clojure, clojure]
+#'x
+;=> #'x
 
 
 == Defining Vars continued
@@ -481,10 +481,10 @@ Shortcut:
 
 == Let
 
-[source,eval-clojure]
-    (let [x 1]
-      (inc x))
-    ;=> 2
+[source.eval-clojure, clojure]
+(let [x 1]
+  (inc x))
+;=> 2
 
 * Bind symbols to values in a scope
 * Shadow existing bindings
@@ -493,10 +493,10 @@ Shortcut:
 
 == Destructuring (binding forms)
 
-[source,eval-clojure]
-    (let [[x y] [1 2]]
-      (+ x y))
-    ;=> 3
+[source.eval-clojure, clojure]
+(let [[x y] [1 2]]
+  (+ x y))
+;=> 3
 
 * Literal data structure containing symbols
 * Matches structure
@@ -519,45 +519,45 @@ Avoid extracting substructure manually:
 
 == Vector structures match any sequence
 
-[source,eval-clojure]
-    (let [[a b] (list 1 2)]
-      b)
-    ;=> 2
+[source.eval-clojure, clojure]
+(let [[a b] (list 1 2)]
+  b)
+;=> 2
 
 
 == Strings and Collections (list, vector, set, map) implement seq
 
-[source,eval-clojure]
-    (seq "abc")
-    ;=> (\a \b \c)
+[source.eval-clojure, clojure]
+(seq "abc")
+;=> (\a \b \c)
 
-[source,eval-clojure]
-    (seq {:a 1, :b 2, :c 3})
-    ;=> ([:a 1] [:b 2] [:c 3])
+[source.eval-clojure, clojure]
+(seq {:a 1, :b 2, :c 3})
+;=> ([:a 1] [:b 2] [:c 3])
 
-[source,eval-clojure]
-    (seq? 8)
-    ;=> false
+[source.eval-clojure, clojure]
+(seq? 8)
+;=> false
 
-[source,eval-clojure]
-    (let [[a b] "abc"]
-      b)
-    ;=> \b
+[source.eval-clojure, clojure]
+(let [[a b] "abc"]
+  b)
+;=> \b
 
 
 == Basic sequences
 
-[source,eval-clojure]
-    (drop 2 [0 0 0 0])
-    ;=> (0 0)
+[source.eval-clojure, clojure]
+(drop 2 [0 0 0 0])
+;=> (0 0)
 
-[source,eval-clojure]
-    (range 5)
-    ;=> (0 1 2 3 4)
+[source.eval-clojure, clojure]
+(range 5)
+;=> (0 1 2 3 4)
 
-[source,eval-clojure]
-    (take 2 "abcd")
-    ;=> (\a \b)
+[source.eval-clojure, clojure]
+(take 2 "abcd")
+;=> (\a \b)
 
 * Many sequence oriented functions
 * Never modify the original sequence
@@ -575,43 +575,46 @@ Useful for processing files that don't fit in memory
 
 == For expressions
 
-[source,eval-clojure]
-    (for [i (range 10)]
-      (* i i))
-    ;=> (0 1 4 9 16 25 36 49 64 81)
+[source.eval-clojure, clojure]
+(for [i (range 10)]
+  (* i i))
+;=> (0 1 4 9 16 25 36 49 64 81)
 
-[source,eval-clojure]
-    (for [file ["a" "b" "c"]
-          rank [1 2]]
-      (str file rank))
-    ;=> ("a1" "a2" "b1" "b2" "c1" "c2")
+[source.eval-clojure, clojure]
+(for [file ["a" "b" "c"]
+     rank [1 2]]
+  (str file rank))
+;=> ("a1" "a2" "b1" "b2" "c1" "c2")
 
-[source,eval-clojure]
-    (for [i (range 10)
-          :when (odd? i)
-          :let [square (* i i)]]
-      square)
-    ;=> (1 9 25 49 81)
+
+== For expressions continued
+
+[source.eval-clojure, clojure]
+(for [i (range 10)
+      :when (odd? i)
+      :let [square (* i i)]]
+  square)
+;=> (1 9 25 49 81)
 
 
 == Destructuring in a for expression
 
-[source,eval-clojure]
-    (let [m {:a 1, :b 2, :c 3}]
-      (for [[k v] m]
-        [v k]))
-    ;=> ([1 :a] [2 :b] [3 :c])
+[source.eval-clojure, clojure]
+(let [m {:a 1, :b 2, :c 3}]
+  (for [[k v] m]
+    [v k]))
+;=> ([1 :a] [2 :b] [3 :c])
 
 TIP: Destructuring is available in any binding form
 
 
 == Variadic functions using `&`
 
-[source,eval-clojure]
-    (defn sub [& vs]
-      vs)
-    (sub 1 2 3 4)
-    ;=> (1 2 3 4)
+[source.eval-clojure, clojure]
+(defn sub [& vs]
+  vs)
+(sub 1 2 3 4)
+;=> (1 2 3 4)
 
 * Variadic means variable number of arguments
 * Arity means number of arguments
@@ -620,111 +623,111 @@ TIP: Destructuring is available in any binding form
 
 == Apply
 
-* Calls a function with a sequence of arguments
+Calls a function with a sequence of arguments
 
-[source,eval-clojure]
-    (apply + [1 2 3 4])
-    ;=> 10
+[source.eval-clojure, clojure]
+(apply + [1 2 3 4])
+;=> 10
 
-* Most mathematical functions are variadic:
+Most mathematical functions are variadic:
 
-[source,eval-clojure]
-    (+ 1 2 3)
-    ;=> 6
+[source.eval-clojure, clojure]
+(+ 1 2 3)
+;=> 6
 
 
 == Destructuring a map
 
-[source,eval-clojure]
-    (def x {:a 10
-            :b 20})
-    (let [{a :a, b :b} x]
-      (+ a b))
-    ;=> 30
+[source.eval-clojure, clojure]
+(def x {:a 10
+        :b 20})
+(let [{a :a, b :b} x]
+  (+ a b))
+;=> 30
 
-[source,eval-clojure]
-    (let [{:keys [a b]} x]
-      (+ a b))
-    ;=> 30
+[source.eval-clojure, clojure]
+(let [{:keys [a b]} x]
+  (+ a b))
+;=> 30
 
 
 == Destructuring strings from a map
 
-[source,eval-clojure]
-    (def y {"a" 10
-            "b" 20})
-    (let [{a "a", b "b"} y]
-      (+ a b))
-    ;=> 30
+[source.eval-clojure, clojure]
+(def y {"a" 10
+        "b" 20})
+  (let [{a "a", b "b"} y]
+    (+ a b))
+;=> 30
 
-[source,eval-clojure]
-    (let [{:strs [a b]} y]
-      (+ a b))
-    ;=> 30
+[source.eval-clojure, clojure]
+(let [{:strs [a b]} y]
+  (+ a b))
+;=> 30
 
 
 == Destructuring a sequence:
 
-[source,eval-clojure]
-    (def x (range 5))
-    (first x)
-    ;=> 0
+[source.eval-clojure, clojure]
+(def x (range 5))
+(first x)
+;=> 0
 
-[source,eval-clojure]
-    (rest x)
-    ;=> (1 2 3 4)
+[source.eval-clojure, clojure]
+(rest x)
+;=> (1 2 3 4)
 
-[source,eval-clojure]
-    (let [[a & more] (range 5)]
-      a)
-    ;=> 0
+[source.eval-clojure, clojure]
+(let [[a & more] (range 5)]
+  a)
+;=> 0
 
-[source,eval-clojure]
-    (let [[a & more] (range 5)]
-      more)
-    ;=> (1 2 3 4)
+[source.eval-clojure, clojure]
+(let [[a & more] (range 5)]
+  more)
+;=> (1 2 3 4)
 
 
 == Nested destructuring
 
-[source,eval-clojure]
-    (def movie {:name "Fate of the Furious"
-                :sequence-number 8
-                :ratings {:rotten-tomatoes 0.66
-                          :imdb 0.67}})
-    (get-in movie [:ratings :imdb])
-    ;=> 0.67
+[source.eval-clojure, clojure]
+(def movie {:name "Fate of the Furious"
+            :sequence-number 8
+            :ratings {:rotten-tomatoes 0.66
+                      :imdb 0.67}})
+(get-in movie [:ratings :imdb])
+;=> 0.67
 
-[source,eval-clojure]
-    (let [{{:keys [imdb]} :ratings} movie]
-      imdb)
-    ;=> 0.67
+[source.eval-clojure, clojure]
+(let [{{:keys [imdb]} :ratings} movie]
+  imdb)
+;=> 0.67
 
 
 == More destructuring
 
-[source,eval-clojure]
-    (defn f [{:keys [a b] :as x}]
-      x)
-    (f {})
-    ;=> {}
+[source.eval-clojure, clojure]
+(defn f [{:keys [a b] :as x}]
+  x)
+(f {})
+;=> {}
 
 
 == Destructuring with defaults
 
-[source,eval-clojure]
-    (defn f [{:keys [a b] :or {a "default"}}]
-      a)
-    (f {})
-    ;=> "default"
+[source.eval-clojure, clojure]
+(defn f [{:keys [a b] :or {a "default"}}]
+  a)
+(f {})
+;=> "default"
 
-[source,eval-clojure]
-    (defn f [x]
-      (let [defaults {:a "default"}]
-            {:keys [a b]} (merge defaults x)]
-        a))
-    (f {})
-    ;=> "default"
+[source.eval-clojure, clojure]
+(defn f [x]
+  (let [defaults {:a "default"}
+        {:keys [a b]} (merge defaults x)]
+    a))
+(f {})
+;=> "default"
 
 
 == Comments
@@ -754,9 +757,9 @@ Removal of next form `#_`
 
     #"pattern"
 
-[source,eval-clojure]
-    (re-seq #"\w+" "the quick brown fox")
-    ;=> ("the" "quick" "brown" "fox")
+[source.eval-clojure, clojure]
+(re-seq #"\w+" "the quick brown fox")
+;=> ("the" "quick" "brown" "fox")
 
 
 == Exercises
@@ -772,19 +775,19 @@ Set up the new namespace called `training.syntax`
 
 Define a var called `message` bound to the string `"greetings"`
 
-[source,eval-clojure]
-    (def message "greetings")
-    ;=> nil
+[source.eval-clojure, clojure]
+(def message "greetings")
+;=> nil
 
 
 == Answers
 
 Print out the value of the var `message`
 
-[source,eval-clojure]
-    (prn message)
-    ;;; "greetings"
-    ;=> nil
+[source.eval-clojure, clojure]
+(prn message)
+;;; "greetings"
+;=> nil
 
 NOTE: `prn` keeps the quotes around strings; `println` does not
 
@@ -793,18 +796,18 @@ NOTE: `prn` keeps the quotes around strings; `println` does not
 
 Create a `let` binding that binds the symbol `message` to `"well hello there"`, and prints out `message` inside the `let` block:
 
-[source,eval-clojure]
-    (let [message "well hello there"]
-      (prn message))
-    ;;; "well hello there"
-    ;=> nil
+[source.eval-clojure, clojure]
+(let [message "well hello there"]
+  (prn message))
+;;; "well hello there"
+;=> nil
 
 Print out message again, outside of the `let` block:
 
-[source,eval-clojure]
-    (prn message)
-    ;;; "greetings"
-    ;=> nil
+[source.eval-clojure, clojure]
+(prn message)
+;;; "greetings"
+;=> nil
 
 NOTE: `message` global var is still the original value
 
@@ -813,20 +816,26 @@ NOTE: `message` global var is still the original value
 
 Create a let binding that destructures a map and prints the greeting and tone:
 
-[source,eval-clojure]
-    (def m {:greeting "good morning", :tone "happy"})
-    (let [{:keys [greeting tone]} m]
-      (prn greeting tone))
-    ;=> "good morning" "happy"
+[source.eval-clojure, clojure]
+(def m {:greeting "good morning", :tone "happy"})
+(let [{:keys [greeting tone]} m]
+  (prn greeting tone))
+;=> "good morning" "happy"
 
 
 == Answers
 
 Destructure a single map input and return a string combining greeting and tone:
 
-[source,eval-clojure]
-    (defn hi [{:keys [greeting tone]}]
-      (str greeting " - " tone))
-    (hi m)
-    ;=> "good morning - happy"
+[source.eval-clojure, clojure]
+(defn hi [{:keys [greeting tone]}]
+  (str greeting " - " tone))
+(hi m)
+;=> "good morning - happy"
 
+
+== End Syntax
+
+link:0-introduction.html#contents[Contents]
+
+link:3-functions.html[Next Topic: 3 - Functions]
