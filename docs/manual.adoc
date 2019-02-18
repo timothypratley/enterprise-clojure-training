@@ -2561,7 +2561,7 @@ Now we are all set to start doing queries.
 
 === Inserting, updating and retrieving data
 
-First we will create a table called testing inside the database with a text field named data, and then insert some rows.
+First we will create a table called messages inside the database with a text field named message, and then insert some rows.
 
     (jdbc/execute! db
       "create table messages (message varchar(1024))")
