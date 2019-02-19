@@ -1,0 +1,276 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== 5. Control Flow
+
+image:../img/control.jpg[]
+
+"Control your own destiny or someone else will."
+-- Jack Welch
+
+
+== Conditionals: if
+
+[source.eval-clojure, clojure]
+    (if (pos? 1)
+      "one is positive"
+      "or is it?")
+    ;=> "one is positive"
+
+* Chooses between two options
+* Returns a result
+* Only one branch is evaluated
+* A function call evaluates all arguments
+
+
+== Truthiness
+
+* Booleans: `true` and `false`
+* `nil` means nothing and is considered false in logical tests
+* Anything else is truthy
+
+[source.eval-clojure, clojure]
+    (if 5
+      "it's five!"
+      "no problem")
+    ;=> "it's five!"
+
+
+== Use do to group multiple statements
+
+[source.eval-clojure, clojure]
+    (if (pos? 1)
+      (do (prn "hi")
+          "one is positive")
+      "or is it?")
+    ;;; "hi"
+    ;=> "one is positive"
+
+
+== Conditionals: when
+
+[source.eval-clojure, clojure]
+    (when (pos? 1)
+      (prn "multiple expressions allowed")
+      :ok)
+    ;;; multiple expressions allowed
+    ;=> :ok
+
+* When test fails, nothing is evaluated
+* When test passes, the entire body is evaluated
+* Returns the last expression as a result
+
+
+== Conditionals: cond
+
+[source.eval-clojure, clojure]
+    (def x {:cake 1})
+    (cond (= x 1) "one"
+          (= x :cake) "the cake is a lie"
+          (map? x) "it's a map!"
+          :else "not sure what it is")
+    ;=> "it's a map!"
+
+* Multiple branches
+* `:else` is not special, keywords are truthy
+* See also `condp` and `case`
+
+
+== Conditionals are special forms
+
+Built in primitives, not functions
+
+`def`, `let`, `quote` and `fn` are special forms
+
+Arguments are not evaluated
+
+[source.eval-clojure, clojure]
+    (if (= 1 2)
+      (prn "a")
+      (prn "b"))
+    ;;; "b"
+    ;=> nil
+
+
+== Reminder: functions evaluate all arguments
+
+[source.eval-clojure, clojure]
+    (defn if-fn [condition a b]
+      (if condition a b))
+    (if-fn (= 1 2)
+      (prn "a")
+      (prn "b"))
+    ;;; a
+    ;;; b
+    ;=> nil
+
+
+== Macros are also special
+
+`or` is a macro
+
+[source.eval-clojure, clojure]
+    (or true (println "Hello"))
+    ;=> true
+
+Arguments are not evaluated
+
+Macros are used to implement and extend Clojure syntax
+
+
+== Macros replace forms at compile time
+
+    (or true false)
+
+Expands to:
+
+    (let [a true]
+      (if a
+          a
+          (let [b false]
+            (if b
+                b)))))
+
+
+== Macros and special forms are not functions
+
+[source.eval-clojure, clojure]
+    (apply or [true false true])
+    ;;; CompilerException: Can't take value of a macro
+
+
+[source.eval-clojure, clojure]
+    (apply if [true :a :b])
+    ;;; CompilerException: Unable to resolve symbol: if
+
+WARNING: Macros cannot be passed as arguments to functions
+
+
+== Identifying special forms and macros
+
+* Remember the special forms:
+  `if`, `do`, `let`, `quote`, `var`, `fn`, `loop`, `recur`, `throw`, `try`
+* Control flow forms: `cond`, `or`, `and`, `when`
+* Navigate to source: `def`, `defn`, `defmacro`
+* See `:macro` in Metadata
+* Documentation
+
+NOTE: Writing macros is covered later in the course
+
+
+== Recursion
+
+    (defn sum-up [coll result]
+      (if (empty? coll)
+        result
+        (sum-up (rest coll)
+                (+ result (first coll)))))
+
+Functions that invoke themselves are recursive
+
+
+== Tail Call Optimization
+
+Recursion without consuming the stack
+
+    (defn sum-up-with-recur [coll result]
+      (if (empty? coll)
+        result
+        (recur (rest coll) (+ result (first coll)))))
+
+* Recur can only occur where a function returns
+* Current frame will return the result of the next call
+* No further calculations needed
+* Current frame can be released
+
+
+== Loops
+
+    (loop [a 0
+           b 1]
+      (if (< b 1000)
+        (recur b (+ a b))
+        a))
+
+* Loop establishes bindings
+* Allows recur to the start of the loop
+
+
+== Exception handling
+
+Special forms `try` `catch` `finally` and `throw`
+
+    (try
+      (inc "cat")
+      (catch Exception e
+        (println "cat cannot be incremented"))
+      (finally
+        (println "always"))
+
+
+== Exercises
+
+See manual end of section 5
+
+
+== Answers
+
+    (def grade [score]
+      (cond (>= score 90) "A"
+            (>= score 80) "B"
+            (>= score 70) "C"
+            (>= score 60) "D"
+            :else "F"))
+
+    (deftest grade-test
+      (is (= "B" (grade 85))))
+
+
+== Answers
+
+    (defn factorial [n]
+      (loop [acc 1
+             x n]
+        (if (<= x 1)
+          acc
+          (recur (* acc x) (dec x)))))
+
+    (deftest factorial-test
+      (is (= 120 (factorial 5))))
+
+
+== Answers
+
+    (defn factorial2
+      ([n] (factorial2 1 n))
+      ([acc n]
+       (if (<= n 1)
+         acc
+         (recur (* acc n) (dec n)))))
+
+    (deftest factorial2-test
+      (is (= 120 (factorial2 5))))
+
+
+== Answers
+
+    (defn fib [limit]
+      (loop [a 1
+             b 1]
+        (if (>= b limit)
+          a
+          (recur b (+ a b)))))
+
+    (deftest fib-test
+      (is (= 89 (fib 100))))
+
+
+== End Control Flow
+
+link:0-introduction.html#contents[Contents]
+
+link:6-functional-programming.html[Next Topic: 6 - Functional Programming]

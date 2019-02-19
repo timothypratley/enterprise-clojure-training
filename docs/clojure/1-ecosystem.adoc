@@ -1,0 +1,165 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== 1. The Clojure Ecosystem
+
+image:../img/ecosystem.jpg[]
+
+"Integrity is an ecosystem."
+-- Michael Leunig
+
+[NOTE.speaker]
+--
+Benefits of embracing the JVM as a host
+--
+
+
+== Dependencies
+
+* Libraries are plain old jars
+* Clojure is itself a jar
+* Clojure can make direct use of other jars
+* Easy to deploy
+* Leiningen
+
+
+== Leiningen
+
+    lein new training
+    cd training
+    tree
+    cat project.clj
+    cat src/training/core.clj
+
+
+== tree
+
+    .
+    ├── CHANGELOG.md
+    ├── doc
+    │   └── intro.md
+    ├── LICENSE
+    ├── project.clj
+    ├── README.md
+    ├── resources
+    ├── src
+    │   └── training
+    │       └── core.clj
+    └── test
+        └── training
+            └── core_test.clj
+
+
+== project.clj
+
+[source, clojure]
+(defproject training "0.1.0-SNAPSHOT"
+  :description "FIXME: write description"
+  :url "http://example.com/FIXME"
+  :license
+  {:name "Eclipse Public License"
+   :url "http://www.eclipse.org/legal/epl-v10.html"}
+   :dependencies [[org.clojure/clojure "1.8.0"]])
+
+
+== src/training/core.clj
+
+[source, clojure]
+----
+(ns training.core)
+
+(defn foo
+  "I don't do a whole lot."
+  [x]
+  (println x "Hello, World!"))
+----
+
+
+== The Read Eval Print Loop (REPL)
+
+[source, console]
+$ lein repl
+
+We type in an expression:
+
+[source, clojure]
+(+ 1 2)
+
+Clojure returns a result:
+
+[source, clojure]
+=> 3
+
+NOTE: `=>` means evaluates to
+
+
+[NOTE.speaker]
+--
+* evaluates
+* compiles
+* change program definitions on the fly
+* try things
+* answer questions
+--
+
+
+== Editor setup
+
+* IntelliJ IDEA + Cursive
+* Wide range of editor support options
+
+[NOTE.speaker]
+--
+* https://www.jetbrains.com/idea
+* https://cursive-ide.com
+* Focus on Clojure first, editors later
+--
+
+
+== Exercises
+
+See manual end of section 1
+
+
+== Answers a
+
+[source.eval-clojure, clojure]
+(+ 2 3)
+;=> 5
+
+[source.eval-clojure, clojure]
+(* 31 79)
+;=> 2449
+
+[source.eval-clojure, clojure]
+(/ 10 2)
+;=> 5
+
+[source.eval-clojure, clojure]
+(/ 2 10)
+;=> 1/5
+
+
+== Answers b
+
+[source.eval-clojure, clojure]
+(+ 1 2 3)
+;=> 6
+
+[.eval-clojure]
+(println "hello world")
+;=> "hello world"
+
+[source.eval-clojure, clojure]
+(* 5 4 3 2 1)
+;=> 120
+
+== End Ecosystem
+
+link:0-introduction.html#contents[Contents]
+
+link:2-syntax.html[Next Topic: 2 - Syntax]

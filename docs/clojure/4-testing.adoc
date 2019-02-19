@@ -1,0 +1,405 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== 4. Testing with clojure.test
+
+image:../img/testing.jpg[]
+
+"The problem is not that testing is the bottleneck. The problem is that you don’t know what’s in the bottle."
+-- Michael Bolton
+
+
+== deftest
+
+[source.eval-clojure, clojure]
+    (ns my.namespace
+      (:require [clojure.test
+                 :refer [deftest is run-tests]]))
+    (deftest my-test
+      (prn "My test ran")
+      (is (= 1 1)))
+    (my-test)
+    ;;; "My test ran"
+    ;=> nil
+
+Tests are functions with no input arguments
+
+Tests make assertions: `(is (= 1 1))`
+
+
+== Failing tests
+
+[source.eval-clojure, clojure]
+    (deftest my-failing-test
+      (prn "My failing test ran")
+      (is (= 1 2)))
+    (my-failing-test)
+    ;;; "My failing test ran"
+    ;;; FAIL in (my-failing-test)
+
+
+== Defining tests with deftest
+
+Can define tests in any namespace
+
+Convention: `*test*` dir mirrors `*src*` dir; append `*test*`
+
+
+|===
+|`*test*/training/a_test.clj`
+|`*src*/training/a.clj`
+|===
+
+NOTE: The namespace `training.a-test` contains tests for functions from `training.a`
+
+
+== Refer all
+
+Common to refer all symbols from `clojure.test` for convenience:
+
+    (ns training.my-namespace-test
+      (:require [clojure.test :refer :all]))
+    (deftest ...)
+
+vs
+
+    (ns training.my-namespace-test
+      (:require [clojure.test :as test]))
+    (test/deftest ...)
+
+
+== Running tests from the REPL
+
+[source.eval-clojure, clojure]
+    (run-tests)
+    ;;; "My test ran"
+    ;;; "My failing test ran"
+    ;;; Ran 0 tests containing 0 assertions.
+    ;;; 0 failures, 0 errors.
+    ;=> {:test 1, :pass 0, :fail 0, :error 0, :type :summary}
+
+Runs all tests in the current namespace
+
+
+== Test specific namespaces:
+
+    (run-tests 'training.my-namespace
+               'training.other-namespace)
+
+
+== Command line testing
+
+    $ lein test
+
+    "My test ran"
+    "My failing test ran"
+    Ran 0 tests containing 0 assertions.
+    0 failures, 0 errors.
+
+Runs all tests in a project
+
+
+== lein-test-refresh
+
+* Reloads code and runs tests when you save a file
+* Leiningen plugin
+
+Add lein-test-refresh to your `~/.lein/profiles.clj`:
+
+    {:user
+     {:plugins
+      [[com.jakemccrary/lein-test-refresh "0.22.0"]]}}
+
+
+== lein-test-refresh
+
+Alternatively as a `project.clj` dependency:
+
+    (defproject sample
+      :dependencies [[org.clojure/clojure "1.8.0"]]
+      :profiles
+      {:dev
+       {:plugins
+        [[com.jakemccrary/lein-test-refresh "0.22.0"]]}})
+
+
+== Using lein-test-refresh
+
+	$ lein test-refresh
+
+Watches for changes from the command line
+
+Change `my-test` to print a new message
+
+Tests are re-run as soon as you save the file
+
+	(deftest my-test
+	  (prn "My test ran immediately"))
+
+Use lein-test-refresh like a REPL
+
+Test more
+
+
+== Assertions
+
+	(deftest inc-adds-one-test
+	  (is (= 2 (inc 1))))
+
+	=> Ran 1 tests containing 1 assertions.
+    0 failures, 0 errors.
+
+* `(= expected actual)`
+* Expected: value literal
+* Actual: result of invoking the function under test
+
+
+== Failures
+
+	(deftest broken-test
+	  (is (= 1 (inc 1))))
+
+	=> FAIL in (broken-test)
+    expected: (= 1 (inc 1))
+      actual: (not (= 1 2))
+
+
+== Can use any truthy assertion
+
+    (deftest odd-test
+      (is (odd? 1)))
+
+    (deftest create-test
+      (is (create-thing)))
+
+
+== Describing the assertions
+
+    (deftest pythag-test
+      (is (= (* 5 5)
+             (+ (* 3 3) (* 4 4)))
+          "The square of the hypotenuse
+          is equal to the sum of the squares
+          of the other two sides"))
+
+
+== Comparing complex values
+
+    expected: (= {:foo :bar, :baz :quux} {:foo :bar, :baz :quux} {:fo :bar, :baz :quux})
+      actual: (not (= {:foo :bar, :baz :quux} {:foo :bar, :baz :quux} {:fo :bar, :baz :quux}))
+
+Huh?
+
+    expected: {:foo :bar, :baz :quux}
+      actual: {:fo :bar, :baz :quux}
+        diff: - {:foo :bar}
+              + {:fo :bar}
+
+`pjstadig/humane-test-output` (or `venantius/ultra`)
+
+
+== Humane test output
+
+`~/.lein/profiles.clj`:
+
+    {:user
+     {:dependencies
+      [[pjstadig/humane-test-output "0.8.3"]]
+      :injections
+       [(require 'pjstadig.humane-test-output)
+        (pjstadig.humane-test-output/activate!)]}}
+
+
+== Grouping assertions
+
+    (deftest math-test
+      (testing "Basic math"
+        (is (odd? 1))
+        (is (= 2 (inc 1))))
+      (testing "Pythagoras"
+        (is (= (* 5 5)
+               (+ (* 3 3) (* 4 4)))
+            "The square of the hypotenuse
+            is equal to the sum of the squares
+            of the other two sides"))
+
+
+== are
+
+    (are [x y] (= x y)
+         2 (+ 1 1)
+         4 (* 2 2))
+
+Concisely expresses multiple assertions
+
+WARNING: Disadvantages
+
+* Easy to make an error in the syntax
+* Overly terse
+* Line numbers are not preserved (harder to find the failing test)
+
+
+== Should throw an exception
+
+    (defn maybe-inc [x]
+      (if (= 42 x)
+        (throw (ex-info "oh no" {}))
+        (inc x)))
+
+    (deftest test-maybe-inc-throws
+      (is (thrown? Exception
+            (maybe-inc 42)))
+      (is (thrown-with-msg? Exception #"oh no"
+            (maybe-inc 42))))
+
+
+== Test fixtures
+
+    (use-fixtures :each
+      (fn print-enter-exit [tests]
+        (println "before")
+        (tests)
+        (println "after")))
+
+* A fixture is just a function
+* Takes a test and calls it (tests are functions)
+* Set up and tear down resources (database connections etc)
+* `:each` means run for every test in the namespace
+
+[NOTE.speaker]
+--
+Test runner will call the fixture
+
+* prints “before”
+* executes the tests in the namespace
+* prints “after”
+--
+
+
+== Every vs once
+
+    (use-fixtures :once
+      (fn capture-prints [f]
+        (with-out-str (f))))
+
+* This fixture captures output, prevents clutter
+* `:once` per namespace
+
+
+== Fixtures
+
+* Common use case is when doing database tests
+* Wrap the test execution inside a transaction
+* Rollback after the test completes
+* Avoids the need to clean up data
+
+
+== Mocking
+
+    (defn post [url]
+      {:body (str "Hello world")})
+
+    (deftest test-post
+      (with-redefs [str (fn [& args]
+                           "Goodbye world")]
+        (is (= {:body "Goodbye world"}
+               (post "http://service.com/greet")))))
+
+NOTE: `let` does not suffice, `str` is outside of scope
+
+
+== Mocking
+
+* Replace any var using `with-redefs`
+* Disable dependencies during the test
+* Isolate particular behaviors
+* Test exceptional conditions
+** always throw
+** never throw
+
+
+== Debugging
+
+Print out an intermediary values
+
+    (defn shazam [a b]
+      (/ 1 (+ a b) (+ a (* a b))))
+
+What is `(+ a (* a b))` evaluating to? `(doto ... (prn))`
+
+    (defn shazam [a b]
+      (/ 1 (+ a b) (doto (+ a (* a b)) (prn "***"))))
+
+    (shazam 1 2)
+    => 3 "***"
+       1/9
+
+[NOTE.speaker]
+--
+* `prn` will not work, always returns `nil`
+* `doto` causes side-effect to occur, and return the original argument
+--
+
+
+== doto
+
+Also useful for Java interop:
+
+    (doto (new java.util.HashMap)
+      (.put "a" 1)
+      (.put "b" 2))
+    => {"a" 1, "b" 2}
+
+We get the constructed object, with side-effects applied
+
+
+== Debugging
+
+* Ask the REPL questions
+* Build small incremental functions
+* Write tests
+
+
+== Workflow demo
+
+
+== Exercises
+
+See manual end of section 4
+
+
+== Answers
+
+    (defn pythag [a b]
+      (Math/sqrt (+ (* a a) (* b b))))
+
+    (deftest test-pythag
+      (is (= 5 (pythag 4 3)))
+      (is (= 13 (pythag 12 5))))
+
+
+== Answers
+
+    (defn post [url]
+      {:body (str "Hello world")})
+
+    (deftest test-post
+      (let [c (atom 0)]
+        (with-redefs [str (fn [& args]
+                            (swap! c inc)
+                            "Goodbye world")]
+          (post "http://service.com/greet")
+          (post "http://service.com/greet")
+          (post "http://service.com/greet")
+          (is (= 3 @c)))))
+
+
+== End Testing
+
+link:0-introduction.html#contents[Contents]
+
+link:5-control-flow.html[Next Topic: 5 - Control Flow]

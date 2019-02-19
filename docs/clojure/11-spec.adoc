@@ -1,0 +1,574 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+== 11. Spec
+
+image:../img/spec.jpg[]
+
+"Much of the essence of building a program is in fact the debugging of the specification."
+-- Fred Brooks
+
+
+== Specifications
+
+* Specifies the structure of data
+* Validates data structures
+* A spec is a single argument function
+* Values conform to specs or don't (validation)
+* A values may conform to one of multiple specs (parsing)
+* A registrar of named specs
+* Can generate data and tests
+* Asserts arbitrary requirements
+* More flexible than types
+
+
+== Spec Introduced in Clojure 1.9.0
+
+Update `project.clj` to the right version:
+
+    [org.clojure/clojure "1.9.0"]
+
+Require it
+
+    (ns training.spec
+      (:require [clojure.spec.alpha :as s]))
+
+
+== Any single argument function is a spec
+
+    (string? 0)
+    => false
+
+    (identity 1)
+    => 1
+
+    (identity nil)
+    => nil
+
+A truthy result indicates conformity
+
+
+== We validate values against specs
+
+    (s/valid? string? 0)
+    => false
+
+    (s/valid? identity nil)
+    => false
+
+    (s/valid? identity 1)
+    => true
+
+
+== Naming a spec
+
+    (s/def ::first-name string?)
+    => :user/first-name
+
+Identifier -> spec is stored in the registrar
+
+    (s/valid? ::first-name "Tim")
+    => true
+
+`::first-name` is shorthand for `:my.namespace/first-name`
+
+Naming collisions are expected
+
+Spec identifiers must be namespaced
+
+
+== Another spec example
+
+    (s/def :corgi-cover/state #{"IL" "WA" "NY" "CO"})
+    (s/valid? :corgi-cover/state "IL")
+    => true
+
+TIP: Sets are functions that return the element if it is in the set
+
+
+== Logical specs
+
+    (s/def ::big-even (s/and int? even? #(> % 1000)))
+
+    (s/valid? ::big-even 100000)
+    => true
+
+    (s/valid? ::big-even 5)
+    => false
+
+
+== Explaining non-conformance
+
+    (s/explain ::big-even 5)
+    => val: 5 fails spec: ::big-even predicate: even?
+
+See also `explain-str`
+
+TIP: What would happen if we had not used `s/and`?
+
+    #(and (int? %) (even? %) (> % 1000))
+
+
+== Conforming
+
+    (s/def ::name-or-id (s/or :name string?
+                              :id int?))
+
+Chose which spec matches
+
+    (s/conform ::name-or-id "abc")
+    => [:name "abc"]
+
+    (s/conform ::name-or-id 100)
+    => [:id 100]
+
+Each choice is tagged (`:name` and `:id`)
+
+
+== Conform is useful for parsing
+
+* Events
+* Function signatures
+* Expectations about data
+* Can match one of many alternatives
+
+
+== Allowing nil
+
+    (string? nil)
+    => false
+
+To include `nil` as a valid value:
+
+    (s/nilable string?)
+
+
+== regex in a spec
+
+    (def email-regex
+      #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$")
+    (s/def ::email
+      (s/and string?
+             #(re-matches email-regex %)))
+
+    (s/valid? ::email "timothypratley@gmail.com")
+    => true
+    (s/valid? ::email "not-a-valid-email-address")
+    => false
+
+
+== Map specs
+
+    (s/def ::first-name string?)
+    (s/def ::last-name string?)
+    (s/def ::phone string?)
+
+    (s/def ::person (s/keys :req [::first-name ::last-name]
+                            :opt [::phone]))
+
+Entity definition
+
+
+== Validating maps
+
+    (s/valid? ::person
+      {::first-name "Elon"
+       ::last-name "Musk"
+       ::email "elon@example.com"})
+    => true
+
+* Required attributes are included
+* Every registered key has a conforming value
+
+
+== Qualified keys
+
+Namespacing keys preserves more meaning
+
+    {:my.namespace/first-name "Elon"
+     :my.namespace/last-name "Musk"
+     :my.namespace/email "elon@example.com"}
+
+But existing code often does not namespace keys
+
+    {:first-name "Elon"
+     :last-name "Musk"
+     :email "elon@example.com"}
+
+
+== Unqualified keys
+
+    (s/def :unq/person
+      (s/keys :req-un [::first-name ::last-name ::email]
+              :opt-un [::phone]))
+
+    (s/valid? :unq/person
+      {:first-name "Elon"
+       :last-name "Musk"
+       :email "elon@example.com"})
+    => true
+
+* req-un -> required unqualified keys
+* opt-un -> optional unqualified keys
+
+
+== Generic map: map-of
+
+    (s/def ::scores (s/map-of string? int?))
+
+    (s/valid? ::scores {"Sally" 1000,
+                        "Joe" 500
+                        "Jess" 750})
+    => true
+
+* Homogeneous keys and homogeneous values
+
+
+== Collections
+
+    (s/valid (s/coll-of number?)
+             #{5 10 2})
+    => true
+
+    (s/valid (s/tuple number? string?)
+             [42 "meaning of life"])
+    => true
+
+
+== Specs can be combined
+
+    (s/def :mega-corp/name string?)
+    (s/def :mega-corp/policy-count int?)
+    (s/def :corgi-cover/state #{"IL" "WA" "NY" "CO"})
+    (s/def :corgi-cover/corgi-count pos-int?)
+
+    (s/def :mega-corp/corgi-cover
+      (s/keys :req-un [:mega-corp/name
+                       :corgi-cover/state
+                       :corgi-cover/corgi-count]))
+
+
+== Generators
+
+* Specs are designed to act as generators
+* Produce sample data that conforms to the spec
+* Useful for property-based testing
+
+
+== Generator setup
+
+Add to your `project.clj`:
+
+    :profiles
+    {:dev
+     {:dependencies
+      [[org.clojure/test.check "0.9.0"]]}}
+
+Require:
+
+    (ns training.spec
+      (:require [clojure.spec.gen.alpha :as gen]))
+
+
+== generate and gen
+
+    (gen/generate (s/gen int?))
+    => -959
+
+* `gen` obtains the generator for a spec
+* `generate` creates a value that conforms to the spec
+
+
+== generate can build complex values
+
+    (gen/generate (s/gen :mega-corp/corgi-cover))
+    => {:name "yNd516AYD",
+        :state "NY",
+        :corgi-count 1}
+
+
+== sample
+
+    (gen/sample (s/gen string?))
+    => ("" "" "" "" "8" "W" "" "G74SmCm" "K9sL9" "82vC")
+
+Produces 10 examples
+
+
+== int-in range
+
+    (s/def ::roll (s/int-in 0 11))
+    (gen/sample (s/gen ::roll))
+    => (1 0 0 3 1 7 10 1 5 0)
+
+See also `inst-in` and `double-in`
+
+See also `test.check` documentation
+
+
+== What about functions arguments?
+
+    (defn f [x y z]
+      ...)
+
+`[x y z]` is a sequence of data arguments with different specs
+
+Positional importance
+
+NOTE: unlike a stream of events
+
+
+== cat - Concatenation
+
+    (s/def ::t
+      (s/cat :a number? :b string?))
+
+    (s/conform ::t [2 "three"])
+    => {:a 2, :b "three"}
+
+Covers most function argument signature
+
+
+== Function specs
+
+    (s/fdef f
+      :args (s/cat ...)
+      :ret ...
+      :fn ...)
+
+* Sequence of inputs
+* Return spec
+* Invariant function has access to inputs and return
+
+
+== Function args
+
+    (s/fdef f :args (s/cat :num number? :item string?))
+
+    (defn f [num item]
+      (str num " bottles of " item " on the wall"))
+
+Often declared in a different namespace
+
+
+== Function ret
+
+    (s/fdef f :ret string?)
+
+
+== Function invariant
+
+    (s/fdef f
+      :fn #(str/includes? (:ret %) (-> % :args :item))
+
+
+== Putting them all together
+
+    (s/fdef f :args (s/cat :num number?
+                           :item string?))
+              :ret string?
+              :fn #(str/includes?
+                     (-> % :args :item)
+                     (:ret %))
+
+
+== Example showing different namespaces
+
+`src/training/core.clj`
+
+    (ns training.core)
+    (defn f [x]
+      (inc x))
+
+`src/training/core_spec.clj`
+
+    (ns training.core-spec
+      (:require [training.core :as c]
+                [clojure.spec.alpha :as s]))
+    (s/fdef c/f :args (s/cat :x int?)
+                :ret int?)
+
+
+== Checking that a function obeys its spec
+
+`src/training/core_test`
+
+    (ns training.core-test
+      (:require [clojure.test :refer :all]
+                [clojure.spec.test.alpha :as stest]
+                [training.core :as c]))
+    (deftest f-test
+      (is (nil? (-> (stest/check `c/f) first :failure))))
+
+
+== Issues with spec
+
+* Common to keep specs in a separate namespace
+* `stest/check` returns a sequence containing a failure cases
+* Shrinks to a minimal case
+* Difficult to find what you want in the output
+* Designed for running at the REPL, clunky in tests
+* Make sure you tests for failure before success
+* The expound library helps
+
+
+== Expound
+
+Add to project.clj dependencies
+
+    [expound "0.5.0"]
+
+    (ns training.expound-test
+      (:require [expound.alpha :as e]))
+    (e/expound string? 1)
+    =>
+    -- Spec failed --------------------
+      1
+    should satisfy
+      string?
+    -------------------------
+
+
+== check
+
+* Generates arguments based on the `:args` spec
+* Invokes the function
+* Checks that `:ret` and `:fn` specs were satisfied
+* Reduces to the shortest failing case
+
+
+== enumerate-namespace
+
+    (stest/check (stest/enumerate-namespace 'training.core))
+
+Tests all functions in a namespace that have a spec
+
+    (stest/check)
+
+Checks all functions that have a spec
+
+
+== instrument
+
+    (stest/instrument `c/f)
+    (c/f "bad argument")
+    => CompilerException: did not conform to spec
+
+* Requires a fully-qualified symbol
+* Provides validation for external uses of a function
+* `unstrument` to turn off
+
+
+== Can instrument namespaces, or everything
+
+    (stest/instrument (stest/enumerate-namespace 'training.core))
+
+    (stest/instrument)
+
+
+== Sequence specs are regular expressions
+
+|===
+|`*` | 0 or more of a pattern
+|`+` | 1 or more of a pattern
+|`?` | 0 or 1 of a pattern
+|===
+
+
+== Sequence specs
+
+    (s/valid? (s/* string?) ["a" "b" "c"])
+    => true
+
+    (s/valid? (s/+ string?) [])
+    => false
+
+    (s/valid? (s/? string?) ["a" "b"])
+    => false
+
+
+== cat with subsequences
+
+    (s/def ::t
+      (s/cat :a (s/* int?) :b string?))
+
+    (s/conform ::t [1 2 "three"])
+    => {:a [1 2], :b "three"}
+
+NOTE: Matched `[1 2 "three"]`, not `[[1 2] "three"]`
+
+Think of it as a regex: `int*string`
+
+"Any number of ints followed by a string"
+
+
+== alt - Alternatives
+
+    (s/def ::t
+      (s/cat :a (s/alt :b (s/* int?)
+                       :c (s/* string?))
+             :d keyword?))
+
+Builds a regex: `(int*|string*)keyword`
+
+   [1 2 3 :foo]
+   ["abc" "def" :bar]
+
+
+== Compare alt with or
+
+WARNING: Is `s/alt` the same as `s/or`?
+
+Inside a sequence `s/or` would match
+
+   [[1 2 3] :foo]
+   [["abc" "def"] :bar]
+
+The key is to think about the regex being constructed
+
+Outside of sequences they do behave the same
+
+
+== Additional constraints
+
+    (s/def ::even-strings (s/cat :a (s/& (s/* string?)
+                                         #(even? (count %)))
+                                 :b keyword?))
+
+Matches
+
+    ["hello" "world" :k]
+
+* `s/&` is like `s/and`
+* `s/&` is can participate in subsequences (similar to `s/alt` vs `s/or`)
+
+
+== exercise samples and conforms
+
+    (s/exercise (s/* (s/cat :w (s/alt :x int?))))
+
+    (s/exercise-fn training.core/f)
+
+* Generates 10 samples and conforms them
+* Very useful to test specs as you build them
+* Can see the example and where the parts were matched
+
+
+== Spec summary
+
+* Spec data
+* Validate data
+* Spec function arguments
+* Generate data from specs
+* Check functions with generated data
+* Instrument functions
+
+
+== End Spec
+
+link:0-introduction.html#contents[Contents]
+
+link:12-macros.html[Next Topic: 12 - Macros]

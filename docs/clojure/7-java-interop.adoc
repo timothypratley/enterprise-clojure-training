@@ -1,0 +1,104 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== 7. Java Interop
+
+image:../img/interop.jpg[]
+
+"Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
+-- Libba Bray
+
+
+== Clojure syntax for Java constructors
+
+    (ns training.core
+      (:import (java.util Date)))
+
+    (Date.)
+    (Date. 2018 02 17)
+
+Which is equivalent to the less used variant:
+
+    (new Date)
+    (new Date 2018 02 17)
+
+
+== Calling methods on a Java object
+
+    (.length "hello world")
+    (.isDirectory (java.io.File. "my-dir"))
+
+Equivalent to the less used variant:
+
+    (. "hello world" length)
+    (. (java.io.File. "my-dir") isDirectory)
+
+
+== Static and inner
+
+Java static method calls:
+
+    (Math/pow 1 2)
+    (.print System/out "hi")
+
+Inner classes:
+
+    java.nio.channels.FileChannel$MapMode/READ_ONLY
+
+
+== Initializing objects with doto
+
+    (ns training.core
+      (:import (java.util HashMap)))
+    (doto (HashMap.)
+      (.put "a" 1)
+      (.put "b" 2))
+    => {"a" 1, "b" 2}
+
+We get the constructed object, with side-effects applied
+
+
+== reify
+
+`reify` creates an object that conforms to an interface:
+
+    (.listFiles (java.io.File. ".")
+      (reify
+        java.io.FileFilter
+        (accept [this f]
+          (.isDirectory f))))
+
+Notice that we did not define a class?
+
+
+== gen-class and proxy
+
+`gen-class` creates a class.
+
+`proxy` extends a concrete superclass.
+
+Rarely needed, refer to manual.
+
+
+== Including Java classes in Clojure projects
+
+You can define Java classes in Java in a separate directory and add
+
+    :java-source-paths ["java-src"]
+
+To your `project.clj` file
+
+    lein compile
+
+Java code in that directory will be usable from Clojure
+
+
+== End Java Interop
+
+link:0-introduction.html#contents[Contents]
+
+link:8-concurrency.html[Next Topic: 8 - Concurrency]

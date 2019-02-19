@@ -1,0 +1,63 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== Enterprise Clojure Training
+
+image:../img/corgi.jpg[]
+
+
+[state=title]
+== Contents
+
+[cols=4]
+|===
+|link:1-ecosystem.html[Ecosystem]
+|link:2-syntax.html[Syntax]
+|link:3-functions.html[Functions]
+|link:4-testing.html[Testing]
+|link:5-control-flow.html[Control Flow]
+|link:6-functional-programming.html[Functional Programming]
+|link:7-java-interop.html[Java Interop]
+|link:8-concurrency.html[Concurrency]
+|link:9-polymorphism.html[Polymorphism]
+|link:10-databases[Databases]
+|link:11-spec.html[Spec]
+|link:12-macros.html[Macros]
+|link:13-further-reading.html[Further reading]
+|
+|
+|
+|===
+
+
+[state=title]
+== Introductions
+
+image:../img/art1.jpg[]
+
+[state=title]
+== Clojure
+
+image:../img/clojure-logo.png[]
+
+"What language is it that meets all the criteria? What language would I choose if I had to choose today? Probably Clojure!"
+-- Robert Martin
+
+
+== Clojure
+
+* Data
+* Functions
+* A tool for thought
+* Getting stuff done
+
+
+== End Introduction
+
+link:0-introduction.html#contents[Contents]
+
+link:2-syntax.html[Next Topic: 1 - Ecosystem]

@@ -1,7 +1,6 @@
 = Enterprise Clojure Training
 
-"Clojure is serious business!"
--- Timothy Pratley
+> "Clojure is serious business!" -- Timothy Pratley
 
 A Clojure training course for Developers and Senior Developers working on Enterprise software.
 
@@ -44,6 +43,16 @@ The Web (Epiphany) browser reloads from disk when the HTML file changes.
 
 === Building
 
+The easiest way to build is to run
+
+    ./bb.sh
+
+This script relies on bundler (See The Ruby way for more info).
+It will install dependencies and build the documents into html/pdf.
+
+
+=== With installed CLI tools.
+
 You can install asciidoctor, asciidoctor-pdf, and ascidoctor-revealjs locally and run
 
     ./build.sh
@@ -70,6 +79,11 @@ Pull the dependencies:
 Now you can call the build script:
 
     bundle exec ./build.sh
+
+The `./bb.sh` just does these two steps for you.
+
+
+=== Rebuild on file modified
 
 To have the build watch for file changes and rebuild automatically:
 

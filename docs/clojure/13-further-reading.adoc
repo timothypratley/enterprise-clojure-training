@@ -1,0 +1,155 @@
+= Enterprise Clojure Training
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::slide.attrs[]
+
+
+[state=title]
+== 13. Further reading
+
+image:../img/further-reading.jpg[]
+
+"You can never get a cup of tea large enough or a book long enough to suit me."
+-- C.S. Lewis
+
+
+== Further reading
+
+Further exercises: https://www.4clojure.com/
+
+Clojure for Java Programmers - Rich Hickey
+
+* Part 1: https://www.youtube.com/watch?v=P76Vbsk_3J0
+* Part 2: https://www.youtube.com/watch?v=hb3rurFxrZ8
+
+[NOTE.speaker]
+--
+* Writing Clojure code requires more thinking and less typing than other languages
+* Don't feel frustrated if the code comes slowly at first
+* Being a great programmer requires thinking
+* You will only reach your true potential expressing code in ways that empower you rather than constrain you
+--
+
+
+== Best practices
+
+* Write tests
+* Write expectation strings for tests
+* Use lein-test-refresh
+* Keep functions short and focused
+  - Extract sub functions
+  - Compose functions
+
+
+== Best practices
+
+* Keep namespaces short and focused
+  - Extract related functions into new namespaces
+  - Write doc-strings for namespaces
+* Write doc-strings for functions
+* Write doc-strings for defs when appropriate
+* Follow the Clojure style guide
+
+
+== Tips
+
+* Build bottom up
+* Start with data
+* Create functions to operated on that data
+* Eastwood can give hints on better expressions
+* Read source code (Clojure, libraries, open source projects)
+
+
+== Tips
+
+* Most problems can be solved with a function
+* Scientific method:
+  - Think of things that could possibly be wrong
+  - Isolate a small test case
+  - Test one hypothesis at a time
+* Finding Clojure libraries https://www.clojure-toolbox.com/
+
+
+== Workflow
+
+* Editor + Test refresh + REPL
+* Reading stacktraces
+** Try line 1
+** Scan down for your namespace
+* Small functions
+* Test as you go
+* Print things
+* Test assumptions/hypothesis
+
+
+== Editor customization
+
+* After you feel comfortable with Clojure
+* Paredit
+* Parinfer
+* Send file to REPL
+* Send form to REPL
+
+
+== Learn the many Clojure functions
+
+* Set aside some recuring time to bite of bits of the API
+* Clojure word of the day: https://clojure.me
+
+
+== Read Clojure code
+
+* Clojure source
+* Clojure libraries
+* Open source projects
+* Check the source on anything new you use
+
+
+== Style guide
+
+https://github.com/bbatsov/clojure-style-guide
+
+
+== Eastwood
+
+Produces suggestions on how to write idiomatic Clojure
+
+`$HOME/.lein/profiles.clj`
+
+    {:user {:plugins [[jonase/eastwood "0.2.5"]]}}
+
+    $ lein eastwood
+
+
+== Get help
+
+* REPL can answer most questions
+* StackOverflow.com #clojure
+* Create minimal examples
+* Clojure mailing list https://groups.google.com/forum/#!forum/clojure
+* ClojureVerse https://clojureverse.org
+* Clojurians Slack http://clojurians.net
+
+
+== Practice
+
+* Challenges 1-4
+* Small projects
+* 4Clojure problems http://www.4clojure.com
+* Project Euler https://projecteuler.net
+* Katas
+
+
+[state=title]
+== Thank you
+
+timothypratley@gmail.com
+
+https://timothypratley.blogspot.com
+
+@timothypratley
+
+
+== End Further Reading
+
+link:0-introduction.html#contents[Contents]

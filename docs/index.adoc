@@ -6,12 +6,12 @@
 
 This is a Clojure training course for Developers and Senior Developers working on enterprise software.
 
-* https://timothypratley.github.io/enterprise-clojure-training/manual.html[Manual HTML]
-* https://timothypratley.github.io/enterprise-clojure-training/manual.pdf[Manual PDF]
-* https://timothypratley.github.io/enterprise-clojure-training/slides.html[Course Slides]
-* https://timothypratley.github.io/enterprise-clojure-training/advanced-topics.html[Advanced topics slides]
+* link:manual.html[Manual HTML]
+* link:manual.pdf[Manual PDF]
+* link:clojure/0-introduction.html[Course Slides]
+* link:advanced-topics.html[Advanced topics slides]
 * https://github.com/timothypratley/enterprise-clojure-training/tree/master/examples[Examples source code]
 * https://github.com/timothypratley/enterprise-clojure-training[Course Github]
-* https://timothypratley.github.io/enterprise-clojure-training/getting-help.html[Getting help]
+* link:getting-help.html[Getting help]
 
 image:img/corgi.jpg[Corgi]
