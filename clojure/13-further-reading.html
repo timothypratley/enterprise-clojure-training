@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="further_reading" data-state="title"><h2>13. Further reading</h2><div class="paragraph"><p><span class="image"><img src="../img/further-reading.jpg" alt="further reading"></span></p></div>
+<div class="quoteblock"><blockquote>You can never get a cup of tea large enough or a book long enough to suit me.</blockquote><div class="attribution">&#8212; C.S. Lewis</div></div></section>
+<section id="further_reading"><h2>Further reading</h2><div class="paragraph"><p>Further exercises: <a href="https://www.4clojure.com/" class="bare">https://www.4clojure.com/</a></p></div>
+<div class="paragraph"><p>Clojure for Java Programmers - Rich Hickey</p></div>
+<div class="ulist"><ul><li><p>Part 1: <a href="https://www.youtube.com/watch?v=P76Vbsk_3J0" class="bare">https://www.youtube.com/watch?v=P76Vbsk_3J0</a></p></li><li><p>Part 2: <a href="https://www.youtube.com/watch?v=hb3rurFxrZ8" class="bare">https://www.youtube.com/watch?v=hb3rurFxrZ8</a></p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Writing Clojure code requires more thinking and less typing than other languages</p></li><li><p>Don&#8217;t feel frustrated if the code comes slowly at first</p></li><li><p>Being a great programmer requires thinking</p></li><li><p>You will only reach your true potential expressing code in ways that empower you rather than constrain you</p></li></ul></div></aside></section>
+<section id="best_practices"><h2>Best practices</h2><div class="ulist"><ul><li><p>Write tests</p></li><li><p>Write expectation strings for tests</p></li><li><p>Use lein-test-refresh</p></li><li><p>Keep functions short and focused</p><div class="ulist"><ul><li><p>Extract sub functions</p></li><li><p>Compose functions</p></li></ul></div></li></ul></div></section>
+<section id="best_practices_2"><h2>Best practices</h2><div class="ulist"><ul><li><p>Keep namespaces short and focused</p><div class="ulist"><ul><li><p>Extract related functions into new namespaces</p></li><li><p>Write doc-strings for namespaces</p></li></ul></div></li><li><p>Write doc-strings for functions</p></li><li><p>Write doc-strings for defs when appropriate</p></li><li><p>Follow the Clojure style guide</p></li></ul></div></section>
+<section id="tips"><h2>Tips</h2><div class="ulist"><ul><li><p>Build bottom up</p></li><li><p>Start with data</p></li><li><p>Create functions to operated on that data</p></li><li><p>Eastwood can give hints on better expressions</p></li><li><p>Read source code (Clojure, libraries, open source projects)</p></li></ul></div></section>
+<section id="tips_2"><h2>Tips</h2><div class="ulist"><ul><li><p>Most problems can be solved with a function</p></li><li><p>Scientific method:</p><div class="ulist"><ul><li><p>Think of things that could possibly be wrong</p></li><li><p>Isolate a small test case</p></li><li><p>Test one hypothesis at a time</p></li></ul></div></li><li><p>Finding Clojure libraries <a href="https://www.clojure-toolbox.com/" class="bare">https://www.clojure-toolbox.com/</a></p></li></ul></div></section>
+<section id="workflow"><h2>Workflow</h2><div class="ulist"><ul><li><p>Editor + Test refresh + REPL</p></li><li><p>Reading stacktraces</p><div class="ulist"><ul><li><p>Try line 1</p></li><li><p>Scan down for your namespace</p></li></ul></div></li><li><p>Small functions</p></li><li><p>Test as you go</p></li><li><p>Print things</p></li><li><p>Test assumptions/hypothesis</p></li></ul></div></section>
+<section id="editor_customization"><h2>Editor customization</h2><div class="ulist"><ul><li><p>After you feel comfortable with Clojure</p></li><li><p>Paredit</p></li><li><p>Parinfer</p></li><li><p>Send file to REPL</p></li><li><p>Send form to REPL</p></li></ul></div></section>
+<section id="learn_the_many_clojure_functions"><h2>Learn the many Clojure functions</h2><div class="ulist"><ul><li><p>Set aside some recuring time to bite of bits of the API</p></li><li><p>Clojure word of the day: <a href="https://clojure.me" class="bare">https://clojure.me</a></p></li></ul></div></section>
+<section id="read_clojure_code"><h2>Read Clojure code</h2><div class="ulist"><ul><li><p>Clojure source</p></li><li><p>Clojure libraries</p></li><li><p>Open source projects</p></li><li><p>Check the source on anything new you use</p></li></ul></div></section>
+<section id="style_guide"><h2>Style guide</h2><div class="paragraph"><p><a href="https://github.com/bbatsov/clojure-style-guide" class="bare">https://github.com/bbatsov/clojure-style-guide</a></p></div></section>
+<section id="eastwood"><h2>Eastwood</h2><div class="paragraph"><p>Produces suggestions on how to write idiomatic Clojure</p></div>
+<div class="paragraph"><p><code>$HOME/.lein/profiles.clj</code></p></div>
+<div class="literalblock"><div class="content"><pre>{:user {:plugins [[jonase/eastwood "0.2.5"]]}}</pre></div></div>
+<div class="literalblock"><div class="content"><pre>$ lein eastwood</pre></div></div></section>
+<section id="get_help"><h2>Get help</h2><div class="ulist"><ul><li><p>REPL can answer most questions</p></li><li><p>StackOverflow.com #clojure</p></li><li><p>Create minimal examples</p></li><li><p>Clojure mailing list <a href="https://groups.google.com/forum/#!forum/clojure" class="bare">https://groups.google.com/forum/#!forum/clojure</a></p></li><li><p>ClojureVerse <a href="https://clojureverse.org" class="bare">https://clojureverse.org</a></p></li><li><p>Clojurians Slack <a href="http://clojurians.net" class="bare">http://clojurians.net</a></p></li></ul></div></section>
+<section id="practice"><h2>Practice</h2><div class="ulist"><ul><li><p>Challenges 1-4</p></li><li><p>Small projects</p></li><li><p>4Clojure problems <a href="http://www.4clojure.com" class="bare">http://www.4clojure.com</a></p></li><li><p>Project Euler <a href="https://projecteuler.net" class="bare">https://projecteuler.net</a></p></li><li><p>Katas</p></li></ul></div></section>
+<section id="thank_you" data-state="title"><h2>Thank you</h2><div class="paragraph"><p><a href="mailto:timothypratley@gmail.com">timothypratley@gmail.com</a></p></div>
+<div class="paragraph"><p><a href="https://timothypratley.blogspot.com" class="bare">https://timothypratley.blogspot.com</a></p></div>
+<div class="paragraph"><p>@timothypratley</p></div></section>
+<section id="end_further_reading"><h2>End Further Reading</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

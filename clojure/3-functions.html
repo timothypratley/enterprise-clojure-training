@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="functions" data-state="title"><h2>3. Functions</h2><div class="paragraph"><p><span class="image"><img src="../img/functions.jpg" alt="functions"></span></p></div>
+<div class="quoteblock"><blockquote>The chief function of the body is to carry the brain around.</blockquote><div class="attribution">&#8212; Thomas A. Edison</div></div></section>
+<section id="defining_functions_again"><h2>Defining functions (again)</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn square [x]
+      (* x x))
+    ;=&gt; #my.namespace/square</code></pre></div></div>
+<div class="ulist"><ul><li><p>Functions always return a value; the result of their last expression</p></li><li><p><code>defn</code> creates a <code>var</code></p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>To define a function we use the <code>defn</code> form.
+<code>defn</code> followed by the name of the function and then the arguments in a vector.
+In this case we are providing just one argument: <code>x</code>.
+We then make use of <code>x</code> inside the function.
+The last form of a function is returned as a result.
+We can optionally supply a docstring to describe what the function does.</p></div>
+<div class="paragraph"><p>All functions return the last expression as a result.
+The effect of <code>defn</code> is to create a Var.</p></div></aside></section>
+<section id="applying_functions"><h2>Applying functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (square 2)
+    ;=&gt; 4</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>We created the square function and now we can call it by putting it in parens.
+The square of 2 is 4.</p></div></aside></section>
+<section id="prefix_notation"><h2>Prefix notation</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (+ (square 2) (square 3))
+    ;=&gt; 13</code></pre></div></div>
+<div class="paragraph"><p>Mathematical operators are functions.</p></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">Arguments are evaluated from left to right before the function is called</td></tr></table></div></section>
+<section id="unnamed_functions"><h2>Unnamed functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (fn [a]
+      (inc a))
+    ;=&gt; #object[Function]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    #(inc %)
+    ;=&gt; #object[Function]</code></pre></div></div>
+<div class="paragraph"><p>Unnamed; anonymous; Lambda (λ) expression</p></div></section>
+<section id="invoking_anonymous_functions"><h2>Invoking anonymous functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    ((fn [a] (inc a)) 1)
+    ;=&gt; 2</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (#(inc %) 1)
+    ;=&gt; 2</code></pre></div></div>
+<div class="paragraph"><p>Just like a named function; first item in a list is applied</p></div></section>
+<section id="closure"><h2>Closure</h2><div class="paragraph"><p>Function that captures values from the environment</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (let [who "world"]
+      (defn greet []
+        (str "Hello " who)))
+    (greet)
+    ;=&gt; "Hello world"</code></pre></div></div></section>
+<section id="passing_a_function_to_another_function"><h2>Passing a function to another function</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn do-triple [f]
+      (f)
+      (f)
+      (f))
+    (do-triple (fn []
+                 (print "hot ")))
+    ;;; hot hot hot
+    ;=&gt; nil</code></pre></div></div>
+<div class="ulist"><ul><li><p>Functions are values</p></li><li><p>Can be passed to other functions</p></li><li><p>Functions apply an input function are considered <em>"higher order functions"</em></p></li></ul></div></section>
+<section id="mapping_a_function_over_a_sequence"><h2>Mapping a function over a sequence</h2><div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content"><code>map</code> the function, not <code>hash-map</code> the data structure</td></tr></table></div>
+<div class="ulist"><ul><li><p>Function that applies a function to every element in a sequence</p></li></ul></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (map inc [1 2 3])
+    ;=&gt; (2 3 4)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (map (fn [x] (* x x)) [1 2 3 4])
+    ;=&gt; (1 4 9 16)</code></pre></div></div></section>
+<section id="map_a_previously_defined_function"><h2>Map a previously defined function</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn greet-them [person]
+      (str "Hello " person))
+    (map greet-them ["Alice" "Bob" "Carol"])
+    ;=&gt; ("Hello Alice" "Hello Bob" "Hello Carol")</code></pre></div></div>
+<div class="paragraph"><p>The <code>greet-them</code> function is easier to test on its own</p></div></section>
+<section id="map_an_anonymous_function"><h2>Map an anonymous function</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (let [x 5]
+      (map #(+ x %) [1 2 3]))
+    ;=&gt; (6 7 8)</code></pre></div></div>
+<div class="ulist"><ul><li><p>Closure as argument to higher order function</p></li><li><p>Terse</p></li></ul></div>
+<div class="admonitionblock tip"><table><tr><td class="icon"><i class="fa fa-lightbulb-o" title="Tip"></i></td><td class="content">This is a key source of Clojure&#8217;s expressiveness</td></tr></table></div></section>
+<section id="named_anonymous_functions"><h2>Named anonymous functions?!?!?!</h2><div class="literalblock"><div class="content"><pre>(fn add-one [x]
+  (inc x))
+add-one
+;;; Unable to resolve symbol: add-one</pre></div></div>
+<div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">The name <code>add-one</code> is only available inside the function</td></tr></table></div>
+<div class="ulist"><ul><li><p>Documents purpose</p></li><li><p>Name appears in stacktraces (searchable clue)</p></li><li><p>The function can call itself</p></li></ul></div></section>
+<section id="named_functions"><h2>Named functions</h2><div class="literalblock"><div class="content"><pre>(defn f [x]
+  (inc x))</pre></div></div>
+<div class="paragraph"><p>Is shorthand for</p></div>
+<div class="literalblock"><div class="content"><pre>(def f
+  (fn [x]
+    (inc x)))</pre></div></div></section>
+<section id="variadic_arguments"><h2>Variadic arguments</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn f [&amp; args]
+      args)
+    (f 1 2 3)
+    ;=&gt; (1 2 3)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (+ 1 2 3 4 5)
+    ;=&gt; 15</code></pre></div></div></section>
+<section id="variadic_disadvantages"><h2>Variadic disadvantages</h2><div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Not always convenient</td></tr></table></div>
+<div class="literalblock"><div class="content"><pre>(bake-cakes cake1 cake2 cake3)
+(let [cakes (db/find-cakes "delicious")]
+  (apply bake-cakes cakes))</pre></div></div>
+<div class="paragraph"><p>Prefer functions that do one thing</p></div>
+<div class="paragraph"><p>Combine with sequence operations</p></div>
+<div class="literalblock"><div class="content"><pre>(doseq [cake (db/find-cakes "delicious")]
+  (bake-cake cake))</pre></div></div></section>
+<section id="variadic_pitfall"><h2>Variadic pitfall</h2><div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Bypasses arity checking</td></tr></table></div>
+<div class="paragraph"><p>Common bad pattern:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn f [x &amp; [y]]
+      (if y
+        (+ x y)
+        (inc x)))
+    (f 1 2 3 4 "not a number")
+    ;=&gt; 3</code></pre></div></div></section>
+<section id="prefer_explicit_argument_lists"><h2>Prefer explicit argument lists</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn f
+      ([x] (inc x))
+      ([x y] (+ x y)))
+    (f 1)
+    ;=&gt; 2</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (f 1 2)
+    ;=&gt; 3</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (f 1 2 3)
+    ;;; Exception: Wrong number of args</code></pre></div></div></section>
+<section id="keyword_arguments"><h2>Keyword arguments</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn start [&amp; {:keys [port protocol]
+                    :or {port 8080,
+                         protocol "https"}}]
+      protocol)
+    (start)
+    ;=&gt; "https"</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (start :protocol "ftp")
+    ;=&gt; "ftp"</code></pre></div></div></section>
+<section id="avoid_keyword_arguments"><h2>Avoid keyword arguments</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def config {:protocol "ftp"})
+    (start config)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (apply start (apply concat config))
+    ;=&gt; "ftp"</code></pre></div></div>
+<div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Inconvenient and confusing</td></tr></table></div></section>
+<section id="take_a_map_instead"><h2>Take a map instead</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">   (defn start2 [{:keys [port protocol]}]
+      protocol)
+    (start2 {:protocol "gopher"})
+    ;=&gt; "gopher"</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (start2 config)
+    ;=&gt; "ftp"</code></pre></div></div></section>
+<section id="pre_and_post_conditions"><h2>Pre and post conditions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn f [x]
+      {:pre [(pos? x)]
+       :post [(neg? %) (int? %)]}
+      (- x))
+    (f 1)
+    ;=&gt; -1</code></pre></div></div></section>
+<section id="pre_and_post_conditions_assert"><h2>Pre and post conditions assert</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (f -1)
+    ;;; AssertionError Assert failed: (pos? x)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (f 1.5)
+    ;;; AssertionError Assert failed: (int? %)</code></pre></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Assertions about inputs and outputs of a function</p></li><li><p>Sequence of conditions</p></li></ul></div></aside></section>
+<section id="prepost_drawbacks"><h2>Pre/Post drawbacks:</h2><div class="ulist"><ul><li><p>Syntax is easy to get wrong, no assertion made</p></li><li><p>Assertions can be disabled</p></li><li><p>Less control over error reporting and handling</p></li><li><p>Rarely used</p></li></ul></div></section>
+<section id="more_common"><h2>More common</h2><div class="paragraph"><p>Check for a condition and throw an exception</p></div>
+<div class="literalblock"><div class="content"><pre>(defn f [x]
+  (when-not (pos? x)
+    (throw (ex-info "bad input" {:x x}))
+  (let [result (- x)]
+    (if (and (neg? result) (int? result))
+      result
+      (throw (ex-info "bad result" {:x x})))</pre></div></div>
+<div class="paragraph"><p>Or use spec</p></div></section>
+<section id="function_literals"><h2>Function literals</h2><div class="literalblock"><div class="content"><pre>#(inc %)</pre></div></div>
+<div class="literalblock"><div class="content"><pre>#(+ %1 %2)</pre></div></div>
+<div class="literalblock"><div class="content"><pre>#(apply + %&amp;)</pre></div></div>
+<div class="paragraph"><p>Terse, powerful expressions</p></div></section>
+<section id="compare"><h2>Compare</h2><div class="literalblock"><div class="content"><pre>(map #(* % %) [1 2 3 4])</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(map (fn square [x]
+       (* x x))
+     [1 2 3 4])</pre></div></div>
+<div class="admonitionblock tip"><table><tr><td class="icon"><i class="fa fa-lightbulb-o" title="Tip"></i></td><td class="content"><div class="paragraph"><p>Prefer <code>(fn)</code> form</p></div>
+<div class="ulist"><ul><li><p>Named parameter</p></li><li><p>named purpose</p></li><li><p>stack traces</p></li></ul></div></td></tr></table></div></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>See manual end of section 3</p></div></section>
+<section id="answers"><h2>Answers</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn square [x]
+      (* x x))
+    (square 55)
+    ;=&gt; 3025</code></pre></div></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn square-of-square [x]
+      (if (&lt; x 100)
+        (square (square x))
+        (throw (ex-info "Input too large" {:x x}))))
+    (square-of-square 2)
+    ;=&gt; 16</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (square-of-square 123)
+    ;;; ExceptionInfo Input too large</code></pre></div></div></section>
+<section id="answers_3"><h2>Answers</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn fib-step [a b]
+      [b (+ a b)])
+    (fib-step 1 1)
+    ;=&gt; [1 2]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (fib-step 1 2)
+    ;=&gt; [2 3]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (fib-step 2 3)
+    ;=&gt; [3 5]</code></pre></div></div></section>
+<section id="challenge_1_corgi_cover_eligibility"><h2>Challenge 1: Corgi Cover eligibility</h2><div class="paragraph"><p>Insuricorp is about to launch a marketing campaign for a new “corgi cover” policy. Only certain people are eligible to register for “corgi cover”. To be eligible they must own a corgi, live in either Illinois (IL), Washington (WA), New York (NY), or Colorado (CO). You are tasked with building a system to validate applications for the policy.</p></div></section>
+<section id="part_1"><h2>Part 1:</h2><div class="paragraph"><p>Write a function that will take as input a state and corgi-count, and will return a boolean indicating the person&#8217;s eligibility for the “corgi cover” policy.</p></div></section>
+<section id="test_data"><h2>Test data</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:25%"><col style="width:25%"><col style="width:25%"><col style="width:25%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Name</th><th class="tableblock halign-left valign-top">State</th><th class="tableblock halign-left valign-top">Corgi count</th><th class="tableblock halign-left valign-top">Existing policy count</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Chloe</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">IL</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Ethan</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">IL</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Annabelle</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">WY</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Logan</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">WA</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td></tr></table></section>
+<section id="part_2"><h2>Part 2:</h2><div class="paragraph"><p>A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”. Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp. Gold is available when covering at least 3 corgis. Silver is the original “corgi cover” policy. Create a new function that takes an additional argument policy-count and returns a keyword indicating their eligibility.</p></div>
+<div class="paragraph"><p>See <code>cond</code></p></div></section>
+<section id="part_3"><h2>Part 3:</h2><div class="paragraph"><p>The “corgi cover” applications Insuricorp collect contain more information than necessary to determine eligibility. Create a new function that takes as input a single map data structure as input instead of multiple inputs. It should pick out the values that it needs from the input map. Create some test data and feed it to your function. The data should look something like:</p></div>
+<div class="literalblock"><div class="content"><pre>{:name "Chloe", :state "IL", :corgi-count 1, :policy-count 0}</pre></div></div></section>
+<section id="part_4"><h2>Part 4:</h2><div class="paragraph"><p>Insuricorp just merged with Megacorp. Platinum level corgi cover is now offered to people with an existing Megacorp policy as well. Because the company is still restructuring, the policy-count input still only contains Insuricorp data. But a new input has been made available to you which is a map of people to policies.</p></div>
+<div class="literalblock"><div class="content"><pre>{"Chloe" ["secure goldfish"]
+ "Ethan" ["cool cats cover" "megasafe"]}</pre></div></div>
+<div class="paragraph"><p>Create a new function that takes as inputs two maps: the application, and the existing policies. It should apply the same logic, but make use of the Megacorp data.</p></div></section>
+<section id="end_functions"><h2>End Functions</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="4-testing.html">Next Topic: 4 - Testing</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

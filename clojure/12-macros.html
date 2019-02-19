@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="macros" data-state="title"><h2>12. Macros</h2><div class="paragraph"><p><span class="image"><img src="../img/macros.jpg" alt="macros"></span></p></div>
+<div class="quoteblock"><blockquote>I never think about myself as an artist working in this time. I think about it in macro.</blockquote><div class="attribution">&#8212; Frank Ocean</div></div></section>
+<section id="macros_provide_syntax"><h2>Macros provide syntax</h2><div class="paragraph"><p>The "real" way to define a function:</p></div>
+<div class="literalblock"><div class="content"><pre>(def square
+  (fn [x]
+    (* x x)))</pre></div></div>
+<div class="paragraph"><p>Special syntax:</p></div>
+<div class="literalblock"><div class="content"><pre>(defn square [x]
+  (* x x))</pre></div></div>
+<div class="paragraph"><p>Syntactic sugar to remove boilerplate</p></div>
+<div class="paragraph"><p>Macros extend the syntax of Clojure</p></div></section>
+<section id="macros_expand"><h2>Macros expand</h2><div class="literalblock"><div class="content"><pre>(when (&lt; x 2)
+  (println "It's less than 2!")
+  :ok)</pre></div></div>
+<div class="paragraph"><p>Expands to</p></div>
+<div class="literalblock"><div class="content"><pre>(if (&lt; x 2)
+  (do
+    (println "It's less than 2!")
+    :ok))</pre></div></div></section>
+<section id="macroexpand_1_shows_you_what_a_macro_does"><h2>macroexpand-1 shows you what a macro does</h2><div class="literalblock"><div class="content"><pre>(macroexpand-1 '(when (&lt; x 2)
+                  (println "It's less than 2!")
+                  :ok))
+=&gt; (if (&lt; x 2)
+     (do
+       (println "It's less than 2!")
+       :ok))</pre></div></div></section>
+<section id="expanding_defn"><h2>Expanding defn</h2><div class="literalblock"><div class="content"><pre>(macroexpand-1
+  '(defn square [x]
+     (* x x)))
+=&gt; (def square
+     (clojure.core/fn ([x] (* x x))))</pre></div></div></section>
+<section id="macros_produce_code"><h2>Macros produce code</h2><div class="ulist"><ul><li><p>Functions that manipulate code</p></li><li><p>Think of it as text manipulation</p></li><li><p>Passed input forms unevaluated</p></li><li><p>Replaces the form at compile time</p></li><li><p>Have a <code>:macro</code> flag set in metadata</p></li></ul></div></section>
+<section id="using_macros"><h2>Using macros</h2><div class="literalblock"><div class="content"><pre>(map
+  (fn maybe-ok [x]
+    (when (&lt; x 2)
+      :ok))
+  (range 4))
+=&gt; (:ok :ok nil nil)</pre></div></div>
+<div class="ulist"><ul><li><p><code>when</code> is only expanded once</p></li><li><p>The form is expanded at compile time</p></li><li><p><code>maybe-ok</code> function is compiled to bytecode</p></li></ul></div></section>
+<section id="macros_do_things_functions_cannot"><h2>Macros do things functions cannot</h2><div class="ulist"><ul><li><p>Arguments manipulated at compile time</p></li><li><p>Arguments not evaluated</p></li><li><p>Cannot be replaced by a function</p></li></ul></div></section>
+<section id="functions_do_things_macros_cannot"><h2>Functions do things macros cannot</h2><div class="literalblock"><div class="content"><pre>and
+=&gt; CompilerException: Can't take value of a macro</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(map and [true false]
+         [true true])
+=&gt; CompilerException: Can't take value of a macro</pre></div></div>
+<div class="ulist"><ul><li><p>Macros are not values</p></li><li><p>Cannot be passed to higher order functions</p></li><li><p>Less useful than functions</p></li></ul></div></section>
+<section id="to_use_a_macro_as_a_function_wrap_it_in_a_function"><h2>To use a macro as a function, wrap it in a function</h2><div class="literalblock"><div class="content"><pre>(map #(and %1 %2) [true false]
+                  [true true])
+=&gt; (true false)</pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">Cannot apply arguments though&#8230;&#8203;</td></tr></table></div>
+<div class="literalblock"><div class="content"><pre>#(every? identity %&amp;)</pre></div></div></section>
+<section id="defining_macros"><h2>Defining macros</h2><div class="literalblock"><div class="content"><pre>(defmacro infix [[operand1 op operand2]]
+  (list op operand1 operand2))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(infix (1 + 1))
+=&gt; 2</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(macroexpand '(infix (1 + 1)))
+=&gt; (+ 1 1)</pre></div></div></section>
+<section id="defining_macros_2"><h2>Defining macros</h2><div class="literalblock"><div class="content"><pre>(defmacro my-when [test &amp; body]
+  (list 'if test (cons 'do body)))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(macroexpand-1
+  '(my-when (&lt; x 1)
+     (println "hi")
+     :ok))
+=&gt; (if (&lt; x 1)
+     (do
+       (println "hi")
+       :ok))</pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content"><code>test</code> and <code>body</code> are values, <code>if</code> and <code>do</code> are symbols</td></tr></table></div>
+<aside class="notes"><div class="paragraph"><p>Review quote</p></div></aside></section>
+<section id="macros_using_arguments"><h2>Macros using arguments</h2><div class="literalblock"><div class="content"><pre>(defmacro zen1 [x]
+  (println "x:" x)
+  x)
+(zen1 (+ 1 2))
+=&gt; x: (+ 1 2)
+3</pre></div></div>
+<div class="paragraph"><p>vs</p></div>
+<div class="literalblock"><div class="content"><pre>(defn zen2 [x]
+  (println "x:" x)
+  x)
+(zen2 (+ 1 2))
+=&gt; x: 3
+3</pre></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p>The input to <code>zen1</code> was a list</p></li><li><p>For <code>zen1</code> <code>x</code> was a list</p></li><li><p>We returned <code>x</code></p></li><li><p>But the final result was <code>3</code></p></li><li><p>The list was evaluated as a function call to <code>+</code></p></li><li><p>resulting in <code>3</code></p></li><li><p>The input to <code>zen2</code> was the result of evaluating the list</p></li></ul></div></aside></section>
+<section id="syntax_quoting"><h2>Syntax quoting</h2><div class="literalblock"><div class="content"><pre>`(inc 1)
+=&gt; (clojure.core/inc 1)</pre></div></div>
+<div class="ulist"><ul><li><p>Special form called syntax-quote (also called back-quote)</p></li><li><p>All symbols in a syntax-quote form get fully qualified</p></li><li><p><code>`</code> vs <code>'</code></p></li></ul></div></section>
+<section id="unquoting"><h2>Unquoting</h2><div class="literalblock"><div class="content"><pre>`(1 2 ~(+ 1 2) ~@(map inc [3 4 5]))
+=&gt; (1 2 3 4 5 6)</pre></div></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3334%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Syntax</th><th class="tableblock halign-left valign-top">Name</th><th class="tableblock halign-left valign-top">Behavior</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>`</pre></div></td><td class="tableblock halign-left valign-top"><p class="tableblock">Back-quote</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Fully qualified quote</p></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>~</pre></div></td><td class="tableblock halign-left valign-top"><p class="tableblock">Unquote</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Insert a value</p></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>~@</pre></div></td><td class="tableblock halign-left valign-top"><p class="tableblock">Unquote-splicing</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Insert a sequence</p></td></tr></table></section>
+<section id="why_fully_qualify"><h2>Why fully qualify?</h2><div class="literalblock"><div class="content"><pre>(defmacro m1 []
+  '(inc 1))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(defmacro m2 []
+  `(inc 1))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(let [inc dec]
+  {:m1 (m1)
+   :m2 (m2)})</pre></div></div>
+<div class="literalblock"><div class="content"><pre>=&gt; {:m1 0, :m2 2}</pre></div></div>
+<div class="ulist"><ul><li><p>Symbols have contextual meaning</p></li><li><p>Macros are defined with no context</p></li></ul></div></section>
+<section id="another_source_of_naming_collisions"><h2>Another source of naming collisions</h2><div class="literalblock"><div class="content"><pre>(defmacro bad [expr]
+  (list 'let '[a 1]
+    (list 'inc expr)))
+(bad 0)
+=&gt; 1
+(def a 0)
+(bad a)
+=&gt; 2</pre></div></div>
+<div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">The parameter name collided with the implementation</td></tr></table></div>
+<div class="literalblock"><div class="content"><pre>(macroexpand-1 '(bad a))
+=&gt; (let [a 1] (inc a))</pre></div></div></section>
+<section id="gensyms"><h2>Gensyms</h2><div class="literalblock"><div class="content"><pre>(defmacro good [expr]
+  `(let [a# 1]
+     (inc ~expr)))
+(good a)
+=&gt; 1
+(good 0)
+=&gt; 1</pre></div></div>
+<div class="paragraph"><p><code>a#</code> expands to a randomly generated symbol</p></div>
+<div class="literalblock"><div class="content"><pre>(macroexpand-1 '(good a))
+=&gt; (clojure.core/let [a__6500__auto__ 1]
+     (clojure.core/inc a))</pre></div></div></section>
+<section id="macro_strategy"><h2>Macro strategy</h2><div class="paragraph"><p>When working on a non-trivial macro a good strategy is:</p></div>
+<div class="ulist"><ul><li><p>Step 1: Write a function!</p></li><li><p>Step 2: Call your function from the macro</p></li></ul></div>
+<div class="admonitionblock tip"><table><tr><td class="icon"><i class="fa fa-lightbulb-o" title="Tip"></i></td><td class="content">Keep the macro small and offload form transformations to other functions</td></tr></table></div></section>
+<section id="when_should_i_write_a_macro"><h2>When should I write a macro?</h2><div class="paragraph"><p>Almost never</p></div>
+<div class="paragraph"><p>To provide new syntax: core.async</p></div>
+<div class="literalblock"><div class="content"><pre>(def echo-chan (chan))
+(go (println (&lt;! echo-chan)))
+(&gt;!! echo-chan "hello")
+=&gt; true
+hello</pre></div></div></section>
+<section id="code_as_data"><h2>Code as data</h2><div class="ulist"><ul><li><p>Functions that produce code</p></li><li><p>Manipulate code&#8230;&#8203; as data</p></li><li><p>Homoiconic: the language text has the same structure as its abstract syntax tree</p></li><li><p>Code transformed using the same representation</p></li><li><p>Nested code is well represented as a data structure</p></li><li><p>Language can be extended conveniently</p></li><li><p>Lisp "syntax" underpins Clojure "syntax"</p></li></ul></div></section>
+<section id="reading_macros_is_a_useful_skill"><h2>Reading macros is a useful skill</h2><div class="ulist"><ul><li><p>Macros are common in clojure.core and libraries</p></li><li><p>Macros can have surprising behavior</p></li><li><p>Debugging</p><div class="ulist"><ul><li><p>Identifying macros</p></li><li><p>Expanding macros</p></li></ul></div></li></ul></div></section>
+<section id="macro_summary"><h2>Macro summary</h2><div class="ulist"><ul><li><p>Manipulate the operand forms</p></li><li><p>Do not evaluate the input forms</p></li><li><p>Not functions</p></li><li><p>Cannot be passed to other functions</p></li></ul></div></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>See manual end of section 7</p></div></section>
+<section id="answers"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defmacro ignore [expr] nil)</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(defmacro when2 [test &amp; body]
+  (list 'if test (cons 'do body))</pre></div></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defmacro spy [expr]
+  `(let [result# ~expr]
+     (println "Expression" '~expr "has value" result#)
+     result#))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(macroexpand-1 '(spy (* 2 3)))
+=&gt; (clojure.core/let [result__6418__auto__ (* 2 3)]
+     (clojure.core/println
+       "Expression" (quote (* 2 3))
+       "has value" result__6418__auto__)
+     result__6418__auto__)</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(+ 1 (spy (* 2 3)))
+=&gt; Expression (* 2 3) has value 6
+   7</pre></div></div></section>
+<section id="answers_3"><h2>Answers</h2><div class="paragraph"><p>See clojure source code</p></div>
+<div class="literalblock"><div class="content"><pre>(defmacro or2
+  ([] nil)
+  ([x] x)
+  ([x &amp; next]
+      `(let [or# ~x]
+         (if or# or# (or ~@next)))))</pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Often good to start with an example and customize</p></div></aside></section>
+<section id="end_macros"><h2>End Macros</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="13-further-reading.html">Next Topic: 13 - Further Reading</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

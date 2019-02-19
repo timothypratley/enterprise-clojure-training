@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="interacting_with_a_database" data-state="title"><h2>10. Interacting with a Database</h2><div class="paragraph"><p><span class="image"><img src="../img/database.jpg" alt="database"></span></p></div>
+<div class="quoteblock"><blockquote>You can have data without information, but you cannot have information without data.</blockquote><div class="attribution">&#8212; Daniel Keys Moran</div></div></section>
+<section id="clojure_java_jdbc"><h2>clojure.java.jdbc</h2><div class="literalblock"><div class="content"><pre>$ lein new messenger</pre></div></div>
+<div class="paragraph"><p><code>project.clj</code> dependencies:</p></div>
+<div class="literalblock"><div class="content"><pre>[org.clojure/java.jdbc "0.7.5"]
+[hsqldb/hsqldb "1.8.0.10"]</pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">we need the driver we plan to use to connect to a database</td></tr></table></div></section>
+<section id="connecting"><h2>Connecting</h2><div class="paragraph"><p>Require <code>jdbc</code> and configure a db connection url</p></div>
+<div class="literalblock"><div class="content"><pre>(ns messenger.core
+  (:require [clojure.java.jdbc :as jdbc]))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(def db "jdbc:hsqldb:mem:testdb")</pre></div></div></section>
+<section id="inserting"><h2>Inserting</h2><div class="paragraph"><p>Create a table called testing</p></div>
+<div class="literalblock"><div class="content"><pre>(jdbc/execute! db
+  "create table messages (message varchar(1024))")</pre></div></div>
+<div class="paragraph"><p>Insert some rows</p></div>
+<div class="literalblock"><div class="content"><pre>(jdbc/insert-multi! db :messages
+                    [{:message "Hello World"}
+                     {:message "How now?"}])</pre></div></div></section>
+<section id="querying"><h2>Querying</h2><div class="literalblock"><div class="content"><pre>(jdbc/query db ["select * from messages"])
+=&gt; ({:message "Hello World"}
+    {:message "How now?"})</pre></div></div></section>
+<section id="deleting"><h2>Deleting</h2><div class="paragraph"><p>To selectively delete some data:</p></div>
+<div class="literalblock"><div class="content"><pre>(jdbc/delete! db :messages ["message like '%World%'"])
+(jdbc/query db ["select * from messages"])
+=&gt; ({:message "How now?"})</pre></div></div>
+<div class="paragraph"><p>Now there is only one row remaining</p></div></section>
+<section id="insert_multi"><h2>insert-multi!</h2><div class="literalblock"><div class="content"><pre>(jdbc/insert-multi! db :messages
+                [{:message "Nobody panic!!!"}
+                 {:message "What in the world?"}
+                 {:message "All is well."}])</pre></div></div></section>
+<section id="parameterized_query"><h2>Parameterized query</h2><div class="literalblock"><div class="content"><pre>(defn search [s]
+  (jdbc/query db
+    ["select * from messages where message like ?" s]))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(search "%How%")
+=&gt; ({:message "How now?"})</pre></div></div>
+<div class="ulist"><ul><li><p>String concatenation is susceptible to SQL injection</p></li><li><p>Parameters are not part of the query; cannot perform SQL from malicious input</p></li></ul></div></section>
+<section id="starting_fresh"><h2>Starting fresh</h2><div class="paragraph"><p>If you want to redo any steps, remember that you can always drop the table and start again</p></div>
+<div class="literalblock"><div class="content"><pre>(jdbc/execute! db "drop table messages")</pre></div></div></section>
+<section id="solutions_for_sql_management"><h2>Solutions for SQL management</h2><div class="paragraph"><p>HoneySQL can be used to build SQL statements from data structures.</p></div>
+<aside class="notes"><div class="ulist"><ul><li><p><a href="https://github.com/jkk/honeysql" class="bare">https://github.com/jkk/honeysql</a></p></li><li><p>Useful to programmatically combine clauses to produce a final SQL statement</p></li><li><p>For example, user can check a checkbox to enable an additional clause in a search</p></li><li><p>Convenient to use Clojure&#8217;s capabilities for manipulating data structures</p></li><li><p>If you do not need to do manipulation, I recommend using string SQL queries</p></li><li><p>It&#8217;s easier to run string SQL interactively from a prompt</p></li></ul></div></aside></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>See manual end of section 11</p></div></section>
+<section id="answers"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(ns messenger.core
+  (:require [clojure.java.jdbc :as jdbc]))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(def db "jdbc:hsqldb:mem:testdb")</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(jdbc/execute! db
+  "create table person (id bigint, name varchar(1024))")
+(jdbc/execute! db
+  "create table policy (id bigint, name varchar(1024))")
+(jdbc/execute! db
+  "create table person_policy
+  (person_id bigint, policy_id bigint)")</pre></div></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(jdbc/insert-multi! db :person
+                    [{:id 1 :name "Sally"}
+                     {:id 2 :name "Billy"}])
+(jdbc/insert-multi! db :policy
+                    [{:id 1 :name "Corgi Cover"}
+                     {:id 2 :name "Poodle Protection"}])
+(jdbc/insert-multi! db :person_policy
+                    [{:person_id 1 :policy_id 1}
+                     {:person_id 1 :policy_id 2}
+                     {:person_id 2 :policy_id 1}])</pre></div></div></section>
+<section id="answers_3"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn find-policies [person-name]
+  (jdbc/query db ["select a.name from policy a
+                  inner join person_policy b on a.id = b.policy_id
+                  inner join person c on b.person_id = c.id
+                  where c.name = ?"
+                  person-name]))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(find-policies "Sally")
+=&gt; ({:name "Corgi Cover"} {:name "Poodle Protection"})
+(find-policies "Jane")
+=&gt; ()
+(find-policies "Billy")
+=&gt; ({:name "Corgi Cover"})</pre></div></div></section>
+<section id="challenge_4_corgi_cover_database"><h2>Challenge 4: Corgi Cover Database</h2><div class="paragraph"><p>Sending files around is proving to be problematic. Sometimes applications are lost or the results of the eligibility check are not communicated back to the customer. You have been tasked with creating a central source of truth that can be queried as to what applications have been submitted and processed.</p></div></section>
+<section id="part_1_set_up_the_schema"><h2>Part 1: Set up the schema</h2><div class="paragraph"><p>Using the database of your choice, set up an initial database for the Corgi Cover project. In the code, connect to the database and create the initial table required. You can use whatever schema you like, but the first requirement is to store the applications with exactly the same data as was retrieved from the file format in Challenge 2.</p></div></section>
+<section id="part_2_populate_the_data"><h2>Part 2: Populate the data</h2><div class="paragraph"><p>Modify the code to store the applications as they are processed, and the result of the eligibility check.</p></div></section>
+<section id="part_3_write_a_spec"><h2>Part 3: Write a spec</h2><div class="paragraph"><p>Ensure that all records processed from the files meets your expectations for required fields. Write a spec that explicitly defines what should be in the applications. Validate the spec on the incoming records.</p></div></section>
+<section id="part_4_extending_to_poodle_protection"><h2>Part 4: Extending to Poodle Protection</h2><div class="paragraph"><p>Insuricorp is about to launch a new policy called “Poodle Protection”. Soon they will be processing applications with completely new rules. Set up a multimethod to handle “Poodle Protection” applications differently from “Corgi Cover” applications. For now the only difference with the rules from “Corgi Cover” is that “Poodle Protection” is available in different states: California (CA), Florida (FL), Wyoming (WY), and Hawaii (HI).</p></div></section>
+<section id="end_databases"><h2>End Databases</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="11-spec.html">Next Topic: 11 - Spec</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

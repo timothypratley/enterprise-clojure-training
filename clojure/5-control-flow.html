@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="control_flow" data-state="title"><h2>5. Control Flow</h2><div class="paragraph"><p><span class="image"><img src="../img/control.jpg" alt="control"></span></p></div>
+<div class="quoteblock"><blockquote>Control your own destiny or someone else will.</blockquote><div class="attribution">&#8212; Jack Welch</div></div></section>
+<section id="conditionals_if"><h2>Conditionals: if</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (if (pos? 1)
+      "one is positive"
+      "or is it?")
+    ;=&gt; "one is positive"</code></pre></div></div>
+<div class="ulist"><ul><li><p>Chooses between two options</p></li><li><p>Returns a result</p></li><li><p>Only one branch is evaluated</p></li><li><p>A function call evaluates all arguments</p></li></ul></div></section>
+<section id="truthiness"><h2>Truthiness</h2><div class="ulist"><ul><li><p>Booleans: <code>true</code> and <code>false</code></p></li><li><p><code>nil</code> means nothing and is considered false in logical tests</p></li><li><p>Anything else is truthy</p></li></ul></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (if 5
+      "it's five!"
+      "no problem")
+    ;=&gt; "it's five!"</code></pre></div></div></section>
+<section id="use_do_to_group_multiple_statements"><h2>Use do to group multiple statements</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (if (pos? 1)
+      (do (prn "hi")
+          "one is positive")
+      "or is it?")
+    ;;; "hi"
+    ;=&gt; "one is positive"</code></pre></div></div></section>
+<section id="conditionals_when"><h2>Conditionals: when</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (when (pos? 1)
+      (prn "multiple expressions allowed")
+      :ok)
+    ;;; multiple expressions allowed
+    ;=&gt; :ok</code></pre></div></div>
+<div class="ulist"><ul><li><p>When test fails, nothing is evaluated</p></li><li><p>When test passes, the entire body is evaluated</p></li><li><p>Returns the last expression as a result</p></li></ul></div></section>
+<section id="conditionals_cond"><h2>Conditionals: cond</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def x {:cake 1})
+    (cond (= x 1) "one"
+          (= x :cake) "the cake is a lie"
+          (map? x) "it's a map!"
+          :else "not sure what it is")
+    ;=&gt; "it's a map!"</code></pre></div></div>
+<div class="ulist"><ul><li><p>Multiple branches</p></li><li><p><code>:else</code> is not special, keywords are truthy</p></li><li><p>See also <code>condp</code> and <code>case</code></p></li></ul></div></section>
+<section id="conditionals_are_special_forms"><h2>Conditionals are special forms</h2><div class="paragraph"><p>Built in primitives, not functions</p></div>
+<div class="paragraph"><p><code>def</code>, <code>let</code>, <code>quote</code> and <code>fn</code> are special forms</p></div>
+<div class="paragraph"><p>Arguments are not evaluated</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (if (= 1 2)
+      (prn "a")
+      (prn "b"))
+    ;;; "b"
+    ;=&gt; nil</code></pre></div></div></section>
+<section id="reminder_functions_evaluate_all_arguments"><h2>Reminder: functions evaluate all arguments</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defn if-fn [condition a b]
+      (if condition a b))
+    (if-fn (= 1 2)
+      (prn "a")
+      (prn "b"))
+    ;;; a
+    ;;; b
+    ;=&gt; nil</code></pre></div></div></section>
+<section id="macros_are_also_special"><h2>Macros are also special</h2><div class="paragraph"><p><code>or</code> is a macro</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (or true (println "Hello"))
+    ;=&gt; true</code></pre></div></div>
+<div class="paragraph"><p>Arguments are not evaluated</p></div>
+<div class="paragraph"><p>Macros are used to implement and extend Clojure syntax</p></div></section>
+<section id="macros_replace_forms_at_compile_time"><h2>Macros replace forms at compile time</h2><div class="literalblock"><div class="content"><pre>(or true false)</pre></div></div>
+<div class="paragraph"><p>Expands to:</p></div>
+<div class="literalblock"><div class="content"><pre>(let [a true]
+  (if a
+      a
+      (let [b false]
+        (if b
+            b)))))</pre></div></div></section>
+<section id="macros_and_special_forms_are_not_functions"><h2>Macros and special forms are not functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (apply or [true false true])
+    ;;; CompilerException: Can't take value of a macro</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (apply if [true :a :b])
+    ;;; CompilerException: Unable to resolve symbol: if</code></pre></div></div>
+<div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Macros cannot be passed as arguments to functions</td></tr></table></div></section>
+<section id="identifying_special_forms_and_macros"><h2>Identifying special forms and macros</h2><div class="ulist"><ul><li><p>Remember the special forms:
+<code>if</code>, <code>do</code>, <code>let</code>, <code>quote</code>, <code>var</code>, <code>fn</code>, <code>loop</code>, <code>recur</code>, <code>throw</code>, <code>try</code></p></li><li><p>Control flow forms: <code>cond</code>, <code>or</code>, <code>and</code>, <code>when</code></p></li><li><p>Navigate to source: <code>def</code>, <code>defn</code>, <code>defmacro</code></p></li><li><p>See <code>:macro</code> in Metadata</p></li><li><p>Documentation</p></li></ul></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">Writing macros is covered later in the course</td></tr></table></div></section>
+<section id="recursion"><h2>Recursion</h2><div class="literalblock"><div class="content"><pre>(defn sum-up [coll result]
+  (if (empty? coll)
+    result
+    (sum-up (rest coll)
+            (+ result (first coll)))))</pre></div></div>
+<div class="paragraph"><p>Functions that invoke themselves are recursive</p></div></section>
+<section id="tail_call_optimization"><h2>Tail Call Optimization</h2><div class="paragraph"><p>Recursion without consuming the stack</p></div>
+<div class="literalblock"><div class="content"><pre>(defn sum-up-with-recur [coll result]
+  (if (empty? coll)
+    result
+    (recur (rest coll) (+ result (first coll)))))</pre></div></div>
+<div class="ulist"><ul><li><p>Recur can only occur where a function returns</p></li><li><p>Current frame will return the result of the next call</p></li><li><p>No further calculations needed</p></li><li><p>Current frame can be released</p></li></ul></div></section>
+<section id="loops"><h2>Loops</h2><div class="literalblock"><div class="content"><pre>(loop [a 0
+       b 1]
+  (if (&lt; b 1000)
+    (recur b (+ a b))
+    a))</pre></div></div>
+<div class="ulist"><ul><li><p>Loop establishes bindings</p></li><li><p>Allows recur to the start of the loop</p></li></ul></div></section>
+<section id="exception_handling"><h2>Exception handling</h2><div class="paragraph"><p>Special forms <code>try</code> <code>catch</code> <code>finally</code> and <code>throw</code></p></div>
+<div class="literalblock"><div class="content"><pre>(try
+  (inc "cat")
+  (catch Exception e
+    (println "cat cannot be incremented"))
+  (finally
+    (println "always"))</pre></div></div></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>See manual end of section 5</p></div></section>
+<section id="answers"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(def grade [score]
+  (cond (&gt;= score 90) "A"
+        (&gt;= score 80) "B"
+        (&gt;= score 70) "C"
+        (&gt;= score 60) "D"
+        :else "F"))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest grade-test
+  (is (= "B" (grade 85))))</pre></div></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn factorial [n]
+  (loop [acc 1
+         x n]
+    (if (&lt;= x 1)
+      acc
+      (recur (* acc x) (dec x)))))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest factorial-test
+  (is (= 120 (factorial 5))))</pre></div></div></section>
+<section id="answers_3"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn factorial2
+  ([n] (factorial2 1 n))
+  ([acc n]
+   (if (&lt;= n 1)
+     acc
+     (recur (* acc n) (dec n)))))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest factorial2-test
+  (is (= 120 (factorial2 5))))</pre></div></div></section>
+<section id="answers_4"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn fib [limit]
+  (loop [a 1
+         b 1]
+    (if (&gt;= b limit)
+      a
+      (recur b (+ a b)))))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest fib-test
+  (is (= 89 (fib 100))))</pre></div></div></section>
+<section id="end_control_flow"><h2>End Control Flow</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="6-functional-programming.html">Next Topic: 6 - Functional Programming</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

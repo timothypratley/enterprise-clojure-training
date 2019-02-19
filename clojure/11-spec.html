@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="spec"><h2>11. Spec</h2><div class="paragraph"><p><span class="image"><img src="../img/spec.jpg" alt="spec"></span></p></div>
+<div class="quoteblock"><blockquote>Much of the essence of building a program is in fact the debugging of the specification.</blockquote><div class="attribution">&#8212; Fred Brooks</div></div></section>
+<section id="specifications"><h2>Specifications</h2><div class="ulist"><ul><li><p>Specifies the structure of data</p></li><li><p>Validates data structures</p></li><li><p>A spec is a single argument function</p></li><li><p>Values conform to specs or don&#8217;t (validation)</p></li><li><p>A values may conform to one of multiple specs (parsing)</p></li><li><p>A registrar of named specs</p></li><li><p>Can generate data and tests</p></li><li><p>Asserts arbitrary requirements</p></li><li><p>More flexible than types</p></li></ul></div></section>
+<section id="spec_introduced_in_clojure_1_9_0"><h2>Spec Introduced in Clojure 1.9.0</h2><div class="paragraph"><p>Update <code>project.clj</code> to the right version:</p></div>
+<div class="literalblock"><div class="content"><pre>[org.clojure/clojure "1.9.0"]</pre></div></div>
+<div class="paragraph"><p>Require it</p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.spec
+  (:require [clojure.spec.alpha :as s]))</pre></div></div></section>
+<section id="any_single_argument_function_is_a_spec"><h2>Any single argument function is a spec</h2><div class="literalblock"><div class="content"><pre>(string? 0)
+=&gt; false</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(identity 1)
+=&gt; 1</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(identity nil)
+=&gt; nil</pre></div></div>
+<div class="paragraph"><p>A truthy result indicates conformity</p></div></section>
+<section id="we_validate_values_against_specs"><h2>We validate values against specs</h2><div class="literalblock"><div class="content"><pre>(s/valid? string? 0)
+=&gt; false</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? identity nil)
+=&gt; false</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? identity 1)
+=&gt; true</pre></div></div></section>
+<section id="naming_a_spec"><h2>Naming a spec</h2><div class="literalblock"><div class="content"><pre>(s/def ::first-name string?)
+=&gt; :user/first-name</pre></div></div>
+<div class="paragraph"><p>Identifier &#8594; spec is stored in the registrar</p></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? ::first-name "Tim")
+=&gt; true</pre></div></div>
+<div class="paragraph"><p><code>::first-name</code> is shorthand for <code>:my.namespace/first-name</code></p></div>
+<div class="paragraph"><p>Naming collisions are expected</p></div>
+<div class="paragraph"><p>Spec identifiers must be namespaced</p></div></section>
+<section id="another_spec_example"><h2>Another spec example</h2><div class="literalblock"><div class="content"><pre>(s/def :corgi-cover/state #{"IL" "WA" "NY" "CO"})
+(s/valid? :corgi-cover/state "IL")
+=&gt; true</pre></div></div>
+<div class="admonitionblock tip"><table><tr><td class="icon"><i class="fa fa-lightbulb-o" title="Tip"></i></td><td class="content">Sets are functions that return the element if it is in the set</td></tr></table></div></section>
+<section id="logical_specs"><h2>Logical specs</h2><div class="literalblock"><div class="content"><pre>(s/def ::big-even (s/and int? even? #(&gt; % 1000)))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? ::big-even 100000)
+=&gt; true</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? ::big-even 5)
+=&gt; false</pre></div></div></section>
+<section id="explaining_non_conformance"><h2>Explaining non-conformance</h2><div class="literalblock"><div class="content"><pre>(s/explain ::big-even 5)
+=&gt; val: 5 fails spec: ::big-even predicate: even?</pre></div></div>
+<div class="paragraph"><p>See also <code>explain-str</code></p></div>
+<div class="admonitionblock tip"><table><tr><td class="icon"><i class="fa fa-lightbulb-o" title="Tip"></i></td><td class="content">What would happen if we had not used <code>s/and</code>?</td></tr></table></div>
+<div class="literalblock"><div class="content"><pre>#(and (int? %) (even? %) (&gt; % 1000))</pre></div></div></section>
+<section id="conforming"><h2>Conforming</h2><div class="literalblock"><div class="content"><pre>(s/def ::name-or-id (s/or :name string?
+                          :id int?))</pre></div></div>
+<div class="paragraph"><p>Chose which spec matches</p></div>
+<div class="literalblock"><div class="content"><pre>(s/conform ::name-or-id "abc")
+=&gt; [:name "abc"]</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/conform ::name-or-id 100)
+=&gt; [:id 100]</pre></div></div>
+<div class="paragraph"><p>Each choice is tagged (<code>:name</code> and <code>:id</code>)</p></div></section>
+<section id="conform_is_useful_for_parsing"><h2>Conform is useful for parsing</h2><div class="ulist"><ul><li><p>Events</p></li><li><p>Function signatures</p></li><li><p>Expectations about data</p></li><li><p>Can match one of many alternatives</p></li></ul></div></section>
+<section id="allowing_nil"><h2>Allowing nil</h2><div class="literalblock"><div class="content"><pre>(string? nil)
+=&gt; false</pre></div></div>
+<div class="paragraph"><p>To include <code>nil</code> as a valid value:</p></div>
+<div class="literalblock"><div class="content"><pre>(s/nilable string?)</pre></div></div></section>
+<section id="regex_in_a_spec"><h2>regex in a spec</h2><div class="literalblock"><div class="content"><pre>(def email-regex
+  #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$")
+(s/def ::email
+  (s/and string?
+         #(re-matches email-regex %)))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? ::email "timothypratley@gmail.com")
+=&gt; true
+(s/valid? ::email "not-a-valid-email-address")
+=&gt; false</pre></div></div></section>
+<section id="map_specs"><h2>Map specs</h2><div class="literalblock"><div class="content"><pre>(s/def ::first-name string?)
+(s/def ::last-name string?)
+(s/def ::phone string?)</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/def ::person (s/keys :req [::first-name ::last-name]
+                        :opt [::phone]))</pre></div></div>
+<div class="paragraph"><p>Entity definition</p></div></section>
+<section id="validating_maps"><h2>Validating maps</h2><div class="literalblock"><div class="content"><pre>(s/valid? ::person
+  {::first-name "Elon"
+   ::last-name "Musk"
+   ::email "elon@example.com"})
+=&gt; true</pre></div></div>
+<div class="ulist"><ul><li><p>Required attributes are included</p></li><li><p>Every registered key has a conforming value</p></li></ul></div></section>
+<section id="qualified_keys"><h2>Qualified keys</h2><div class="paragraph"><p>Namespacing keys preserves more meaning</p></div>
+<div class="literalblock"><div class="content"><pre>{:my.namespace/first-name "Elon"
+ :my.namespace/last-name "Musk"
+ :my.namespace/email "elon@example.com"}</pre></div></div>
+<div class="paragraph"><p>But existing code often does not namespace keys</p></div>
+<div class="literalblock"><div class="content"><pre>{:first-name "Elon"
+ :last-name "Musk"
+ :email "elon@example.com"}</pre></div></div></section>
+<section id="unqualified_keys"><h2>Unqualified keys</h2><div class="literalblock"><div class="content"><pre>(s/def :unq/person
+  (s/keys :req-un [::first-name ::last-name ::email]
+          :opt-un [::phone]))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? :unq/person
+  {:first-name "Elon"
+   :last-name "Musk"
+   :email "elon@example.com"})
+=&gt; true</pre></div></div>
+<div class="ulist"><ul><li><p>req-un &#8594; required unqualified keys</p></li><li><p>opt-un &#8594; optional unqualified keys</p></li></ul></div></section>
+<section id="generic_map_map_of"><h2>Generic map: map-of</h2><div class="literalblock"><div class="content"><pre>(s/def ::scores (s/map-of string? int?))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? ::scores {"Sally" 1000,
+                    "Joe" 500
+                    "Jess" 750})
+=&gt; true</pre></div></div>
+<div class="ulist"><ul><li><p>Homogeneous keys and homogeneous values</p></li></ul></div></section>
+<section id="collections"><h2>Collections</h2><div class="literalblock"><div class="content"><pre>(s/valid (s/coll-of number?)
+         #{5 10 2})
+=&gt; true</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid (s/tuple number? string?)
+         [42 "meaning of life"])
+=&gt; true</pre></div></div></section>
+<section id="specs_can_be_combined"><h2>Specs can be combined</h2><div class="literalblock"><div class="content"><pre>(s/def :mega-corp/name string?)
+(s/def :mega-corp/policy-count int?)
+(s/def :corgi-cover/state #{"IL" "WA" "NY" "CO"})
+(s/def :corgi-cover/corgi-count pos-int?)</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/def :mega-corp/corgi-cover
+  (s/keys :req-un [:mega-corp/name
+                   :corgi-cover/state
+                   :corgi-cover/corgi-count]))</pre></div></div></section>
+<section id="generators"><h2>Generators</h2><div class="ulist"><ul><li><p>Specs are designed to act as generators</p></li><li><p>Produce sample data that conforms to the spec</p></li><li><p>Useful for property-based testing</p></li></ul></div></section>
+<section id="generator_setup"><h2>Generator setup</h2><div class="paragraph"><p>Add to your <code>project.clj</code>:</p></div>
+<div class="literalblock"><div class="content"><pre>:profiles
+{:dev
+ {:dependencies
+  [[org.clojure/test.check "0.9.0"]]}}</pre></div></div>
+<div class="paragraph"><p>Require:</p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.spec
+  (:require [clojure.spec.gen.alpha :as gen]))</pre></div></div></section>
+<section id="generate_and_gen"><h2>generate and gen</h2><div class="literalblock"><div class="content"><pre>(gen/generate (s/gen int?))
+=&gt; -959</pre></div></div>
+<div class="ulist"><ul><li><p><code>gen</code> obtains the generator for a spec</p></li><li><p><code>generate</code> creates a value that conforms to the spec</p></li></ul></div></section>
+<section id="generate_can_build_complex_values"><h2>generate can build complex values</h2><div class="literalblock"><div class="content"><pre>(gen/generate (s/gen :mega-corp/corgi-cover))
+=&gt; {:name "yNd516AYD",
+    :state "NY",
+    :corgi-count 1}</pre></div></div></section>
+<section id="sample"><h2>sample</h2><div class="literalblock"><div class="content"><pre>(gen/sample (s/gen string?))
+=&gt; ("" "" "" "" "8" "W" "" "G74SmCm" "K9sL9" "82vC")</pre></div></div>
+<div class="paragraph"><p>Produces 10 examples</p></div></section>
+<section id="int_in_range"><h2>int-in range</h2><div class="literalblock"><div class="content"><pre>(s/def ::roll (s/int-in 0 11))
+(gen/sample (s/gen ::roll))
+=&gt; (1 0 0 3 1 7 10 1 5 0)</pre></div></div>
+<div class="paragraph"><p>See also <code>inst-in</code> and <code>double-in</code></p></div>
+<div class="paragraph"><p>See also <code>test.check</code> documentation</p></div></section>
+<section id="what_about_functions_arguments"><h2>What about functions arguments?</h2><div class="literalblock"><div class="content"><pre>(defn f [x y z]
+  ...)</pre></div></div>
+<div class="paragraph"><p><code>[x y z]</code> is a sequence of data arguments with different specs</p></div>
+<div class="paragraph"><p>Positional importance</p></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">unlike a stream of events</td></tr></table></div></section>
+<section id="cat_concatenation"><h2>cat - Concatenation</h2><div class="literalblock"><div class="content"><pre>(s/def ::t
+  (s/cat :a number? :b string?))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/conform ::t [2 "three"])
+=&gt; {:a 2, :b "three"}</pre></div></div>
+<div class="paragraph"><p>Covers most function argument signature</p></div></section>
+<section id="function_specs"><h2>Function specs</h2><div class="literalblock"><div class="content"><pre>(s/fdef f
+  :args (s/cat ...)
+  :ret ...
+  :fn ...)</pre></div></div>
+<div class="ulist"><ul><li><p>Sequence of inputs</p></li><li><p>Return spec</p></li><li><p>Invariant function has access to inputs and return</p></li></ul></div></section>
+<section id="function_args"><h2>Function args</h2><div class="literalblock"><div class="content"><pre>(s/fdef f :args (s/cat :num number? :item string?))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(defn f [num item]
+  (str num " bottles of " item " on the wall"))</pre></div></div>
+<div class="paragraph"><p>Often declared in a different namespace</p></div></section>
+<section id="function_ret"><h2>Function ret</h2><div class="literalblock"><div class="content"><pre>(s/fdef f :ret string?)</pre></div></div></section>
+<section id="function_invariant"><h2>Function invariant</h2><div class="literalblock"><div class="content"><pre>(s/fdef f
+  :fn #(str/includes? (:ret %) (-&gt; % :args :item))</pre></div></div></section>
+<section id="putting_them_all_together"><h2>Putting them all together</h2><div class="literalblock"><div class="content"><pre>(s/fdef f :args (s/cat :num number?
+                       :item string?))
+          :ret string?
+          :fn #(str/includes?
+                 (-&gt; % :args :item)
+                 (:ret %))</pre></div></div></section>
+<section id="example_showing_different_namespaces"><h2>Example showing different namespaces</h2><div class="paragraph"><p><code>src/training/core.clj</code></p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.core)
+(defn f [x]
+  (inc x))</pre></div></div>
+<div class="paragraph"><p><code>src/training/core_spec.clj</code></p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.core-spec
+  (:require [training.core :as c]
+            [clojure.spec.alpha :as s]))
+(s/fdef c/f :args (s/cat :x int?)
+            :ret int?)</pre></div></div></section>
+<section id="checking_that_a_function_obeys_its_spec"><h2>Checking that a function obeys its spec</h2><div class="paragraph"><p><code>src/training/core_test</code></p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.core-test
+  (:require [clojure.test :refer :all]
+            [clojure.spec.test.alpha :as stest]
+            [training.core :as c]))
+(deftest f-test
+  (is (nil? (-&gt; (stest/check `c/f) first :failure))))</pre></div></div></section>
+<section id="issues_with_spec"><h2>Issues with spec</h2><div class="ulist"><ul><li><p>Common to keep specs in a separate namespace</p></li><li><p><code>stest/check</code> returns a sequence containing a failure cases</p></li><li><p>Shrinks to a minimal case</p></li><li><p>Difficult to find what you want in the output</p></li><li><p>Designed for running at the REPL, clunky in tests</p></li><li><p>Make sure you tests for failure before success</p></li><li><p>The expound library helps</p></li></ul></div></section>
+<section id="expound"><h2>Expound</h2><div class="paragraph"><p>Add to project.clj dependencies</p></div>
+<div class="literalblock"><div class="content"><pre>[expound "0.5.0"]</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(ns training.expound-test
+  (:require [expound.alpha :as e]))
+(e/expound string? 1)
+=&gt;
+-- Spec failed --------------------
+  1
+should satisfy
+  string?
+-------------------------</pre></div></div></section>
+<section id="check"><h2>check</h2><div class="ulist"><ul><li><p>Generates arguments based on the <code>:args</code> spec</p></li><li><p>Invokes the function</p></li><li><p>Checks that <code>:ret</code> and <code>:fn</code> specs were satisfied</p></li><li><p>Reduces to the shortest failing case</p></li></ul></div></section>
+<section id="enumerate_namespace"><h2>enumerate-namespace</h2><div class="literalblock"><div class="content"><pre>(stest/check (stest/enumerate-namespace 'training.core))</pre></div></div>
+<div class="paragraph"><p>Tests all functions in a namespace that have a spec</p></div>
+<div class="literalblock"><div class="content"><pre>(stest/check)</pre></div></div>
+<div class="paragraph"><p>Checks all functions that have a spec</p></div></section>
+<section id="instrument"><h2>instrument</h2><div class="literalblock"><div class="content"><pre>(stest/instrument `c/f)
+(c/f "bad argument")
+=&gt; CompilerException: did not conform to spec</pre></div></div>
+<div class="ulist"><ul><li><p>Requires a fully-qualified symbol</p></li><li><p>Provides validation for external uses of a function</p></li><li><p><code>unstrument</code> to turn off</p></li></ul></div></section>
+<section id="can_instrument_namespaces_or_everything"><h2>Can instrument namespaces, or everything</h2><div class="literalblock"><div class="content"><pre>(stest/instrument (stest/enumerate-namespace 'training.core))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(stest/instrument)</pre></div></div></section>
+<section id="sequence_specs_are_regular_expressions"><h2>Sequence specs are regular expressions</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>*</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">0 or more of a pattern</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>+</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">1 or more of a pattern</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>?</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">0 or 1 of a pattern</p></td></tr></table></section>
+<section id="sequence_specs"><h2>Sequence specs</h2><div class="literalblock"><div class="content"><pre>(s/valid? (s/* string?) ["a" "b" "c"])
+=&gt; true</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? (s/+ string?) [])
+=&gt; false</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/valid? (s/? string?) ["a" "b"])
+=&gt; false</pre></div></div></section>
+<section id="cat_with_subsequences"><h2>cat with subsequences</h2><div class="literalblock"><div class="content"><pre>(s/def ::t
+  (s/cat :a (s/* int?) :b string?))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/conform ::t [1 2 "three"])
+=&gt; {:a [1 2], :b "three"}</pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">Matched <code>[1 2 "three"]</code>, not <code>[[1 2] "three"]</code></td></tr></table></div>
+<div class="paragraph"><p>Think of it as a regex: <code>int*string</code></p></div>
+<div class="paragraph"><p>"Any number of ints followed by a string"</p></div></section>
+<section id="alt_alternatives"><h2>alt - Alternatives</h2><div class="literalblock"><div class="content"><pre>(s/def ::t
+  (s/cat :a (s/alt :b (s/* int?)
+                   :c (s/* string?))
+         :d keyword?))</pre></div></div>
+<div class="paragraph"><p>Builds a regex: <code>(int*|string*)keyword</code></p></div>
+<div class="literalblock"><div class="content"><pre>[1 2 3 :foo]
+["abc" "def" :bar]</pre></div></div></section>
+<section id="compare_alt_with_or"><h2>Compare alt with or</h2><div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Is <code>s/alt</code> the same as <code>s/or</code>?</td></tr></table></div>
+<div class="paragraph"><p>Inside a sequence <code>s/or</code> would match</p></div>
+<div class="literalblock"><div class="content"><pre>[[1 2 3] :foo]
+[["abc" "def"] :bar]</pre></div></div>
+<div class="paragraph"><p>The key is to think about the regex being constructed</p></div>
+<div class="paragraph"><p>Outside of sequences they do behave the same</p></div></section>
+<section id="additional_constraints"><h2>Additional constraints</h2><div class="literalblock"><div class="content"><pre>(s/def ::even-strings (s/cat :a (s/&amp; (s/* string?)
+                                     #(even? (count %)))
+                             :b keyword?))</pre></div></div>
+<div class="paragraph"><p>Matches</p></div>
+<div class="literalblock"><div class="content"><pre>["hello" "world" :k]</pre></div></div>
+<div class="ulist"><ul><li><p><code>s/&amp;</code> is like <code>s/and</code></p></li><li><p><code>s/&amp;</code> is can participate in subsequences (similar to <code>s/alt</code> vs <code>s/or</code>)</p></li></ul></div></section>
+<section id="exercise_samples_and_conforms"><h2>exercise samples and conforms</h2><div class="literalblock"><div class="content"><pre>(s/exercise (s/* (s/cat :w (s/alt :x int?))))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(s/exercise-fn training.core/f)</pre></div></div>
+<div class="ulist"><ul><li><p>Generates 10 samples and conforms them</p></li><li><p>Very useful to test specs as you build them</p></li><li><p>Can see the example and where the parts were matched</p></li></ul></div></section>
+<section id="spec_summary"><h2>Spec summary</h2><div class="ulist"><ul><li><p>Spec data</p></li><li><p>Validate data</p></li><li><p>Spec function arguments</p></li><li><p>Generate data from specs</p></li><li><p>Check functions with generated data</p></li><li><p>Instrument functions</p></li></ul></div></section>
+<section id="end_spec"><h2>End Spec</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="12-macros.html">Next Topic: 12 - Macros</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

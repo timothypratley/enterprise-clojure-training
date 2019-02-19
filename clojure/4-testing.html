@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="testing_with_clojure_test" data-state="title"><h2>4. Testing with clojure.test</h2><div class="paragraph"><p><span class="image"><img src="../img/testing.jpg" alt="testing"></span></p></div>
+<div class="quoteblock"><blockquote>The problem is not that testing is the bottleneck. The problem is that you don’t know what’s in the bottle.</blockquote><div class="attribution">&#8212; Michael Bolton</div></div></section>
+<section id="deftest"><h2>deftest</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (ns my.namespace
+      (:require [clojure.test
+                 :refer [deftest is run-tests]]))
+    (deftest my-test
+      (prn "My test ran")
+      (is (= 1 1)))
+    (my-test)
+    ;;; "My test ran"
+    ;=&gt; nil</code></pre></div></div>
+<div class="paragraph"><p>Tests are functions with no input arguments</p></div>
+<div class="paragraph"><p>Tests make assertions: <code>(is (= 1 1))</code></p></div></section>
+<section id="failing_tests"><h2>Failing tests</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (deftest my-failing-test
+      (prn "My failing test ran")
+      (is (= 1 2)))
+    (my-failing-test)
+    ;;; "My failing test ran"
+    ;;; FAIL in (my-failing-test)</code></pre></div></div></section>
+<section id="defining_tests_with_deftest"><h2>Defining tests with deftest</h2><div class="paragraph"><p>Can define tests in any namespace</p></div>
+<div class="paragraph"><p>Convention: <code><strong>test</strong></code> dir mirrors <code><strong>src</strong></code> dir; append <code><strong>test</strong></code></p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:100%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong>test</strong>/training/a_test.clj</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong>src</strong>/training/a.clj</code></p></td></tr></table>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">The namespace <code>training.a-test</code> contains tests for functions from <code>training.a</code></td></tr></table></div></section>
+<section id="refer_all"><h2>Refer all</h2><div class="paragraph"><p>Common to refer all symbols from <code>clojure.test</code> for convenience:</p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.my-namespace-test
+  (:require [clojure.test :refer :all]))
+(deftest ...)</pre></div></div>
+<div class="paragraph"><p>vs</p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.my-namespace-test
+  (:require [clojure.test :as test]))
+(test/deftest ...)</pre></div></div></section>
+<section id="running_tests_from_the_repl"><h2>Running tests from the REPL</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (run-tests)
+    ;;; "My test ran"
+    ;;; "My failing test ran"
+    ;;; Ran 0 tests containing 0 assertions.
+    ;;; 0 failures, 0 errors.
+    ;=&gt; {:test 1, :pass 0, :fail 0, :error 0, :type :summary}</code></pre></div></div>
+<div class="paragraph"><p>Runs all tests in the current namespace</p></div></section>
+<section id="test_specific_namespaces"><h2>Test specific namespaces:</h2><div class="literalblock"><div class="content"><pre>(run-tests 'training.my-namespace
+           'training.other-namespace)</pre></div></div></section>
+<section id="command_line_testing"><h2>Command line testing</h2><div class="literalblock"><div class="content"><pre>$ lein test</pre></div></div>
+<div class="literalblock"><div class="content"><pre>"My test ran"
+"My failing test ran"
+Ran 0 tests containing 0 assertions.
+0 failures, 0 errors.</pre></div></div>
+<div class="paragraph"><p>Runs all tests in a project</p></div></section>
+<section id="lein_test_refresh"><h2>lein-test-refresh</h2><div class="ulist"><ul><li><p>Reloads code and runs tests when you save a file</p></li><li><p>Leiningen plugin</p></li></ul></div>
+<div class="paragraph"><p>Add lein-test-refresh to your <code>~/.lein/profiles.clj</code>:</p></div>
+<div class="literalblock"><div class="content"><pre>{:user
+ {:plugins
+  [[com.jakemccrary/lein-test-refresh "0.22.0"]]}}</pre></div></div></section>
+<section id="lein_test_refresh_2"><h2>lein-test-refresh</h2><div class="paragraph"><p>Alternatively as a <code>project.clj</code> dependency:</p></div>
+<div class="literalblock"><div class="content"><pre>(defproject sample
+  :dependencies [[org.clojure/clojure "1.8.0"]]
+  :profiles
+  {:dev
+   {:plugins
+    [[com.jakemccrary/lein-test-refresh "0.22.0"]]}})</pre></div></div></section>
+<section id="using_lein_test_refresh"><h2>Using lein-test-refresh</h2><div class="literalblock"><div class="content"><pre>$ lein test-refresh</pre></div></div>
+<div class="paragraph"><p>Watches for changes from the command line</p></div>
+<div class="paragraph"><p>Change <code>my-test</code> to print a new message</p></div>
+<div class="paragraph"><p>Tests are re-run as soon as you save the file</p></div>
+<div class="literalblock"><div class="content"><pre>(deftest my-test
+  (prn "My test ran immediately"))</pre></div></div>
+<div class="paragraph"><p>Use lein-test-refresh like a REPL</p></div>
+<div class="paragraph"><p>Test more</p></div></section>
+<section id="assertions"><h2>Assertions</h2><div class="literalblock"><div class="content"><pre>(deftest inc-adds-one-test
+  (is (= 2 (inc 1))))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>=&gt; Ran 1 tests containing 1 assertions.
+   0 failures, 0 errors.</pre></div></div>
+<div class="ulist"><ul><li><p><code>(= expected actual)</code></p></li><li><p>Expected: value literal</p></li><li><p>Actual: result of invoking the function under test</p></li></ul></div></section>
+<section id="failures"><h2>Failures</h2><div class="literalblock"><div class="content"><pre>(deftest broken-test
+  (is (= 1 (inc 1))))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>=&gt; FAIL in (broken-test)
+   expected: (= 1 (inc 1))
+     actual: (not (= 1 2))</pre></div></div></section>
+<section id="can_use_any_truthy_assertion"><h2>Can use any truthy assertion</h2><div class="literalblock"><div class="content"><pre>(deftest odd-test
+  (is (odd? 1)))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest create-test
+  (is (create-thing)))</pre></div></div></section>
+<section id="describing_the_assertions"><h2>Describing the assertions</h2><div class="literalblock"><div class="content"><pre>(deftest pythag-test
+  (is (= (* 5 5)
+         (+ (* 3 3) (* 4 4)))
+      "The square of the hypotenuse
+      is equal to the sum of the squares
+      of the other two sides"))</pre></div></div></section>
+<section id="comparing_complex_values"><h2>Comparing complex values</h2><div class="literalblock"><div class="content"><pre>expected: (= {:foo :bar, :baz :quux} {:foo :bar, :baz :quux} {:fo :bar, :baz :quux})
+  actual: (not (= {:foo :bar, :baz :quux} {:foo :bar, :baz :quux} {:fo :bar, :baz :quux}))</pre></div></div>
+<div class="paragraph"><p>Huh?</p></div>
+<div class="literalblock"><div class="content"><pre>expected: {:foo :bar, :baz :quux}
+  actual: {:fo :bar, :baz :quux}
+    diff: - {:foo :bar}
+          + {:fo :bar}</pre></div></div>
+<div class="paragraph"><p><code>pjstadig/humane-test-output</code> (or <code>venantius/ultra</code>)</p></div></section>
+<section id="humane_test_output"><h2>Humane test output</h2><div class="paragraph"><p><code>~/.lein/profiles.clj</code>:</p></div>
+<div class="literalblock"><div class="content"><pre>{:user
+ {:dependencies
+  [[pjstadig/humane-test-output "0.8.3"]]
+  :injections
+   [(require 'pjstadig.humane-test-output)
+    (pjstadig.humane-test-output/activate!)]}}</pre></div></div></section>
+<section id="grouping_assertions"><h2>Grouping assertions</h2><div class="literalblock"><div class="content"><pre>(deftest math-test
+  (testing "Basic math"
+    (is (odd? 1))
+    (is (= 2 (inc 1))))
+  (testing "Pythagoras"
+    (is (= (* 5 5)
+           (+ (* 3 3) (* 4 4)))
+        "The square of the hypotenuse
+        is equal to the sum of the squares
+        of the other two sides"))</pre></div></div></section>
+<section id="are"><h2>are</h2><div class="literalblock"><div class="content"><pre>(are [x y] (= x y)
+     2 (+ 1 1)
+     4 (* 2 2))</pre></div></div>
+<div class="paragraph"><p>Concisely expresses multiple assertions</p></div>
+<div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Disadvantages</td></tr></table></div>
+<div class="ulist"><ul><li><p>Easy to make an error in the syntax</p></li><li><p>Overly terse</p></li><li><p>Line numbers are not preserved (harder to find the failing test)</p></li></ul></div></section>
+<section id="should_throw_an_exception"><h2>Should throw an exception</h2><div class="literalblock"><div class="content"><pre>(defn maybe-inc [x]
+  (if (= 42 x)
+    (throw (ex-info "oh no" {}))
+    (inc x)))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest test-maybe-inc-throws
+  (is (thrown? Exception
+        (maybe-inc 42)))
+  (is (thrown-with-msg? Exception #"oh no"
+        (maybe-inc 42))))</pre></div></div></section>
+<section id="test_fixtures"><h2>Test fixtures</h2><div class="literalblock"><div class="content"><pre>(use-fixtures :each
+  (fn print-enter-exit [tests]
+    (println "before")
+    (tests)
+    (println "after")))</pre></div></div>
+<div class="ulist"><ul><li><p>A fixture is just a function</p></li><li><p>Takes a test and calls it (tests are functions)</p></li><li><p>Set up and tear down resources (database connections etc)</p></li><li><p><code>:each</code> means run for every test in the namespace</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Test runner will call the fixture</p></div>
+<div class="ulist"><ul><li><p>prints “before”</p></li><li><p>executes the tests in the namespace</p></li><li><p>prints “after”</p></li></ul></div></aside></section>
+<section id="every_vs_once"><h2>Every vs once</h2><div class="literalblock"><div class="content"><pre>(use-fixtures :once
+  (fn capture-prints [f]
+    (with-out-str (f))))</pre></div></div>
+<div class="ulist"><ul><li><p>This fixture captures output, prevents clutter</p></li><li><p><code>:once</code> per namespace</p></li></ul></div></section>
+<section id="fixtures"><h2>Fixtures</h2><div class="ulist"><ul><li><p>Common use case is when doing database tests</p></li><li><p>Wrap the test execution inside a transaction</p></li><li><p>Rollback after the test completes</p></li><li><p>Avoids the need to clean up data</p></li></ul></div></section>
+<section id="mocking"><h2>Mocking</h2><div class="literalblock"><div class="content"><pre>(defn post [url]
+  {:body (str "Hello world")})</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest test-post
+  (with-redefs [str (fn [&amp; args]
+                       "Goodbye world")]
+    (is (= {:body "Goodbye world"}
+           (post "http://service.com/greet")))))</pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content"><code>let</code> does not suffice, <code>str</code> is outside of scope</td></tr></table></div></section>
+<section id="mocking_2"><h2>Mocking</h2><div class="ulist"><ul><li><p>Replace any var using <code>with-redefs</code></p></li><li><p>Disable dependencies during the test</p></li><li><p>Isolate particular behaviors</p></li><li><p>Test exceptional conditions</p><div class="ulist"><ul><li><p>always throw</p></li><li><p>never throw</p></li></ul></div></li></ul></div></section>
+<section id="debugging"><h2>Debugging</h2><div class="paragraph"><p>Print out an intermediary values</p></div>
+<div class="literalblock"><div class="content"><pre>(defn shazam [a b]
+  (/ 1 (+ a b) (+ a (* a b))))</pre></div></div>
+<div class="paragraph"><p>What is <code>(+ a (* a b))</code> evaluating to? <code>(doto &#8230;&#8203; (prn))</code></p></div>
+<div class="literalblock"><div class="content"><pre>(defn shazam [a b]
+  (/ 1 (+ a b) (doto (+ a (* a b)) (prn "***"))))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(shazam 1 2)
+=&gt; 3 "***"
+   1/9</pre></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p><code>prn</code> will not work, always returns <code>nil</code></p></li><li><p><code>doto</code> causes side-effect to occur, and return the original argument</p></li></ul></div></aside></section>
+<section id="doto"><h2>doto</h2><div class="paragraph"><p>Also useful for Java interop:</p></div>
+<div class="literalblock"><div class="content"><pre>(doto (new java.util.HashMap)
+  (.put "a" 1)
+  (.put "b" 2))
+=&gt; {"a" 1, "b" 2}</pre></div></div>
+<div class="paragraph"><p>We get the constructed object, with side-effects applied</p></div></section>
+<section id="debugging_2"><h2>Debugging</h2><div class="ulist"><ul><li><p>Ask the REPL questions</p></li><li><p>Build small incremental functions</p></li><li><p>Write tests</p></li></ul></div></section>
+<section id="workflow_demo"><h2>Workflow demo</h2></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>See manual end of section 4</p></div></section>
+<section id="answers"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn pythag [a b]
+  (Math/sqrt (+ (* a a) (* b b))))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest test-pythag
+  (is (= 5 (pythag 4 3)))
+  (is (= 13 (pythag 12 5))))</pre></div></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="literalblock"><div class="content"><pre>(defn post [url]
+  {:body (str "Hello world")})</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftest test-post
+  (let [c (atom 0)]
+    (with-redefs [str (fn [&amp; args]
+                        (swap! c inc)
+                        "Goodbye world")]
+      (post "http://service.com/greet")
+      (post "http://service.com/greet")
+      (post "http://service.com/greet")
+      (is (= 3 @c)))))</pre></div></div></section>
+<section id="end_testing"><h2>End Testing</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="5-control-flow.html">Next Topic: 5 - Control Flow</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

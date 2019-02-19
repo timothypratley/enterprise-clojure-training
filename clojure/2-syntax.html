@@ -1,0 +1,436 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="clojure_syntax" data-state="title"><h2>2. Clojure Syntax</h2><div class="paragraph"><p><span class="image"><img src="../img/syntax.png" alt="syntax"></span></p></div>
+<div class="quoteblock"><blockquote>If the syntax is good enough for the information, it should be good enough for the meta-information.</blockquote><div class="attribution">&#8212; Erik Naggum</div></div></section>
+<section><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Java</th><th class="tableblock halign-left valign-top">Clojure</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>int i = 5;</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>(def i 5)</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>if (x == 1)
+  return y;
+else
+  return z;</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>(if (= x 1)
+  y
+  z)</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>x * y * z;</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>(* x y z)</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>foo(x, y, z);</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>(foo x y z)</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>foo.bar(x);</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>(.bar foo x)</pre></div></td></tr></table>
+<aside class="notes"><div class="paragraph"><p>Syntax Summary:</p></div>
+<div class="ulist"><ul><li><p>Lisp is an acronym for "list processing", everything is a list!</p></li><li><p>Operation appears at the front of the list, followed by arguments</p></li></ul></div></aside></section>
+<section id="lists"><h2>Lists</h2><div class="paragraph"><p>Evaluated as function calls</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (inc 1)
+    ;=&gt; 2</code></pre></div></div></section>
+<section id="invoking_functions"><h2>Invoking functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(+ 1 2)
+;=&gt; 3</code></pre></div></div>
+<div class="paragraph"><p>Always in prefix form</p></div></section>
+<section id="empty_list"><h2>Empty list</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">()
+;=&gt; ()</code></pre></div></div></section>
+<section id="making_lists"><h2>Making lists</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(cons 1 ())
+;=&gt; (1)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(cons 1 (cons 2 ()))
+;=&gt; (1 2)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(list 1 2 3)
+;=&gt; (1 2 3)</code></pre></div></div></section>
+<section id="vectors"><h2>Vectors</h2><div class="literalblock"><div class="content"><pre>[1 2 3 4]</pre></div></div>
+<div class="paragraph"><p>Preferred over lists; easier to write</p></div>
+<div class="paragraph"><p>Order 1 count and lookup by index</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(get [10 20 30 40 50] 3)
+;=&gt; 40</code></pre></div></div>
+<div class="paragraph"><p>Similar to arrays, but can be added to</p></div></section>
+<section id="vector_operations"><h2>Vector operations</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(conj [1 2 3] 4)
+;=&gt; [1 2 3 4]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(pop [1 2 3 4])
+;=&gt; [1 2 3]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(assoc [1 2 3 4] 0 5)
+;=&gt; [5 2 3 4]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(vec (list 1 2 3 4))
+;=&gt; [1 2 3 4]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(cons 0 [1 2 3 4])
+;=&gt; (0 1 2 3 4)</code></pre></div></div></section>
+<section id="equality_by_value"><h2>Equality by value</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def a [1 2 3 4])
+(= a a)
+;=&gt; true</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def b [1 2 3 4])
+(= a b)
+;=&gt; true</code></pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content"><code>a</code> and <code>b</code> are different objects</td></tr></table></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(identical? a b)
+;=&gt; false</code></pre></div></div></section>
+<section id="sequential_equality"><h2>Sequential equality</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(= [1 2 3 4] (list 1 2 3 4))
+;=&gt; true</code></pre></div></div>
+<div class="paragraph"><p>Different types, but considered equal</p></div></section>
+<section id="symbols"><h2>Symbols</h2><div class="ulist"><ul><li><p>Usually <code>lowercase-words-hyphenated</code></p></li><li><p>Begin with an alphabet character</p></li><li><p>Can contain numbers and punctuation</p></li><li><p>Identifiers</p></li></ul></div></section>
+<section id="resolving_symbols"><h2>Resolving symbols</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">inc</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">foo</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(quote foo)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">'foo</code></pre></div></div>
+<div class="paragraph"><p><code>quote</code> means don&#8217;t resolve or evaluate</p></div></section>
+<section id="quote_also_works_on_lists"><h2>Quote also works on lists</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(quote (1 2))
+;=&gt; (1 2)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">'(1 2)
+;=&gt; (1 2)</code></pre></div></div>
+<div class="paragraph"><p>Without quote we have a problem:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(1 2)
+;=&gt; Exception: Long cannot be cast to IFn</code></pre></div></div>
+<div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Tried to apply 1 as a function</td></tr></table></div></section>
+<section><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Type</th><th class="tableblock halign-left valign-top">Value</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>Long</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>1</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>Double</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>3.14</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>BigInteger</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>1000000000000N</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>BigDecimal</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>1000000000000.1M</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>Exponents</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>1e3</pre></div></td></tr><tr><td class="tableblock halign-left valign-top"><div class="literal"><pre>Ratio</pre></div></td><td class="tableblock halign-left valign-top"><div class="literal"><pre>2/5</pre></div></td></tr></table>
+<aside class="notes"><div class="ulist"><ul><li><p>Representing Numbers</p></li><li><p>Automatically promoted on overflow only when using *' now</p></li></ul></div></aside></section>
+<section id="strings_and_characters"><h2>Strings and characters</h2><div class="literalblock"><div class="content"><pre>"This is a string."</pre></div></div>
+<div class="paragraph"><p>Characters written with a backslash</p></div>
+<div class="literalblock"><div class="content"><pre>\a \b \c
+\newline \tab \space</pre></div></div></section>
+<section id="maps"><h2>Maps</h2><div class="literalblock"><div class="content"><pre>{"name" "Fate of the Furious"
+ "sequence-number" 8
+ "rotten-tomatoes" 0.66
+ "imdb" 0.67}</pre></div></div>
+<div class="ulist"><ul><li><p>Order 1 lookup, "add", "delete" by key</p></li><li><p>Tuned to be fast</p></li><li><p>Replacement for structs/objects</p></li><li><p>Versatile; used often in Clojure code</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>There are fancier "versions" of maps in Clojure (records) to handle cases where you want faster Java interop or a strongly-typed name</p></li><li><p>Records still "behave like a map" (implement the map interface)</p></li><li><p>Maps are used instead of named function/method arguments in other languages</p></li><li><p>Maps are used instead of value classes (immutable classes to hold data, impt for concurrent programming) because they are immutable</p></li><li><p>For people from other languages, same as: dictionary (Python), hash (Ruby), object (JS), associative array (Perl)</p></li></ul></div></aside></section>
+<section id="keywords"><h2>Keywords</h2><div class="ulist"><ul><li><p><code>:my-keyword</code></p></li><li><p>Shorthand identifiers</p></li><li><p>Begin with a colon</p></li><li><p><strong>Often used as keys in hashmaps</strong></p></li></ul></div>
+<div class="openblock"><div class="content"><div class="literalblock"><div class="content"><pre>{:name "Fate of the Furious"
+ :sequence-number 8
+ :rotten-tomatoes 0.66
+ :imdb 0.67}</pre></div></div></div></div></section>
+<section id="map_operations"><h2>Map operations</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(get {:a 1} :a)
+;=&gt; 1</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(get {:a 1} :b 2)
+;=&gt; 2</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(assoc {:a 1} :b 2)
+;=&gt; {:a 1, :b 2}</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(dissoc {:a 1} :a)
+;=&gt; {}</code></pre></div></div></section>
+<section id="more_map_operations"><h2>More map operations</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(update {:a 2} :a inc)
+;=&gt; {:a 3}</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(update {:a [1 2 3]} :a conj 4)
+;=&gt; {:a [1 2 3 4]}</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(merge {:a 1} {:b 2})
+;=&gt; {:a 1, :b 2}</code></pre></div></div></section>
+<section id="commas"><h2>Commas</h2><div class="paragraph"><p>Commas are optional and treated as whitespace</p></div>
+<div class="literalblock"><div class="content"><pre>(= {:a 1, :b 2, :c 3}
+   {:a 1 :b 2 :c 3})</pre></div></div>
+<div class="paragraph"><p>Prefer newlines</p></div>
+<div class="literalblock"><div class="content"><pre>{:a 1
+ :b 2
+ :c 3}</pre></div></div></section>
+<section id="nesting_datastructures"><h2>Nesting datastructures</h2><div class="literalblock"><div class="content"><pre>{:name "Fate of the Furious"
+ :sequence-number 8
+ :ratings {:rotten-tomatoes 0.66
+           :imdb 0.67}}</pre></div></div>
+<div class="paragraph"><p>Ratings are a nested map</p></div>
+<div class="literalblock"><div class="content"><pre>{[1 2] {:name "diamond", :type :treasure}
+ [3 4] {:name "dragon", :type :monster}}</pre></div></div>
+<div class="paragraph"><p>A map with vector coordinate keys, and map values</p></div></section>
+<section id="nested_operations"><h2>Nested operations</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(assoc-in {:a {:b {:c 1}}} [:a :b :d] 2)
+;=&gt; {:a {:b {:c 1, :d 2}}}</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(update-in {:a {:b {:c 1}}} [:a :b :c] inc)
+;=&gt; {:a {:b {:c 2}}}</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(get-in {:a {:b {:c 1}}} [:a :b :c])</code></pre></div></div></section>
+<section id="sets"><h2>Sets</h2><div class="literalblock"><div class="content"><pre>#{1 2 3}</pre></div></div>
+<div class="paragraph"><p>Near constant time lookup</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(contains? #{1 2 3} 3)
+;=&gt; true</code></pre></div></div></section>
+<section id="set_operations"><h2>Set operations</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(conj #{1 2 3} 4)
+;=&gt; #{1 2 3 4}</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(disj #{1 2 3} 2)
+;=&gt; #{1 3}</code></pre></div></div>
+<div class="paragraph"><p><code>union</code>, <code>difference</code> and <code>intersection</code> are available in the <code>clojure.set</code> namespace</p></div></section>
+<section id="namespaces"><h2>Namespaces</h2><div class="paragraph"><p><code>src/training/my_namespace.clj</code></p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.my-namespace
+  (:require [clojure.set :as set])
+  (:import (java.time Instant Duration)))
+(set/union #{1 2 3} #{3 4})
+=&gt; #{1 2 3 4}</pre></div></div>
+<div class="ulist"><ul><li><p>The name must match path and filename</p></li><li><p><code>my-namespace</code> &#8594; <code>my_namespace.clj</code></p></li><li><p><code>training.</code> &#8594; <code>training/</code></p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Must be the first form in the file</p></li><li><p>Other forms exist, but prefer this one</p></li></ul></div></aside></section>
+<section id="from_the_repl"><h2>From the REPL</h2><div class="literalblock"><div class="content"><pre>(require '[clojure.set :as set])
+(import
+(use 'clojure.set)
+(require '[clojure.set :refer :all])</pre></div></div>
+<div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Avoid <code>use</code> and <code>:refer :all</code></td></tr></table></div>
+<div class="admonitionblock tip"><table><tr><td class="icon"><i class="fa fa-lightbulb-o" title="Tip"></i></td><td class="content"><code>ns</code> works in the REPL!</td></tr></table></div>
+<div class="literalblock"><div class="content"><pre>(ns my.namespace
+   (:require [clojure.set :as set]))</pre></div></div></section>
+<section id="programs"><h2>Programs</h2><div class="ulist"><ul><li><p>Expressions which are evaluated to results</p></li><li><p>If an expression needs to be compiled, it will be</p></li><li><p>Can be loaded from files or evaluated dynamically</p></li><li><p>Unit of compilation is a form</p></li><li><p>Nominate an entry point namespace/function</p></li></ul></div></section>
+<section id="namespaced_keywords"><h2>Namespaced keywords</h2><div class="literalblock"><div class="content"><pre>:my.namespace/rect</pre></div></div>
+<div class="paragraph"><p>Shortcut:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">::rectangle
+;=&gt; :my.namespace/rectangle</code></pre></div></div>
+<div class="paragraph"><p><code>::</code> expands to the current namespace</p></div></section>
+<section id="defining_functions"><h2>Defining functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn square [x]
+  (* x x))
+(square 2)
+;=&gt; 4</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn square
+  "Multiplies a number by itself"
+  [x]
+  (* x x))
+  (square 2)
+  ;=&gt; 4</code></pre></div></div></section>
+<section id="defining_vars"><h2>Defining Vars</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def x 1)
+;=&gt; #'my.namespace/x</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">x
+;=&gt; 1</code></pre></div></div>
+<div class="ulist"><ul><li><p>Global mutable reference</p></li><li><p>Use sparingly</p></li><li><p><code>#'</code> means <code>var</code></p></li></ul></div></section>
+<section id="accessing_a_var_not_the_value"><h2>Accessing a var (not the value)</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(var x)
+;=&gt; #'x</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">#'x
+;=&gt; #'x</code></pre></div></div></section>
+<section id="defining_vars_continued"><h2>Defining Vars continued</h2><div class="ulist"><ul><li><p>The symbol <code>x</code> resolves to a Var</p></li><li><p>Vars are automatically dereferenced when evaluated</p></li><li><p>Dereferrencing returns the value associated with the Var</p></li><li><p>Avoid using vars like variables</p></li><li><p><code>defn</code> is actually <code>def</code> with a function value</p></li><li><p>Can use <code>#'x</code> or <code>(var x)</code> to access the Var</p></li></ul></div></section>
+<section id="let"><h2>Let</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [x 1]
+  (inc x))
+;=&gt; 2</code></pre></div></div>
+<div class="ulist"><ul><li><p>Bind symbols to values in a scope</p></li><li><p>Shadow existing bindings</p></li><li><p>Prefer <code>let</code> over <code>def</code></p></li></ul></div></section>
+<section id="destructuring_binding_forms"><h2>Destructuring (binding forms)</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [[x y] [1 2]]
+  (+ x y))
+;=&gt; 3</code></pre></div></div>
+<div class="ulist"><ul><li><p>Literal data structure containing symbols</p></li><li><p>Matches structure</p></li></ul></div></section>
+<section id="why_destructure"><h2>Why destructure?</h2><div class="literalblock"><div class="content"><pre>(defn normalize1 [v]
+  (let [x (first v)
+        y (second v)
+        length (Math/sqrt (+ (* x x) (* y y)))]
+    [(/ x length) (/ y length)]))</pre></div></div>
+<div class="paragraph"><p>Avoid extracting substructure manually:</p></div>
+<div class="literalblock"><div class="content"><pre>(defn normalize2 [[x y]]
+  (let [length (Math/sqrt (+ (* x x) (* y y)))]
+    [(/ x length) (/ y length)]))</pre></div></div></section>
+<section id="vector_structures_match_any_sequence"><h2>Vector structures match any sequence</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [[a b] (list 1 2)]
+  b)
+;=&gt; 2</code></pre></div></div></section>
+<section id="strings_and_collections_list_vector_set_map_implement_seq"><h2>Strings and Collections (list, vector, set, map) implement seq</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(seq "abc")
+;=&gt; (\a \b \c)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(seq {:a 1, :b 2, :c 3})
+;=&gt; ([:a 1] [:b 2] [:c 3])</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(seq? 8)
+;=&gt; false</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [[a b] "abc"]
+  b)
+;=&gt; \b</code></pre></div></div></section>
+<section id="basic_sequences"><h2>Basic sequences</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(drop 2 [0 0 0 0])
+;=&gt; (0 0)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(range 5)
+;=&gt; (0 1 2 3 4)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(take 2 "abcd")
+;=&gt; (\a \b)</code></pre></div></div>
+<div class="ulist"><ul><li><p>Many sequence oriented functions</p></li><li><p>Never modify the original sequence</p></li><li><p>Often lazy</p></li></ul></div></section>
+<section id="lazy_sequences"><h2>Lazy sequences</h2><div class="paragraph"><p>Lazy means that the next value in the sequence is only calculated when it is made use of</p></div>
+<div class="paragraph"><p>Stream abstraction; only the currently used item needs to be in memory</p></div>
+<div class="paragraph"><p>Useful for processing files that don&#8217;t fit in memory</p></div></section>
+<section id="for_expressions"><h2>For expressions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(for [i (range 10)]
+  (* i i))
+;=&gt; (0 1 4 9 16 25 36 49 64 81)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(for [file ["a" "b" "c"]
+     rank [1 2]]
+  (str file rank))
+;=&gt; ("a1" "a2" "b1" "b2" "c1" "c2")</code></pre></div></div></section>
+<section id="for_expressions_continued"><h2>For expressions continued</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(for [i (range 10)
+      :when (odd? i)
+      :let [square (* i i)]]
+  square)
+;=&gt; (1 9 25 49 81)</code></pre></div></div></section>
+<section id="destructuring_in_a_for_expression"><h2>Destructuring in a for expression</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [m {:a 1, :b 2, :c 3}]
+  (for [[k v] m]
+    [v k]))
+;=&gt; ([1 :a] [2 :b] [3 :c])</code></pre></div></div>
+<div class="admonitionblock tip"><table><tr><td class="icon"><i class="fa fa-lightbulb-o" title="Tip"></i></td><td class="content">Destructuring is available in any binding form</td></tr></table></div></section>
+<section id="variadic_functions_using"><h2>Variadic functions using <code>&amp;</code></h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn sub [&amp; vs]
+  vs)
+(sub 1 2 3 4)
+;=&gt; (1 2 3 4)</code></pre></div></div>
+<div class="ulist"><ul><li><p>Variadic means variable number of arguments</p></li><li><p>Arity means number of arguments</p></li><li><p>We could have just passed a vector instead</p></li></ul></div></section>
+<section id="apply"><h2>Apply</h2><div class="paragraph"><p>Calls a function with a sequence of arguments</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(apply + [1 2 3 4])
+;=&gt; 10</code></pre></div></div>
+<div class="paragraph"><p>Most mathematical functions are variadic:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(+ 1 2 3)
+;=&gt; 6</code></pre></div></div></section>
+<section id="destructuring_a_map"><h2>Destructuring a map</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def x {:a 10
+        :b 20})
+(let [{a :a, b :b} x]
+  (+ a b))
+;=&gt; 30</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [{:keys [a b]} x]
+  (+ a b))
+;=&gt; 30</code></pre></div></div></section>
+<section id="destructuring_strings_from_a_map"><h2>Destructuring strings from a map</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def y {"a" 10
+        "b" 20})
+  (let [{a "a", b "b"} y]
+    (+ a b))
+;=&gt; 30</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [{:strs [a b]} y]
+  (+ a b))
+;=&gt; 30</code></pre></div></div></section>
+<section id="destructuring_a_sequence"><h2>Destructuring a sequence:</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def x (range 5))
+(first x)
+;=&gt; 0</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(rest x)
+;=&gt; (1 2 3 4)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [[a &amp; more] (range 5)]
+  a)
+;=&gt; 0</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [[a &amp; more] (range 5)]
+  more)
+;=&gt; (1 2 3 4)</code></pre></div></div></section>
+<section id="nested_destructuring"><h2>Nested destructuring</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def movie {:name "Fate of the Furious"
+            :sequence-number 8
+            :ratings {:rotten-tomatoes 0.66
+                      :imdb 0.67}})
+(get-in movie [:ratings :imdb])
+;=&gt; 0.67</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [{{:keys [imdb]} :ratings} movie]
+  imdb)
+;=&gt; 0.67</code></pre></div></div></section>
+<section id="more_destructuring"><h2>More destructuring</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn f [{:keys [a b] :as x}]
+  x)
+(f {})
+;=&gt; {}</code></pre></div></div></section>
+<section id="destructuring_with_defaults"><h2>Destructuring with defaults</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn f [{:keys [a b] :or {a "default"}}]
+  a)
+(f {})
+;=&gt; "default"</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn f [x]
+  (let [defaults {:a "default"}
+        {:keys [a b]} (merge defaults x)]
+    a))
+(f {})
+;=&gt; "default"</code></pre></div></div></section>
+<section id="comments"><h2>Comments</h2><div class="paragraph"><p>Anything following a semicolon is a comment</p></div>
+<div class="literalblock"><div class="content"><pre>; this is an inline comment
+;; this is a function level comment</pre></div></div>
+<div class="paragraph"><p>Less common is the comment form:</p></div>
+<div class="literalblock"><div class="content"><pre>(comment anything)</pre></div></div></section>
+<section id="bug_eye_comments"><h2>Bug eye comments</h2><div class="paragraph"><p>Removal of next form <code>#_</code></p></div>
+<div class="literalblock"><div class="content"><pre>#_(this form is removed)
+#_#_ (ignored-1) (ignored-2)</pre></div></div>
+<div class="ulist"><ul><li><p>Temporarily remove a form when debugging code</p></li><li><p>Looks like a bug eyes emoji</p></li></ul></div></section>
+<section id="regex"><h2>Regex</h2><div class="literalblock"><div class="content"><pre>#"pattern"</pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(re-seq #"\w+" "the quick brown fox")
+;=&gt; ("the" "quick" "brown" "fox")</code></pre></div></div></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>See manual end of section 2</p></div></section>
+<section id="answers"><h2>Answers</h2><div class="paragraph"><p>Set up the new namespace called <code>training.syntax</code></p></div>
+<div class="literalblock"><div class="content"><pre>(ns training.syntax)</pre></div></div>
+<div class="paragraph"><p>Define a var called <code>message</code> bound to the string <code>"greetings"</code></p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def message "greetings")
+;=&gt; nil</code></pre></div></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="paragraph"><p>Print out the value of the var <code>message</code></p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(prn message)
+;;; "greetings"
+;=&gt; nil</code></pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content"><code>prn</code> keeps the quotes around strings; <code>println</code> does not</td></tr></table></div></section>
+<section id="answers_3"><h2>Answers</h2><div class="paragraph"><p>Create a <code>let</code> binding that binds the symbol <code>message</code> to <code>"well hello there"</code>, and prints out <code>message</code> inside the <code>let</code> block:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [message "well hello there"]
+  (prn message))
+;;; "well hello there"
+;=&gt; nil</code></pre></div></div>
+<div class="paragraph"><p>Print out message again, outside of the <code>let</code> block:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(prn message)
+;;; "greetings"
+;=&gt; nil</code></pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content"><code>message</code> global var is still the original value</td></tr></table></div></section>
+<section id="answers_4"><h2>Answers</h2><div class="paragraph"><p>Create a let binding that destructures a map and prints the greeting and tone:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def m {:greeting "good morning", :tone "happy"})
+(let [{:keys [greeting tone]} m]
+  (prn greeting tone))
+;=&gt; "good morning" "happy"</code></pre></div></div></section>
+<section id="answers_5"><h2>Answers</h2><div class="paragraph"><p>Destructure a single map input and return a string combining greeting and tone:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn hi [{:keys [greeting tone]}]
+  (str greeting " - " tone))
+(hi m)
+;=&gt; "good morning - happy"</code></pre></div></div></section>
+<section id="end_syntax"><h2>End Syntax</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="3-functions.html">Next Topic: 3 - Functions</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

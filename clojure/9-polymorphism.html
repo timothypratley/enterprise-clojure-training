@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="polymorphism_and_types" data-state="title"><h2>9. Polymorphism and Types</h2><div class="paragraph"><p><span class="image"><img src="../img/types.jpg" alt="types"></span></p></div>
+<div class="quoteblock"><blockquote>You need a lot of different types of people to make the world better.</blockquote><div class="attribution">&#8212; Joe Louis</div></div></section>
+<section id="multimethods_introduction"><h2>Multimethods introduction</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def my-square {:shape "square"})
+    (defmulti draw :shape)
+    (defmethod draw "square" [x]
+      "Rendering a square...")
+    (draw my-square)
+    ;=&gt; "Rendering a square..."</code></pre></div></div>
+<div class="ulist"><ul><li><p>Keywords are functions</p></li><li><p>Common to use a keyword as a dispatch function</p></li><li><p>Looks similar to Object Oriented type dispatch</p></li><li><p>Users can add methods later</p></li></ul></div></section>
+<section id="defining_a_multimethod"><h2>Defining a multimethod</h2><div class="paragraph"><p>Polymorphic dispatch. Define the name and the dispatch function:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defmulti encounter
+      (fn dispatch [a b]
+        [(:species a) (:species b)]))
+    ;=&gt; #'encounter</code></pre></div></div>
+<div class="ulist"><ul><li><p>Dispatch is not limited to a single type</p></li><li><p>Dispatch might not even involve a type</p></li></ul></div></section>
+<section id="defining_method_implementations"><h2>Defining method implementations</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (defmethod encounter [:bunny :lion] [a b] :run-away)
+    (defmethod encounter [:lion :bunny] [a b] :eat)
+    (defmethod encounter [:lion :lion] [a b] :fight)
+    (defmethod encounter [:bunny :bunny] [a b] :mate)
+    ;=&gt; #object[cljs.core.MultiFn]</code></pre></div></div>
+<div class="ulist"><ul><li><p>Similar to a case block</p></li><li><p>Not limited to a single input</p></li><li><p>Input is unused in this example</p></li></ul></div></section>
+<section id="calling_the_multimethod"><h2>Calling the multimethod</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def bunny1 {:species :bunny, :other :stuff})
+    (def bunny2 {:species :bunny, :other :stuff})
+    (def lion1 {:species :lion, :other :stuff})
+    (def lion2 {:species :lion, :other :stuff})
+    (encounter bunny1 bunny2)
+    ;=&gt; :mate</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (encounter bunny1 lion1)
+    ;=&gt; :run-away</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (encounter lion1 bunny1)
+    ;=&gt; :eat</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (encounter lion1 lion2)
+    ;=&gt; :fight</code></pre></div></div></section>
+<section id="multimethods_summary"><h2>Multimethods summary</h2><div class="ulist"><ul><li><p>Conditions under which to be called + function definitions</p></li><li><p>Often dispatch by type, but not limited to that</p></li><li><p><strong>Provide a point of extension</strong></p><div class="ulist"><ul><li><p>Clojure test reporter can be modified</p></li><li><p>JDBC types can have custom handlers added</p></li></ul></div></li></ul></div></section>
+<section id="protocols_also_provide_a_point_of_extension"><h2>Protocols also provide a point of extension</h2><div class="ulist"><ul><li><p>Protocols directly implement host polymorphism (JVM)</p><div class="ulist"><ul><li><p>Dispatch on the type of their first argument</p></li><li><p>Fast</p></li></ul></div></li><li><p><strong>User or library can add methods later</strong></p></li></ul></div></section>
+<section id="protocols"><h2>Protocols</h2><div class="literalblock"><div class="content"><pre>(defprotocol AProtocol
+  "A doc string for AProtocol abstraction"
+  (bar [a b] "bar docs")
+  (baz [a] [a b] [a b c] "baz docs"))</pre></div></div>
+<div class="ulist"><ul><li><p>A named set of named methods and their signatures</p></li></ul></div></section>
+<section id="protocols_are_similar_to_java_interfaces"><h2>Protocols are similar to Java Interfaces</h2><div class="ulist"><ul><li><p>No implementations are provided</p></li><li><p>Dynamic</p></li><li><p>Generates a corresponding interface with the same name</p></li><li><p>The protocol will automatically work with instances of the interface</p></li><li><p>A Java client can implement the protocol-generated interface</p></li></ul></div></section>
+<section id="deftype_supports_protocols_directly"><h2>deftype supports protocols directly</h2><div class="literalblock"><div class="content"><pre>(defprotocol P
+  (foo [x])
+  (bar [x] [x y]))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deftype T [a b c]
+  P
+  (foo [x] a)
+  (bar [x] b)
+  (bar [x y] (+ c y)))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(bar (T. 1 2 3) 42)
+=&gt; 45</pre></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p><code>bar</code> has 2 signatures</p></li><li><p><code>a</code>, <code>b</code>, <code>c</code> are constructor arguments</p></li></ul></div></aside></section>
+<section id="reify"><h2>reify</h2><div class="literalblock"><div class="content"><pre>(def obj (reify P
+           (foo [this] 17)))
+(foo obj)
+=&gt; 17</pre></div></div>
+<div class="ulist"><ul><li><p>Creates an object that implements a protocol without defining a type</p></li><li><p>Do not have to implement all protocol signatures</p></li><li><p>Can also reify Java interfaces</p></li></ul></div></section>
+<section id="cannot_reify_a_class"><h2>Cannot reify a class</h2><div class="ulist"><ul><li><p>Java classes are closed</p></li><li><p>Java interfaces cannot be extended</p></li></ul></div></section>
+<section id="extend"><h2>extend</h2><div class="literalblock"><div class="content"><pre>(extend AType
+  AProtocol
+   {:foo an-existing-fn
+    :bar (fn [a b] ...)
+    :baz (fn ([a]...) ([a b] ...)...)}
+  BProtocol
+    {...}
+...)</pre></div></div>
+<div class="ulist"><ul><li><p>The <code>fn</code> can presume first argument is instanceof <code>AType</code></p></li><li><p>You can implement a protocol on <code>nil</code></p></li><li><p>Default implementation of protocol with <code>Object</code></p></li></ul></div></section>
+<section id="extend_type"><h2>extend-type</h2><div class="literalblock"><div class="content"><pre>(extend-type MyType
+  Countable
+    (cnt [c] ...)
+  Foo
+    (bar [x y] ...)
+    (baz ([x] ...) ([x y zs] ...)))</pre></div></div>
+<div class="paragraph"><p>Expands into:</p></div>
+<div class="literalblock"><div class="content"><pre>(extend MyType
+  Countable
+   {:cnt (fn [c] ...)}
+  Foo
+   {:baz (fn ([x] ...) ([x y zs] ...))
+    :bar (fn [x y] ...)})</pre></div></div></section>
+<section id="protocols_are_extensible"><h2>Protocols are extensible</h2><div class="ulist"><ul><li><p>User or library can add functionality later</p></li><li><p>Embrace the host (JVM or JavaScript)</p></li><li><p>Use when extension is required</p></li><li><p>Create when extension is anticipated</p></li></ul></div></section>
+<section id="creating_types_with_defrecord_and_deftype"><h2>Creating types with defrecord and deftype</h2><div class="ulist"><ul><li><p><code>deftype</code>, <code>defrecord</code>, and <code>reify</code> define implementations of abstractions, and instances of those implementations.</p></li><li><p>Resist the urge to use them to define 'structured data' as you would define classes or structures in other languages.</p></li><li><p>It is preferred to use the built-in datatypes (vectors, maps, sets) to represent structured data.</p></li></ul></div></section>
+<section id="deftype"><h2>deftype</h2><div class="literalblock"><div class="content"><pre>(deftype Circle [radius])
+(deftype Square [length width])</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(Circle. 10)
+(Square. 5 11)</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(-&gt;Circle 10)
+(-&gt;Square 5 11)</pre></div></div>
+<div class="paragraph"><p>No protocol required</p></div></section>
+<section id="defrecord"><h2>defrecord</h2><div class="literalblock"><div class="content"><pre>(ns training.core
+  (:import (java.net FileNameMap)))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(defrecord Thing [a] FileNameMap
+  (getContentTypeFor [this fileName]
+    (str a "-" fileName)))</pre></div></div>
+<div class="ulist"><ul><li><p>Defines a record named <code>Thing</code></p></li><li><p>single field <code>a</code></p></li><li><p><code>FileNameMap</code> interface</p></li><li><p><code>String getContentTypeFor(String fileName)</code></p></li></ul></div></section>
+<section id="record_constructor"><h2>record constructor</h2><div class="literalblock"><div class="content"><pre>(def thing (Thing. "foo"))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(instance? FileNameMap thing)
+=&gt; true</pre></div></div>
+<div class="paragraph"><p>Call the method on the <code>thing</code> instance and pass <code>"bar"</code>:</p></div>
+<div class="literalblock"><div class="content"><pre>(.getContentTypeFor thing "bar")
+=&gt; "foo-bar"</pre></div></div></section>
+<section id="end_polymorphism"><h2>End Polymorphism</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="10-databases.html">Next Topic: 10 - Databases</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

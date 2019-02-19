@@ -1,0 +1,419 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="functional_programming" data-state="title"><h2>6. Functional Programming</h2><div class="paragraph"><p><span class="image"><img src="../img/functional.jpg" alt="functional"></span></p></div>
+<div class="quoteblock"><blockquote>If you don&#8217;t love something, it&#8217;s not functional, in my opinion.</blockquote><div class="attribution">&#8212; Yves Behar</div></div></section>
+<section id="functions_recap"><h2>Functions recap</h2><div class="paragraph"><p>Functions always return a value</p></div>
+<div class="ulist"><ul><li><p>Usually not <code>nil</code></p></li><li><p><code>(inc 1)</code> &#8594; <code>2</code></p></li><li><p><code>(println "hi")</code> &#8594; <code>nil</code> causes a side-effect</p></li><li><p>All Input/Output is considered a side-effect</p></li></ul></div></section>
+<section id="pure_functions"><h2>Pure functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(str "hi" "there")
+;=&gt; "hithere"</code></pre></div></div>
+<div class="ulist"><ul><li><p>No side-effects occur</p></li><li><p>Inputs always produce the same corresponding output</p></li></ul></div></section>
+<section id="side_effects"><h2>Side effects</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(rand-int 100)
+;=&gt; 42</code></pre></div></div>
+<div class="ulist"><ul><li><p>Not a pure function</p></li><li><p>Returns a useful result, but changes every time</p></li><li><p>Modifying a hidden state (or based on it)</p></li></ul></div></section>
+<section id="side_effects_2"><h2>Side effects</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def x 1)
+;=&gt; #'x</code></pre></div></div>
+<div class="ulist"><ul><li><p>Returns a var</p></li><li><p>Side-effect: <code>x</code> can now be resolved</p></li></ul></div></section>
+<section id="side_effects_are_useful"><h2>Side effects are useful</h2><div class="ulist"><ul><li><p>Databases</p></li><li><p>Files</p></li><li><p>User interfaces</p></li></ul></div></section>
+<section id="many_clojure_functions_are_pure"><h2>Many Clojure functions are pure</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(conj [1 2] 3)
+;=&gt; [1 2 3]</code></pre></div></div>
+<div class="ulist"><ul><li><p><code>conj</code> does not add something to a vector</p></li><li><p><code>conj</code> returns a new vector value</p></li></ul></div></section>
+<section id="persistent_immutable_data_structures"><h2>Persistent immutable data structures</h2><div class="ulist"><ul><li><p>Clojure implements efficient immutable data structures</p></li><li><p>Creating derivative values is cheap</p></li><li><p>Using a Java vector would require duplicating the vector</p></li><li><p>Clojure uses shared structure</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Persistent + Immutable FTW!</p></div>
+<div class="ulist"><ul><li><p>Just immutable w/o persistent in Java - Guava collections (nice, but add/
+remote ops deprecated b/c of performance reasons)</p></li><li><p>Just persistent w/o immutable in Java - no popular, solid solutions. Perhaps
+less a problem for complex bugs in the wild than immutability, if you had to
+choose one but not the other.</p></li></ul></div></aside></section>
+<section id="pure_functions_are_desirable"><h2>Pure functions are desirable</h2><div class="ulist"><ul><li><p>easier to reason about</p></li><li><p>easier to combine</p></li><li><p>easier to test</p></li><li><p>easier to debug</p></li><li><p>easier to parallelize</p></li></ul></div></section>
+<section id="how_can_you_change_a_variable"><h2>How can you change a variable?</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def v [1 2])
+(conj v 3)
+;=&gt; [1 2 3]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">v
+;=&gt; [1 2]</code></pre></div></div>
+<div class="ulist"><ul><li><p><code>v</code> remains unchanged</p></li><li><p>Manage change explicitly</p></li></ul></div></section>
+<section id="use_atoms_for_mutatable_state"><h2>Use Atoms for mutatable state</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def a (atom 1))
+(swap! a inc)
+(deref a)
+;=&gt; 2</code></pre></div></div>
+<div class="paragraph"><p>Shorthand for <code>deref</code>:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">@a
+;=&gt; 2</code></pre></div></div></section>
+<section id="atoms_work_with_any_data_structure"><h2>Atoms work with any data structure</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def a (atom [1 2]))
+(swap! a conj 3)
+@a
+;=&gt; [1 2 3]</code></pre></div></div></section>
+<section id="separate_side_effects_out"><h2>Separate side effects out</h2><div class="ulist"><ul><li><p>Keep side-effects co-located</p></li><li><p>See atoms:</p><div class="ulist"><ul><li><p>Pure function to calculate the next state</p></li><li><p>Atom to manage</p></li><li><p>Logic is separate from the side effect</p></li></ul></div></li><li><p>Keep logic pure</p></li></ul></div></section>
+<section id="do_not"><h2>Do not</h2><div class="literalblock"><div class="content"><pre>(defn f [x]
+  (def y 2)
+  (+ x y))</pre></div></div>
+<div class="paragraph"><p>Prefer instead:</p></div>
+<div class="literalblock"><div class="content"><pre>(defn f [x]
+  (let [y 2]
+    (+ x y)))</pre></div></div></section>
+<section id="apply"><h2>apply</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(max 1 2 5 3)
+;=&gt; 5</code></pre></div></div>
+<div class="paragraph"><p>What if you have a sequence of many numbers?</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def numbers [1 2 3 4 5 6 7])
+(apply max numbers)
+;=&gt; 7</code></pre></div></div>
+<div class="admonitionblock tip"><table><tr><td class="icon"><i class="fa fa-lightbulb-o" title="Tip"></i></td><td class="content"><code>apply</code> means to call or invoke</td></tr></table></div></section>
+<section id="partial"><h2>partial</h2><div class="paragraph"><p>In Clojure we often pass functions as values</p></div>
+<div class="literalblock"><div class="content"><pre>(partial + 1)</pre></div></div>
+<div class="paragraph"><p>Returns a function that is equivalent to:</p></div>
+<div class="literalblock"><div class="content"><pre>(fn [&amp; args]
+  (apply + 1 args))</pre></div></div>
+<div class="ulist"><ul><li><p>captures an argument</p></li><li><p>partial application</p></li></ul></div></section>
+<section id="partial_returns_a_new_function"><h2>partial returns a new function</h2><div class="paragraph"><p>Produces a function:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">((partial + 1) 2 3)
+;=&gt; 6</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map (partial / 1) (range 1 5))
+;=&gt; (1 1/2 1/3 1/4)</code></pre></div></div></section>
+<section id="alternative_to_partial"><h2>Alternative to partial:</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map #(/ 1 %) (range 1 5))
+;=&gt; (1 1/2 1/3 1/4)</code></pre></div></div></section>
+<section id="functions_on_sequences"><h2>Functions on sequences</h2><div class="paragraph"><p>To embrace Clojure</p></div>
+<div class="paragraph"><p>is to think in sequences and data structures</p></div></section>
+<section id="sequences"><h2>Sequences</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(cons 1 ())
+;=&gt; (1)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(cons 3 (cons 2 (cons 1 ())))
+;=&gt; (3 2 1)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(range 10)
+;=&gt; (0 1 2 3 4 5 6 7 8 9)</code></pre></div></div></section>
+<section id="careful"><h2>Careful</h2><div class="paragraph"><p>Clojure can produce infinite sequences</p></div>
+<div class="literalblock"><div class="content"><pre>(range)</pre></div></div>
+<div class="ulist"><ul><li><p>Don&#8217;t do this in the REPL</p></li><li><p>Press control-c to cancel the REPL if you did</p></li></ul></div></section>
+<section id="take_and_drop"><h2>take and drop</h2><div class="paragraph"><p>Limit the number of items to consume:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(take 5 (range))
+;=&gt; (0 1 2 3 4)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(take 5 (drop 5 (range)))
+;=&gt; (5 6 7 8 9)</code></pre></div></div></section>
+<section id="filter_and_remove"><h2>filter and remove</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(filter odd? [1 2 3 4])
+;=&gt; (1 3)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(remove nil? [1 2 nil 3])
+;=&gt; (1 2 3)</code></pre></div></div>
+<div class="ulist"><ul><li><p>filter and remove are higher order functions</p></li><li><p>They take a function and a sequence</p></li><li><p>They return a sequence of values</p></li></ul></div></section>
+<section id="most_things_are_seqable"><h2>Most things are seqable</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(seq #{"a" "b" "c"})
+;=&gt; ("a" "b" "c")</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(seq "string")
+;=&gt; (\s \t \r \i \n \g)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(seq {:a 1, :b 2})
+;=&gt; ([:a 1] [:b 2])</code></pre></div></div>
+<div class="paragraph"><p>Clojure collections implement <code>ISeq</code></p></div>
+<div class="paragraph"><p>Even Java types like strings and iterables</p></div></section>
+<section id="empty_sequences"><h2>Empty sequences</h2><div class="paragraph"><p><code>seq</code> returns <code>nil</code> on empty sequences</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(seq ())
+;=&gt; nil</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(empty? ())
+;=&gt; true</code></pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">Common to use <code>(seq xs)</code> instead of <code>(not-empty xs)</code> or <code>(not (empty? xs))</code></td></tr></table></div></section>
+<section id="map"><h2>map</h2><div class="paragraph"><p><code>map</code> calls a function for every element in a sequence:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map inc [1 2 3 4])
+;=&gt; (2 3 4 5)</code></pre></div></div>
+<div class="ulist"><ul><li><p><code>map</code> <code>inc</code> over <code>[1 2 3 4]</code></p></li><li><p>Result is a sequence</p></li><li><p>Not to be confused with the map datastructure</p></li><li><p>Name is similar, behavior is similar keys &#8594; values</p></li></ul></div></section>
+<section id="map_over_multiple_sequences"><h2>map over multiple sequences</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map + [1 2 3] [10 10 10])
+;=&gt; [11 12 13]</code></pre></div></div></section>
+<section id="chaining_operations_over_seqs"><h2>Chaining operations over seqs</h2><div class="paragraph"><p>Output sequences can input for other functions:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(filter odd? (map inc [1 2 3 4]))
+;=&gt; (3 5)</code></pre></div></div>
+<div class="paragraph"><p>Keeps odd numbers from the result of <code>map</code> <code>inc</code></p></div></section>
+<section id="compose"><h2>Compose</h2><div class="literalblock"><div class="content"><pre>(g (f x))</pre></div></div>
+<div class="paragraph"><p>"compose" really just means "put together"</p></div>
+<div class="paragraph"><p>Composition is aided by</p></div>
+<div class="ulist"><ul><li><p>Idempotence</p></li><li><p>Immutability</p></li><li><p>Purity</p></li></ul></div></section>
+<section id="aggregate_with_reduce"><h2>Aggregate with reduce</h2><div class="paragraph"><p>Reduce takes a function, initial value, and sequence:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(reduce * 1 [2 3 4])
+;=&gt; 24</code></pre></div></div>
+<div class="paragraph"><p>Performs <code>(* 1 2)</code>, then <code>(* 3)</code>, then <code>(* 4)</code></p></div>
+<div class="paragraph"><p>Multiplication called 3 times</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(reduce * [1 2 3 4])
+;=&gt; 24</code></pre></div></div>
+<div class="paragraph"><p>The initial value can be left out, if so it is the first element</p></div></section>
+<section id="reduce"><h2>reduce</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(reduce
+  (fn step [acc x]
+    (* acc x))
+  1
+  (range 2 5))
+;=&gt; 24</code></pre></div></div>
+<div class="ulist"><ul><li><p>Step function takes 2 arguments; aggregate and item</p></li><li><p>Step function called for every item</p></li><li><p>Aggregate returned</p></li><li><p>Aggregate can be anything&#8230;&#8203; commonly a map</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>add map example</p></div></aside></section>
+<section id="group_by"><h2>group-by</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(group-by count ["the" "quick" "brown" "fox"])
+;=&gt; {3 ["the" "fox"], 5 ["quick" "brown"]}</code></pre></div></div>
+<div class="ulist"><ul><li><p>Produced a map</p></li><li><p>3 letter words ["the" "fox"]</p></li><li><p>5 letter words ["quick" and "brown"]</p></li><li><p>Can we do this with reduce?</p></li><li><p><code>frequencies</code></p></li></ul></div></section>
+<section id="sequences_are_loop_abstractions"><h2>Sequences are loop abstractions</h2><div class="paragraph"><p><code>filter</code> is like a Java loop:</p></div>
+<div class="literalblock"><div class="content"><pre>for (i=0; i &lt; vector.length; i++)
+    if (condition)
+        result.append(vector[i]);</pre></div></div>
+<div class="paragraph"><p><code>map</code> is like a Java loop:</p></div>
+<div class="literalblock"><div class="content"><pre>for (i=0; i &lt; vector.length; i++)
+    result[i] = func(vector[i]);</pre></div></div>
+<div class="paragraph"><p><code>reduce</code> is like a Java loop:</p></div>
+<div class="literalblock"><div class="content"><pre>for (i=0; i &lt; vector.length; i++)
+    result = func(result, vector[i]);</pre></div></div></section>
+<section id="sequence_abstractions"><h2>Sequence abstractions</h2><div class="ulist"><ul><li><p>Names for loops</p></li><li><p>Adds to our vocabulary</p></li><li><p>Recognize different kinds of loops</p></li><li><p>Worth the effort to learn</p><div class="ulist"><ul><li><p>Reasoning more succinctly</p></li><li><p>Communicating more precisely</p></li><li><p>Writing less code that does more</p></li></ul></div></li></ul></div></section>
+<section id="sequences_and_lambda_expressions"><h2>Sequences and lambda expressions</h2><div class="paragraph"><p>Anonymous functions:</p></div>
+<div class="literalblock"><div class="content"><pre>#(&lt; % 3)</pre></div></div>
+<div class="paragraph"><p>Handy for adding small snippets of logic:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(filter #(&lt; % 3) (range 10))
+;=&gt; (0 1 2)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map #(if (odd? %) "odd" "even")
+     [1 2 3 4 5])
+;=&gt; ("odd" "even" "odd" "even" "odd")</code></pre></div></div>
+<div class="paragraph"><p>More concise, descriptive, composable than loops</p></div></section>
+<section id="creating_sequences"><h2>Creating sequences</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(range 5)
+;=&gt; (0 1 2 3 4)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(repeat 3 1)
+;=&gt; (1 1 1)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(partition 3 (range 9))
+;=&gt; ((0 1 2) (3 4 5) (6 7 8))</code></pre></div></div></section>
+<section id="transpose"><h2>Transpose</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(apply mapv vector [[1 2 3]
+                    [4 5 6]])
+;=&gt; [[1 4]
+;    [2 5]
+;    [3 6]]</code></pre></div></div></section>
+<section id="tricky"><h2>Tricky</h2><div class="paragraph"><p>Common situation in Java:</p></div>
+<div class="literalblock"><div class="content"><pre>for (i=1; i &lt; v.length; i++)
+    print v[i] + v[i-1];
+=&gt; 3 5 7 9</pre></div></div>
+<div class="paragraph"><p>Using the previous value in the sequence</p></div>
+<div class="paragraph"><p>Can we represent this as a sequence?</p></div>
+<div class="paragraph"><p>Imagine two identical sequences offset slightly:</p></div>
+<div class="literalblock"><div class="content"><pre>  [1 2 3 4 5]
+[1 2 3 4 5]</pre></div></div></section>
+<section id="map_over_both_sequences"><h2>map over both sequences</h2><div class="paragraph"><p>Recall that <code>map</code> can take multiple sequences:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map + [1 3] [2 4])
+;=&gt; (3 7)</code></pre></div></div>
+<div class="paragraph"><p><code>rest</code>:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def v [1 2 3 4 5])
+(rest v)
+;=&gt; (2 3 4 5)</code></pre></div></div>
+<div class="paragraph"><p>Put them together:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map + v (rest v))
+;=&gt; (3 5 7 9)</code></pre></div></div></section>
+<section id="visually"><h2>Visually</h2><div class="literalblock"><div class="content"><pre>v        =&gt; (1 2 3 4 5)
+(rest v) =&gt; (2 3 4 5)</pre></div></div>
+<div class="ulist"><ul><li><p>Sequences are of different lengths</p></li><li><p>map stops when the smallest sequence is exhausted</p></li><li><p>Produces a new sequence of the pairwise sums:</p><div class="literalblock"><div class="content"><pre>(3 5 7 9)</pre></div></div></li></ul></div></section>
+<section id="sequences_beat_loops"><h2>Sequences beat loops</h2><div class="ulist"><ul><li><p>Must comprehend the entire loop</p></li><li><p>Loop bodies grow and change &#8594; more complexity</p></li><li><p>Loop “off by one” mistakes</p></li><li><p>Testing loops requires invasion</p></li><li><p>Duplication of loops to customize similar operations</p></li><li><p>Loops are not composable</p></li><li><p>Loops are easy to write, but do not provide leverage</p></li></ul></div></section>
+<section id="new_requirements"><h2>New requirements</h2><div class="paragraph"><p>Multiply all of those numbers together</p></div>
+<div class="literalblock"><div class="content"><pre>result = 1;
+for (i=1; i &lt; v.length; i++)
+    result *= (v[i] + v[i-1]);
+=&gt; 945</pre></div></div>
+<div class="ulist"><ul><li><p>Invasive to the imperative loop</p></li><li><p>The change occurs inside the loop</p></li><li><p>Intertwined</p></li></ul></div></section>
+<section id="sequence_solution"><h2>Sequence solution</h2><div class="paragraph"><p>Compose <code>reduce</code> with the original <code>map</code> expression:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(reduce * (map + v (rest v)))
+;=&gt; 945</code></pre></div></div>
+<div class="ulist"><ul><li><p><code>reduce</code>: Aggregate by multiplication the sequence</p></li><li><p><code>map</code>: adding items together from two sequences</p></li><li><p><code>pairing</code>: the sequence of elements in v, adjacent to the rest of v</p></li></ul></div>
+<div class="paragraph"><p>This is dense, but descriptive code&#8230;&#8203; if you know the vocabulary</p></div></section>
+<section id="sequence_solution_2"><h2>Sequence solution</h2><div class="ulist"><ul><li><p>Unit test operations</p></li><li><p>Unit test the component sequences</p></li><li><p>Reuse sequences</p></li><li><p>Reason about transformations as composable parts</p></li></ul></div></section>
+<section id="sequences_summary"><h2>Sequences summary</h2><div class="paragraph"><p>Sequences are loop abstractions that allow you to ignore the implementation details</p></div>
+<div class="ulist"><ul><li><p><code>filter</code> keeps items in a sequence according to a predicate</p></li><li><p><code>map</code> calls a function over input sequence(s)</p></li><li><p><code>reduce</code> aggregates a sequence, returns a single value</p></li></ul></div></section>
+<section id="the_no_loops_challenge"><h2>The “no loops” challenge</h2><div class="ulist"><ul><li><p>Spot a loop</p></li><li><p>Stop and think about what the loop represents</p></li><li><p>Rewrite the loop as sequence operations instead</p></li></ul></div></section>
+<section id="threading_operators_why"><h2>Threading operators: why?</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(reduce * (filter odd? (map inc v)))
+;=&gt; 15</code></pre></div></div>
+<div class="ulist"><ul><li><p>Functions offer combinatorial power</p></li><li><p>Simple functions + sequence operations</p></li><li><p>To read this code, work from inside out</p></li><li><p>Finding the inside is a challenge</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>But be wary of dense code</p></li><li><p>Layers make the code cryptic!</p></li></ul></div></aside></section>
+<section id="solution_order_forms_inside_first"><h2>Solution: order forms inside first</h2><div class="paragraph"><p>Name intermediary results:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [incs (map inc v)
+      odd-incs (filter odd? incs)]
+  (reduce * odd-incs))
+;=&gt; 15</code></pre></div></div></section>
+<section id="or_use_a_thread_last"><h2>Or use a thread last</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(-&gt;&gt; v
+     (map inc)
+     (filter odd?)
+     (reduce *))
+;=&gt; 15</code></pre></div></div>
+<div class="ulist"><ul><li><p>Unwraps nested function calls</p></li><li><p>Avoids naming steps</p></li><li><p>Sometimes good, sometimes bad</p></li></ul></div></section>
+<section id="thread_first"><h2>Thread first</h2><div class="paragraph"><p>Similar to thread last, passes value in first position:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(-&gt; 42
+    (/ 2)
+    (inc))
+;=&gt; 22</code></pre></div></div>
+<div class="paragraph"><p>For empty expressions, the parens are optional:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(-&gt; 42
+    (/ 2)
+    inc)
+;=&gt; 22</code></pre></div></div></section>
+<section id="data_structures_are_functions"><h2>Data structures are functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(get {:a 1 :b 2} :a)
+;=&gt; 1</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">({:a 1 :b 2} :a)
+;=&gt; 1</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map {:a 1, :b 2} [:a :b])
+;=&gt; (1 2)</code></pre></div></div>
+<div class="ulist"><ul><li><p>Maps are functions</p></li><li><p>They delegate to <code>get</code></p></li></ul></div></section>
+<section id="keywords_are_functions"><h2>Keywords are functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(:a {:a 1 :b 2})
+;=&gt; 1</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map :a [{:a 1} {:a 2} {:a 3}])
+;=&gt; (1 2 3)</code></pre></div></div>
+<div class="paragraph"><p><code>get</code> <code>:a</code> for each element in a sequence</p></div>
+<div class="paragraph"><p>Instead of</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(map (fn [m]
+       (get m :a))
+     [{:a 1} {:a 2} {:a 3}])
+;=&gt; (1 2 3)</code></pre></div></div></section>
+<section id="sets_are_functions"><h2>Sets are functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(get #{1 2 3} 2)
+;=&gt; 2</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(#{1 2 3} 2)
+;=&gt; 2</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(remove #{nil "bad"} [:a nil :b "bad" "good"])
+;=&gt; (:a :b "good")</code></pre></div></div></section>
+<section id="vectors_are_functions"><h2>Vectors are functions</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(get [1 2 3] 0)
+;=&gt; 1</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">([1 2 3] 0)
+;=&gt; 1</code></pre></div></div></section>
+<section id="defaults"><h2>Defaults</h2><div class="paragraph"><p><code>get</code> can be passed a <code>not-found</code> value:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(get {} :a "default")
+;=&gt; "default"</code></pre></div></div>
+<div class="paragraph"><p>Datastructures as functions do too:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">({:a 1, :b 2} :c -1)
+;=&gt; -1</code></pre></div></div></section>
+<section id="avoid_side_effects_in_lazy_sequences"><h2>Avoid side-effects in lazy sequences</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(let [message "Hello"]
+  (map (fn [x]
+         (println message x))
+       (range 10))
+  (println "Bye"))
+;;; Bye
+;=&gt; nil</code></pre></div></div>
+<div class="admonitionblock warning"><table><tr><td class="icon"><i class="fa fa-warning" title="Warning"></i></td><td class="content">Hello is not printed</td></tr></table></div></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>See manual end of section 6</p></div></section>
+<section id="answers"><h2>Answers</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn sum-between [a b]
+  (apply + (range a (inc b))))
+(sum-between 3 5)
+;=&gt; 12</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn powers-of [n]
+  (iterate #(* % n) 1))
+(take 5 (powers-of 2))
+;=&gt; (1 2 4 8 16)</code></pre></div></div></section>
+<section id="answers_2"><h2>Answers</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn shorten [s]
+  (remove #{\a \e \i \o \u} s))
+(apply str (shorten "Clojure sets are functions"))
+;=&gt; "Cljr sts r fnctns"</code></pre></div></div></section>
+<section id="answers_3"><h2>Answers</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn fractions []
+  (map / (repeat 1) (rest (range))))
+(take 5 (fractions))
+;=&gt; (1 1/2 1/3 1/4 1/5)</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn fraction-powers [n]
+  (map / (repeat 1) (powers-of n)))
+(take 5 (fraction-powers 2))
+;=&gt; (1 1/2 1/4 1/8 1/16)</code></pre></div></div></section>
+<section id="answers_4"><h2>Answers</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(defn fib-step [[a b]]
+  [b (+ a b)])
+(defn fib-seq []
+  (map first (iterate fib-step [1 1])))
+(take 10 (fib-seq))
+;=&gt; (1 1 2 3 5 8 13 21 34 55)</code></pre></div></div></section>
+<section id="challenge_2_processing_files"><h2>Challenge 2: Processing files</h2><div class="paragraph"><p>Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file.
+You have been tasked with processing the files using the validation logic you built earlier.</p></div></section>
+<section id="part_1"><h2>Part 1:</h2><div class="paragraph"><p>Create a function that opens a file called corgi-cover-applications.csv and converts every row into a data structure and prints it.
+Next use that data structure as an input to your validation function and print the result.
+See <code>slurp</code>, <code>line-seq</code>, <code>clojure.string/split</code>.</p></div></section>
+<section id="part_2"><h2>Part 2:</h2><div class="paragraph"><p>The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check.
+But the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible.
+Create a new function that opens two output files and writes to them based upon your eligibility check.
+The files should be called <code>eligible-corgi-cover-applications.csv</code> and <code>ineligible-corgi-cover-applications.csv</code>.</p></div></section>
+<section id="part_3"><h2>Part 3:</h2><div class="paragraph"><p>A request has come in from several Insuricorp branches that if a person is ineligible for corgi cover, a short reason be supplied. That way the sales reps don&#8217;t have to spend time figuring out what they need to tell the customer. Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found. Create a new processing function that splits the applications into two files based on the new validator.</p></div></section>
+<section id="part_4"><h2>Part 4:</h2><div class="paragraph"><p>As part of the Megacorp merger, the downstream systems are converting to JSON format.
+Create a new function that writes JSON data to a eligible-corgi-cover-applications.json file</p></div></section>
+<section id="end_functional_programming"><h2>End Functional Programming</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="7-java-interop.html">Next Topic: 7 - Java Interop</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>

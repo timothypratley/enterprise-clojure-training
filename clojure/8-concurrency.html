@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="copyright" content="Timothy Pratley"><title>Enterprise Clojure Training</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="../reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="../reveal.js/css/theme/simple.css" id="theme"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"><link href="../reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "../reveal.js/css/print/pdf.css" : "../reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="../reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="shortcut icon" type="image/x-icon" href="../img/clojure-logo-icon-32.png"><link rel="stylesheet" href="../slides.css"></head><body><div class="reveal"><div class="slides"><section id="parallel_programming_and_concurrency" data-state="title"><h2>8. Parallel Programming and Concurrency</h2><div class="paragraph"><p><span class="image"><img src="../img/parallel.jpg" alt="parallel"></span></p></div>
+<div class="quoteblock"><blockquote>Our moral traditions developed concurrently with our reason, not as its product.</blockquote><div class="attribution">&#8212; Friedrich August von Hayek</div></div></section>
+<section id="based_on_java_threads"><h2>Based on Java Threads</h2><div class="literalblock"><div class="content"><pre>(.start (Thread. (fn [] (println "Hello world"))))
+=&gt; nil
+Hello world</pre></div></div>
+<div class="ulist"><ul><li><p>Message is printed after result is returned</p></li><li><p><code>IFn</code> implements <code>IRunnable</code></p></li></ul></div></section>
+<section id="vars"><h2>Vars</h2><div class="paragraph"><p><code>def</code> returns a var</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def a 1)
+    ;=&gt; #'user/a</code></pre></div></div>
+<div class="paragraph"><p>See the var associated with a symbol using <code>var</code></p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (var a)
+    ;=&gt; #'user/a</code></pre></div></div>
+<div class="paragraph"><p><code>#'</code> is shorthand for <code>(var &#8230;&#8203;)</code></p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    #'a
+    ;=&gt; #'user/a</code></pre></div></div></section>
+<section id="deref"><h2>Deref</h2><div class="paragraph"><p>Gets the value associated with a var</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (deref #'a)
+    ;=&gt; 1</code></pre></div></div>
+<div class="paragraph"><p><code>@</code> is shorthand for <code>(deref &#8230;&#8203;)</code></p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    @(var a)
+    ;=&gt; 1</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    @#'a
+    ;=&gt; 1</code></pre></div></div></section>
+<section id="vars_automatically_deref_when_evaluated"><h2>Vars automatically deref when evaluated</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    a
+    ;=&gt; 1</code></pre></div></div>
+<div class="paragraph"><p>Symbol <code>a</code> &#8594; Var <code>a</code> &#8594; value</p></div>
+<div class="paragraph"><p>We don&#8217;t normally write <code>@#'a</code></p></div>
+<div class="paragraph"><p><code>#'</code> prevents deref</p></div></section>
+<section id="function_calls"><h2>Function calls</h2><div class="paragraph"><p>Get the function associated with inc and invoke it:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (#'inc 1)
+    ;=&gt; 2</code></pre></div></div>
+<div class="paragraph"><p>Vars automatically deref:</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (inc 1)
+    ;=&gt; 2</code></pre></div></div>
+<div class="paragraph"><p>Symbol <code>inc</code> &#8594; Var <code>inc</code> &#8594; function</p></div></section>
+<section id="vars_enable_function_redefinition"><h2>Vars enable function redefinition</h2><div class="ulist"><ul><li><p>Functions defined with defn are stored in vars</p></li><li><p>Redefine vars at runtime (redefine functions)</p></li><li><p>Global mutable state, like a variable</p></li><li><p>Not coordinated</p></li></ul></div></section>
+<section id="metadata_on_vars"><h2>Metadata on Vars</h2><div class="paragraph"><p>Metadata provided using <code>^{}</code></p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def ^{:private true} one-hundred 100)
+    ;=&gt; #'one-hundred</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (meta #'one-hundred)
+    ;=&gt; {:line 73, :column 1, ...}</code></pre></div></div></section>
+<section id="special_metadata"><h2>Special metadata</h2><div class="literalblock"><div class="content"><pre>:private
+:doc
+:author
+:type</pre></div></div></section>
+<section id="dynamic_vars"><h2>Dynamic vars</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def ^:dynamic x 1)
+    (def ^:dynamic y 1)
+    (+ x y)
+    ;=&gt; 2</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (binding [x 2, y 3]
+      (+ x y))
+    ;=&gt; 5</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (+ x y)
+    ;=&gt; 2</code></pre></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p>By default Vars are static</p></li><li><p>Vars can be marked as dynamic to allow per-thread bindings</p></li><li><p>Bindings cannot be seen by any other thread</p></li><li><p>Per thread they obey a stack discipline</p></li><li><p>Bindings can be assigned to</p></li><li><p>Thread global</p></li><li><p>Rarely used; often better options</p></li></ul></div></aside></section>
+<section id="communicating_values"><h2>Communicating values</h2><div class="paragraph"><p>Delays, Futures, and Promises</p></div>
+<div class="paragraph"><p>Thread safe</p></div></section>
+<section id="delays"><h2>Delays</h2><div class="paragraph"><p>Execute at a later stage</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def d1 (delay (prn "Hello world")))
+    ;=&gt; #'user/d1</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    d1
+    ;=&gt; #object[clojure.lang.Delay
+    ;           {:status :pending, :val nil}]</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (realized? d1)
+    ;=&gt; false</code></pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">Nothing printed yet</td></tr></table></div>
+<aside class="notes"><div class="paragraph"><p>Wrap an arbitrary body of code for evaluation</p></div></aside></section>
+<section id="delay_result_is_requested_with_deref"><h2>Delay result is requested with deref</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def d2 (delay (prn "Hello world!")
+                   42))
+    ;=&gt; #'user/d2</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    @d2
+    ;;; Hello world!
+    ;=&gt; 42</code></pre></div></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (realized? d2)
+    ;=&gt; true</code></pre></div></div></section>
+<section id="delay_result_is_cached"><h2>Delay result is cached</h2><div class="paragraph"><p>Body runs once, even concurrently</p></div>
+<div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    @d2
+    ;=&gt; 42</code></pre></div></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><i class="fa fa-info-circle" title="Note"></i></td><td class="content">Nothing is printed the second time</td></tr></table></div>
+<div class="ulist"><ul><li><p>Delays also cache the result value</p></li><li><p>Prevents another execution</p></li><li><p>Body only runs once, even concurrently</p></li></ul></div></section>
+<section id="future"><h2>Future</h2><div class="literalblock"><div class="content"><pre>(def f
+  (future (Thread/sleep 5000) 42))</pre></div></div>
+<div class="literalblock"><div class="content"><pre>f
+=&gt; #object[clojure.core$future_call {:status :pending, :val nil}]</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(realized? f)
+=&gt; false</pre></div></div></section>
+<section id="seconds_later"><h2>5 seconds later</h2><div class="literalblock"><div class="content"><pre>(realized? f)
+=&gt; true</pre></div></div>
+<div class="literalblock"><div class="content"><pre>@f
+=&gt; 42</pre></div></div>
+<div class="literalblock"><div class="content"><pre>f
+#object[clojure.core$future_call {:status :ready, :val 42}]</pre></div></div></section>
+<section id="futures"><h2>Futures</h2><div class="ulist"><ul><li><p>Easy way to spin off a new thread</p></li><li><p>Do some computation or I/O</p></li><li><p>Access in the future</p></li><li><p>Call style is compatible with delay</p></li><li><p>Work begins immediately on another thread</p></li><li><p>Flow of control is not blocked</p></li><li><p><strong>Dereferencing a future will block until the value is available</strong></p></li></ul></div></section>
+<section id="promise"><h2>Promise</h2><div class="literalblock"><div class="content"><pre>(def p (promise))
+(realized? p)
+=&gt; false</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(deliver p "as-promised")
+(realized? p)
+=&gt; true</pre></div></div>
+<div class="literalblock"><div class="content"><pre>@p
+=&gt; "as-promised"</pre></div></div></section>
+<section id="promises"><h2>Promises</h2><div class="ulist"><ul><li><p>Dereference them for a value</p></li><li><p>Check if they have a value with <code>realized?</code></p></li><li><p>Block when you dereference them until they have a value</p></li><li><p><strong>Provide them with a value by calling deliver</strong></p></li><li><p>Deliver will often occur on a different thread</p></li></ul></div></section>
+<section id="atom"><h2>Atom</h2><div class="listingblock eval-clojure"><div class="content"><pre class="highlight"><code class="clojure language-clojure">    (def my-atom (atom 1))
+    (swap! my-atom inc)
+    @my-atom
+    ;=&gt; 2</code></pre></div></div>
+<div class="ulist"><ul><li><p>Change the value of an atom with <code>swap!</code> or <code>reset!</code></p></li><li><p><code>swap!</code> reads the current value, applies the function to it, and attempts to <code>compare-and-set!</code> it in</p></li><li><p>May retry since another thread may have changed the value</p></li><li><p>Retries in a spin loop</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>The value will always be the result of the function</p></li></ul></div></aside></section>
+<section id="atoms"><h2>Atoms</h2><div class="ulist"><ul><li><p>Atomic</p></li><li><p>Changes to atoms are always free of race conditions</p></li><li><p>Function must be pure; it might be called multiple times</p></li><li><p>Uncoordinated</p></li><li><p>Synchronous</p></li></ul></div></section>
+<section id="ref"><h2>Ref</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="clojure language-clojure">(def r (ref 1))
+(dosync
+  (alter r inc))
+@r
+=&gt; 2</code></pre></div></div></section>
+<section id="refs"><h2>Refs</h2><div class="ulist"><ul><li><p>Vars ensure safe use of mutable storage locations via thread isolation, transactional references</p></li><li><p>Refs ensure safe shared use of mutable storage locations via a software transactional memory (STM) system</p></li><li><p>Refs are bound to a single storage location for their lifetime</p></li><li><p>Only allow mutation of that location to occur within a transaction</p></li><li><p>In practise Refs are rarely used</p></li></ul></div></section>
+<section id="agent"><h2>Agent</h2><div class="literalblock"><div class="content"><pre>(def a (agent 1))
+(send a inc)
+@a
+=&gt; 2</pre></div></div>
+<div class="literalblock"><div class="content"><pre>(send-off a (fn [x] (do-some-io))</pre></div></div>
+<div class="ulist"><ul><li><p><code>send</code> should be used for actions that are CPU limited</p></li><li><p><code>send-off</code> is appropriate for actions that may block on IO</p></li></ul></div></section>
+<section id="agents"><h2>Agents</h2><div class="ulist"><ul><li><p>Like Refs, Agents provide shared access to mutable state</p></li><li><p>Refs support coordinated, synchronous change of multiple locations</p></li><li><p>Agents provide independent, asynchronous change of individual locations</p></li><li><p>Agents are integrated with the STM</p></li></ul></div></section>
+<section id="exercises"><h2>Exercises</h2><div class="paragraph"><p>See manual section Challenge 3</p></div></section>
+<section id="challenge_3_mocking_parallel_web_requests"><h2>Challenge 3: Mocking parallel web requests</h2><div class="paragraph"><p>Insuricorp and Megacorp are integrating their IT systems. As part of this effort you need to modify the “Corgi cover” eligibility logic to call a remote web service. Your task is to set up the code and tests.</p></div></section>
+<section id="part_1_mock_a_web_request"><h2>Part 1: Mock a web request</h2><div class="paragraph"><p>Every Insuricorp “Corgi cover” policy application needs to be cross referenced with Megacorp to see if the customer has a Megacorp policy already via a remote web service. The web service is not available for you to test against yet. Set up a function called fetch-megacorp-policies to do the web request but leave the implementation empty. Create a test that changes the behavior of fetch-megacorp-policies to behave as though it were a web request; make it pause for 100ms before returning the policies that the person has. Set up a test that exercises the eligibility checks using the mocked version of a web request.</p></div></section>
+<section id="part_2_report_the_how_long_it_takes"><h2>Part 2: Report the how long it takes</h2><div class="paragraph"><p>In Java you might write something like this:</p></div>
+<div class="literalblock"><div class="content"><pre>long startTime = System.nanoTime();
+// ... the code being measured ...
+long estimatedTime = System.nanoTime() - startTime;</pre></div></div>
+<div class="paragraph"><p>Implement a similar solution in Clojure.</p></div></section>
+<section id="part_3_make_parallel_requests"><h2>Part 3: Make parallel requests</h2><div class="paragraph"><p>The web service you are using can handle multiple requests faster than a series of requests. It operates fastest with up to 20 connections. Modify your code such that multiple requests are made simultaneously. Compare the timing results to confirm the operations are happening in parallel.</p></div></section>
+<section id="part_4_error_handling"><h2>Part 4: Error handling</h2><div class="paragraph"><p>Modify your mock of fetch-megacorp-policies such that it throws an exception randomly about 10% of the time. Make sure your tests report a failure. Now update your logic to handle the errors and retry up to 10 times. The tests should pass. Then create another test where the exception is thrown 100% of the time, and the max tries occurs.</p></div></section>
+<section id="end_concurrency"><h2>End Concurrency</h2><div class="paragraph"><p><a href="0-introduction.html#contents">Contents</a></p></div>
+<div class="paragraph"><p><a href="9-polymorphism.html">Next Topic: 8 - Polymorphism</a></p></div></section></div></div><script src="../reveal.js/lib/js/head.min.js"></script><script src="../reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: false,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: false,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'none',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 1.0,
+  maxScale: 1.0,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: '../reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector: '.eval-clojure'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+    Reveal.addEventListener( 'slidechanged', function() {
+        window.dispatchEvent(new Event('resize'));
+    } );
+</script></body></html>
