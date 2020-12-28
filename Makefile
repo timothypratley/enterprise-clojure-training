@@ -1,27 +1,42 @@
 SOURCES := $(wildcard docs/*.adoc)
 HTML := $(patsubst docs/%.adoc, site/%.html, $(SOURCES))
 PDF := $(patsubst docs/%.adoc, site/%.pdf, $(SOURCES))
-CLOJURE_COURSE_SOURCES := $(wildcard docs/clojure/*.adoc)
-CLOJURE_COURSE := $(patsubst docs/clojure/%.adoc, site/clojure/%.html, $(CLOJURE_COURSE_SOURCES))
+
+COURSE_SOURCES := $(wildcard docs/*/*.adoc)
+SLIDES := $(patsubst docs/%.adoc, site/%.html, $(COURSE_SOURCES))
+ARTICLES := $(patsubst docs/%.adoc, site/%.article.html, $(COURSE_SOURCES))
+
+# Tasks
 
 .PHONY: all clean setup
 
-all: setup $(HTML) $(PDF) $(CLOJURE_COURSE)
+all: setup $(HTML) $(PDF) $(SLIDES) $(ARTICLES) # site/js/main.js
 
 clean:
-	rm site/*.html site/*.pdf site/clojure/*.html
+	rm -fr .bundle site/*.html site/*.pdf site/*/*.html
 
 setup: .bundle
+
+# Asciidoctor dependencies
 
 .bundle:
 	bundle --path=.bundle/gems --binstubs=.bundle/.bin
 
-site/clojure/%.html: docs/clojure/%.adoc
-	bundle exec asciidoctor-revealjs --destination-dir=site/clojure $<
+# Articles
+site/%.article.html: docs/%.adoc
+	bundle exec asciidoctor --out-file $@ $< 
 
+# Pages
 site/%.html: docs/%.adoc
-	bundle exec asciidoctor --destination-dir=site $< 
+	bundle exec asciidoctor --out-file $@ $< 
 
+# Slides
+site/%.html: docs/%.adoc
+	bundle exec asciidoctor-revealjs --out-file $@ $<
+
+# PDF
 site/%.pdf: docs/%.adoc
-	bundle exec asciidoctor-pdf --destination-dir=site $<
+	bundle exec asciidoctor-pdf --out-file $@ $<
 
+#site/js/main.js: deps.edn cljs.edn src/enterprise_clojure_training/main.cljs
+#	clojure -M --main cljs.main --compile-opts cljs.edn --compile

@@ -1,0 +1,651 @@
+= Rewriting with Meander
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+:stem: latexmath
+include::../docinfo.attrs[]
+
+ifndef::backend-revealjs[]
+Functions are pretty great.
+Squares go in, circles come out.
+Our job is to write the function to transform them.
+In programming, writing functions is what we do.
+endif::[]
+
+ifdef::backend-revealjs[]
+== Introductions
+
+[horizontal]
+Topic:: Data transformation using term rewriting
+Speaker:: Timothy Pratley
+
+[NOTE.speaker]
+--
+Please speak up with questions as we go.
+--
+
+endif::[]
+ifdef::backend-revealjs[== Programming]
+
+.The square to circle machine (TM)
+image::fx.png[processing machine]
+
+ifndef::backend-revealjs[]
+In math, functions are important, but equations are the fundamental form of expression.
+Equations define valid rules for transformation.
+Our job is to solve problems through symbolic manipulation.
+endif::[]
+
+ifdef::backend-revealjs[== Math]
+
+[latexmath]
+++++
+\begin{align*}
+(a + b)^2 &= (a + b)(a + b)\\
+          &= aa + ab + ba + bb\\
+          &= a^2 + 2ab + b^2
+\end{align*}
+++++
+
+ifndef::backend-revealjs[]
+Functions and equations are two different ways to specify transformations.
+What does it look like when programmers write data transformation like equations instead of functions?
+
+Today we will look at some examples of this!
+Before diving into the examples, let's establish some definitions.
+endif::[]
+
+== Definitions
+
+[horizontal]
+term rewriting:: _replacing terms with other terms_
+term:: _variable or function application:_ stem:[a], stem:[(a + b)], stem:[(a + b)^2]
+variable:: stem:[a,b]
+function:: add, square
+rule:: stem:[(a + b)^2 => a^2 + 2ab + b^2]
+
+== Definitions continued
+
+[horizontal]
+matching:: stem:[(1 + 3)^2] _can be made equal to_ stem:[(a + b)^2]_when_ stem:[a=1,b=3]
+substitution:: _creation of new terms from old ones_ stem:[1^2 + 2*1*3 + 2^2]
+
+[NOTE.speaker]
+--
+Math equations must preserve equivalence.
+Where we are heading, we don't need that restriction.
+--
+
+== Meander
+
+A term rewriting system.
+
+A Clojure library for data transformation.
+
+[source,clojure]
+----
+[meander/epsilon "0.0.512"]
+----
+
+[source,clojure]
+----
+(ns meander.examples
+  (:require [meander.epsilon :as m]))
+----
+
+A _structural pattern syntax_ for data transformation.
+
+== Rewrite
+
+ifndef::backend-revealjs[]
+Let's do our first transformation from a vector to a map:
+endif::[]
+
+`[a b c d] => {a d}`
+
+[source,clojure]
+----
+; Meander!
+(m/rewrite [:a 1 :c 2] ; input
+  [?a ?b ?c ?d]        ; a match pattern
+  {?a ?d})             ; a substitution pattern
+
+;=> {:a 2}             ; output
+----
+
+* The _match pattern_ is a data literal with the shape of the input
+* The _substitution pattern_ is a data literals with the shape of the output
+* `?a` is called a _logic variable_
+
+[NOTE.speaker]
+--
+`m/rewrite` is a macro; it defines how to interpret the patterns.
+I think of Meander as a syntax rather than a library.
+I specify structure with data literals to pattern match and substitute.
+Hence why I call it a "structural pattern syntax".
+--
+
+== Logic fail
+
+Regular variables are assigned values. +
+Logic variables are either matched or not.
+
+[source,clojure]
+----
+(m/rewrite [1 2] ; input
+  [?a ?a]        ; a match pattern
+  {?a ?a})       ; a substitute pattern
+
+;=> nil
+----
+
+No match. +
+`?a` cannot match both `1` and `2`.
+
+ifdef::backend-revealjs[== Logic success]
+
+[source,clojure]
+----
+(m/rewrite [1 1] ; input
+  [?a ?a]        ; a match
+  {?a ?a})       ; a substitution pattern
+
+;=> {1 1}
+----
+
+Matched `?a` with `1`
+
+[NOTE]
+--
+Unification means resolving logical matches.
+--
+
+== Repeating terms
+
+[source,clojure]
+----
+(m/rewrite [:a 1 :c 2 :d 3]
+  [!a ...]
+  [!a ...])
+
+;=> [:a 1 :c 2 :d 3]
+----
+
+[horizontal]
+`!a`:: memory variable: _an array that can collect many values_
+`...`:: 0 or more repeated occurrences
+
+[NOTE.speaker]
+--
+The match pattern is symmetrical with substitution pattern, so we got back out exactly what we put in.
+--
+
+== Repeat scope
+
+[source,clojure]
+----
+(m/rewrite [1 2 3 4 5 6]
+  [!a !b ...]      ; match pairs
+  [!b !a ...])     ; substitute flipped pairs
+
+;=> [2 1 4 3 6 5]
+----
+
+All terms (`!a !b`) are repeated, not just the last thing.
+
+== Separator
+
+[source,clojure]
+----
+(m/rewrite [:hello 1 2 3]
+  [:hello . !v ...]
+  [:world . !v ...])
+
+;=> [:world 1 2 3]
+----
+
+Only terms between `.` and `...` repeat.
+
+== Structurally explicit
+
+ifndef::backend-revealjs[]
+Most Clojure functions will coerce their inputs to seqs.
+Meander does not do this.
+endif::[]
+
+[horizontal]
+`[!x ...]`:: will only match *vectors*
+`(!x ...)`:: will only match *lists* and *seqs*
+`{:k ?v}`:: will only match *maps*
+`#{1}`:: will only match *sets*
+`(m/seqable !x ...)`:: will match *maps*, *vectors*, *strings*, etc...
+
+ifndef::backend-revealjs[]
+I like that it will only match the same types unless you choose to be more permissive with `m/seqable`.
+endif::[]
+
+== Nesting
+
+As you might expect, match and substitute patterns may be nested.
+
+[source,clojure]
+----
+(m/rewrite {:xs [1 2 3 4 5]
+            :ys [6 7 8 9 10]}
+  {:xs [!xs ...]
+   :ys [!ys ...]}
+  [!xs ... . !ys ...])
+
+;=> [1 2 3 4 5 6 7 8 9 10]
+----
+
+And Meander does the rearranging for you.
+
+== Pop Quiz!
+
+[source,clojure]
+----
+(m/rewrite [:hello 1 2 3]
+  [?k . !v ...]
+  [?k !v ...])
+
+;=> [:hello 1 :hello 2 :hello 3]
+----
+
+Why?
+
+[TIP.speaker]
+--
+When matching, we expect a single value, then repeated values.
+The substituting pattern has no separator, so we are substituting pairs.
+--
+
+== Virtual prize
+
+image::macarons.png[Chocolate]
+
+== Much more in Meander
+
+ifndef::backend-revealjs[]
+Meander has a rich feature set, and I have only shown you the core syntax.
+Rather than explain all of Meanders features in detail, we are now going to shift gears and look at some examples in the wild.
+I'll introduce a few bits of unexplained syntax as we go.
+Don't worry, most of them are obvious.
+endif::[]
+
+[NOTE]
+--
+For a comprehensive treatment of Meander features, see https://github.com/noprompt/meander[Meander on GitHub] which links to documentation, a cookbook, blog posts and a Strange Loop talk.
+--
+
+== Rearranging logic expressions
+
+[source,clojure]
+----
+(def rearrange-logic
+  (bottom-up
+   ;; nested commutative logic is raised
+   ((m/pred #{'and 'or} ?op) . !before ... (?op . !clauses ...) . !after ...)
+   (?op . !before ... !clauses ... !after ...)
+
+   ;; moves `or` to the outside, and `and` to the inside to match Datalog rule convention
+   (and . !before ... (or . !clauses ...) . !after ...)
+   (or . (and . ~@!before . !clauses . ~@!after) ...)
+
+   ;; identity logic expressions are flattened
+   ((m/pred #{'and 'or} ?op) ?body)
+   ?body
+
+   ;; double negatives are removed
+   (not (not ?body))
+   ?body
+
+   ;; moves `not` inside to match Datalog rule convention
+   (not (or . !clauses ...))
+   (and . (not !clauses) ...)
+
+   (not (and . !clauses ...))
+   (or . (not !clauses) ...)))
+----
+
+https://github.com/timothypratley/justice/blob/master/src/justice/translation.cljc
+
+== Trees to entities
+
+[source,clojure]
+----
+(m/rewrite skynet-widgets
+  [{:basic-info {:producer-code !producer-code}
+    :widgets [{:widget-code !widget-code
+               :widget-type-code !widget-type-code} ...]
+    :widget-types [{:widget-type-code !widget-type-code
+                    :description !description} ...]} ...]
+  [[!producer-code !widget-code !description] ...])
+;=> [["Cyberdyne" "Model-101" "Resistance Infiltrator"]
+;    ["ACME" "Model-102" "Mimetic polyalloy"]]
+----
+
+Blog post: "The answer to map fatigue"
+
+== Web scraping
+
+[source,clojure]
+----
+(def extract-employees
+  (s/search
+   (m/$
+    [:div {:class "directory-tables"} &
+     (m/scan
+      ;; heading/table pairs
+      [:h3 {} ?department & _]
+      _
+      [:table &
+       (m/scan
+        [:tbody &
+         (m/scan
+          [:tr &
+           (m/separated
+            [:td & (m/scan [:a {} ?name & _])]
+            [:td {} ?title & _]
+            [:td & (m/scan [:a {:href ?mailto} & _])])])])])])
+   ;;=>
+   {:department (str/trim ?department)
+    :name ?name
+    :title ?title
+    :email (subs ?mailto 7)}))
+----
+
+https://github.com/timothypratley/chartit/blob/master/src/chartit/justworks.clj
+
+== Parsing defn like forms
+
+[source,clojure]
+----
+(defn wrap-defn
+  "Returns a function that will parse a form according to `defn` semantics.
+  Takes a function which will convert fn-spec forms."
+  [rewrite-fn-spec]
+  (m/rewrite
+   (m/and ((pred simple-symbol? ?name) .
+           (pred string? !?docstring) ...
+           (pred map? !?attr-map) ...
+           !tail ...)
+        (m/guard (<= (count !?docstring) 1))
+        (m/guard (<= (count !?attr-map) 1))
+        (let
+         (or (([(m/pred simple-symbol? !params) ... :as !param-list] . !forms ... :as !fn-specs) ..1)
+             ([(m/pred simple-symbol? !params) ... :as !param-list] . !forms ... :as !fn-specs))
+          (list* !tail))
+        (m/guard (apply distinct? (map count !param-list))))
+   ;;>
+   (defn ?name . !?docstring ... !?attr-map ...
+     ~@(map rewrite-fn-spec !fn-specs))))
+----
+
+https://github.com/timothypratley/justice/blob/master/src/justice/defn.cljc
+
+[NOTE.speaker]
+--
+Compare with https://blog.klipse.tech/clojure/2016/10/10/defn-args.html
+--
+
+== HappyGAPI
+
+[source,clojure]
+----
+(defn summarize-schema [schema request depth]
+  "Given a json-schema of type definitions,
+  and a request that is a $ref to one of those types,
+  resolves $ref(s) to a depth of 3,
+  discards the distracting information,
+  and returns a pattern for constructing the required input."
+  (m/rewrite request
+    {:type                 "object"
+     :id                   ?id
+     :additionalProperties ?ap
+     :properties           (m/seqable [!property !item] ...)}
+    ;;>
+    {& ([!property (m/app #(summarize-schema schema % depth) !item)] ...)}
+
+    {:type  "array"
+     :items ?item}
+    ;;>
+    [~(summarize-schema schema ?item depth)]
+
+    {:type (m/pred string? ?type)}
+    ;;>
+    (m/app symbol ?type)
+
+    {:$ref (m/pred string? ?ref)}
+    ;;>
+    ~(if (> depth 2)
+       (symbol ?ref)
+       (summarize-schema schema (get schema (keyword ?ref)) (inc depth)))))
+----
+
+https://github.com/timothypratley/happygapi/blob/master/dev/happy/beaver.clj
+
+== AST manipulation
+
+[source,clojure]
+----
+(def propagate-types-from-bindings-to-locals
+  "We propagate type information which is stored in metadata
+  from the the place where they are declared on a symbol
+  to all future usages of that symbol in scope."
+  (s/rewrite
+    {:op   :local
+     :form ?symbol
+     :env  {:locals {?symbol {:form ?symbol-with-meta
+                              :init ?init}}
+            :as     ?env}
+     &     ?more
+     :as   ?ast}
+    ;;>
+    {:op   :local
+     :form ~(propagate-ast-type ?init ?symbol-with-meta ?ast)
+     :env  ?env
+     &     ?more}
+
+    ;; otherwise leave the ast as is
+    ?else
+    ?else))
+----
+
+https://github.com/echeran/kalai/blob/nanopass/src/kalai/pass/kalai/b_kalai_constructs.clj
+
+== Let's reflect
+
+* Those were all pretty complicated transformations
+* Could you follow them?
+* Is that normal?
+
+== Cooking up a function
+
+[cols="2"]
+|===
+| 1. Prepare meat and potatoes  | _(example inputs)_
+| 2. Mix ingredients in a pot +
+ifndef::backend-revealjs[]
+- A little destructuring +
+- a dash of `let` binding +
+- some sequence seasoning `for` flavor +
+- a teaspoon of `conj`, `update`, and `assoc` +
+- a splash of threading
+endif::[]
+                                | _(function definition)_
+| 3. Boil                       | _(iterate, make it work)_
+| 4. Garnish with documentation | _(docstring or types)_
+| 5. Simmer                     | _(tests)_
+|===
+
+ifndef::backend-revealjs[]
+^ Easy to forget why it tastes good +
+^ Easy to skip documentation and testing
+endif::[]
+
+== Cooking up a rewrite rule
+
+[cols="1,2"]
+|===
+|1. Example input         |`[{:k "Meat"} {:k "Potatoes"}]`
+|2. Parameterize          |  `[{:k !ingredient} ...]`
+|3. Recombine             |`[!ingredient ... "Stew"]`
+|4. Create a test         | `(is (= [] (stew example)))`
+|5. Verify the output     | `["Meat" "Potatoes" "Celery" "Stew"]`
+|===
+
+== Recipe
+
+Functions are all about what to do.
+
+ifndef::backend-revealjs[]
+Clearly the big difference between functions and rewrite rules is what to do with the inputs.
+Writing a function is specifying what to do; writing a recipe.
+endif::[]
+
+.A recipe for making beef stew
+image::recipe.png[Recipe]
+
+== Picture
+
+Rewrite rules are the inputs and outputs; the "what to do part" is completely missing!
+
+.A hearty pot of beef stew
+image::stew.png[Pot of stew]
+
+[NOTE.speaker]
+--
+Examples are the best kind of documentation.
+Writing Meander feels like writing examples.
+It gives me confidence I solved the right problem, and it's easy to see what it does coming back to it later.
+--
+
+== Data transformation
+
+All pure functions are data transformations... so everything?
+
+Largish data reshaping where you would otherwise do destructuring, updates, restructuring, and pipelines.
+
+[NOTE.speaker]
+--
+What's the catch?
+
+Why isn't this the default way of writing code?
+
+* Hard to implement
+* Limitations
+--
+
+== Limitations
+
+Extension is limited +
+ifndef::backend-revealjs[]
+The syntax available in data literals is strictly limited by the host language.
+Meander syntax is partially extensible through `defsyntax` which allows new s-expression operator behaviors.
+Extension is necessary and achieved by allowing function calls in Meander.
+endif::[]
+
+Failure to match is opaque +
+ifndef::backend-revealjs[]
+Similar to regular expressions, it can be difficult to figure out why a match isn't made for a given input.
+Simplifying and decomposing can help.
+
+[TIP]
+--
+Use inline function invocation (`~` or `m/app`) to spy on terms.
+--
+
+endif::[]
+
+Unfamiliar +
+
+== Common concerns
+
+Reduction +
+ifndef::backend-revealjs[]
+Meander has recursion, so you can reduce.
+You're better off using `reduce` because recursion has no syntactic advantage.
+The next brnach of Meander (zeta) contains a neater way to express reduction.
+endif::[]
+
+Memory variable correspondence +
+ifndef::backend-revealjs[]
+Nested memory variables in a single expression can get confusing.
+There is potential for a syntactic simplification.
+https://github.com/noprompt/meander/issues/129
+The next branch of Meander (zeta) has flexibility in how variables behave, which may solve this.
+endif::[]
+
+Decomposition +
+ifndef::backend-revealjs[]
+The current options are `m/with` and `m/app`.
+This is equivalent to functional decomposition.
+endif::[]
+
+Performance +
+ifndef::backend-revealjs[]
+In practice on par with hand rolled functions.
+In general hard to guarantee.
+endif::[]
+
+== Compared with
+
+ifndef::backend-revealjs[]
+How does Meander compare to other existing data transformation approaches?
+endif::[]
+
+[horizontal]
+Clojure.core::
+
+ifndef::backend-revealjs[]
+Clojure is concise and powerful.
+Many functions defined on few primary data structures.
+We operate on data but do not specify what the data is.
+So it is common to be looking at a function that operates on `x`, and have no context about what `x` aught to be.
+endif::[]
+What is `x`?
+Destructuring:: Does one job well.
+No logic expressions.
+Core.match, Core.logic:: Work great.
+No convenient syntax for substitution.
+Clojure.spec::
+ifndef::backend-revealjs[]
+Defines the shape of `x` as s-expression regexes.
+endif::[]
+Specs do not look like the data they describe.
+Specter:: Navigator/action model
+ifndef::backend-revealjs[]
+https://github.com/redplanetlabs/specter improves data manipulation.
+endif::[]
+does not address shape.
+
+== Key Strengths of Meander
+
+* Inputs and outputs are instantly recognizable
+* Construct solutions from examples
+* Declarative style is pleasing
+* High quality library: fast and reliable
+* Visual > verbal
+
+[NOTE.speaker]
+--
+Most noticeable when returning to code
+--
+
+== Contact
+
+[horizontal]
+icon:rss[]:: https://timothypratley.blogspot.com
+icon:twitter[]:: @timothypratley
+icon:envelope[]:: timothypratley@gmail.com
+
+[.big.goal.lead]
+Thank you!
+
+ifndef::backend-revealjs[]
+Term rewriting has merits.
+Meander provides term rewriting as a convenient library for Clojure.
+I hope you'll give it a try and find it as useful as I have.
+
+Thanks for reading.
+endif::[]

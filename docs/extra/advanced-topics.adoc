@@ -1,43 +1,44 @@
 = Advanced Topics
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-:customcss: slides.css
-:revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0
-:revealjs_theme: simple
-:revealjs_center: false
-:revealjs_controls: false
-:revealjs_transition: none
-:docinfo: shared
-
+include::../docinfo.attrs[]
 
 == Topics to be covered
 
 1. Use case: How to define mass data structure using spec and to get the data from that using “conform”.
-  a. Need sample use case and accustomed project with that.
-  b. Require more details on why we need this spec and what is the business advantage?
+a. Need sample use case and accustomed project with that.
+b. Require more details on why we need this spec and what is the business advantage?
 
-2. Use case: To mock test data for resources on validating the specs as a whole data structure. (A sample project or reference available on internet is also required)
+2. Use case: To mock test data for resources on validating the specs as a whole data structure.
+(A sample project or reference available on internet is also required)
 
-3. How to get the project built using Jenkins or any hosting tools. We would have a demo to do that with pipeline or docker plugin.
+3. How to get the project built using Jenkins or any hosting tools.
+We would have a demo to do that with pipeline or docker plugin.
 
-4. How to call web services from clojure &amp; to hop around the different environments? How are we going to handle/pass the security configuration in between the layers?
+4. How to call web services from clojure &amp; to hop around the different environments?
+How are we going to handle/pass the security configuration in between the layers?
 
-5. We use “:gen-class” for all the namespace definition. Is this mandatory for running the application as uber jar? What is the purpose of including this :gen-class?
+5. We use “:gen-class” for all the namespace definition.
+Is this mandatory for running the application as uber jar?
+What is the purpose of including this :gen-class?
 
 6. More examples (different usage scenarios) and elaboration required for Macros.
 
 7. Use case: Require to know Clojure with Hadoop interaction for data enrichment with clojure specs.
 
-8. Does clojure provide any utility to attach a file and send an email? Configuring logs on masking the sensitive data.
+8. Does clojure provide any utility to attach a file and send an email?
+Configuring logs on masking the sensitive data.
 
 9. How to manage real time dependency management between projects
 
 10. Any industry design patterns for clojure?
 
-11. What is Profile.clj capable of doing? Is it like getting the jar from repo, defining plugins, is that all? Or do we have more to explore. (need more clarity and reference links)
+11. What is Profile.clj capable of doing?
+Is it like getting the jar from repo, defining plugins, is that all?
+Or do we have more to explore. (need more clarity and reference links)
 
-12. What is Project.clj capable of doing to the project level and where does this scope live? Unlike the above one, require reference materials.
-
+12. What is Project.clj capable of doing to the project level and where does this scope live?
+Unlike the above one, require reference materials.
 
 == 1) Use case: Parsing data with Spec
 
@@ -49,32 +50,26 @@ Insurance company "Megacorp" offers three pet insurance policies:
 
 Can spec help us process applications for these policies?
 
-
 == a. Defining specs for data structures
 
 * See examples/parsing-with-spec
 
-
 == b. Validating data
 
-(valid?)
-expound
-
+(valid?) expound
 
 == c. Extracting data using `conform`
 
 * When there are multiple options to match against
 
-
 == Spec rationale
 
 * It is a guiding principle of Clojure to represent information as data (not objects)
 * Important properties of Clojure systems are represented and conveyed by the shape of the data
-  - runtime types are maps, vectors, sets
-  - shape is not captured or checked anywhere
+- runtime types are maps, vectors, sets
+- shape is not captured or checked anywhere
 * Manual parsing and error reporting is not good enough
 * Defining specifications is optional
-
 
 == Spec enables automatic
 
@@ -85,28 +80,25 @@ expound
 * Test-data generation
 * Generative test generation
 
-
 == Why not spec?
 
 * It is new
 * Specs are code
-  - however code is data and you can create specs on the fly
+- however code is data and you can create specs on the fly
 * You can do without it
-  - however manual approaches become difficult as complexity rises
-
+- however manual approaches become difficult as complexity rises
 
 == Why spec?
 
 * Specifying the shape of inputs is hard
-  - good error messages are hard for complex requirements
-  - coming up with test data can be tedious
-  - testing often involves reimplementation
+- good error messages are hard for complex requirements
+- coming up with test data can be tedious
+- testing often involves reimplementation
 
 * Additional tooling
-  - Expound (nice error messages)
-  - Data generators
-  - test.check
-
+- Expound (nice error messages)
+- Data generators
+- test.check
 
 == d. What is the business advantage of spec?
 
@@ -114,8 +106,7 @@ expound
 * Implement parsing quickly
 * Deliver correct, well tested solutions
 * Use the same technology in code and data interfaces
-  - learn once, apply in many contexts
-
+- learn once, apply in many contexts
 
 == 2) Mock test data
 
@@ -125,17 +116,15 @@ see examples/parsing-with-spec/test/parsing-with-spec/generated-test
 
     (stest/check `my-function)
 
-
 == 3) Continuous Integration
 
 * Building projects with Jenkins
-  - See examples/jenkins-build-server
+- See examples/jenkins-build-server
 
 === Overview
 
 * How Clojure projects are built and executed locally
 * How to set up a build server to automate test/build/deploy
-
 
 == Building and Executing Clojure projects
 
@@ -151,12 +140,10 @@ see examples/parsing-with-spec/test/parsing-with-spec/generated-test
 
     lein deploy
 
-
 == lein run
 
 * Easy to execute
 * May need to pull dependencies
-
 
 == lein uberjar
 
@@ -165,7 +152,6 @@ see examples/parsing-with-spec/test/parsing-with-spec/generated-test
 * Easy to execute
 * Versioned
 * Preservable
-
 
 == java -jar myapp.jar
 
@@ -183,7 +169,6 @@ src/myapp/core.clj
 
     java -jar myapp.jar -m myapp.core/-main
 
-
 == lein ring uberjar
 
 Sets up a main entry point to start the webservice
@@ -194,37 +179,33 @@ Equivalent to
     (defn -main [& args]
       (run-jetty handler {:port 3000}))
 
-
 == lein install
 
 * Builds an uberjar and puts it in your local Maven repository `~/.m2`
 * Useful for testing library snapshots and building from source
 * Does not publish your artifact
 
-
 == lein deploy
 
 * Publishes your artifact to a repository
 * Repositories can be
-  - public (Clojars, Maven Central)
-  - private (Hosted/S3/Self managed)
+- public (Clojars, Maven Central)
+- private (Hosted/S3/Self managed)
 * https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md
 * Easy... if you have a repository...
 * Not the same as deploying your application!
 
-
 == Where to publish artifacts to?
 
 * Amazon S3 is a low-maintenance choice:
-  - https://github.com/s3-wagon-private/s3-wagon-private
+- https://github.com/s3-wagon-private/s3-wagon-private
 * Artifactory/Nexus/Archiva
 * Deps: https://www.deps.co/
 * Remeber to include a `repositories` section in your project.clj
-  - To publish to a private repository
-  - To pull dependencies from a private repository
+- To publish to a private repository
+- To pull dependencies from a private repository
 
     :repositories [["private" {:url "s3p://mybucket/releases/" :no-auth true}]]
-
 
 == Deploying a Clojure application
 
@@ -232,15 +213,18 @@ Equivalent to
 * Get the artifact to the host server
 * Run it
 
-
 == Implementation details are driven by architecture
 
-* Tomcat? Drop a WAR in a folder
-* AWS Elastic Beanstalk? Roll out a new docker container
-* AWS Lambda? Upload a new JAR
-* Kubernetes? Roll out a new docker container
-* Heroku? Deploy from git
-
+* Tomcat?
+Drop a WAR in a folder
+* AWS Elastic Beanstalk?
+Roll out a new docker container
+* AWS Lambda?
+Upload a new JAR
+* Kubernetes?
+Roll out a new docker container
+* Heroku?
+Deploy from git
 
 == Creating a build server overview
 
@@ -248,14 +232,12 @@ Equivalent to
 * Install Leiningen
 * Add a build
 
-
 == What is Docker?
 
 * Virtualization
 * Dockerfile specifies a parent and setup tasks
 * Building starts with an image and runs the setup tasks, creates a container
 * Run a container and it behaves like a stand alone computer
-
 
 == Handy Docker commands
 
@@ -265,49 +247,44 @@ Equivalent to
 * `docker exec -ti <container-id> bash` to get a shell in a running container
 * `docker stop <container-id>` to stop it
 
-
 == Creating a Jenkins server inside a Docker container
 
 * Install docker
 * Create a Dockerfile to extend the base Jenkins image
-  - see examples/jenkins-build-server/Dockerfile
-  - https://github.com/jenkinsci/docker/blob/master/README.md
-  - add steps to install Leiningen
+- see examples/jenkins-build-server/Dockerfile
+- https://github.com/jenkinsci/docker/blob/master/README.md
+- add steps to install Leiningen
 * Create a Makefile or similar to automate tasks
-  - see examples/jenkins-build-server/Makefile
-  - `make run` to start the server
+- see examples/jenkins-build-server/Makefile
+- `make run` to start the server
 * Open the UI: http://localhost:8080/
 * Enter password from console log
 * Install suggested plugins
 * Create admin user
-
 
 == What to build?
 
 * An uberjar
 * Docker image
 
-
 == Set up Job
 
 * Choose Freestyle project
 * Configure source code management
-  - parsing-with-spec is a subdirectory of the enterprise-clojure repository
-  - `sparse checkout path` only gets a subdirectory
+- parsing-with-spec is a subdirectory of the enterprise-clojure repository
+- `sparse checkout path` only gets a subdirectory
 * Under "Build", add build steps, shell command
-  - `cd examples/parsing-with-spec && lein test`
-  - `cd examples/parsing-with-spec && lein install`
-  - or docker build
-  - don't need to change directory if project is in root
+- `cd examples/parsing-with-spec && lein test`
+- `cd examples/parsing-with-spec && lein install`
+- or docker build
+- don't need to change directory if project is in root
 * Save
 * Build now
 * Check the console logs
-  - tests passed
-  - jar created
-
+- tests passed
+- jar created
 
 == Versioning
-
 
 == Running the built artifacts
 
@@ -315,16 +292,13 @@ Equivalent to
 * Use environment variables to behave differently
 * Can extend a prebuilt docker image (or roll your own)
 
-
 == Building multiple services
 
 * Set up jobs for each project
 
-
 == Set up another triggered Job to deploy to CI
 
 * If the build succeeds, deploy
-
 
 == 4) Clojure services
 
@@ -338,17 +312,15 @@ Equivalent to
 * Change code
 * curl again
 
-
 == What is Ring?
 
 * Ring is a library that abstracts the details of HTTP into a unified API
-  - modular components
+- modular components
 
 * Handlers - functions that take requests and return responses
 * Request - map of data about the request (params, body, etc)
 * Response - map containing status, headers, body
 * Middleware - the mechanism for modular components, higher order functions
-
 
 == Middleware pattern
 
@@ -363,10 +335,9 @@ Middleware are functions that return functions:
 
 * Takes a handler as input
 * The function returned
-  - can modify the request before passing it to the handler
-  - can modify the result from the handler before returning it
-  - is itself a handler
-
+- can modify the request before passing it to the handler
+- can modify the result from the handler before returning it
+- is itself a handler
 
 == Middleware
 
@@ -381,27 +352,24 @@ Middleware are functions that return functions:
           (wrap-params)))
 
 * Middleware pattern
-  - https://github.com/ring-clojure/ring/wiki/Concepts
-  - https://github.com/ring-clojure/ring/wiki/Middleware-Patterns
-
+- https://github.com/ring-clojure/ring/wiki/Concepts
+- https://github.com/ring-clojure/ring/wiki/Middleware-Patterns
 
 == What is Compojure?
 
 * A routing library
-  - http://megacorp.com/insurance-policy/corgi-cover
-  - `/insurance-policy/corgi-cover` is a route
-  - `/insurance-policy` is fixed root
-  - `/corgi-cover` is a policy ID
-  - could be `poodle-protection` or `poodle-protection-platinum`
-  - `(GET "/insurance-policy/:id" [id] (fetch-policy id))`
-
+- http://megacorp.com/insurance-policy/corgi-cover
+- `/insurance-policy/corgi-cover` is a route
+- `/insurance-policy` is fixed root
+- `/corgi-cover` is a policy ID
+- could be `poodle-protection` or `poodle-protection-platinum`
+- `(GET "/insurance-policy/:id" [id] (fetch-policy id))`
 
 == Useful extensions
 
 * Public API creation: https://github.com/metosin/compojure-api
 * Public API creation: https://clojure-liberator.github.io/liberator/
 * GraphQL: https://github.com/walmartlabs/lacinia
-
 
 == Making HTTP requests
 
@@ -413,11 +381,9 @@ Middleware are functions that return functions:
     (ns myns (:require [clj-http.client :as client]))
     (client/get (str "http://customer-data-service:3000/customer/" id))
 
-
 == Multiple services
 
 See examples/communicating-services
-
 
 == Managing multiple services with docker-compose
 
@@ -427,15 +393,13 @@ See examples/communicating-services/docker-compose.yml
 * Deploying
 * Reloading code while developing multiple services
 
-
 == Security and configuration
 
 * Follow the Twelve-Factor App https://12factor.net/
-  - Store configuration in the environment
+- Store configuration in the environment
 * Don't store configuration in source control
 * Don't expose endpoints publicly
 * Authentication/authorization for public endpoints: https://github.com/cemerick/friend
-
 
 == 5) `:gen-class`
 
@@ -447,7 +411,6 @@ What is the purpose of `:gen-class`?
 * Prefer using `reify`, `deftype`, `defrecord` to implement Java classes
 * Avoid `gen-class` and AOT
 * But why is it used so often?
-
 
 == Executable jars
 
@@ -470,7 +433,6 @@ project.clj
     :main myns.core
     :aot [myns.core]
 
-
 == AOT is about when compilation happens
 
     (ns my.app)
@@ -481,7 +443,6 @@ Behaves differently if evaluated during AOT than during Runtime.
 * In AOT it is captured during the build prior to deployment.
 * At Runtime it is whatever is in the environment when the namespace is loaded.
 
-
 == When would it help to AOT?
 
 * Shipping a binary without the source code
@@ -489,19 +450,17 @@ Behaves differently if evaluated during AOT than during Runtime.
 * Generating classes loadable directly from Java for interop purposes (Hadoop)
 * Platforms such as Android do not support custom class loaders for running new bytecode at runtime.
 
-
 == Is `:gen-class` mandatory?
 
 * No
 * See examples/aot/too-much-aot
-  - An example where aot is causing undesirable behavior
+- An example where aot is causing undesirable behavior
 * See examples/aot/no-aot
-  - Clojure provides an entrypoint `java -cp myuber.jar clojure.main -m myns.core`
-  - Clojure compiles all code you load on-the-fly into JVM bytecode
+- Clojure provides an entrypoint `java -cp myuber.jar clojure.main -m myns.core`
+- Clojure compiles all code you load on-the-fly into JVM bytecode
 * See examples/aot/little-aot
-  - Avoid transitive aot by providing a bootstrap
-  - Produces an executable jar
-
+- Avoid transitive aot by providing a bootstrap
+- Produces an executable jar
 
 == 6) More on Macros
 
@@ -510,23 +469,20 @@ Examples (different usage scenarios) and elaboration required for Macros.
 * Many Clojure primitives such as `defn` are macros
 * Macros provide syntax but are not values
 * https://lispcast.com/when-to-use-a-macro/
-  - rarely
-  - compile time
-  - unevaluated arguments
-  - inline code
+- rarely
+- compile time
+- unevaluated arguments
+- inline code
 * core.async
-  - macros over state machines to implement
-    Communicating Sequential Processes (CSP)
-  - provides a new syntax (go blocks)
-  - available as a library
-
+- macros over state machines to implement Communicating Sequential Processes (CSP)
+- provides a new syntax (go blocks)
+- available as a library
 
 == 7) Data enrichment
 
 Require to know Clojure with Hadoop interaction for data enrichment with clojure specs.
 
 https://github.com/clojure-cookbook/clojure-cookbook/tree/master/09_distributed-computation
-
 
 == 8) Sending emails
 
@@ -548,13 +504,12 @@ https://github.com/drewr/postal
 You need a mail server.
 (AWS Simple Email Service works well https://aws.amazon.com/ses/)
 
-
 == Configuring logs on masking the sensitive data.
 
 * Clojure.tools.logging
-  https://github.com/clojure/tools.logging
+https://github.com/clojure/tools.logging
 * Timbre
-  https://github.com/ptaoussanis/timbre
+https://github.com/ptaoussanis/timbre
 
 * log4j
 * logback
@@ -564,8 +519,8 @@ You need a mail server.
 * Standard Java style configuration
 
 * "Bear Traps: the Logging Edition"
-  https://www.youtube.com/watch?v=jjuj-D4-hCE
-  https://github.com/AlexanderMann/unclogging
+https://www.youtube.com/watch?v=jjuj-D4-hCE
+https://github.com/AlexanderMann/unclogging
 
 == 9) Dependencies
 
@@ -576,12 +531,10 @@ How to manage real time dependency management between projects
 * https://github.com/amperity/lein-monolith
 * https://github.com/ladderlife/loonie
 
-
 == 10) Industry design patterns for Clojure
 
 * https://github.com/clojure-cookbook/clojure-cookbook
 * http://mishadoff.com/blog/clojure-design-patterns/
-
 
 == 11) Profile.clj
 
@@ -600,7 +553,6 @@ Or do we have more to explore. (need more clarity and reference links)
 
 * https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md
 
-
 == Common plugins for profiles.clj
 
 * lein-test-refresh
@@ -611,7 +563,6 @@ Or do we have more to explore. (need more clarity and reference links)
 * Kibit
 * Bikeshed
 * Alembic
-
 
 == 12) Project.clj
 

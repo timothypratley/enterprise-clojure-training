@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == 6. Functional Programming
 
-image:../img/functional.jpg[]
+image:functional.jpg[]
 
 "If you don't love something, it's not functional, in my opinion."
 -- Yves Behar

@@ -25,7 +25,6 @@ I recommend watching the Windows installation regardless of your operating syste
 
 O.K. let's get installing!
 
-
 == Installation
 
 === Windows
@@ -42,7 +41,6 @@ IDEA will need the JDK, so that is why we choose it instead of the JRE.
 Install version 1.8 whichever the latest patch version is.
 Java 9 and higher has backward compatibility breakages that not all the tools have caught up with yet, so let's avoid those for now.
 Once you have installed the downloaded file open a command prompt and run `java -version` to check that the installation worked correctly.
-
 
 ==== Leiningen
 
@@ -68,7 +66,6 @@ Right now we only have one dependency, Clojure 1.8.0.
 We can add other libraries that we want to use here later.
 The `core.clj` file is where we are going to write our code.
 
-
 ==== Intellij IDEA
 
 We need an editor to edit the code with.
@@ -76,7 +73,6 @@ Any editor will do but for this course please use IntelliJ IDEA.
 Search for https://www.jetbrains.com/idea[Intellij IDEA].
 Download and install the Community Edition because it is free.
 There is a checkbox to allow IDEA to download it's own JRE and I recommend you check that as they claim it will help the IDEA run better.
-
 
 ==== Cursive Clojure plugin
 
@@ -98,7 +94,8 @@ We need to restart IDEA again.
 Now the words are understood so we are good to go.
 
 So what can IDEA and Cursive do for us?
-Structural editing. The most important thing to know about structural editing is how to turn it off.
+Structural editing.
+The most important thing to know about structural editing is how to turn it off.
 You can do that in the bottom right hand corner.
 Structural editing attempts to preserve balanced parenthesis.
 We will be creating nested expressions in parentheses quite a lot, so this can be very helpful.

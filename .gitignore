@@ -2,3 +2,7 @@
 site/*.html
 site/*.pdf
 site/clojure
+site/extra
+site/meta
+site/js/compiled
+.cpcache

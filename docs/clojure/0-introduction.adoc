@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == Enterprise Clojure Training
 
-image:../img/corgi.jpg[]
+image:corgi.jpg[]
 
 
 [state=title]
@@ -37,12 +37,12 @@ image:../img/corgi.jpg[]
 [state=title]
 == Introductions
 
-image:../img/art1.jpg[]
+image:art1.jpg[]
 
 [state=title]
 == Clojure
 
-image:../img/clojure-logo.png[]
+image:clojure-logo.png[]
 
 "What language is it that meets all the criteria? What language would I choose if I had to choose today? Probably Clojure!"
 -- Robert Martin

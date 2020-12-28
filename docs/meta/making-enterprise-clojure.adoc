@@ -1,22 +1,14 @@
-= Talk
+= Making Enterprise Clojure
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-:customcss: slides.css
-:revealjs_theme: simple
-:revealjs_center: false
-:revealjs_controls: false
-:revealjs_transition: none
-:revealjs_history: true
-:docinfo: shared
-:notitle:
-:icons: font
-
+include::../docinfo.attrs[]
+imgagedir::..img/talk
 
 [state=title]
 == What are you waiting for?
 
 .Waiting patiently for Clojure adoption in the workplace
-image::img/talk/corgi-waiting.jpg[Corgi waiting at door]
+image::corgi-waiting.jpg[Corgi waiting at door]
 
 [NOTE.speaker]
 --

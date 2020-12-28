@@ -1,0 +1,3 @@
+{:deps {org.clojure/clojurescript {:mvn/version "1.10.758"}
+        viebel/klipse             {:mvn/version "7.10.4"}
+        meander/epsilon           {:mvn/version "0.0.512"}}}

@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == 3. Functions
 
-image:../img/functions.jpg[]
+image:functions.jpg[]
 
 "The chief function of the body is to carry the brain around."
 -- Thomas A. Edison

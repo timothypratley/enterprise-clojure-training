@@ -1,4 +1,9 @@
+:imagesdir: ../img
 :customcss: ../slides.css
+:docinfo: shared
+:notitle:
+:icons: font
+ifdef::backend-revealjs[]
 :revealjs_theme: simple
 :revealjs_center: false
 :revealjs_controls: false
@@ -7,6 +12,4 @@
 :revealjs_minScale: 1.0
 :revealjs_maxScale: 1.0
 :revealjsdir: ../reveal.js
-:docinfo: shared
-:notitle:
-:icons: font
+endif::[]

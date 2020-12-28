@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == 7. Java Interop
 
-image:../img/interop.jpg[]
+image:interop.jpg[]
 
 "Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
 -- Libba Bray
