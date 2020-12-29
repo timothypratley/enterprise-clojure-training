@@ -8,7 +8,7 @@ imgagedir::..img/talk
 == What are you waiting for?
 
 .Waiting patiently for Clojure adoption in the workplace
-image::corgi-waiting.jpg[Corgi waiting at door]
+image::talk/corgi-waiting.jpg[Corgi waiting at door]
 
 [NOTE.speaker]
 --
@@ -22,12 +22,12 @@ image::corgi-waiting.jpg[Corgi waiting at door]
 * Why did we build a course you might ask?
 --
 
-
 [state=title]
 == Train 28 developers in 24 hours
 
 .Challenge accepted
-image::img/talk/corgi-challenge.jpg[Corgi dodging poles]
+image::talk/corgi-challenge.jpg[Corgi dodging poles]
+
 [NOTE.speaker]
 --
 * A company asked me to take 28 developers and get them ready to start using Clojure day one
@@ -36,13 +36,11 @@ image::img/talk/corgi-challenge.jpg[Corgi dodging poles]
 * Challenge accepted
 --
 
-
 [state=title]
 == Enterprise Clojure Training
 
 .An open source training course for Clojure
-image::img/corgi.jpg[Art]
-
+image::corgi.jpg[Art]
 
 == Target audience
 
@@ -53,14 +51,12 @@ image::img/corgi.jpg[Art]
 
 NOTE: This is a boot camp
 
-
 == The programme
 
 * 2 days, 10 hours per day
 * 12 sections
 * 1 hour for lunch
 * 2 follow up webinars, 2 hours each
-
 
 == Sections
 
@@ -72,7 +68,6 @@ NOTE: This is a boot camp
 |Challenges|When ahead
 |===
 
-
 == Course material
 
 |===
@@ -82,7 +77,6 @@ NOTE: This is a boot camp
 |link:https://www.youtube.com/playlist?list=PLHl2BS5yLgWE96d5Q07C5Ou8SB7QteFAN[Videos]
 |===
 
-
 == The value of questions
 
 * Questions and answers
@@ -91,7 +85,6 @@ NOTE: This is a boot camp
 * Sharing relevant case studies
 
 NOTE: *Enterprise Clojure Training is a resource for teachers*
-
 
 == Adaptable course material
 
@@ -106,13 +99,11 @@ NOTE: *Enterprise Clojure Training is a resource for teachers*
 * Merge first, ask questions later
 --
 
-
 [state=title]
 == Creating a course
 
 .Under the hood of Enterprise Clojure Training
-image::img/talk/corgi-hoodie.jpg[Corgi wearing a hoodie]
-
+image::talk/corgi-hoodie.jpg[Corgi wearing a hoodie]
 
 == Asciidoctor
 
@@ -122,7 +113,6 @@ image::img/talk/corgi-hoodie.jpg[Corgi wearing a hoodie]
 * Github and Github Pages
 
 NOTE: Asciidoctor is an improved implementation of Asciidoc
-
 
 == Flavor of markdown
 
@@ -138,7 +128,6 @@ One sentence per line; rearrange with ease.
     (defn example [] "code")
 ----
 
-
 == The documents
 
 https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/master/docs/manual.adoc[manual.adoc]
@@ -153,7 +142,6 @@ https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/mas
 
 https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/master/docs/index.adoc[index.adoc]
 
-
 == Better for publishing
 
 * Automatic table of contents
@@ -165,7 +153,6 @@ https://raw.githubusercontent.com/timothypratley/enterprise-clojure-training/mas
 
 TIP: Notes/tips/warnings
 
-
 == Excellent tooling
 
 * Produces attractive content by default
@@ -173,25 +160,21 @@ TIP: Notes/tips/warnings
 * Editor plugins
 * Chrome live reloading extension
 
-
 == IntelliJ IDEA
 
 .Asciidoctor plugin
-image::img/talk/idea-asciidoctor.png[]
-
+image::talk/idea-asciidoctor.png[]
 
 == Chrome live reloading
 
 * Renders in the browser direct from `.adoc`
 * Updates when the file changes
 
-
 == Slides
 
 * Based on RevealJS
 * `asciidoctor-revealjs` plugin
 * Requires a build step
-
 
 == Event Notify Test Runner (entr)
 
@@ -200,14 +183,12 @@ image::img/talk/idea-asciidoctor.png[]
 * Install with brew or apt
 * `./watch.sh`
 
-
 == Deploying
 
 * Github Pages build `adoc` via Jekyll
 * But not slides...
 * TravisCI auto-build/deploy
 * Change text, push, done!
-
 
 == Training options
 
@@ -221,12 +202,11 @@ https://clojure.org/community/training
 * If you want to add a resource to this page, submit a pull request or contact Alex Miller.
 --
 
-
 [state=title]
 == Observations
 
 .Learning Clojure is challenging
-image::img/talk/corgi-training.jpg[Corgi jumping a bar]
+image::talk/corgi-training.jpg[Corgi jumping a bar]
 
 [NOTE.speaker]
 --
@@ -237,11 +217,10 @@ image::img/talk/corgi-training.jpg[Corgi jumping a bar]
 * But it is definitely a challenge
 --
 
-
 == Change of thinking required
 
 .Woha, I get it!
-image::img/talk/corgi-lights.png[Corgi in lights]
+image::talk/corgi-lights.png[Corgi in lights]
 
 [NOTE.speaker]
 --
@@ -258,7 +237,6 @@ image::img/talk/corgi-lights.png[Corgi in lights]
 * Embrace the idioms
 --
 
-
 == Simple ain't easy
 
 "I had high hopes for Clojure for a while, but they're fairly user-hostile, even if they think (and loudly assert) that they aren't."
@@ -269,21 +247,21 @@ image::img/talk/corgi-lights.png[Corgi in lights]
 * It's easy to forget our own path to enlightenment
 * New users face difficult obstacles
 * Example: just installing Java, Leiningen, IDEA
-* Java - which version? Quite easy to choose the wrong thing
+* Java - which version?
+Quite easy to choose the wrong thing
 * Lein - doesn't work on Windows
 * IDEA - make sure you configure your SDK!
-  - And get Cursive!
-  - And now your parenthesis are out of your control
+- And get Cursive!
+- And now your parenthesis are out of your control
 * Objectively I think it is fair to call Clojure user hostile
-  - Error messages
-  - Tooling setup
+- Error messages
+- Tooling setup
 * We can see beyond these difficulties
 * But a little empathy goes a long way with beginners
 * They often blocked with something easily resolved by a question
 * As a teacher it is important to be approachable and sympathetic
 * Part of that is acknowledging that things aren't perfect
 --
-
 
 == Tips for learning
 
@@ -295,7 +273,6 @@ image::img/talk/corgi-lights.png[Corgi in lights]
 * 4Clojure
 * Read and follow the style guide
 
-
 == Join the community
 
 * ClojureVerse
@@ -304,15 +281,14 @@ image::img/talk/corgi-lights.png[Corgi in lights]
 * Clojurians
 
 "I am so happy with, and proud of, the Clojure community.
- People are helpful, and respectful, and positive."
+People are helpful, and respectful, and positive."
 -- Rich Hickey
-
 
 [state=title]
 == At work
 
 .How did I get here?
-image::img/corgi.jpg[Corgi with tie and glasses]
+image::corgi.jpg[Corgi with tie and glasses]
 
 [NOTE.speaker]
 --
@@ -322,11 +298,10 @@ image::img/corgi.jpg[Corgi with tie and glasses]
 * And to do that I must first begin with how I came to Clojure
 --
 
-
 == Rewind << 2007
 
 .My first encounter with Lisp
-image::img/talk/corgi-encounter.jpg[Corgi encounters budgie]
+image::talk/corgi-encounter.jpg[Corgi encounters budgie]
 
 [NOTE.speaker]
 --
@@ -345,17 +320,14 @@ image::img/talk/corgi-encounter.jpg[Corgi encounters budgie]
 * Then this happened:
 --
 
-
 == Rich Hickey <rich@ri...> - 2007-10-17
 
 [.small]
 --
 Hello,
 
-As someone interested in Foil or jFli, I thought you might want to
-know about my latest project - Clojure, a dialect of Lisp for the
-JVM. It's currently alpha, but fairly complete. I'm looking for some
-feedback from some intrepid folks willing to kick the tires.
+As someone interested in Foil or jFli, I thought you might want to know about my latest project - Clojure, a dialect of Lisp for the JVM. It's currently alpha, but fairly complete.
+I'm looking for some feedback from some intrepid folks willing to kick the tires.
 http://clojure.sourceforge.net/
 
 Please use the Google group for feedback:
@@ -376,10 +348,9 @@ Rich
 * Clojure was for personal projects
 --
 
-
 == 2010
 
-image::img/talk/corgi-team.jpg[Corgis carrying a branch together]
+image::talk/corgi-team.jpg[Corgis carrying a branch together]
 
 [NOTE.speaker]
 --
@@ -392,12 +363,10 @@ image::img/talk/corgi-team.jpg[Corgis carrying a branch together]
 * I didn't think it was possible on my own
 --
 
-
 == Why didn't I convert my team to Clojure?
 
 .I can't do this on my own
-image::img/talk/corgi-asleep-at-vet.jpg[Corgi asleep at the vet]
-
+image::talk/corgi-asleep-at-vet.jpg[Corgi asleep at the vet]
 
 [NOTE.speaker]
 --
@@ -411,31 +380,28 @@ image::img/talk/corgi-asleep-at-vet.jpg[Corgi asleep at the vet]
 * What can we do about it?
 --
 
-
 == Many people don't know Clojure
 
 .Looking different can feel weird
-image::img/talk/corgi-weird.jpeg[]
+image::talk/corgi-weird.jpeg[]
 
 [NOTE.speaker]
 --
 * It's natural to be suspicious of what we don't know
 * They have real concerns
-  - Is it really better?
-  - Is this for "regular" programmers?
-  - Can we learn it?
-  - Who will support it?
-  - Can we hire people?
-  - Why are you wasting your time on something so obscure?
+- Is it really better?
+- Is this for "regular" programmers?
+- Can we learn it?
+- Who will support it?
+- Can we hire people?
+- Why are you wasting your time on something so obscure?
 * Explaining isn't enough
 --
-
 
 == What are *developers* waiting for?
 
 .Jobs!
-image::img/talk/clojure-jobs.png[Clojure job listings]
-
+image::talk/clojure-jobs.png[Clojure job listings]
 
 [NOTE.speaker]
 --
@@ -446,11 +412,10 @@ image::img/talk/clojure-jobs.png[Clojure job listings]
 * Clojure/conj sponsors and attendees are often recruiting
 --
 
-
 == What are *companies* waiting for?
 
 .Developers!
-image::img/talk/corgi-developer.jpg[Corgi using a laptop]
+image::talk/corgi-developer.jpg[Corgi using a laptop]
 
 [NOTE.speaker]
 --
@@ -461,40 +426,38 @@ image::img/talk/corgi-developer.jpg[Corgi using a laptop]
 * You don't have to hire for Clojure specifically; good programmers will become experts very quickly
 --
 
-
 == What are *learners* waiting for?
 
 .A market!
-image::img/talk/corgi-student.png[Corgi student]
+image::talk/corgi-student.png[Corgi student]
 
 [NOTE.speaker]
 --
 * The first question a beginner asks is which language should I learn?
 * The standard answer right now is JavaScript, Java, Python
 * Clojure is a better tools for thought
-  - Maps/sets/vectors
-  - Concise algorithm expression
-  - Focus on important concepts
-  - Less baggage and distractions
-  - Reach mastery of algorithmic concepts faster
+- Maps/sets/vectors
+- Concise algorithm expression
+- Focus on important concepts
+- Less baggage and distractions
+- Reach mastery of algorithmic concepts faster
 * Supply and demand is not as simple as "most used"
-  - The most popular market is also the most average market
-  - Supply and demand does not favor the most popular
-  - You will benefit from an imbalance in supply to demand found in smaller markets
+- The most popular market is also the most average market
+- Supply and demand does not favor the most popular
+- You will benefit from an imbalance in supply to demand found in smaller markets
 * The future is ... the future
-  - I have used a different programming language in every job I have worked
-  - It's not certain what language you will be writing in the future
-  - It's not valuable to avoid learning more than one language
-  - Good employers value skills, knowledge and culture over specific technology experience
-  - Optimize for computer science mastery, not basics
-  - Choose a language that helps you grow
+- I have used a different programming language in every job I have worked
+- It's not certain what language you will be writing in the future
+- It's not valuable to avoid learning more than one language
+- Good employers value skills, knowledge and culture over specific technology experience
+- Optimize for computer science mastery, not basics
+- Choose a language that helps you grow
 --
-
 
 == What are *employees* waiting for?
 
 .A greenfield!
-image::img/talk/corgi-on-field.jpg[Corgi on a green field]
+image::talk/corgi-on-field.jpg[Corgi on a green field]
 
 [NOTE.speaker]
 --
@@ -503,11 +466,10 @@ image::img/talk/corgi-on-field.jpg[Corgi on a green field]
 * But why not do some boring stuff too?
 --
 
-
 == What are *employers* waiting for?
 
 .A framework!
-image::img/talk/corgi-in-crate.jpg[Corgi in dog crate]
+image::talk/corgi-in-crate.jpg[Corgi in dog crate]
 
 [NOTE.speaker]
 --
@@ -517,11 +479,10 @@ image::img/talk/corgi-in-crate.jpg[Corgi in dog crate]
 * That's all totally possible
 --
 
-
 == 2014
 
 .Enterprise facing Clojure startup
-image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
+image::talk/corgi-herding-ducks.jpg[Corgi herding ducks]
 
 [NOTE.speaker]
 --
@@ -536,11 +497,10 @@ image::img/talk/corgi-herding-ducks.jpg[Corgi herding ducks]
 * Maintainable
 --
 
-
 == 2018
 
 .Customer facing Clojure startup
-image::img/talk/suiteness.png[Suiteness logo]
+image::talk/suiteness.png[Suiteness logo]
 
 [NOTE.speaker]
 --
@@ -549,19 +509,17 @@ image::img/talk/suiteness.png[Suiteness logo]
 * Or you can find all the space and affordability of a vacation rental with the amenities of a hotel.
 * Our biggest users are families and group events.
 * Built on Clojure/ClojureScript
-  - make recruiting easy
-  - productive tech stack
+- make recruiting easy
+- productive tech stack
 --
-
 
 == Suiteness
 
 video::cc9Xg2uaEgA[youtube]
 
-
 == Is Clojure Enterprise?
 
-image::img/talk/popularity.png[Language popularity]
+image::talk/popularity.png[Language popularity]
 
 [NOTE.speaker]
 --
@@ -573,21 +531,19 @@ image::img/talk/popularity.png[Language popularity]
 * It's getting popular
 --
 
-
 == Or not?
 
-image::img/talk/most-used-jvm.jpg[Most used JVM languages]
+image::talk/most-used-jvm.jpg[Most used JVM languages]
 
 [NOTE.speaker]
 --
 * Still a niche
 * Secret weapon, and that's O.K.
 * Value principles over popularity
-  - simplicity
-  - thinking
-  - community
+- simplicity
+- thinking
+- community
 --
-
 
 == Does it matter?
 
@@ -597,11 +553,10 @@ image::img/talk/most-used-jvm.jpg[Most used JVM languages]
 * There is uncertainty
 * There is opportunity
 
-
 == Clojure adoption
 
 .A challenging knot to approach
-image::img/talk/corgi-rope.jpg[Corgi pulling a rope]
+image::talk/corgi-rope.jpg[Corgi pulling a rope]
 
 [NOTE.speaker]
 --
@@ -615,7 +570,6 @@ image::img/talk/corgi-rope.jpg[Corgi pulling a rope]
 * Don't over-think it, see past implied limitations, be decisive
 --
 
-
 == Clojure is a great choice for your company
 
 * Books
@@ -625,18 +579,16 @@ image::img/talk/corgi-rope.jpg[Corgi pulling a rope]
 
 TIP: *Build better stuff faster*
 
-
 == So what are you waiting for?
 
 .Start using Clojure already!
-image::img/talk/corgi-training.jpeg[]
+image::talk/corgi-training.jpeg[]
 
 [NOTE.speaker]
 --
 * Hopefully my training course can give you the confidence to get started
 * I'd love to help you get a strong start
 --
-
 
 [state=title]
 == Thank you
@@ -647,4 +599,4 @@ timothypratley@gmail.com
 
 elango.cheran@gmail.com
 
-image::img/art1.jpg[Art]
+image::art1.jpg[Art]

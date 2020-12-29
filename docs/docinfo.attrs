@@ -1,5 +1,5 @@
 :imagesdir: ../img
-:customcss: ../slides.css
+:customcss: ../enterprise-clojure-training.css
 :docinfo: shared
 :notitle:
 :icons: font

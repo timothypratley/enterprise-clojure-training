@@ -19,7 +19,6 @@ GEM
     asciidoctor-revealjs (1.1.3)
       asciidoctor (~> 1.5.6)
       thread_safe (~> 0.3.5)
-    asciimath (2.0.2)
     concurrent-ruby (1.0.5)
     css_parser (1.6.0)
       addressable
@@ -60,7 +59,6 @@ DEPENDENCIES
   asciidoctor
   asciidoctor-pdf
   asciidoctor-revealjs
-  asciimath
   concurrent-ruby
 
 BUNDLED WITH

@@ -53,7 +53,7 @@ Defaults to a file, but you can use a flag to have it go to console
 
 == Pretty `[io.aviso/pretty]`
 
-image::https://ioavisopretty.readthedocs.io/en/0.1.23/_images/formatted-exception.png[]
+image::formatted-exception.png[Formatted exception]
 
 == What's good about stack traces?
 
