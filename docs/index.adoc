@@ -1,5 +1,6 @@
 = Enterprise Clojure Training
 :docinfo: shared
+:imagesdir: img
 
 "Clojure is serious business!"
 -- Timothy Pratley
@@ -14,4 +15,4 @@ This is a Clojure training course for Developers and Senior Developers working o
 * https://github.com/timothypratley/enterprise-clojure-training[Course Github]
 * link:getting-help.html[Getting help]
 
-image:img/corgi.jpg[Corgi]
+image:corgi.jpg[Corgi]

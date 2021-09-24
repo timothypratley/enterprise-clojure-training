@@ -1,5 +1,5 @@
 (ns little-aot.core
   (:require [little-aot.dont-aot-me]))
 
-(defn -main [& args]
+(defn -main [& _args]
   (println "Hello, World!"))

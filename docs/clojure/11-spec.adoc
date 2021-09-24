@@ -1,12 +1,12 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 == 11. Spec
 
-image:../img/spec.jpg[]
+image:spec.jpg[]
 
 "Much of the essence of building a program is in fact the debugging of the specification."
 -- Fred Brooks

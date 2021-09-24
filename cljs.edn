@@ -1,0 +1,5 @@
+{:main "enterprise-clojure-training.main"
+ :output-dir "site/js/compiled"
+ :output-to "site/js/compiled/main.js"
+ :asset-path "js/compiled"
+ :optimizations :none}

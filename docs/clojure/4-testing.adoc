@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == 4. Testing with clojure.test
 
-image:../img/testing.jpg[]
+image:testing.jpg[]
 
 "The problem is not that testing is the bottleneck. The problem is that you don’t know what’s in the bottle."
 -- Michael Bolton

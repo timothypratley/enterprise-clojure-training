@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == 8. Parallel Programming and Concurrency
 
-image:../img/parallel.jpg[]
+image:parallel.jpg[]
 
 "Our moral traditions developed concurrently with our reason, not as its product."
 -- Friedrich August von Hayek

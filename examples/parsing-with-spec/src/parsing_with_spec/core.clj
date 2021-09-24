@@ -64,7 +64,7 @@
 (defn parse-int [s]
   (try
     (Integer/parseInt s)
-    (catch Exception ex 0)))
+    (catch Exception _ex 0)))
 
 (defn mapize [csv-rows]
   (let [[header & lines] csv-rows

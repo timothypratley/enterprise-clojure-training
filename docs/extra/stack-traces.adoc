@@ -1,0 +1,63 @@
+= Stack traces
+:copyright: Timothy Pratley
+:license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
+include::../docinfo.attrs[]
+
+== Oh no
+
+```
+null pointer
+...
+...
+...
+...
+...
+<TRUNCATED>
+```
+
+== Actually a little more complicated...
+
+Exceptions can have causes which are exceptions...
+There is an exception stack and each of those have call stacks.
+
+== How are stack traces presented?
+
+* Many flavours!
+
+== Java default (and Clojure < 1.10.1)
+
+```
+Outter most exception
+  Innermost frame
+  Outter frame
+Inner exception
+  Innermost frame
+  Outter frame
+Innermost exception
+  Innermost frame
+  *My code*
+  Outter frame
+```
+
+== Clojure default as of 1.10.1
+
+```
+{:cause Innermost frame of innermost exception
+ :via [Outtermost exception
+       Inner exception
+       Innermost exception]
+ :stacktrace}
+```
+
+Defaults to a file, but you can use a flag to have it go to console
+
+== Pretty `[io.aviso/pretty]`
+
+image::formatted-exception.png[Formatted exception]
+
+== What's good about stack traces?
+
+* Where did the code blow up? (in my code...) The innermost stacktrace, usually have to scan up a little to find the right resolution
+* How did we get there?
+The exception stack
+* Helpful hints

@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == 13. Further reading
 
-image:../img/further-reading.jpg[]
+image:further-reading.jpg[]
 
 "You can never get a cup of tea large enough or a book long enough to suit me."
 -- C.S. Lewis
@@ -56,7 +56,7 @@ Clojure for Java Programmers - Rich Hickey
 * Build bottom up
 * Start with data
 * Create functions to operated on that data
-* Eastwood can give hints on better expressions
+* Linters clj-kondo and eastwood give hints
 * Read source code (Clojure, libraries, open source projects)
 
 
@@ -124,8 +124,8 @@ Produces suggestions on how to write idiomatic Clojure
 == Get help
 
 * REPL can answer most questions
-* StackOverflow.com #clojure
 * Create minimal examples
+* StackOverflow.com #clojure
 * Clojure mailing list https://groups.google.com/forum/#!forum/clojure
 * ClojureVerse https://clojureverse.org
 * Clojurians Slack http://clojurians.net

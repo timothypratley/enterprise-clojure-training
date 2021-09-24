@@ -1,0 +1,12 @@
+:imagesdir: ../img
+:customcss: ../enterprise-clojure-training.css
+:docinfo: shared
+:icons: font
+:revealjs_theme: simple
+:revealjs_center: false
+:revealjs_controls: false
+:revealjs_transition: none
+:revealjs_history: true
+:revealjs_minScale: 1.0
+:revealjs_maxScale: 1.0
+:revealjsdir: ../reveal.js

@@ -13,12 +13,13 @@
 :docinfo: shared
 :icons: font
 :!sectnums:
+:imagesdir: img
 
 
 [preface]
 == About
 
-image:img/corgi.jpg[width=300]
+image:corgi.jpg[width=300]
 
 Welcome to Enterprise Clojure Training.
 This course is for developers learning Clojure for the purpose of building enterprise software.
@@ -33,26 +34,13 @@ Clojure is a functional programming language that produces new values instead of
 Clojure has been in the "adopt" category of the Thoughtworks tech radar since 2014 because it enables teams to build better software faster.
 
 This course is divided into 12 bite sized sections:
-  the Clojure ecosystem;
-  Clojure syntax;
-  functions;
-  unit testing;
-  control flow;
-  functional programming;
-  Java interop;
-  concurrency;
-  polymorphism;
-  interacting with a database;
-  specifications;
-  and macros.
+the Clojure ecosystem; Clojure syntax; functions; unit testing; control flow; functional programming; Java interop; concurrency; polymorphism; interacting with a database; specifications; and macros.
 
 Each section has exercises to put the information into practise and re-enforce learnings.
-
 
 === Duration
 
 2days, 10 hr/day + 2 hour webinar after completion of workshop.
-
 
 === Learning Objectives
 
@@ -64,40 +52,35 @@ At the end of this course, you will be able to
 * Interface with a database
 * Use Clojure's parallel programming and concurrency facilities
 
-
 === Prerequisites
 
 General programming knowledge.
 
-
 === Target Audience
 
 Developers and Senior Developers.
-
 
 === Required setup
 
 The following software must be installed on your laptop prior to the course:
 
 * Java (https://java.com)
-* Leiningen	(https://leiningen.org)
+* Leiningen (https://leiningen.org)
 * IntelliJ (https://www.jetbrains.com/idea)
 * Cursive plugin for IntelliJ (https://cursive-ide.com)
-
 
 === Pre-assessment
 
 * What programming languages have you used before?
-* Do you have an interest in Clojure? If so what in particular interests you?
+* Do you have an interest in Clojure?
+If so what in particular interests you?
 * What do you plan to do with Clojure?
 * Name a scenario where you would use a HashMap data structure.
 * When should you use a Vector instead of a List or an Array?
 
-
 === Required preparation
 
 Complete the first 10 exercises on the 4Clojure website (http://www.4clojure.com).
-
 
 === Optional reading
 
@@ -105,13 +88,11 @@ If you would like to get a head-start, please read the official Clojure introduc
 This material will be covered as part of the course.
 Having read it before hand will allow you to focus on working through the exercises of the course.
 
-
 === Introductions
-
 
 ==== The instructor
 
-image:img/art1.jpg[width=300]
+image:art1.jpg[width=300]
 
 Timothy Pratley is the author of the book “Professional Clojure”, and a contributor to the Clojure core language.
 He has 18 years of professional software development experience in banking, robotics, logistics, and advertising.
@@ -122,10 +103,9 @@ Please ask questions!
 I am here to help.
 Asking questions is the most valuable part of the course.
 
-
 ==== Clojure
 
-image:img/clojure-logo.png[width=300]
+image:clojure-logo.png[width=300]
 
 During this course we will be examining the Clojure language up close.
 Sometimes a new language can feel different just for difference sake.
@@ -136,7 +116,9 @@ Smart people want to use it.
 Clojure enables teams to build things fast.
 This makes it excellent for delivering value in enterprise development projects.
 
-"What language is it that meets all the criteria? What language would I choose if I had to choose today? Probably Clojure!"
+"What language is it that meets all the criteria?
+What language would I choose if I had to choose today?
+Probably Clojure!"
 -- Robert Martin
 
 Throughout the course there will be time to reflect on what purpose the differences serve and what trade offs are being made.
@@ -149,12 +131,10 @@ These are the Clojure language themes to watch out for as we move through the co
 * Sequences
 * Transformations
 
-
 ===== Functions
 
 * Act on general purpose data structures
 * Pure
-
 
 ===== A tool for thought
 
@@ -162,12 +142,16 @@ These are the Clojure language themes to watch out for as we move through the co
 * Unadorned
 * Abstract
 
-
 ===== Getting stuff done
 
 * Access to libraries
 * Performance
+* What can you do with Clojure/ClojureScript?
+* Dynamic development: Modifying the program while it is running
 
+===== Big ideas
+
+Value oriented programming vs Place oriented programming Immutability by default First class functions Dynamic development: Modifying the program while it is running Everything is data Code is data Data literals Time
 
 ==== Syntax Summary
 
@@ -178,12 +162,12 @@ These are the Clojure language themes to watch out for as we move through the co
 l|int i = 5;
 l|(def i 5)
 l|if (x == 0)
-  return y;
+return y;
 else
-  return z;
+return z;
 l|(if (zero? x)
-  y
-  z)
+y
+z)
 l|x * y * z;
 l|(* x y z)
 l|foo(x, y, z);
@@ -196,20 +180,25 @@ Things that would be declarations, control structures, function calls, operators
 
 
 :sectnums:
+
 == The Clojure Ecosystem
 
-image:img/ecosystem.jpg[width=300]
+image:ecosystem.jpg[width=300]
 
 "Integrity is an ecosystem."
 -- Michael Leunig
 
-There are many Clojure libraries. Hosted on Maven and Clojars. Just jars, like any other Java artifact.
+There are many Clojure libraries.
+Hosted on Maven and Clojars.
+Just jars, like any other Java artifact.
 
 Clojure is itself a Java library.
 Clojure can make direct use of Java libraries.
 ClojureScript can make direct use of JavaScript libraries.
 
-The Clojure compiler is a Java library, a clojure.jar file. The only required installation is that Java must be installed. Clojure is very simple to deploy due to the lack of dependencies.
+The Clojure compiler is a Java library, a clojure.jar file.
+The only required installation is that Java must be installed.
+Clojure is very simple to deploy due to the lack of dependencies.
 
 You can use Java tooling to manage your project, but Clojure has some tools to make the process easier.
 
@@ -218,7 +207,8 @@ Please follow along on your laptop and ask questions at any time.
 
 === Leiningen
 
-A popular project built tool that provides a convenient way to pull libraries for your project. Follow the installation instructions at (https://leiningen.org).
+A popular project built tool that provides a convenient way to pull libraries for your project.
+Follow the installation instructions at (https://leiningen.org).
 
     lein new training
     cd training
@@ -229,7 +219,6 @@ A popular project built tool that provides a convenient way to pull libraries fo
 As you can see, Leiningen created a project with one dependency; Clojure itself.
 
 	lein repl
-
 
 === The Read Eval Print Loop (REPL)
 
@@ -243,8 +232,8 @@ Clojure evaluates it immediately and returns a result:
 
 Pressing the up arrow moves through your history.
 
-The REPL is convenient for experimenting and doing informal tests. But the default REPL is not ideal for editing code.
-
+The REPL is convenient for experimenting and doing informal tests.
+But the default REPL is not ideal for editing code.
 
 === Editor setup
 
@@ -278,7 +267,6 @@ You can also open a REPL in your browser: (https://repl.it/languages/clojure).
 
 For other editor options see (https://cb.codes/what-editor-ide-to-use-for-clojure).
 
-
 === Exercises
 
 Evaluate some math expressions in the REPL:
@@ -294,7 +282,6 @@ Open `src/training/core.clj` with your editor, write some expressions, and send 
 * Find the sum of 1, 2, and 3
 * Evaluate the form: `(println "hello world")`
 * Calculate 5 factorial
-
 
 === Answers
 
@@ -320,10 +307,9 @@ Open `src/training/core.clj` with your editor, write some expressions, and send 
     (* 5 4 3 2 1)
     => 120
 
-
 == Clojure Syntax
 
-image:img/syntax.png[width=300]
+image:syntax.png[width=300]
 
 "If the syntax is good enough for the information, it should be good enough for the meta-information."
 -- Erik Naggum
@@ -369,7 +355,6 @@ Booleans are represented as `true` and `false`.
 
 `nil` means nothing and is considered false in logical tests.
 
-
 === Collections: lists, vectors, maps, and sets
 
 Lists are forms enclosed in parentheses.
@@ -399,12 +384,10 @@ Clojure has a sequence abstraction.
 Sequences can be lazy.
 Their values are only created as they are consumed.
 
-
 Lists and sequences are printed the same way.
 
     (seq '(1 2 3))
     => (1 2 3)
-
 
 Symbols are resolved.
 
@@ -477,7 +460,6 @@ Collections can be combined and nested
 
 This is a map that has vector coordinates as keys and maps as values.
 
-
 === Invoking functions
 
 To call a function, wrap it in parenthesis:
@@ -485,12 +467,13 @@ To call a function, wrap it in parenthesis:
     (inc 1)
     => 2
 
-The first element in a list is a function to be called. The remaining elements are the arguments to the function.
-
+The first element in a list is a function to be called.
+The remaining elements are the arguments to the function.
 
 === Defining vars
 
-A var is used to store a mutable reference to a value. Vars are unbound if no value is supplied.
+A var is used to store a mutable reference to a value.
+Vars are unbound if no value is supplied.
 
     (def x)
     x
@@ -502,7 +485,8 @@ It is more common to supply an initial value.
     x
     => 1
 
-Def created a var named `x` which is bound to the value `1`. Vars are automatically dereferenced when evaluated.
+Def created a var named `x` which is bound to the value `1`.
+Vars are automatically dereferenced when evaluated.
 
 To represent values that changes over time, you can use an atom.
 
@@ -511,15 +495,18 @@ To represent values that changes over time, you can use an atom.
     @a
     => 2
 
-We defined `a` to be an atom with initial value `1`, then swapped the atom's value with the `inc` function. We retrieved the value of the atom by dereference it with `@`. The current value of `a` is now `2`, the increment of `1`. `@` is shorthand for `deref`.
+We defined `a` to be an atom with initial value `1`, then swapped the atom's value with the `inc` function.
+We retrieved the value of the atom by dereference it with `@`.
+The current value of `a` is now `2`, the increment of `1`. `@` is shorthand for `deref`.
 
     (deref a)
     => 2
 
-Atoms provide compare and set, which is suitable for non-transactional changes. Refs provide transactional change, which is suitable for multi-threaded change management. Agents provide update serialization as an alternative strategy for multi-threaded change.
+Atoms provide compare and set, which is suitable for non-transactional changes.
+Refs provide transactional change, which is suitable for multi-threaded change management.
+Agents provide update serialization as an alternative strategy for multi-threaded change.
 
 Deref also blocks and gets the result of futures, promises and delays, which are operations that do not block until dereferenced.
-
 
 === Binding names with let
 
@@ -538,8 +525,10 @@ Symbols can be bound to a value in a scope with let.
 
 The symbol `x` is bound to the value `1`, and the function `inc` is called on `x`, resulting in `2`.
 
-The binding scope is within the parentheses enclosing the let form, and will shadow any existing bindings. It is preferable to use let instead of def for values that can be contained in a scope. Vars can be changed, but you should almost never modify them directly. Instead Clojure provides local bindings, atoms, refs and agents for managing change.
-
+The binding scope is within the parentheses enclosing the let form, and will shadow any existing bindings.
+It is preferable to use let instead of def for values that can be contained in a scope.
+Vars can be changed, but you should almost never modify them directly.
+Instead Clojure provides local bindings, atoms, refs and agents for managing change.
 
 === Destructuring (also known as binding forms)
 
@@ -547,7 +536,8 @@ The binding scope is within the parentheses enclosing the let form, and will sha
       (+ x y))
     => 3
 
-Destructuring is providing a literal data structure containing symbols that get bound to the respective parts of a value with a matching structure. Where we might otherwise bind the vector `[1 2]` to a single symbol, here we destructure two symbols `x` and `y` by providing a pattern that matches the vector.
+Destructuring is providing a literal data structure containing symbols that get bound to the respective parts of a value with a matching structure.
+Where we might otherwise bind the vector `[1 2]` to a single symbol, here we destructure two symbols `x` and `y` by providing a pattern that matches the vector.
 
     (defn normalize
       "Divide all dimensions by the sum of squares"
@@ -555,7 +545,8 @@ Destructuring is providing a literal data structure containing symbols that get 
       (let [length (Math/sqrt (+ (* x x) (* y y)))]
         [(/ x length) (/ y length)]))
 
-Note that function arguments are already a destructured vector. The above case is an example of a vector of arguments which contains a vector of `x` and `y`.
+Note that function arguments are already a destructured vector.
+The above case is an example of a vector of arguments which contains a vector of `x` and `y`.
 
 Without destructuring we would extract substructure manually:
 
@@ -591,7 +582,9 @@ There is no need to restrict normalize to use 2 dimensions, instead we can write
     (normalize [3 4]) -> (0.6 0.8)
     (normalize [3 4 5]) -> (0.424 0.566 0.707)
 
-Variadic functions are destructured using `&`. Variadic means variable number of arguments. Arity means number of arguments.
+Variadic functions are destructured using `&`.
+Variadic means variable number of arguments.
+Arity means number of arguments.
 
     (defn sub [& vs]
       vs)
@@ -630,7 +623,6 @@ Nested destructuring
 
     {{b :b} :a}
 
-
 === Namespaces
 
 Namespace forms occur at the start of files.
@@ -641,13 +633,17 @@ Namespace forms occur at the start of files.
 
     (string/upper-case "shout")
 
-The namespace must match the path and filename. The namespace training.core
-Must be defined in the `src/training/core.clj` file. Filename hyphens are replaced with underscores, and dot separators indicate directories.
+The namespace must match the path and filename.
+The namespace training.core Must be defined in the `src/training/core.clj` file.
+Filename hyphens are replaced with underscores, and dot separators indicate directories.
 
-The `ns` form allows us to require other namespaces and import java Classes. There are other valid `ns` forms which are best to be avoided and so are not shown here. If you do see them in other code, just know that you can and should achieve the same thing with the regular ns form described previously.
+The `ns` form allows us to require other namespaces and import java Classes.
+There are other valid `ns` forms which are best to be avoided and so are not shown here.
+If you do see them in other code, just know that you can and should achieve the same thing with the regular ns form described previously.
 
-Clojure programs are written in expressions which are evaluated to results.  If an expression needs to be compiled, it will be. Programs can be loaded from files or evaluated dynamically.
-
+Clojure programs are written in expressions which are evaluated to results.
+If an expression needs to be compiled, it will be.
+Programs can be loaded from files or evaluated dynamically.
 
 === Regex
 
@@ -655,7 +651,6 @@ Regular expressions are written as `#"pattern"`
 
     (re-seq #"\w+" "the quick brown fox")
     => ("the" "quick" "brown" "fox")
-
 
 === Exercises
 
@@ -667,13 +662,12 @@ Write code into a new file called `src/training/syntax.clj`, and send the lines 
 * Create a `let` binding that binds the symbol `message` to `"well hello there"`, and prints out `message` inside the `let` block.
 * Print out message again, outside of the `let` block.
 * Create a let binding that destructures the map
-  `{:greeting "good morning", :tone "happy"}`
-  and prints the greeting and tone inside the let block.
+`{:greeting "good morning", :tone "happy"}`
+and prints the greeting and tone inside the let block.
 * Destructure a single map input containing
-  `{:greeting "good morning", :tone "happy"}`
-  and return a string combining greeting and tone.
-  Use the `str` function.
-
+`{:greeting "good morning", :tone "happy"}`
+and return a string combining greeting and tone.
+Use the `str` function.
 
 === Answers
 
@@ -687,7 +681,8 @@ Write code into a new file called `src/training/syntax.clj`, and send the lines 
     => "greetings"
        nil
 
-Note the prn and println behave slightly differently; prn keeps the quotes around strings. This is often useful when experimenting, because you can visually see the type of the values more clearly.
+Note the prn and println behave slightly differently; prn keeps the quotes around strings.
+This is often useful when experimenting, because you can visually see the type of the values more clearly.
 
     (let [message "well hello there"]
       (prn message))
@@ -711,10 +706,9 @@ Note that the message global var is still the original value.
     (hi m)
     => "good morning - happy"
 
-
 == Functions
 
-image:img/functions.jpg[width=300]
+image:functions.jpg[width=300]
 
 "The chief function of the body is to carry the brain around."
 -- Thomas A. Edison
@@ -727,7 +721,8 @@ Functions are defined like this:
     (defn square [x]
       (* x x))
 
-All functions return a result, the result of the last expression in the form. Defn binds the symbol square to a var which refers to a function which returns the result of multiplying the input parameter x by itself.
+All functions return a result, the result of the last expression in the form.
+Defn binds the symbol square to a var which refers to a function which returns the result of multiplying the input parameter x by itself.
 
     (square 2)
     => 4
@@ -764,7 +759,8 @@ Closures are functions that capture values from the environment.
     (greet)
     => "Hello world"
 
-Functions are values and can be passed as arguments to other functions. Functions that take a function as an argument are called higher order functions.
+Functions are values and can be passed as arguments to other functions.
+Functions that take a function as an argument are called higher order functions.
 
     (defn higher-order-function [f]
       (f))
@@ -783,12 +779,14 @@ Unnamed closures are useful as arguments to higher order functions.
       (map #(+ x %) [1 2 3]))
     => (6 7 8)
 
-Here we have the symbol x bound to 5. We call the map function. Our first argument is an unnamed function that captures x from the environment; a closure. The closure is called on every element of the vector 1 2 3, resulting in a sequence 6 7 8. Higher order functions, closures, and unnamed functions are terms that describe specific uses of functions that allow concise expressions.
-
+Here we have the symbol x bound to 5. We call the map function.
+Our first argument is an unnamed function that captures x from the environment; a closure.
+The closure is called on every element of the vector 1 2 3, resulting in a sequence 6 7 8. Higher order functions, closures, and unnamed functions are terms that describe specific uses of functions that allow concise expressions.
 
 === Pre- and post-conditions
 
-You can make assertions about inputs and outputs of a function. Place a map after the arguments vector containing :pre and :post, which are a sequence of conditions which must hold true.
+You can make assertions about inputs and outputs of a function.
+Place a map after the arguments vector containing :pre and :post, which are a sequence of conditions which must hold true.
 
     (defn f [x]
       {:pre [(pos? x)]
@@ -804,7 +802,8 @@ You can make assertions about inputs and outputs of a function. Place a map afte
     (f 1.5)
     => AssertionError Assert failed: (int? %)
 
-In practise pre and post are rarely used. It is more common to check for a condition and throw an exception:
+In practise pre and post are rarely used.
+It is more common to check for a condition and throw an exception:
 
     (defn f [x]
       (when-not (pos? x)
@@ -817,19 +816,19 @@ In practise pre and post are rarely used. It is more common to check for a condi
 Or to use a schema or spec (which will be covered later in the course).
 
 While pre and post are more concise, they suffer the following drawbacks:
-Syntax is easy to get wrong, resulting in no assertion being made
-Assertions can be disabled
-Less control over error description and handling
-
+Syntax is easy to get wrong, resulting in no assertion being made Assertions can be disabled Less control over error description and handling
 
 === Anonymous functions
 
-We usually define functions with defn, which creates a global var to hold our function. But sometimes the function need not be globally available. We can specify functions without names like so:
+We usually define functions with defn, which creates a global var to hold our function.
+But sometimes the function need not be globally available.
+We can specify functions without names like so:
 
     (fn [x]
       (inc x))
 
-But we would only do this if we wanted to make use of them in some way. The simplest way to use a function is to call it immediately:
+But we would only do this if we wanted to make use of them in some way.
+The simplest way to use a function is to call it immediately:
 
     ((fn [x]
        (inc x)
@@ -880,7 +879,6 @@ is shorthand for
       (fn [x]
         (inc x)))
 
-
 === Function literals
 
 There is a special syntax for creating anonymous functions concisely:
@@ -894,7 +892,8 @@ This allows the construction of very terse but powerful expressions:
     (map #(* % %) [1 2 3 4])
     => (1 4 9 16)
 
-I encourage you to use the (fn) form as much as possible instead of the #() form, it is not much more typing and affords more opportunity to name parameters and functions in meaningful ways which will describe your program better. For example:
+I encourage you to use the (fn) form as much as possible instead of the #() form, it is not much more typing and affords more opportunity to name parameters and functions in meaningful ways which will describe your program better.
+For example:
 
     (map (fn square [x]
            (* x x))
@@ -902,7 +901,6 @@ I encourage you to use the (fn) form as much as possible instead of the #() form
     => (1 4 9 16)
 
 Is longer, but provides a semantic summary of the operation and a hint at the expected input values.
-
 
 === Keyword and variadic arguments
 
@@ -932,17 +930,18 @@ Prefer instead
       ([x] (inc x))
       ([x y] (+ x y)))
 
-Clojure supports keyword arguments, but this style is discouraged because it prevents users from passing a map of options. We cannot apply a map to a keyword argument function, so use a map argument instead of keyword arguments.
-
+Clojure supports keyword arguments, but this style is discouraged because it prevents users from passing a map of options.
+We cannot apply a map to a keyword argument function, so use a map argument instead of keyword arguments.
 
 === Exercises
 
-Create a new namespace called `fun-functions`. Define the following functions and call them with some test input:
+Create a new namespace called `fun-functions`.
+Define the following functions and call them with some test input:
 
-* A function that computes the square of an input number. What is the square of 55?
+* A function that computes the square of an input number.
+What is the square of 55?
 * A function that takes a number as input, ensures that the number is less than 100, and returns the square of the square of the input.
 * A function that takes two numbers as input, and returns a vector where the first element is the second input, and the second element is the sum of the first and second input.
-
 
 === Answers
 
@@ -969,8 +968,8 @@ Create a new namespace called `fun-functions`. Define the following functions an
     (fib-step 2 3)
     => [3 5]
 
-
 :!sectnums:
+
 == Challenge 1: Corgi Cover eligibility
 
 Insuricorp is about to launch a marketing campaign for a new “corgi cover” insurance policy.
@@ -983,9 +982,8 @@ You are tasked with building a system to validate applications for the policy.
 
 Write a function that takes as input a state and corgi-count, and returns a boolean indicating the person's eligibility for the “corgi cover” policy.
 
-
 .Test data
-[style="literal", options="header"]
+[style="literal",options="header"]
 |===
 |Name |State |Corgi count | Existing policy count
 |Chloe |IL |1 |0
@@ -996,16 +994,15 @@ Write a function that takes as input a state and corgi-count, and returns a bool
 
 See `if` `=`.
 
-
 === Part 2: silver, gold and platinum
 
 A focus group of corgi owners has revealed that “corgi cover” needs to be offered at 3 different tiers: “corgi cover silver”, “corgi cover gold”, and “corgi cover platinum”.
 Platinum is available when covering 7 or more corgis OR covering at least 3 corgis and also having one other policy with Insuricorp.
-Gold is available when covering at least 3 corgis. Silver is the original “corgi cover” policy.
+Gold is available when covering at least 3 corgis.
+Silver is the original “corgi cover” policy.
 Create a new function that takes an additional argument policy-count and returns a keyword indicating their eligibility.
 
 See `cond`.
-
 
 === Part 3: accept a map as an argument
 
@@ -1016,7 +1013,6 @@ Create some test data and feed it to your function.
 The data should look something like:
 
     {:name "Chloe", :state "IL", :corgi-count 1, :policy-count 0}
-
 
 === Part 4: cross-reference policies
 
@@ -1033,11 +1029,13 @@ It should apply the same logic, but make use of the Megacorp data.
 
 
 :sectnums:
+
 == Testing with clojure.test
 
-image:img/testing.jpg[width=300]
+image:testing.jpg[width=300]
 
-"The problem is not that testing is the bottleneck. The problem is that you don’t know what’s in the bottle."
+"The problem is not that testing is the bottleneck.
+The problem is that you don’t know what’s in the bottle."
 -- Michael Bolton
 
 
@@ -1075,13 +1073,13 @@ To run all tests in a project from the command line:
     0 failures, 0 errors.
     {:test 0, :pass 0, :fail 0, :error 0, :type :summary}
 
-
 === lein-test-refresh
 
 Lein-test-refresh is a Leiningen plugin that reloads code and re-runs tests when you save a file.
 https://github.com/jakemcc/lein-test-refresh.
 
-Add lein-test-refresh to your `~/.lein/profiles.clj`. It should look similar to below.
+Add lein-test-refresh to your `~/.lein/profiles.clj`.
+It should look similar to below.
 
     {:user {:plugins [[com.jakemccrary/lein-test-refresh "0.22.0"]]}}
 
@@ -1103,7 +1101,6 @@ If you change `my-test` now to print a new message, the tests are re-run as soon
 	  (prn "My test ran immediately"))
 
 Seeing as saving the file executes code, you can use lein-test-refresh like a REPL.
-
 
 === Assert with is
 
@@ -1172,7 +1169,6 @@ Occasionally we need to assert that an exception is thrown:
       (is (thrown-with-msg? Exception #"oh no"
             (bad 42))))
 
-
 === Test fixtures
 
 Test fixtures are for setting up and tearing down resources required by your tests.
@@ -1200,7 +1196,6 @@ Otherwise the test report can be cluttered.
 Another common use case is when doing database tests, we can wrap the test execution inside a transaction and rollback after the test completes.
 This avoids cleaning up data after the tests run, as no data was created.
 
-
 === Using with-redefs for mocking behavior
 
 Often when we are writing tests we want to isolate particular behaviors.
@@ -1220,7 +1215,6 @@ At first glance this is very similar to let, but notice that a let would not wor
 We changed the behavior of the str function whose definition is outside the scope of the test.
 We replaced it with an anonymous function that always returns “Goodbye world” regardless of its inputs.
 Note that we could have used (constantly "Goodbye world") instead, which produces an anonymous function just like the one we defined.
-
 
 === Debugging
 
@@ -1248,7 +1242,6 @@ This is also very useful when interacting with Java, because you can construct a
       (.put "a" 1)
       (.put "b" 2))
     => {"a" 1, "b" 2}
-
 
 === Workflow
 
@@ -1323,8 +1316,7 @@ There is an action to assist with this called `goto test`.
 
 When working from a REPL it is convenient to create a commented form.
 The commented form can be sent to the REPL for evaluation.
-But if we forget to re-evaluate the function that the comment calls in the REPL,
-then any changes will not be active in the environment yet.
+But if we forget to re-evaluate the function that the comment calls in the REPL, then any changes will not be active in the environment yet.
 I find it a little distracting to think about what needs to be evaluated.
 Delegating this responsibility to test refresh frees up my attention to focus on the code.
 
@@ -1334,18 +1326,18 @@ Delegating this responsibility to test refresh frees up my attention to focus on
 
 ** paredit etc
 
-
 === Exercises
 
 * Start lein-test-refresh running in your existing project directory.
 * Create a new namespace in the “test” directory called `training.core-test`
 * Write a function called `pythag` that returns the square root of the sum of squares for two inputs.
-* Write a test containing an assertion that exercises your function. Expect `5` when passing `4` and `3` as arguments.
+* Write a test containing an assertion that exercises your function.
+Expect `5` when passing `4` and `3` as arguments.
 * Write another test case with different inputs.
 * Introduce a bug into pythag to make sure your tests discover the problem.
 * Fix `pythag` so that all tests pass.
-* Copy the test `test-post` from the "with-redefs" section and modify it so that it counts how many times `str` gets called. Call `post` several times and make an assertion about how many times `str` should get called.
-
+* Copy the test `test-post` from the "with-redefs" section and modify it so that it counts how many times `str` gets called.
+Call `post` several times and make an assertion about how many times `str` should get called.
 
 === Answers
 
@@ -1369,10 +1361,9 @@ Delegating this responsibility to test refresh frees up my attention to focus on
           (post "http://service.com/greet")
           (is (= 3 @c)))))
 
-
 == Control Flow
 
-image:img/control.jpg[width=300]
+image:control.jpg[width=300]
 
 "Control your own destiny or someone else will."
 -- Jack Welch
@@ -1415,10 +1406,10 @@ Cond allows for multiple branches.
 
 Note that `:else` is not a special keyword, it just happens to be a truthy value.
 
-
 === Recursion
 
-Functions that call themselves are called recursive. Here is an example of recursion:
+Functions that call themselves are called recursive.
+Here is an example of recursion:
 
     (defn sum-up [coll result]
       (if (empty? coll)
@@ -1434,7 +1425,6 @@ In Clojure there is a special way to do recursion which avoids consuming the sta
 
 Recur can only occur at the last position of a function (where scope can be discarded).
 
-
 === Loops
 
 Loop establishes bindings, and allows you to recur back to the start of the loop with new values.
@@ -1446,7 +1436,6 @@ Loop establishes bindings, and allows you to recur back to the start of the loop
         a))
     => fib number below 1000
 
-
 === Exception handling
 
 You can work with exceptions using try catch finally and throw.
@@ -1455,7 +1444,6 @@ You can work with exceptions using try catch finally and throw.
       (inc "cat")
       (catch Exception e
         (println "cat cannot be incremented")))
-
 
 === Comments
 
@@ -1483,14 +1471,13 @@ Commas are optional and treated as whitespace.
 
     (= {:a 1, :b 2, :c 3} {:a 1 :b 2 :c 3})
 
-
 === Exercises
 
 * Create a function that given a test score between 0 and 100 returns a grade A B C D or F for fail.
-* Write a function that takes a number and uses a loop to calculate the factorial of that number. Factorial 5 is 1*2*3*4*5.
+* Write a function that takes a number and uses a loop to calculate the factorial of that number.
+Factorial 5 is 1*2*3*4*5.
 * Write a new version of factorial that does not use a loop but recursively calls itself.
 * Write a loop for the Fibonacci sequence (1 1 2 3 5 8 13) that finds the maximum Fibonacci number less than 100. The sequence is defined by n2 = n1 + n0.
-
 
 === Answers
 
@@ -1519,7 +1506,6 @@ Commas are optional and treated as whitespace.
     (deftest factorial2-test
       (is (= 120 (factorial2 5))))
 
-
     (defn fib [limit]
       (loop [a 1
              b 1]
@@ -1529,10 +1515,9 @@ Commas are optional and treated as whitespace.
     (deftest fib-test
       (is (= 89 (fib 100))))
 
-
 == Functional Programming
 
-image:img/functional.jpg[width=300]
+image:functional.jpg[width=300]
 
 "If you don't love something, it's not functional, in my opinion."
 -- Yves Behar
@@ -1582,7 +1567,6 @@ We will see some good examples of this philosophy in action later in the course 
 We can use pure function to calculate the next value to be assigned to an atom given the current value.
 The logic is separate from the side effect.
 
-
 === Apply and partial
 
 If you have 4 numbers and want the max, you can call
@@ -1622,7 +1606,6 @@ In the previous example, we could have instead written:
 
     (map #(/ 1 %) (range 1 5))
     => (1 1/2 1/3 1/4)
-
 
 === Functions on sequences: map, reduce, and friends
 
@@ -1728,11 +1711,11 @@ Anonymous functions are handy for adding small snippets of logic:
 	(filter #(< % 3) [1 2 3 4 5]))
 	=> (0 1 2)
 
-This keeps only numbers less than `3`. Now let's create a sequence of odd/even labels for each number in the vector:
+This keeps only numbers less than `3`.
+Now let's create a sequence of odd/even labels for each number in the vector:
 
 	(map #(if (odd? %) "odd" "even") [1 2 3 4 5])
 	=> ("odd" "even" "odd" "even" "odd")
-
 
 Sequence abstractions are more concise and descriptive than loops, especially when filtering multiple conditions, or performing multiple operations.
 
@@ -1755,8 +1738,9 @@ Using an imperative style loop we can peek into the vector at the previous value
 	    print v[i] + v[i-1];
 	=> 3 5 7 9
 
-
-Can we represent this as a sequence? Yes! Imagine two identical sequences offset slightly:
+Can we represent this as a sequence?
+Yes!
+Imagine two identical sequences offset slightly:
 
 	  [1 2 3 4 5]
 	[1 2 3 4 5]
@@ -1768,7 +1752,6 @@ The overlapping values are the pairs we want.
     (map + [1 3]
            [2 4])
     => (3 7)
-
 
 Here `1` adds to `2` to make `3`, and `3` adds to `4` to make `7`.
 
@@ -1788,10 +1771,10 @@ We called map on the addition function over both input sequences:
 	v        => (1 2 3 4 5)
 	(rest v) => (2 3 4 5)
 
-The input sequences were of different lengths, so map stopped when the smallest sequence was exhausted. The result was a new sequence of the pairwise sums:
+The input sequences were of different lengths, so map stopped when the smallest sequence was exhausted.
+The result was a new sequence of the pairwise sums:
 
 	(3 5 7 9)
-
 
 Why are sequence abstractions better than loops?
 When reading a loop you must comprehend the entire block of code to know what it does.
@@ -1811,7 +1794,8 @@ The change is invasive to the imperative loop:
 
 The change occurs inside the loop with the addition and multiplication intertwined.
 
-Contrast this with modifying the Clojure sequence. We compose a reduce with the original map expression:
+Contrast this with modifying the Clojure sequence.
+We compose a reduce with the original map expression:
 
 	(reduce * (map + v (rest v)))
 	=> 945
@@ -1828,9 +1812,8 @@ Look out for opportunities to name your steps by identifying long expressions an
 
 Clojure exposes a sequence interface over data collections to a rich set of functions that compose well.
 Three important functional sequence concepts are:
- `filter`, which retains each item in a sequence where some function evaluates to be truthy;
- `map`, which selects new values by calling a function over input sequence(s) to create a new sequence;
- and `reduce`, which aggregates a sequence and returns a single value.
+`filter`, which retains each item in a sequence where some function evaluates to be truthy;
+`map`, which selects new values by calling a function over input sequence(s) to create a new sequence; and `reduce`, which aggregates a sequence and returns a single value.
 
 I invite you to take the “no loops” challenge.
 The next time you spot a loop stop and think about what sequence operation the loop represents.
@@ -1838,7 +1821,6 @@ Think about how to rewrite the loop as sequence operations instead.
 It will take time and mental effort, but you will be rewarded with a deeper understanding of the problem being solved.
 Whenever you see a loop, think about how it could be expressed as a sequence.
 Sequences are loop abstractions that allow you to ignore the implementation details.
-
 
 === Threading operators
 
@@ -1880,7 +1862,6 @@ Note that for empty expressions, the parenthesis are optional.
 
     (-> 42 (/ 2) inc)
     => 22
-
 
 === Data structures are functions!
 
@@ -1927,16 +1908,14 @@ And so do vectors:
     ([1 2 3] 0)
     => 1
 
-
 === Exercises
 
 * Write a function that takes two inputs, and returns the sum of the numbers in a range between two input integers, including the two input numbers.
 * Write a function that produces a sequence of powers of 2: (1 2 4 8 16 …)
 * Write a function that takes a string and produces a sequence of characters with no vowels.
 * Write a function that produces a sequence: (1 ½ ⅓ ¼ …)
-* Write a function that produces a sequence: (1  ½ ¼ ⅛ …)
+* Write a function that produces a sequence: (1 ½ ¼ ⅛ …)
 * Write a function that produces the Fibonacci sequence (1 1 2 3 5 8 13 21)
-
 
 === Answers
 
@@ -1972,8 +1951,8 @@ And so do vectors:
     (take 10 (fib-seq))
     => (1 1 2 3 5 8 13 21 34 55)
 
-
 :!sectnums:
+
 == Challenge 2: Processing files
 
 Insuricorp branches collect applications for the “corgi cover” policy and periodically send them to headquarters in a large comma separated text file.
@@ -1986,14 +1965,12 @@ Create a function that opens a file called corgi-cover-applications.csv and conv
 Next use that data structure as an input to your validation function and print the result.
 See `slurp` `line-seq` `clojure.string/split`.
 
-
 === Part 2: create files
 
 The downstream Insuricorp systems will only be operating on corgi cover applications that pass your eligibility check.
 But the invalid corgi cover applications need to be sent back to the branches so that they can follow up with the customers on why they are not eligible.
 Create a new function that opens two output files and writes to them based upon your eligibility check.
 The files should be called `eligible-corgi-cover-applications.csv` and `ineligible-corgi-cover-applications.csv`.
-
 
 === Part 3: validating with reasons
 
@@ -2002,7 +1979,6 @@ That way the sales reps don't have to spend time figuring out what they need to 
 Create a new validation function that instead of returning a boolean, returns nil if no problems are found, or returns a string with the reason if a problem is found.
 Create a new processing function that splits the applications into two files based on the new validator.
 
-
 === Part 4: working with file formats
 
 As part of the Megacorp merger, the downstream systems are converting to JSON format.
@@ -2010,9 +1986,10 @@ Create a new function that writes JSON data to an `eligible-corgi-cover-applicat
 
 
 :sectnums:
+
 == Java Interop
 
-image:img/interop.jpg[width=300]
+image:interop.jpg[width=300]
 
 "Sitting in my favorite coffeehouse with a new notebook and a hot cup of java is my idea of Heaven."
 -- Libba Bray
@@ -2032,7 +2009,6 @@ Which is equivalent to the less used variant:
 
     (new Date)
     (new Date 2018 02 17)
-
 
 === Calling methods
 
@@ -2055,7 +2031,6 @@ Inner classes can be accessed using the dollar symbol:
 
     java.nio.channels.FileChannel$MapMode/READ_ONLY
 
-
 === reify
 
 `reify` creates an object that conforms to an interface:
@@ -2066,9 +2041,9 @@ Inner classes can be accessed using the dollar symbol:
         (accept [this f]
           (.isDirectory f))))
 
-Notice that we didn't define a class? We directly created an object that conforms to the `FileFilter` interface.
+Notice that we didn't define a class?
+We directly created an object that conforms to the `FileFilter` interface.
 `reify` is a convenient way to provide a concrete implementation of an interface.
-
 
 === gen-class and proxy
 
@@ -2080,20 +2055,17 @@ In practice the need to create a class from within Clojure is rare, so we won't 
 Again the need for this is rare.
 (see https://kotka.de/blog/2010/03/proxy_gen-class_little_brother.html if you want to explore this further)
 
-
 === Including Java classes in Clojure projects
 
 You can define Java classes in Java in a separate directory and add
 
     :java-source-paths ["src/java"]
 
-To your `project.clj` file
-(See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
-
+To your `project.clj` file (See https://github.com/technomancy/leiningen/blob/master/doc/MIXED_PROJECTS.md for more other options.)
 
 == Parallel Programming and Concurrency
 
-image:img/parallel.jpg[width=300]
+image:parallel.jpg[width=300]
 
 "Our moral traditions developed concurrently with our reason, not as its product."
 -- Friedrich August von Hayek
@@ -2154,7 +2126,6 @@ Functions defined with defn are stored in Vars, allowing for the re-definition o
 This also enables many of the possibilities of aspect- or context-oriented programming.
 For instance, you could wrap a function with logging behavior only in certain call contexts or threads.
 
-
 === Delays, Futures, and Promises
 
 ==== Delays
@@ -2186,7 +2157,6 @@ We see that it starts in a pending state.
 Dereferencing `d` with `@` causes the code to run, printing `"Hello world!"` and returning `42`.
 Notice that the second dereference with `@` does not print `"Hello world!"` again, it only returns the already realized value of `42`.
 
-
 ==== Futures
 
 Futures provide an easy way to spin off a new thread to do some computation or I/O that you will need access to in the future.
@@ -2195,13 +2165,11 @@ The difference is that the work begins immediately on another thread.
 The flow of control is not blocked.
 If you dereference a future, it will block until the value is available:
 
-
     (def f
       (future (Thread/sleep 10000) 42))
 
     f
     => #object[clojure.core$future_call {:status :pending, :val nil}]
-
 
     (realized? f)
     => false
@@ -2216,7 +2184,6 @@ If you dereference a future, it will block until the value is available:
 
     f
     #object[clojure.core$future_call {:status :ready, :val 42}]
-
 
 ==== Promises
 
@@ -2235,7 +2202,6 @@ Where they differ is that you don't immediately give them a value, but provide t
     => "as-promised"
 
 Dereferencing works on futures, delays, promises, atoms, agents refs and vars.
-
 
 === Atoms, Refs, and Agents
 
@@ -2296,6 +2262,7 @@ Use shutdown-agents to terminate these threads and allow shutdown.
 
 
 :!sectnums:
+
 == Challenge 3: Mocking parallel web requests
 
 Insuricorp and Megacorp are integrating their IT systems.
@@ -2311,7 +2278,6 @@ Set up a function called fetch-megacorp-policies to do the web request but leave
 Create a test that changes the behavior of fetch-megacorp-policies to behave as though it were a web request; make it pause for 100ms before returning the policies that the person has.
 Set up a test that exercises the eligibility checks using the mocked version of a web request.
 
-
 === Part 2: Report the how long it takes
 
 In Java you might write something like this:
@@ -2322,14 +2288,12 @@ In Java you might write something like this:
 
 Implement a similar solution in Clojure.
 
-
 === Part 3: Make parallel requests
 
 The web service you are using can handle multiple requests faster than a series of requests.
 It operates fastest with up to 20 connections.
 Modify your code such that multiple requests are made simultaneously.
 Compare the timing results to confirm the operations are happening in parallel.
-
 
 === Part 4: Error handling
 
@@ -2341,9 +2305,10 @@ Then create another test where the exception is thrown 100% of the time, and the
 
 
 :sectnums:
+
 == Polymorphism and Types
 
-image:img/types.jpg[width=300]
+image:types.jpg[width=300]
 
 "You need a lot of different types of people to make the world better."
 -- Joe Louis
@@ -2390,7 +2355,6 @@ Now we can call encounter on the data to see what it does...
 Because keywords are functions, it's quite common to use a keyword as a dispatch function.
 
     (defmulti draw :shape)
-
 
 === Protocols
 
@@ -2479,7 +2443,6 @@ Expands into:
        {:baz (fn ([x] ...) ([x y zs] ...))
         :bar (fn [x y] ...)})
 
-
 === Creating types with defrecord and deftype
 
 `deftype`, `defrecord`, and `reify` provide the mechanism for defining implementations of abstractions, and instances of those implementations.
@@ -2497,7 +2460,6 @@ It is preferred to use the built-in datatypes (vectors, maps, sets) to represent
 
     (->Circle 10)
     (->Square 5 11)
-
 
 ==== Defrecord
 
@@ -2523,10 +2485,9 @@ Call the method on the `thing` instance and pass `"bar"`:
 
     (.getContentTypeFor thing "bar")
 
-
 == Interacting with a Database
 
-image:img/database.jpg[width=300]
+image:database.jpg[width=300]
 
 "You can have data without information, but you cannot have information without data."
 -- Daniel Keys Moran
@@ -2557,7 +2518,6 @@ In the Clojure project we require jdbc, and set up a db connection url.
     (def db "jdbc:hsqldb:mem:testdb")
 
 Now we are all set to start doing queries.
-
 
 === Inserting, updating and retrieving data
 
@@ -2608,7 +2568,6 @@ If you want to redo any steps, remember that you can always drop the table and s
 
     (jdbc/execute! db "drop table messages")
 
-
 === Solutions for SQL management
 
 HoneySQL https://github.com/jkk/honeysql can be used to build SQL statements from data structures.
@@ -2617,14 +2576,12 @@ For example if the user can check a checkbox to enable an additional clause in a
 In such cases it is more convenient to use Clojure's capabilities for manipulating data structures.
 However if you do not need to do such manipulation, I recommend using plain old SQL queries in their original text form, as you can run them interactively from an SQL prompt much easier that way.
 
-
 === Exercises
 
 * Create and populate a table `person` with two columns; `id`, `name`.
 * Create and populate a table `policy` with two columns; `id`, `name`
 * Create and populate a table `person_policy` with two columns; `person_id`, `policy_id`
 * Write a function that given a person name queries all the policies associated with them.
-
 
 === Answers
 
@@ -2668,8 +2625,8 @@ However if you do not need to do such manipulation, I recommend using plain old 
     (find-policies "Billy")
     => ({:name "Corgi Cover"})
 
-
 :!sectnums:
+
 == Challenge 4: Corgi Cover Database
 
 Sending files around is proving to be problematic.
@@ -2683,18 +2640,15 @@ Using the database of your choice, set up an initial database for the Corgi Cove
 In the code, connect to the database and create the initial table required.
 You can use whatever schema you like, but the first requirement is to store the applications with exactly the same data as was retrieved from the file format in Challenge 2.
 
-
 === Part 2: Populate the data
 
 Modify the code to store the applications as they are processed, and the result of the eligibility check.
-
 
 === Part 3: Write a spec
 
 Ensure that all records processed from the files meets your expectations for required fields.
 Write a spec that explicitly defines what should be in the applications.
 Validate the spec on the incoming records.
-
 
 === Part 4: Extending to Poodle Protection
 
@@ -2705,9 +2659,10 @@ For now the only difference with the rules from “Corgi Cover” is that “Poo
 
 
 :sectnums:
+
 == Spec
 
-image:img/spec.jpg[width=300]
+image:spec.jpg[width=300]
 
 "Much of the essence of building a program is in fact the debugging of the specification."
 -- Fred Brooks
@@ -2724,7 +2679,6 @@ To start working with spec, require the `clojure.spec.alpha` namespace at the RE
 
     (ns my.ns
       (:require [clojure.spec.alpha :as s]))
-
 
 === Validation
 
@@ -2761,7 +2715,6 @@ Let's create a spec that combines several predicates into a composite spec with 
     (s/valid? ::big-even 100000)
     => true
 
-
 === Conforming
 
 We can also use `s/or` to specify two alternatives:
@@ -2788,7 +2741,6 @@ Explain can be used to report why a value does not conform to a spec.
     => val: 5 fails spec: ::big-even predicate: even?
 
 In addition to `explain`, you can use `explain-str` to receive the error messages as a string or `explain-data` to receive the errors as data.
-
 
 === Maps
 
@@ -2845,7 +2797,6 @@ Spec has explicit support for pre and post conditions using `fdef`.
 The `:ret` spec uses fspec to declare that the returning function takes and returns a number.
 Even more interesting, the `:fn` spec can state a general property that relates the `:args` (where we know `x`) and the result we get from invoking the function returned from adder, namely that adding `0` to it should return `x`.
 
-
 === A game of cards
 
 Here's a bigger set of specs to model a game of cards:
@@ -2899,7 +2850,6 @@ We can also specify a :fn spec to verify that the count of cards in the game bef
       :fn #(= (total-cards (-> % :args :game))
               (total-cards (-> % :ret))))
 
-
 === Generators
 
 A key design constraint of spec is that all specs are also designed to act as generators of sample data that conforms to the spec (a critical requirement for property-based testing).
@@ -2943,7 +2893,6 @@ We can even generate an entire game:
 
 	(gen/generate (s/gen ::game))
 
-
 It's useful to spec (and generate) values in a range.
 For example, in the case of a range of integer values, use `int-in` to spec a range:
 
@@ -2954,7 +2903,6 @@ For example, in the case of a range of integer values, use `int-in` to spec a ra
 Spec also includes `inst-in` for a range of Dates, and `double-in` for double ranges.
 
 To learn more about generators, read the test.check tutorial https://clojure.github.io/test.check/intro.html.
-
 
 === Instrumentation and Testing
 
@@ -3011,7 +2959,6 @@ Imagine instead that we made an error in the `ranged-rand` code and swapped star
 
 This broken function will still create random integers, just not in the expected range.
 Our `:fn` spec will detect the problem when checking the var:
-
 
     (stest/abbrev-result (first (stest/check `ranged-rand)))
     => ({...
@@ -3075,14 +3022,15 @@ The first call here instruments and stubs `invoke-service`.
 The second and third calls demonstrate that calls to `invoke-service` now return generated results (rather than hitting a service).
 Finally, we can use check on the higher level function to test that it behaves properly based on the generated stub results returned from `invoke-service`.
 
-There is even more to spec! Once you are comfortable with the basics you can learn more at https://clojure.org/guides/spec.
-
+There is even more to spec!
+Once you are comfortable with the basics you can learn more at https://clojure.org/guides/spec.
 
 == Macros
 
-image:img/macros.jpg[width=300]
+image:macros.jpg[width=300]
 
-"I never think about myself as an artist working in this time. I think about it in macro."
+"I never think about myself as an artist working in this time.
+I think about it in macro."
 -- Frank Ocean
 
 Macros manipulate the operand forms instead of evaluating them as input arguments.
@@ -3112,7 +3060,6 @@ You can examine the expansion using `macroexpand-1`:
            ([my-namespace/x]
             (clojure.core/* my-namespace/x my-namespace/x))))
 
-
 === Defining macros
 
 Consider two different definitions of zen:
@@ -3141,7 +3088,6 @@ That's the key difference between a macro and a function.
 Macros themselves are really just functions with a `:macro` flag set in their metadata, which causes them to be passed in the input forms unevaluated, and caused the result to be evaluated.
 This last part is less obvious... but think back to `zen1`... `x` was a list, we returned `x`, but the final result wasn't a list... it was `3`.
 The list was evaluated as a function call to `+`, resulting in `3`.
-
 
 === Syntax quoting
 
@@ -3184,7 +3130,6 @@ Fully qualified symbols avoids one source of collisions, but there is another:
     (bad a)
     => 2
 
-
 This might seem confusing, unless you notice that:
 
     (macroexpand-1 '(bad a))
@@ -3208,7 +3153,6 @@ To avoid this situation Clojure provides a let gensyms form which will produce a
 
 The `let` binding `a#` expands out to a randomly generated symbol unlikely to collide with existing symbols.
 
-
 === Code as data
 
 You may have noticed when we write a macro, we are really writing a function that produces code.
@@ -3224,7 +3168,6 @@ When working on a non-trivial macro a good strategy is:
 
 Stated another way; keep the macro as small as possible, and offload transformations to functions.
 
-
 === Exercises
 
 Create the following macros and test cases:
@@ -3233,13 +3176,15 @@ Create the following macros and test cases:
 
     (ignore (println "hello???") (inc 42))
 
-* Define your own version of the when macro. When is like if, but only has one branch and allows multiple statements.
+* Define your own version of the when macro.
+When is like if, but only has one branch and allows multiple statements.
 
     (when2 (pos? x)
       (println "Positive:" x)
       (inc x))
 
-* Write a spy macro. Spy wraps an expression and prints out its value.
+* Write a spy macro.
+Spy wraps an expression and prints out its value.
 
     (* (spy (+ 1 2)) 3)
     => Expression (+ 1 2) has value 3
@@ -3249,14 +3194,12 @@ Create the following macros and test cases:
 
     (or2 (pos? 1) (println "does not execute"))
 
-
 === Answers
 
     (defmacro ignore  [expr]  nil)
 
     (defmacro when2 [test & body]
       (list 'if test (cons 'do body))
-
 
     (defmacro spy [expr]
       `(let [result# ~expr]
@@ -3279,10 +3222,9 @@ Create the following macros and test cases:
           `(let [or# ~x]
              (if or# or# (or ~@next)))))
 
-
 == Further reading
 
-image:img/further-reading.jpg[width=300]
+image:further-reading.jpg[width=300]
 
 "You can never get a cup of tea large enough or a book long enough to suit me."
 -- C.S. Lewis
@@ -3292,9 +3234,9 @@ Don't feel frustrated if the code comes slowly at first.
 Being a great programmer requires thinking.
 You will only reach your true potential expressing code in ways that empower you rather than constrain you.
 
-Further exercises:	https://www.4clojure.com
+Further exercises:    https://www.4clojure.com
 
 Clojure for Java Programmers - Rich Hickey
 
-* Part 1:		https://www.youtube.com/watch?v=P76Vbsk_3J0
-* Part 2:		https://www.youtube.com/watch?v=hb3rurFxrZ8
+* Part 1:        https://www.youtube.com/watch?v=P76Vbsk_3J0
+* Part 2:        https://www.youtube.com/watch?v=hb3rurFxrZ8

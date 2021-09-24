@@ -1,0 +1,72 @@
+.reveal h2,
+.reveal th {
+  font-size: 1.5em;
+  padding-bottom: 0.5em;
+  color: #66af40;
+}
+
+.reveal pre {
+  font-size: 0.8em;
+  box-shadow: none;
+  padding: 0.1em;
+  background-color: #f8f8f8;
+}
+
+.reveal section {
+  font-size: 1em;
+  color: #5b80d4;
+  max-height: 100%;   /* allow vertical scrolling in slides */
+  overflow-y: auto;
+}
+
+.reveal section img {
+  margin: 0;
+  border: 10px solid #66af40;
+  height: 300px;
+}
+
+.reveal section p,
+.reveal h1,
+.reveal h2,
+.reveal div {
+  text-align: left;
+}
+
+.slides {
+  width: 90% !important;
+}
+
+html.title body {
+  background: linear-gradient(to bottom left, #91b3Fb, #92da55);
+}
+
+.small {
+  font-size: 0.8em !important;
+}
+
+.klipse-snippet {
+  border: solid #92da55 1px !important;
+}
+
+.klipse-result {
+  border: solid #91b3fb 1px !important;
+}
+
+code {
+  background-color: #f8f8f8;
+  font-family: 'FiraCode', monospace !important;
+}
+
+.CodeMirror {
+  font-family: 'FiraCode', monospace !important;
+  font-size: 0.8em !important;
+}
+
+.CodeMirror-cursor {
+  border-left: 1px solid black !important;
+}
+
+.CodeMirror-scroll {
+  padding-bottom: 30px !important;
+  margin-bottom: -30px !important;
+}

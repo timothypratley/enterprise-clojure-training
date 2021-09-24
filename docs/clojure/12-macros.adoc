@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == 12. Macros
 
-image:../img/macros.jpg[]
+image:macros.jpg[]
 
 "I never think about myself as an artist working in this time. I think about it in macro."
 -- Frank Ocean

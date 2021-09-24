@@ -1,13 +1,13 @@
 = Enterprise Clojure Training
 :copyright: Timothy Pratley
 :license: Eclipse Public License http://www.eclipse.org/legal/epl-v10.html
-include::slide.attrs[]
+include::../docinfo.attrs[]
 
 
 [state=title]
 == 10. Interacting with a Database
 
-image:../img/database.jpg[]
+image:database.jpg[]
 
 "You can have data without information, but you cannot have information without data."
 -- Daniel Keys Moran
