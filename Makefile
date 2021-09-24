@@ -9,19 +9,28 @@ ALL := $(HTML) $(PDF) $(ARTICLES) $(SLIDES)
 
 # Tasks
 
-.PHONY: all clean setup
+.PHONY: all clean setup deploy lint
 
 all: setup $(ALL) # site/js/compiled/main.js
 
 clean:
-	rm -fr .bundle site/*.html site/*.pdf site/*/*.html
+	rm -fr .bundle site/*.html site/*.pdf site/*/*.html site/js/compiled
 
-setup: .bundle
+setup: .bundle site/reveal.js
+
+deploy: all
+	./deploy.sh
+
+lint:
+	docker run -e RUN_LOCAL=true -v `pwd`:/tmp/lint github/super-linter
 
 ## Asciidoctor dependencies
 
 .bundle: Gemfile
 	bundle --path=.bundle/gems --binstubs=.bundle/.bin
+
+site/reveal.js:
+	wget https://github.com/hakimel/reveal.js/archive/master.zip && unzip master.zip && mv reveal.js-master site/reveal.js && rm master.zip
 
 # Rules
 
@@ -31,15 +40,15 @@ site/%.slides.html: docs/%.adoc docs/docinfo.attrs .bundle
 
 ## HTML
 site/%.html: docs/%.adoc docs/docinfo.attrs .bundle
-	bundle exec asciidoctor --out-file $@ $< 
+	bundle exec asciidoctor -r asciidoctor-mathematical --out-file $@ $< 
 
 ## PDF
 site/%.pdf: docs/%.adoc docs/docinfo.attrs .bundle
-	bundle exec asciidoctor-pdf --out-file $@ $<
+	bundle exec asciidoctor-pdf -r asciidoctor-mathematical --out-file $@ $<
 
 #site/js/compiled/main.js: deps.edn cljs.edn src/enterprise_clojure_training/main.cljs
 #	clojure -M --main cljs.main --compile-opts cljs.edn --compile
 
 pdfslides:
-	docker run --rm -t -v `pwd`:/slides -v ~:/home/user astefanutti/decktape site/extra/term-rewriting-with-meander-examples.slides.html slides.pdf
+	docker run --rm -t -v `pwd`:/slides -v ~:/home/user astefanutti/decktape --size 1366x784 site/extra/term-rewriting-with-meander-examples.slides.html slides.pdf
 

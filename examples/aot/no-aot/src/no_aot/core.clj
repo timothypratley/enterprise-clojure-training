@@ -1,4 +1,4 @@
 (ns no-aot.core)
 
-(defn -main [& args]
+(defn -main [& _args]
   (println "Hello, World!"))

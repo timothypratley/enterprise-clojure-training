@@ -6,3 +6,4 @@ site/extra
 site/meta
 site/js/compiled
 .cpcache
+*.log

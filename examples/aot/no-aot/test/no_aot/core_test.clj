@@ -1,4 +1,4 @@
 (ns no-aot.core-test
-  (:require [clojure.test :refer :all]
-            [no-aot.core :refer :all]))
+  #_(:require [clojure.test :refer [deftest is testing]]
+            [no-aot.core :as n]))
 

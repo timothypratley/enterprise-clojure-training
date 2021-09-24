@@ -1,31 +1,34 @@
-.reveal h2, th {
+.reveal h2,
+.reveal th {
   font-size: 1.5em;
   padding-bottom: 0.5em;
-  color: #66AF40;
+  color: #66af40;
 }
 
 .reveal pre {
   font-size: 0.8em;
   box-shadow: none;
   padding: 0.1em;
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
 }
 
 .reveal section {
-  font-size: 1.0em;
-  color: #5B80D4;
-  /* allow vertical scrolling in slides */
-  max-height: 100%;
+  font-size: 1em;
+  color: #5b80d4;
+  max-height: 100%;   /* allow vertical scrolling in slides */
   overflow-y: auto;
 }
 
 .reveal section img {
   margin: 0;
-  border: 10px solid #66AF40;
+  border: 10px solid #66af40;
   height: 300px;
 }
 
-.reveal section p, h1, h2, div {
+.reveal section p,
+.reveal h1,
+.reveal h2,
+.reveal div {
   text-align: left;
 }
 
@@ -34,7 +37,7 @@
 }
 
 html.title body {
-  background: linear-gradient(to bottom left, #91B3FB, #92DA55);
+  background: linear-gradient(to bottom left, #91b3Fb, #92da55);
 }
 
 .small {
@@ -42,15 +45,15 @@ html.title body {
 }
 
 .klipse-snippet {
-  border: solid #92DA55 1px !important;
+  border: solid #92da55 1px !important;
 }
 
 .klipse-result {
-  border: solid #91B3FB 1px !important;
+  border: solid #91b3fb 1px !important;
 }
 
 code {
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
   font-family: 'FiraCode', monospace !important;
 }
 

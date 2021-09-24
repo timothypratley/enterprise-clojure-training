@@ -1,5 +1,5 @@
 (ns parsing-with-spec.core-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer [deftest is]]
             [parsing-with-spec.core :as p]
             [clojure.spec.alpha :as s]
             [expound.alpha :as e]))
@@ -28,9 +28,9 @@
   (let [insurance-policy-applications [good bad]
         valid-count (atom 0)
         invalid-count (atom 0)
-        valid (fn [x]
+        valid (fn [_x]
                 (swap! valid-count inc))
-        invalid (fn [x]
+        invalid (fn [_x]
                   (swap! invalid-count inc))]
     (p/process-applications valid invalid insurance-policy-applications)
     (is (= 1 @valid-count))

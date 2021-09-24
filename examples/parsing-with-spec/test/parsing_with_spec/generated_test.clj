@@ -1,5 +1,5 @@
 (ns parsing-with-spec.generated-test
-  (:require [clojure.test :refer :all]
+  #_(:require [clojure.test :refer [deftest is testing]]
             [clojure.spec.alpha :as s]
             [clojure.spec.test.alpha :as stest]
             [clojure.spec.gen.alpha :as gen]

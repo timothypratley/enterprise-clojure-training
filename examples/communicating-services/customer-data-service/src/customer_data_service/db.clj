@@ -8,7 +8,7 @@
 
 (defn find-by-name [s]
   (vec
-    (for [[k v] @backend
+    (for [[_k v] @backend
           :when (str/includes?
                   (some-> v (:name) (str/lower-case))
                   (str/lower-case s))]

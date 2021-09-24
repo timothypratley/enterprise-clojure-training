@@ -1,9 +1,7 @@
 :imagesdir: ../img
 :customcss: ../enterprise-clojure-training.css
 :docinfo: shared
-:notitle:
 :icons: font
-ifdef::backend-revealjs[]
 :revealjs_theme: simple
 :revealjs_center: false
 :revealjs_controls: false
@@ -12,4 +10,3 @@ ifdef::backend-revealjs[]
 :revealjs_minScale: 1.0
 :revealjs_maxScale: 1.0
 :revealjsdir: ../reveal.js
-endif::[]
