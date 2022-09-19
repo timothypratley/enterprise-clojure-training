@@ -14,7 +14,7 @@ ALL := $(HTML) $(PDF) $(ARTICLES) $(SLIDES)
 all: setup $(ALL) # site/js/compiled/main.js
 
 clean:
-	rm -fr .bundle site/*.html site/*.pdf site/*/*.html site/js/compiled
+	rm -fr site/*.html site/*.pdf site/*/*.html site/js/compiled site/img/stem*
 
 setup: .bundle site/reveal.js
 
@@ -40,7 +40,7 @@ site/%.slides.html: docs/%.adoc docs/docinfo.attrs .bundle
 
 ## HTML
 site/%.html: docs/%.adoc docs/docinfo.attrs .bundle
-	bundle exec asciidoctor -r asciidoctor-mathematical --out-file $@ $< 
+	bundle exec asciidoctor --out-file $@ $<
 
 ## PDF
 site/%.pdf: docs/%.adoc docs/docinfo.attrs .bundle
@@ -51,4 +51,3 @@ site/%.pdf: docs/%.adoc docs/docinfo.attrs .bundle
 
 pdfslides:
 	docker run --rm -t -v `pwd`:/slides -v ~:/home/user astefanutti/decktape --size 1366x784 site/extra/term-rewriting-with-meander-examples.slides.html slides.pdf
-
