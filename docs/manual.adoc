@@ -96,7 +96,7 @@ The following software must be installed on your laptop prior to the course:
 
 === Required preparation
 
-Complete the first 10 exercises on the 4Clojure website (http://www.4clojure.com).
+Complete the first 10 exercises on the 4Clojure website (https://4clojure.oxal.org).
 
 
 === Optional reading
